@@ -119,7 +119,8 @@ The above copyright notice and this permission notice shall be included in all c
                         <div class="container">
                             <br>
                             <a href="#">Login</a> <hr>
-                            <a href="#">Settings</a> <hr>
+                            <a href="#">Help</a> <br>
+                            <br>
                         </div>
                     </div>
                 </div>
