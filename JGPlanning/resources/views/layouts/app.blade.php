@@ -20,21 +20,13 @@ The above copyright notice and this permission notice shall be included in all c
 
         {{--Css--}}
         <link rel="stylesheet" href="{{asset('/css/app.css')}}" type="text/css">
-        {{--JS--}}
-        <script type="text/javascript" src="{{asset('/js/app.js')}}"></script>
- 
+
 
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
         <!--     Fonts and icons     -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 
-        <!-- MDB core JavaScript -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
-        <!-- Material Design Bootstrap -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
 
     <body>
@@ -108,13 +100,13 @@ The above copyright notice and this permission notice shall be included in all c
                                               </div>
                                             </li>-->
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link" href="#" >
                                         <i class="material-icons">person</i>
                                         <p class="d-lg-none d-md-block">
                                             Account
                                         </p>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                                    <div class="dropdown-menu" >
                                         <a class="dropdown-item" href="#">Profile</a>
                                         <a class="dropdown-item" href="#">Settings</a>
                                         <div class="dropdown-divider"></div>
@@ -128,5 +120,11 @@ The above copyright notice and this permission notice shall be included in all c
 
             </div>
         </div>
+        {{--JS--}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+
+        <script type="text/javascript" src="{{asset('/js/app.js')}}"></script>
     </body>
 </html>
