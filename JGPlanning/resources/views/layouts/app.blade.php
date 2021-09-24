@@ -111,8 +111,8 @@ The above copyright notice and this permission notice shall be included in all c
                 <br>
 
                 <!-- Modal -->
-                <div class="dropdown_div modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                    <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <a href="#">Login</a> <hr>
