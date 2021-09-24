@@ -14,18 +14,15 @@ The above copyright notice and this permission notice shall be included in all c
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>
-            Material Dashboard by Creative Tim
-        </title>
 
         {{--Css--}}
         <link rel="stylesheet" href="{{asset('/css/app.css')}}" type="text/css">
 
-
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
         <!--     Fonts and icons     -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
 
     </head>
 
@@ -38,7 +35,7 @@ The above copyright notice and this permission notice shall be included in all c
                   Tip 2: you can also add an image using data-image tag
               -->
                 <div class="logo"><a class="simple-text logo-normal">
-                        Creative Tim
+                        JGPlanning
                     </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
@@ -65,15 +62,15 @@ The above copyright notice and this permission notice shall be included in all c
                             <span class="navbar-toggler-icon icon-bar"></span>
                         </button>
                         <div class="collapse navbar-collapse justify-content-end">
-                            <form class="navbar-form">
-                                <div class="input-group no-border">
-                                    <input type="text" value="" class="form-control" placeholder="Search...">
-                                    <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                                        <i class="material-icons">search</i>
-                                        <div class="ripple-container"></div>
-                                    </button>
-                                </div>
-                            </form>
+{{--                            <form class="navbar-form">--}}
+{{--                                <div class="input-group no-border">--}}
+{{--                                    <input type="text" value="" class="form-control" placeholder="Search...">--}}
+{{--                                    <button type="submit" class="btn btn-white btn-round btn-just-icon">--}}
+{{--                                        <i class="material-icons">search</i>--}}
+{{--                                        <div class="ripple-container"></div>--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                            </form>--}}
                             <ul class="navbar-nav">
                                 <li class="nav-item">
                                     <a class="nav-link" href="javascript:;">
@@ -100,31 +97,48 @@ The above copyright notice and this permission notice shall be included in all c
                                               </div>
                                             </li>-->
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link" href="#" >
-                                        <i class="material-icons">person</i>
-                                        <p class="d-lg-none d-md-block">
-                                            Account
-                                        </p>
-                                    </a>
-                                    <div class="dropdown-menu" >
-                                        <a class="dropdown-item" href="#">Profile</a>
-                                        <a class="dropdown-item" href="#">Settings</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Log out</a>
-                                    </div>
+                                    <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-backdrop="false">
+                                        <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>
+                                        <i class="fa fa-user"></i>
+                                    </button>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </nav>
+                <br>
+                <br>
+                <br>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                    <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <a href="#">Login</a> <hr>
+                                <a href="#">Help</a> <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+{{--                <div class="dropdown_div">--}}
+{{--                    <div class="border shadow" style="display: none" id="dropdown_id">--}}
+{{--                        <div class="container">--}}
+{{--                            <br>--}}
+{{--                            <a href="#">Login</a> <hr>--}}
+{{--                            <a href="#">Help</a> <br>--}}
+{{--                            <br>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
             </div>
         </div>
         {{--JS--}}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{asset('/js/app.js')}}"></script>
     </body>
 </html>
