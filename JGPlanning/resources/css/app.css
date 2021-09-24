@@ -22,3 +22,24 @@
 .dropdown_div a {
     margin-bottom: 25px;
 }
+.login-form {
+    position: absolute;
+    left: 35%;
+    top: 5%;
+    text-align: center;
+    border: 1px solid gray;
+    border-radius: 5px 5px 5px 5px;
+    width: 30%;
+    height: 45%;
+}
+.login-div {
+    border-bottom: 1px solid black;
+}
+.login-div a {
+    font-size: 50px;
+}
+.login-input {
+    border: none;
+    background: none;
+    width: 90%;
+}

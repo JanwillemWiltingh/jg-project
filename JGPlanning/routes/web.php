@@ -1,5 +1,8 @@
 <?php
-
+use App\Http\Controllers\ {
+    LoginController,
+    DashboardController,
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/home', [DashboardController::class, 'index']);
