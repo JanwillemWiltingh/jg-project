@@ -7,3 +7,18 @@
     color: red;
 }
 
+.dropdown_button {
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.dropdown_div {
+    width: 100px !important;
+    left: 91.7% !important;
+    top: 5% !important;
+}
+
+.dropdown_div a {
+    margin-bottom: 25px;
+}
