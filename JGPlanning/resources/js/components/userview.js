@@ -3,14 +3,13 @@ $(document).ready(function (){
         if($('#dropdown_id').css('display') === 'none')
         {
             document.getElementById('dropdown_id').style.display = "block";
-            $('#arrow').addClass('fa-caret-up');
+            // $('#arrow').addClass('fa-caret-up');
 
         }
         else
         {
             document.getElementById('dropdown_id').style.display = "none";
-            $('#arrow').removeClass('fa-caret-up');
-
+            // $('#arrow').removeClass('fa-caret-up');
         }
     });
 
