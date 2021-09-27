@@ -20,7 +20,7 @@
             <br>
             <div class="login-div">
                 <i class="fa fa-user"></i>
-                <input name="username" class="login-input"> <br>
+                <input type="email" name="email" class="login-input"> <br>
             </div>
             <br>
             <div class="login-div">

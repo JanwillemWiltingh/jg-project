@@ -10,6 +10,6 @@ class LoginController extends Controller
     public function login()
     {
         //write login code here
-        
+
     }
 }
