@@ -1,6 +1,8 @@
 <?php
+
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
-class UsersSeeder extends Seeder
+class RolesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,14 +20,11 @@ class UsersSeeder extends Seeder
     public function run()
     {
         Schema::disableForeignKeyConstraints();
-        DB::table('users')->truncate();
+        DB::table('roles')->truncate();
         Schema::enableForeignKeyConstraints();
 
-        DB::table('users')->insert([
-            'name' => 'robert',
-            'email' => 'robert@gmail.com',
-            'password' => Hash::make('123'),
-            'role_id' => '1',
+        DB::table('roles')->insert([
+            'name' => 'Admin',
         ]);
     }
 }

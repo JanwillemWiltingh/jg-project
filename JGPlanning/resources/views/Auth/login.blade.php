@@ -27,7 +27,7 @@
 
                 <div class="login-input">
                     <i class="fa fa-user"></i>
-                    <input type="text" id="login" name="login" placeholder="Login">
+                    <input type="email" id="email" name="email" placeholder="Email">
                 </div>
                 <div class="login-input">
                     <i class="fa fa-lock"></i>
@@ -40,7 +40,7 @@
                 </div>
             </form>
 
-            <!-- Remind Passowrd -->
+            <!-- Remind Password -->
 
         </div>
     </div>

@@ -1,0 +1,16 @@
+Wireframes:
+Login:
+https://wireframe.cc/xtEXXa
+
+Rooster voor gebruikers: 
+https://wireframe.cc/F7PKkx
+
+Beschikbaarheid gebruikers:
+https://wireframe.cc/rNIUBU
+
+Overzicht van beschikbaarheid voor admin:
+https://wireframe.cc/EERa8q
+
+ERD: 
+https://lucid.app/lucidchart/invitations/accept/inv_1a9221b8-45b9-466a-ac24-8b020404f037?view_items=kWBYMBmO7AJt
+
