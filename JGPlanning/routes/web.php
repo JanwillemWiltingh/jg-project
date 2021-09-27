@@ -24,4 +24,5 @@ Route::get('/rooster', [RoosterController::class, 'index'])->name('rooster');
 
 Route::name('clocker.')->prefix('clock-in/')->group(function (){
     Route::get('/', [App\Http\Controllers\Users\ClockerController::class, 'index'])->name('index');
+    Route::post('/clock', [App\Http\Controllers\Users\ClockerController::class, 'clock'])->name('clock');
 });
