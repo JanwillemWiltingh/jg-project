@@ -39,7 +39,7 @@ The above copyright notice and this permission notice shall be included in all c
                     </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
-                        <li class="nav-item active">
+                        <li class="nav-item {{ (Request::is('/') or Request::is('dashboard/*')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('home')}}">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
@@ -47,7 +47,7 @@ The above copyright notice and this permission notice shall be included in all c
                             <br>
                         </li>
                         <br>
-                        <li class="nav-item active">
+                        <li class="nav-item {{ (Request::is('rooster') or Request::is('rooster/*')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('rooster')}}">
                                 <i class="fa fa-clock"></i>
                                 <p>Rooster</p>
@@ -55,7 +55,14 @@ The above copyright notice and this permission notice shall be included in all c
                             <br>
                         </li>
                         <br>
-
+                        <li class="nav-item {{ (Request::is('clock-in') or Request::is('clock-in/*')) ? 'active' : '' }}">
+                            <a class="nav-link nav-color" href="{{ route('clocker.index') }}">
+                                <i class="material-icons">timer</i>
+                                <p>Clock In</p>
+                            </a>
+                            <br>
+                        </li>
+                        <br>
                     </ul>
                 </div>
             </div>

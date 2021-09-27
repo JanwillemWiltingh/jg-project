@@ -21,3 +21,7 @@ Route::get('/', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/home', [DashboardController::class, 'index'])->name('home');
 Route::get('/rooster', [RoosterController::class, 'index'])->name('rooster');
+
+Route::name('clocker.')->prefix('clock-in/')->group(function (){
+    Route::get('/', [App\Http\Controllers\Users\ClockerController::class, 'index'])->name('index');
+});
