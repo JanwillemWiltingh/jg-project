@@ -19729,3 +19729,15 @@ Copyright (c) 2015 Daniel Eden
     width: 90%;
 }
 
+.nav-color {
+    width: 89%;
+    background: linear-gradient(90deg, rgba(41,41,224,1) 0%, rgba(0,212,255,1) 100%);
+    position: absolute;
+    left: 0;
+    transition: all 0.2s;
+}
+
+.nav-color:hover {
+    left: 10px;
+}
+

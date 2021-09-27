@@ -20,12 +20,12 @@
             <br>
             <div class="login-div">
                 <i class="fa fa-user"></i>
-                <input name="user-name" class="login-input"> <br>
+                <input name="username" class="login-input"> <br>
             </div>
             <br>
             <div class="login-div">
                 <i class="fa fa-lock"></i>
-                <input name="pass-word" class="login-input"> <br>
+                <input type="password" name="password" class="login-input"> <br>
             </div>
             <br>
             <input type="submit" class="form-control">
