@@ -23,21 +23,24 @@
             </div>
 
             <!-- Login Form -->
-            <form action="{{route('login')}}">
-
+            <form action="{{route('login')}}" method="post">
+                @csrf
                 <div class="login-input">
                     <i class="fa fa-user"></i>
                     <input type="email" id="email" name="email" placeholder="Email">
                 </div>
                 <div class="login-input">
                     <i class="fa fa-lock"></i>
-                    <input type="text" id="password" name="login" placeholder="Password">
+                    <input type="password" id="password" name="password" placeholder="Password">
                 </div>
 
                 <input type="submit" class="" value="Log In">
                 <div id="formFooter">
                     <a class="underlineHover" href="#">Forgot Password?</a>
                 </div>
+                @error('msg')
+                error
+                @enderror
             </form>
 
             <!-- Remind Password -->
