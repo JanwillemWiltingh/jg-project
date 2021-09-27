@@ -14,7 +14,6 @@
 
 <div class="login-page fadeInDown">
     <div class="login-form border shadow">
-        <div id="formContent">
             <!-- Tabs Titles -->
 
             <!-- Icon -->
@@ -23,25 +22,16 @@
             </div>
 
             <!-- Login Form -->
-            <form action="{{route('login')}}">
+            <form action="{{route('login')}}" style="width: 75%">
 
-                <div class="login-input">
-                    <i class="fa fa-user"></i>
-                    <input type="text" id="login" name="login" placeholder="Login">
-                </div>
-                <div class="login-input">
-                    <i class="fa fa-lock"></i>
-                    <input type="text" id="password" name="login" placeholder="Password">
-                </div>
+                <input type="text" id="login" name="login" placeholder="Login" class="form-control">
 
-                <input type="submit" class="" value="Log In">
-                <div id="formFooter">
+                <input type="text" id="password" name="login" placeholder="Password" class="form-control">
+
+                <input type="submit" class="login-button" value="Log In">
+                <div id="formFooter" style="text-align: center; margin: 15px;">
                     <a class="underlineHover" href="#">Forgot Password?</a>
                 </div>
             </form>
-
-            <!-- Remind Passowrd -->
-
-        </div>
     </div>
 </div>

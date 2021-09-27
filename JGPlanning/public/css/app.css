@@ -19713,21 +19713,20 @@ Copyright (c) 2015 Daniel Eden
     font-size: 115px;
 }
 
-.login-input {
-    border-bottom: 1px solid black;
-    margin-bottom: 15px;
-}
-.login-input i {
-    font-size: 20px;
-}
-
-.login-input input {
-    background: none;
+.login-button {
+    width: 100%;
+    margin-top: 15px;
     border: none;
-    font-family: Arial, serif;
-    width: 90%;
+    padding: 10px 5px;
+    border-radius: 5px 5px 5px 5px;
+    background-color: "";
+    transition: border-radius, background-color 0.3s;
 }
 
+.login-button:hover {
+    background-color: lightgrey;
+    border-radius: 8px 8px 8px 8px;
+}
 
 /* ANIMATIONS */
 
