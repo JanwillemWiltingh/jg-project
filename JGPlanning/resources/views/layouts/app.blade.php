@@ -39,12 +39,23 @@ The above copyright notice and this permission notice shall be included in all c
                     </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
-                        <li class="nav-item active  ">
-                            <a class="nav-link nav-color" href="./dashboard.html">
+                        <li class="nav-item active">
+                            <a class="nav-link nav-color" href="{{route('home')}}">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>
+                            <br>
                         </li>
+                        <br>
+                        <li class="nav-item active">
+                            <a class="nav-link nav-color" href="{{route('rooster')}}">
+                                <i class="fa fa-clock"></i>
+                                <p>Rooster</p>
+                            </a>
+                            <br>
+                        </li>
+                        <br>
+
                     </ul>
                 </div>
             </div>
@@ -52,9 +63,6 @@ The above copyright notice and this permission notice shall be included in all c
                 <!-- Navbar -->
                 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                     <div class="container-fluid">
-                        <div class="navbar-wrapper">
-                            <a class="navbar-brand" href="javascript:;">Dashboard</a>
-                        </div>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="navbar-toggler-icon icon-bar"></span>
@@ -97,7 +105,7 @@ The above copyright notice and this permission notice shall be included in all c
                                               </div>
                                             </li>-->
                                 <li class="nav-item dropdown">
-                                    <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-backdrop="false">
+                                    <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#dropDownMenu" data-backdrop="false">
                                         <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>
                                         <i class="fa fa-user"></i>
                                     </button>
@@ -111,7 +119,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <br>
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal fade" id="dropDownMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
                         <div class="modal-content">
                             <div class="modal-body">
