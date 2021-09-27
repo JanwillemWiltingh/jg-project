@@ -39,16 +39,16 @@ The above copyright notice and this permission notice shall be included in all c
                     </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
-                        <li class="nav-item active  ">
+                        <li class="nav-item {{ (Request::is('/') or Request::is('dashboard/*')) ? 'active' : '' }}">
                             <a class="nav-link" href="#">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        <li class="nav-item active  ">
-                            <a class="nav-link" href="{{ route() }}">
-                                <i class="material-icons">dashboard</i>
-                                <p>Dashboard</p>
+                        <li class="nav-item {{ (Request::is('clock-in') or Request::is('clock-in/*')) ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('clocker.index') }}">
+                                <i class="material-icons">timer</i>
+                                <p>Clock In</p>
                             </a>
                         </li>
                     </ul>
@@ -58,9 +58,6 @@ The above copyright notice and this permission notice shall be included in all c
                 <!-- Navbar -->
                 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                     <div class="container-fluid">
-                        <div class="navbar-wrapper">
-                            <a class="navbar-brand" href="javascript:;">Dashboard</a>
-                        </div>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="navbar-toggler-icon icon-bar"></span>
