@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "@popperjs/core": "^2.10.1",
+        "datatables.net": "^1.11.3",
         "jqeury": "0.0.1-security",
         "jquery": "^3.6.0"
     }

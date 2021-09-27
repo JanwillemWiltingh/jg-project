@@ -10,25 +10,38 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{asset('/css/app.css')}}" type="text/css">
 
-<div class="fadeInDown">
-    <div class="login-form">
-        <form method="post" action="{{route('login')}}">
-            @csrf
-            <br>
-            Temporary Login Form
-            <br>
-            <br>
-            <div class="login-div">
+
+
+<div class="login-page fadeInDown">
+    <div class="login-form border shadow">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+
+            <!-- Icon -->
+            <div class="login-icon">
                 <i class="fa fa-user"></i>
-                <input name="username" class="login-input"> <br>
             </div>
-            <br>
-            <div class="login-div">
-                <i class="fa fa-lock"></i>
-                <input type="password" name="password" class="login-input"> <br>
-            </div>
-            <br>
-            <input type="submit" class="form-control">
-        </form>
+
+            <!-- Login Form -->
+            <form action="{{route('login')}}">
+
+                <div class="login-input">
+                    <i class="fa fa-user"></i>
+                    <input type="text" id="login" name="login" placeholder="Login">
+                </div>
+                <div class="login-input">
+                    <i class="fa fa-lock"></i>
+                    <input type="text" id="password" name="login" placeholder="Password">
+                </div>
+
+                <input type="submit" class="" value="Log In">
+                <div id="formFooter">
+                    <a class="underlineHover" href="#">Forgot Password?</a>
+                </div>
+            </form>
+
+            <!-- Remind Passowrd -->
+
+        </div>
     </div>
 </div>
