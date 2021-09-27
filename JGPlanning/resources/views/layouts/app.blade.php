@@ -40,13 +40,15 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="sidebar-wrapper">
                     <ul class="nav">
                         <li class="nav-item {{ (Request::is('/') or Request::is('dashboard/*')) ? 'active' : '' }}">
-                            <a class="nav-link nav-color" href="#">
+                            <a class="nav-link nav-color" href="{{route('home')}}">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>
+                            <br>
                         </li>
+                        <br>
                         <li class="nav-item {{ (Request::is('clock-in') or Request::is('clock-in/*')) ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('clocker.index') }}">
+                            <a class="nav-link nav-color" href="{{ route('clocker.index') }}">
                                 <i class="material-icons">timer</i>
                                 <p>Clock In</p>
                             </a>
