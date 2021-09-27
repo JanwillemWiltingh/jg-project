@@ -40,7 +40,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="sidebar-wrapper">
                     <ul class="nav">
                         <li class="nav-item active  ">
-                            <a class="nav-link" href="./dashboard.html">
+                            <a class="nav-link nav-color" href="./dashboard.html">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>
@@ -121,18 +121,11 @@ The above copyright notice and this permission notice shall be included in all c
                         </div>
                     </div>
                 </div>
-
-{{--                <div class="dropdown_div">--}}
-{{--                    <div class="border shadow" style="display: none" id="dropdown_id">--}}
-{{--                        <div class="container">--}}
-{{--                            <br>--}}
-{{--                            <a href="#">Login</a> <hr>--}}
-{{--                            <a href="#">Help</a> <br>--}}
-{{--                            <br>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
+                <div class="container">
+                    <div class="col-md-4">
+                        @yield('content')
+                    </div>
+                </div>
             </div>
         </div>
         {{--JS--}}
