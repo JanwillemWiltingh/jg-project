@@ -40,7 +40,13 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="sidebar-wrapper">
                     <ul class="nav">
                         <li class="nav-item active  ">
-                            <a class="nav-link" href="./dashboard.html">
+                            <a class="nav-link" href="#">
+                                <i class="material-icons">dashboard</i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="nav-item active  ">
+                            <a class="nav-link" href="{{ route() }}">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>

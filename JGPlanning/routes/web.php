@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::name('clocker.')->prefix('clock-in/')->group(function (){
+    Route::get('/', [App\Http\Controllers\Users\ClockerController::class, 'index'])->name('index');
+});
