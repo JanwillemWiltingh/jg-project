@@ -47,12 +47,22 @@ The above copyright notice and this permission notice shall be included in all c
                             <br>
                         </li>
                         <br>
+                        <li class="nav-item {{ (Request::is('rooster') or Request::is('rooster/*')) ? 'active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('rooster')}}">
+                                <i class="fa fa-clock"></i>
+                                <p>Rooster</p>
+                            </a>
+                            <br>
+                        </li>
+                        <br>
                         <li class="nav-item {{ (Request::is('clock-in') or Request::is('clock-in/*')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{ route('clocker.index') }}">
                                 <i class="material-icons">timer</i>
                                 <p>Clock In</p>
                             </a>
+                            <br>
                         </li>
+                        <br>
                     </ul>
                 </div>
             </div>
@@ -102,7 +112,7 @@ The above copyright notice and this permission notice shall be included in all c
                                               </div>
                                             </li>-->
                                 <li class="nav-item dropdown">
-                                    <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-backdrop="false">
+                                    <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#dropDownMenu" data-backdrop="false">
                                         <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>
                                         <i class="fa fa-user"></i>
                                     </button>
@@ -116,7 +126,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <br>
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                <div class="modal fade" id="dropDownMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
                         <div class="modal-content">
                             <div class="modal-body">

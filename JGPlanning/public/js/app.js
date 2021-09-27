@@ -5227,6 +5227,7 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.Popper = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/index.js");
+window.dataTables = Object(function webpackMissingModule() { var e = new Error("Cannot find module 'datatables.net'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())["default"];
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -5258,6 +5259,7 @@ $(document).ready(function () {
       document.getElementById('dropdown_id').style.display = "none"; // $('#arrow').removeClass('fa-caret-up');
     }
   });
+  $('#dropDownMenu').removeClass("modal-backdrop");
 });
 
 /***/ }),
