@@ -9,12 +9,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{asset('/css/app.css')}}" type="text/css">
-
-
-
+<style>
+    img {
+        position: absolute;
+    }
+</style>
+<img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%">
 <div class="login-page fadeInDown">
     <div class="login-form border shadow">
-        <div id="formContent">
             <!-- Tabs Titles -->
 
             <!-- Icon -->
@@ -23,25 +25,16 @@
             </div>
 
             <!-- Login Form -->
-            <form action="{{route('login')}}">
+            <form action="{{route('login')}}" style="width: 75%">
 
-                <div class="login-input">
-                    <i class="fa fa-user"></i>
-                    <input type="email" id="email" name="email" placeholder="Email">
-                </div>
-                <div class="login-input">
-                    <i class="fa fa-lock"></i>
-                    <input type="text" id="password" name="login" placeholder="Password">
-                </div>
+                <input type="text" id="login" name="login" placeholder="Login" class="form-control">
 
-                <input type="submit" class="" value="Log In">
-                <div id="formFooter">
+                <input type="text" id="password" name="login" placeholder="Password" class="form-control">
+
+                <input type="submit" class="login-button" value="Log In">
+                <div id="formFooter" style="text-align: center; margin: 15px;">
                     <a class="underlineHover" href="#">Forgot Password?</a>
                 </div>
             </form>
-
-            <!-- Remind Password -->
-
-        </div>
     </div>
 </div>
