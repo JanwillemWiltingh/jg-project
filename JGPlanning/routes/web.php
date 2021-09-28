@@ -4,6 +4,9 @@ use App\Http\Controllers\ {
     DashboardController,
     RoosterController,
 };
+use App\Http\Controllers\Users\ {
+    ClockerController,
+};
 use Illuminate\Support\Facades\Route;
 
 /*
