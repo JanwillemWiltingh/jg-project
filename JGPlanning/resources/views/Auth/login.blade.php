@@ -25,9 +25,10 @@
             </div>
 
             <!-- Login Form -->
-            <form action="{{route('login')}}" style="width: 75%">
+            <form action="{{route('login')}}" method="POST" style="width: 75%">
+                @csrf
 
-                <input type="email" id="login" name="email" placeholder="Email" class="form-control">
+                <input type="email" id="login" name="email" placeholder="Email" class="form-control" value="{{ old('email') }}">
 
                 <input type="password" id="password" name="password" placeholder="Password" class="form-control">
 

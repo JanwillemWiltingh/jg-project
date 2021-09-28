@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClockerController extends Controller
 {
@@ -18,6 +20,16 @@ class ClockerController extends Controller
     public function index()
     {
         return view('user.clock-in.index');
+    }
+
+    /**
+     * @return RedirectResponse
+     */
+    public function clock(): RedirectResponse
+    {
+        $user = Auth::user();
+        dd($user);
+        return redirect()->back();
     }
 
     /**
