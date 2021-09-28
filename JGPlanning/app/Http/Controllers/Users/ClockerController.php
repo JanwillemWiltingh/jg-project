@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Clock;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\Types\False_;
+use phpDocumentor\Reflection\Types\True_;
 
 class ClockerController extends Controller
 {
@@ -19,7 +23,9 @@ class ClockerController extends Controller
      */
     public function index()
     {
-        return view('user.clock-in.index');
+        $user = Auth::user();
+        $clock = Clock::all()->where('user_id', $user['id'])->where('time', '>=', date('Y-m-d').' 00:00:00')->last();
+        return view('user.clock-in.index')->with(['start' => $clock['start'] ?? False]);
     }
 
     /**
@@ -28,7 +34,25 @@ class ClockerController extends Controller
     public function clock(): RedirectResponse
     {
         $user = Auth::user();
-        dd($user);
+        $clocks = Clock::all()->where('user_id', $user['id'])->where('time', '>=', date('Y-m-d').' 00:00:00');
+
+        if($clocks->count() === 0){
+            Clock::create([
+                'time' => Carbon::now()->addHours(2)->toDateTimeString(),
+                'start' => True,
+                'comment' => 'Start of Day',
+                'user_id' => $user['id'],
+            ]);
+        } else {
+            $clock = $clocks->last();
+            Clock::create([
+                'time' => Carbon::now()->addHours(2)->toDateTimeString(),
+                'start' => !$clock['start'],
+                'comment' => 'Start of Day',
+                'user_id' => $user['id'],
+            ]);
+        }
+
         return redirect()->back();
     }
 

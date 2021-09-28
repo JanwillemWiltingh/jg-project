@@ -4,7 +4,12 @@
     <div class="container">
         <form action="{{ route('clocker.clock') }}" method="post">
             @csrf
-            <button type="submit" class="btn btn-dark">Clock In</button>
+
+            @if($start == False)
+                <button type="submit" class="btn btn-dark">Clock In</button>
+            @else
+                <button type="submit" class="btn btn-dark">Clock Out</button>
+            @endif
         </form>
     </div>
 @endsection
