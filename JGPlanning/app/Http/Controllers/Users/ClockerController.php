@@ -17,7 +17,7 @@ class ClockerController extends Controller
      */
     public function index()
     {
-        return view('users.clock-in.index');
+        return view('user.clock-in.index');
     }
 
     /**
