@@ -27,9 +27,9 @@
             <!-- Login Form -->
             <form action="{{route('login')}}" style="width: 75%">
 
-                <input type="text" id="login" name="login" placeholder="Login" class="form-control">
+                <input type="email" id="login" name="email" placeholder="Email" class="form-control">
 
-                <input type="text" id="password" name="login" placeholder="Password" class="form-control">
+                <input type="password" id="password" name="password" placeholder="Password" class="form-control">
 
                 <input type="submit" class="login-button" value="Log In">
                 <div id="formFooter" style="text-align: center; margin: 15px;">
