@@ -4,6 +4,9 @@ use App\Http\Controllers\ {
     DashboardController,
     RoosterController,
 };
+use App\Http\Controllers\Users\ {
+    ClockerController,
+};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,5 +26,5 @@ Route::get('/home', [DashboardController::class, 'index'])->name('home');
 Route::get('/rooster', [RoosterController::class, 'index'])->name('rooster');
 
 Route::name('clocker.')->prefix('clock-in/')->group(function (){
-    Route::get('/', [App\Http\Controllers\Users\ClockerController::class, 'index'])->name('index');
+    Route::get('/', [ClockerController::class, 'index'])->name('index');
 });
