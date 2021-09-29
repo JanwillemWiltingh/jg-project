@@ -19687,6 +19687,8 @@ Copyright (c) 2015 Daniel Eden
     display: none !important;
   }
 }
+
+
 .login-page {
     display: flex;
     align-items: center;
@@ -19713,21 +19715,20 @@ Copyright (c) 2015 Daniel Eden
     font-size: 115px;
 }
 
-.login-input {
-    border-bottom: 1px solid black;
-    margin-bottom: 15px;
-}
-.login-input i {
-    font-size: 20px;
-}
-
-.login-input input {
-    background: none;
+.login-button {
+    width: 100%;
+    margin-top: 15px;
     border: none;
-    font-family: Arial, serif;
-    width: 90%;
+    padding: 10px 5px;
+    border-radius: 5px 5px 5px 5px;
+    background-color: "";
+    transition: border-radius, background-color 0.3s;
 }
 
+.login-button:hover {
+    background-color: lightgrey;
+    border-radius: 8px 8px 8px 8px;
+}
 
 /* ANIMATIONS */
 
@@ -19777,5 +19778,18 @@ Copyright (c) 2015 Daniel Eden
 
 .nav-color:hover {
     left: 10px;
+}
+
+
+.linklike-button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
 }
 

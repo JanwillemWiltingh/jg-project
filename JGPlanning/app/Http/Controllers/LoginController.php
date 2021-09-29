@@ -26,11 +26,11 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             return redirect()->route('home')->with('msg', 'Signed in');
-//            return redirect()->intended('dashboard')->withSuccess('Signed in');
         }
 
         return redirect()->back()->withErrors(['status' =>'Login details are not valid']);
     }
+
     public function logout(Request $request)
     {
         Auth::logout();
