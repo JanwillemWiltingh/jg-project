@@ -6,13 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Role extends Model
+class Planner extends Model
 {
     use HasFactory;
 
+    protected $table = 'planner';
+
     protected $fillable = [
-        'name'
+        'user_id',
+        'start',
+        'end',
     ];
+
+    public $timestamps = false;
 
     public function users(): BelongsTo
     {
