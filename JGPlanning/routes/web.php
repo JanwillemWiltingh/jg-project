@@ -26,7 +26,18 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/home', [DashboardController::class, 'index'])->name('home');
+Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 Route::get('/rooster', [RoosterController::class, 'index'])->name('rooster');
+
+Route::name('users.')->prefix('users/')->group(function (){
+    Route::get('/', [App\Http\Controllers\Admin\UserController::class,'index'])->name('index');
+    Route::get('/show', [App\Http\Controllers\Admin\UserController::class,'show'])->name('show');
+    Route::get('/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('create');
+    Route::get('/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('store');
+    Route::get('/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('edit');
+    Route::get('/update', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('update');
+    Route::get('/destroy', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('destroy');
+});
 
 Route::name('clocker.')->prefix('clock-in/')->group(function (){
     Route::get('/', [App\Http\Controllers\Users\ClockerController::class, 'index'])->name('index');

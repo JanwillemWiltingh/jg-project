@@ -47,6 +47,14 @@ The above copyright notice and this permission notice shall be included in all c
                             <br>
                         </li>
                         <br>
+                        <li class="nav-item {{ (Request::is('users') or Request::is('users/*')) ? 'active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('users.index')}}">
+                                <i class="fa fa-clock"></i>
+                                <p>Users</p>
+                            </a>
+                            <br>
+                        </li>
+                        <br>
                         <li class="nav-item {{ (Request::is('rooster') or Request::is('rooster/*')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('rooster')}}">
                                 <i class="fa fa-clock"></i>
@@ -132,7 +140,7 @@ The above copyright notice and this permission notice shall be included in all c
                             <div class="modal-body">
                             <form action="{{route('logout')}}" method="post">
                                 @csrf
-                                <input type="submit" value="Logout"> <hr>
+                                <input class="linklike-button" type="submit" value="Logout"> <hr>
                             </form>
                                 <a href="#">Help</a> <br>
                             </div>
