@@ -23,7 +23,7 @@ class DashboardController extends Controller
             ->where('user_id', $user['id'])
             ->where('time', '>=', date('Y-m-d').' 00:00:00')
             ->last();
-        return view('users.dashboard.index')
+        return view('dashboard.index')
             ->with(['start' => $clock['start'] ?? False]);
     }
 
