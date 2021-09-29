@@ -37,27 +37,43 @@ class DashboardController extends Controller
             ->where('user_id', $user['id'])
             ->where('time', '>=', date('Y-m-d').' 00:00:00');
 
-        if($clocks->count() === 0){
-            Clock::create([
-                'time' => Carbon::now()
-                    ->addHours(2)
-                    ->toDateTimeString(),
-                'start' => True,
-                'comment' => 'Start of Day',
-                'user_id' => $user['id'],
-            ]);
+        if($this->isWorkHours()) {
+            if($clocks->count() === 0){
+                Clock::create([
+                    'time' => Carbon::now()
+                        ->addHours(2)
+                        ->toDateTimeString(),
+                    'start' => True,
+                    'comment' => 'Start of Day',
+                    'user_id' => $user['id'],
+                ]);
+            } else {
+                $clock = $clocks->last();
+                Clock::create([
+                    'time' => Carbon::now()
+                        ->addHours(2)
+                        ->toDateTimeString(),
+                    'start' => !$clock['start'],
+                    'comment' => 'Start of Day',
+                    'user_id' => $user['id'],
+                ]);
+            }
         } else {
-            $clock = $clocks->last();
-            Clock::create([
-                'time' => Carbon::now()
-                    ->addHours(2)
-                    ->toDateTimeString(),
-                'start' => !$clock['start'],
-                'comment' => 'Start of Day',
-                'user_id' => $user['id'],
-            ]);
+            // error want buiten werk tijden
         }
 
+
         return redirect()->back();
+    }
+
+    public function isWorkHours(): bool
+    {
+        $current_time = Carbon::now()
+            ->addHours(2)
+            ->toTimeString();
+        if($current_time->lt('09:30:00') or $current_time->gt('21:00:00')) {
+            return True;
+        }
+        return False;
     }
 }
