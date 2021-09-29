@@ -25,7 +25,7 @@
             </div>
 
             <!-- Login Form -->
-            <form action="{{route('login')}}" method="POST" style="width: 75%">
+            <form action="{{route('auth.login')}}" method="POST" style="width: 75%">
                 @csrf
 
                 <input type="email" id="login" name="email" placeholder="Email" class="form-control" value="{{ old('email') }}">

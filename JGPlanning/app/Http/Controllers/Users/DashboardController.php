@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Users;
 
+use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -10,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $user = Auth::user();
@@ -17,7 +23,7 @@ class DashboardController extends Controller
             ->where('user_id', $user['id'])
             ->where('time', '>=', date('Y-m-d').' 00:00:00')
             ->last();
-        return view('user.index')
+        return view('users.dashboard.index')
             ->with(['start' => $clock['start'] ?? False]);
     }
 
