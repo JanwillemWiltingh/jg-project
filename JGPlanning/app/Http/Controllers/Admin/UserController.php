@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -36,14 +37,37 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
-            'email' => 'required',
-            'password' => 'required'
+            'name' => ['required'],
+            'email' => ['required','unique:users,email'],
+            'password' => ['required'],
+            'password_confirmation' => ['required'],
+            'roles' =>['required'],
         ]);
+        if($validated['password'] != $validated['password_confirmation']){
+            return redirect()->back()->with(["message"=>"Passwords don't match"]);
+        }
+        $user = new User;
+        $user['name'] = $validated['name'];
+        $user['email'] = $validated['email'];
+        $user['password'] = Hash::make($validated['password']);
+        $user['role_id'] = $validated['roles'];
+        $user->save();
+
+        return redirect()->back()->with(['message'=>'User created successfully']);
+
+
+
+//        User::create([
+//           'name' => $validated['name'],
+//           'email' => $validated['email'],
+//           'password' => Hash::make($validated['password']),
+//            'role_id' => $validated['roles'],
+//        ]);
     }
 
     /**
@@ -86,7 +110,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
         $users = User::all();
         return view('admin/users/destroy')->with(['users'=>$users]);

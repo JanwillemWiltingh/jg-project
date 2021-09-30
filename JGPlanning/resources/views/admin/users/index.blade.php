@@ -2,7 +2,7 @@
 
 @section('content')
     <table style="">
-        @foreach($users as $user)
+
         <tr style="border: 1px solid darkgray; padding: 4px; text-align: center;">
             <th style="border: 1px solid darkgray; padding: 4px; text-align: center;">Id</th>
             <th style="border: 1px solid darkgray; padding: 4px; text-align: center;">Name</th>
@@ -11,6 +11,7 @@
             <th style="border: 1px solid darkgray; padding: 4px; text-align: center;">Role</th>
             <th style="border: 1px solid darkgray; padding: 4px; text-align: center;">Active</th>
         </tr>
+        @foreach($users as $user)
         <tr style="border: 1px solid darkgray; padding: 4px; text-align: center;">
             <td style="border: 1px solid darkgray; padding: 4px; text-align: center;">{{$user['id']}}</td>
             <td style="border: 1px solid darkgray; padding: 4px; text-align: center;">{{$user['name']}}</td>

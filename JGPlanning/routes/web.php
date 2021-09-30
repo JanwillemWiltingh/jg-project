@@ -36,7 +36,7 @@ Route::name('users.')->prefix('users/')->group(function (){
     Route::get('/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('store');
     Route::get('/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('edit');
     Route::get('/update', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('update');
-    Route::get('/destroy', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('destroy');
+    Route::get('/destroy/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('destroy');
 });
 
 Route::name('clocker.')->prefix('clock-in/')->group(function (){
