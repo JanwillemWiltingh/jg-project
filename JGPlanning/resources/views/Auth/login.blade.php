@@ -36,6 +36,9 @@
                 <div id="formFooter" style="text-align: center; margin: 15px;">
                     <a class="underlineHover" href="#">Forgot Password?</a>
                 </div>
+                @error('msg')
+                error
+                @enderror
             </form>
     </div>
 </div>
