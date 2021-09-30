@@ -50,8 +50,8 @@ The above copyright notice and this permission notice shall be included in all c
 
                         <br>
 
-                        <li class="nav-item {{ (Request::is('users') or Request::is('users/*')) ? 'active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('users.index')}}">
+                        <li class="nav-item {{ (Request::is('admin/users') or Request::is('admin/users/*')) ? 'active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('admin.users.index')}}">
                                 <i class="fa fa-clock"></i>
                                 <p>Users</p>
                             </a>
