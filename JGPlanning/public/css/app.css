@@ -19778,3 +19778,16 @@ Copyright (c) 2015 Daniel Eden
     left: 10px;
 }
 
+
+.linklike-button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+}
+

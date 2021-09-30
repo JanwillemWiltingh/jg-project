@@ -55,14 +55,6 @@ The above copyright notice and this permission notice shall be included in all c
                             <br>
                         </li>
                         <br>
-                        <li class="nav-item {{ (Request::is('clock-in') or Request::is('clock-in/*')) ? 'active' : '' }}">
-                            <a class="nav-link nav-color" href="{{ route('clocker.index') }}">
-                                <i class="material-icons">timer</i>
-                                <p>Clock In</p>
-                            </a>
-                            <br>
-                        </li>
-                        <br>
                     </ul>
                 </div>
             </div>
@@ -130,7 +122,13 @@ The above copyright notice and this permission notice shall be included in all c
                     <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <a href="#">Login</a> <hr>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button class="linklike-button">Logout</button>
+                                </form>
+
+                                <hr>
+
                                 <a href="#">Help</a> <br>
                             </div>
                         </div>
