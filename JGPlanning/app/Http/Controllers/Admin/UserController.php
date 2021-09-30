@@ -9,10 +9,15 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,9 +25,14 @@ class UserController extends Controller
      */
     public function index()
     {
+//        $user = Auth::user();
+//        $role_id = $user['role_id'];
+//        if($role_id == 2){
+//            abort(403);
+//        }
+
         $users = User::all();
         return view('admin/users/index')->with(['users'=>$users]);
-
     }
 
     /**
