@@ -31,6 +31,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
     public $timestamps = false;
     public function role(){
         return $this->hasOne(Role::class);
