@@ -26,7 +26,8 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/home', [DashboardController::class, 'index'])->name('home');
-Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
+Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
+
 Route::get('/rooster', [RoosterController::class, 'index'])->name('rooster');
 
 Route::name('users.')->prefix('users/')->group(function (){
