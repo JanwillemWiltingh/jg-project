@@ -40,7 +40,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="sidebar-wrapper">
                     <ul class="nav">
                         <li class="nav-item {{ (Request::is('/') or Request::is('dashboard/*')) ? 'active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('home')}}">
+                            <a class="nav-link nav-color" href="{{route('dashboard.home')}}">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>
@@ -48,7 +48,7 @@ The above copyright notice and this permission notice shall be included in all c
                         </li>
                         <br>
                         <li class="nav-item {{ (Request::is('rooster') or Request::is('rooster/*')) ? 'active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('rooster')}}">
+                            <a class="nav-link nav-color" href="{{route('rooster.index')}}">
                                 <i class="fa fa-clock"></i>
                                 <p>Rooster</p>
                             </a>
@@ -122,7 +122,7 @@ The above copyright notice and this permission notice shall be included in all c
                     <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <form action="{{ route('logout') }}" method="POST">
+                                <form action="{{ route('auth.logout') }}" method="POST">
                                     @csrf
                                     <button class="linklike-button">Logout</button>
                                 </form>
