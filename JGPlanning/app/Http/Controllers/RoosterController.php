@@ -14,7 +14,9 @@ class RoosterController extends Controller
         $weekDays     = Availability::WEEK_DAYS;
         $calendarData = $calendarService->generateCalendarData($weekDays);
 
-        return view('user.rooster.index', compact(
+        dd($weekDays);
+
+        return view('users.rooster.index', compact(
             'weekDays',
             'calendarData'
         ));

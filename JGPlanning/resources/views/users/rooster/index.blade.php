@@ -13,7 +13,6 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-
                         <table class="table table-bordered">
                             <thead>
                                 <th width="125">Time</th>
@@ -28,6 +27,7 @@
                                         {{ $time }}
                                     </td>
                                     @foreach($days as $value)
+
                                         @if (is_array($value))
                                             <td rowspan="{{ $value['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
                                                 boy what the boy

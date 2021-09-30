@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Availability;
+use App\Services\CalendarService;
 use Illuminate\Http\Request;
 
 class RoosterController extends Controller
@@ -12,8 +14,14 @@ class RoosterController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(CalendarService $calendarService)
     {
-        return view('users.rooster.index');
+        $weekDays     = Availability::WEEK_DAYS;
+        $calendarData = $calendarService->generateCalendarData($weekDays);
+
+        return view('users.rooster.index', compact(
+            'weekDays',
+            'calendarData'
+        ));
     }
 }
