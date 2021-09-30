@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Availability;
+use Carbon\Carbon;
 
 class CalendarService
 {
@@ -17,19 +18,21 @@ class CalendarService
             $timeText = $time['start'] . ' - ' . $time['end'];
             $calendarData[$timeText] = [];
 
+            $time_start = $time['start']. ':00';
+            $time_end = $time['start']. ':00';
             foreach ($weekDays as $index => $day)
             {
-                $lesson = $lessons->where('weekdays', $index)->where('start', $time['start'])->first();
+                $lesson = $lessons->where('weekdays', $index)->where('start', $time_start)->first();
 
                 if ($lesson)
                 {
                     array_push($calendarData[$timeText], [
                         'class_name'   => '',
                         'teacher_name' => '',
-                        'rowspan'      => $lesson->difference/30 ?? ''
+                        'rowspan'      => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end'])->format('H:i:s'))->diff($time_start)->format('%H') * 2
                     ]);
                 }
-                else if (!$lessons->where('weekday', $index)->where('start', '<', $time['start'])->where('end', '>=', $time['end'])->count())
+                else if (!$lessons->where('weekday', $index)->where('start', '<', $time_start)->where('end', '>=', $time_end)->count())
                 {
                     array_push($calendarData[$timeText], 1);
                 }
@@ -40,7 +43,6 @@ class CalendarService
             }
         }
 
-        dd($calendarData);
         return $calendarData;
     }
 }

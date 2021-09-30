@@ -20,6 +20,7 @@ class CalendarService
             foreach ($weekDays as $index => $day)
             {
                 $lesson = $lessons->where('weekday', $index)->where('start_time', $time['start'])->first();
+                dd(config('panel.lesson_time_format'));
                 if ($lesson)
                 {
                     array_push($calendarData[$timeText], [
@@ -38,8 +39,6 @@ class CalendarService
                 }
             }
         }
-
-        dd($calendarData);
 
         return $calendarData;
     }
