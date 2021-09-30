@@ -25,7 +25,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('home')->with('msg', 'Signed in');
+            return redirect()->route('dashboard.home')->with('msg', 'Signed in');
         }
 
         return redirect()->back()->withErrors(['status' =>'Login details are not valid']);
