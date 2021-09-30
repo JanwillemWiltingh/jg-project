@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <form action="{{ route('clock') }}" method="post">
+        <form action="{{ route('dashboard.clock') }}" method="post">
             @csrf
 
             @if($start == False)
@@ -12,4 +12,6 @@
             @endif
         </form>
     </div>
+
+    @if(session()->get('error')) {{ session()->get('error') }} @endif
 @endsection
