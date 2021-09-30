@@ -17,8 +17,6 @@
 <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%">
 <div class="login-page fadeInDown">
     <div class="login-form border shadow">
-            <!-- Tabs Titles -->
-
             <!-- Icon -->
             <div class="login-icon">
                 <i class="fa fa-user"></i>
