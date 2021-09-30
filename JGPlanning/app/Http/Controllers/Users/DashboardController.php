@@ -36,7 +36,7 @@ class DashboardController extends Controller
         $clocks = Clock::all()
             ->where('user_id', $user['id'])
             ->where('time', '>=', date('Y-m-d').' 00:00:00');
-
+        $message = null;
         if($this->isWorkHours()) {
             if($clocks->count() === 0){
                 Clock::create([
@@ -59,19 +59,23 @@ class DashboardController extends Controller
                 ]);
             }
         } else {
-            // error want buiten werk tijden
+            $message = 'Error';
         }
 
-
-        return redirect()->back();
+        return redirect()->back()->with(['error' => $message]);
     }
 
+    /**
+     * Check if the current time is within acceptable working hours
+     * @return bool
+     */
     public function isWorkHours(): bool
     {
-        $current_time = Carbon::now()
-            ->addHours(2)
-            ->toTimeString();
-        if($current_time->lt('09:30:00') or $current_time->gt('21:00:00')) {
+        $current_time = Carbon::now()->addHours(2);
+        $start_time = Carbon::createFromTime(9, 0,0);
+        $end_time = Carbon::createFromTime(21, 0,0);
+
+        if($current_time->gt($start_time) and $current_time->lt($end_time)) {
             return True;
         }
         return False;

@@ -38,11 +38,16 @@ class User extends Authenticatable
 
     public function role(): HasOne
     {
-        return $this->hasOne(Role::class);
+        return $this->hasOne(Role::class, 'id');
     }
 
     public function clocks(): HasMany
     {
         return $this->hasMany(Clock::class);
+    }
+
+    public function hasRole($role): bool
+    {
+        return $this->role()->get()->unique()->where('name', $role)->first() != null;
     }
 }

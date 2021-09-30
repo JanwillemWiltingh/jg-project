@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, RoosterController};
+use App\Http\Controllers\Admin\{ClockController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,17 +32,19 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/', [RoosterController::class, 'index'])->name('index');
 });
 
-Route::name('users.')->prefix('users/')->group(function (){
-    Route::get('/', [App\Http\Controllers\Admin\UserController::class,'index'])->name('index');
-    Route::get('/show', [App\Http\Controllers\Admin\UserController::class,'show'])->name('show');
-    Route::get('/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('create');
-    Route::get('/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('store');
-    Route::get('/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('edit');
-    Route::get('/update', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('update');
-    Route::get('/destroy/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('destroy');
+Route::name('admin.')->prefix('admin/')->group(function (){
+    Route::name('clock.')->prefix('clock/')->group(function (){
+        Route::get('/', [ClockController::class, 'index'])->name('index');
+    });
+
+    Route::name('users.')->prefix('users/')->group(function (){
+        Route::get('/', [App\Http\Controllers\Admin\UserController::class,'index'])->name('index');
+        Route::get('/show', [App\Http\Controllers\Admin\UserController::class,'show'])->name('show');
+        Route::get('/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('create');
+        Route::get('/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('store');
+        Route::get('/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('edit');
+        Route::get('/update', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('update');
+        Route::get('/destroy/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('destroy');
+    });
 });
 
-Route::name('clocker.')->prefix('clock-in/')->group(function (){
-    Route::get('/', [App\Http\Controllers\Users\ClockerController::class, 'index'])->name('index');
-    Route::post('/clock', [App\Http\Controllers\Users\ClockerController::class, 'clock'])->name('clock');
-});

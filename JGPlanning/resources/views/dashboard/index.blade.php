@@ -12,4 +12,6 @@
             @endif
         </form>
     </div>
+
+    @if(session()->get('error')) {{ session()->get('error') }} @endif
 @endsection
