@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, RoosterController};
+use App\Http\Controllers\Admin\{ClockController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,5 +30,12 @@ Route::name('dashboard.')->group(function (){
 
 Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/', [RoosterController::class, 'index'])->name('index');
+});
+
+
+Route::name('admin.')->prefix('admin/')->group(function (){
+    Route::name('clock.')->prefix('clock/')->group(function (){
+        Route::get('/', [ClockController::class, 'index'])->name('index');
+    });
 });
 
