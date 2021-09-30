@@ -49,7 +49,7 @@ The above copyright notice and this permission notice shall be included in all c
                         </li>
 
                         <br>
-
+                        @can('admin-users')
                         <li class="nav-item {{ (Request::is('admin/users') or Request::is('admin/users/*')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('admin.users.index')}}">
                                 <i class="fa fa-clock"></i>
@@ -59,7 +59,7 @@ The above copyright notice and this permission notice shall be included in all c
                         </li>
 
                         <br>
-
+                        @endcan
                         <li class="nav-item {{ (Request::is('rooster') or Request::is('rooster/*')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('rooster.index')}}">
                                 <i class="fa fa-clock"></i>

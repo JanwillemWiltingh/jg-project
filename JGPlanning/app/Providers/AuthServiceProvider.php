@@ -29,6 +29,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate:: define('admin-clocker', function (User $user){
             return $user->hasRole('Admin');
         });
+        Gate:: define('admin-users', function (User $user){
+            return $user->hasRole('Admin');
+        });
 
         Gate:: define('employee-clocker', function (User $user){
             return $user->hasRole('Employee');
