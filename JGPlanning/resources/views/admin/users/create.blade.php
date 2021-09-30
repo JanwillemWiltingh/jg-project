@@ -3,7 +3,7 @@
 @section('content')
     @if(session()->get('message')) {{ session()->get('message') }} @endif
     <h1>Create A New User</h1>
-    <form method="get" action="{{ route('users.store') }}">
+    <form method="get" action="{{ route('admin.users.store') }}">
         <label>
             <input style="width: 300px; height: 35px; font-size: 20px;" type="text" name="name" placeholder="Name">
             @if($errors->has('name'))
