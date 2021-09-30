@@ -11,7 +11,7 @@
                     <th scope="col">Comment</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody>@dd($clocks)
                 @foreach($clocks as $clock)
                     <tr>
                         <th scope="row">{{ $loop->index }}</th>

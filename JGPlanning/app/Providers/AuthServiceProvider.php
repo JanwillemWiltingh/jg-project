@@ -33,6 +33,10 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasRole('Admin');
         });
 
+        Gate:: define('admin-users', function (User $user){
+            return $user->hasRole('Admin');
+        });
+
         Gate:: define('employee-clocker', function (User $user){
             return $user->hasRole('Employee');
         });

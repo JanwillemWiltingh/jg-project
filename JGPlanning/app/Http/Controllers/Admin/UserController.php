@@ -18,7 +18,6 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,15 +25,8 @@ class UserController extends Controller
      */
     public function index()
     {
-
-        $user = Auth::user();
-        $role_id = $user['role_id'];
-        if($role_id == 2){
-            abort(403);
-        }else {
-            $users = User::all();
-            return view('admin/users/index')->with(['users' => $users]);
-        }
+        $users = User::all();
+        return view('admin/users/index')->with(['users'=>$users]);
     }
 
     /**
