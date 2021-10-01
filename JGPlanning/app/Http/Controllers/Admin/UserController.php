@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -93,23 +94,38 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles]);
+
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required'],
+            'email' => ['required', Rule::unique('users','email')->ignore($user->id)],
+            'password' => ['required'],
+            'password_confirmation' => ['required'],
+            'roles' =>['required'],
+        ]);
+        if($validated['password'] != $validated['password_confirmation']){
+            return redirect()->back()->with(["message"=>"Passwords don't match"]);
+        }
+
+        $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'password' => Hash::make($validated['password']), 'role_id' => $validated['roles']]);
+
+        return redirect()->back()->with(['message'=>'User updated successfully']);
     }
 
     /**

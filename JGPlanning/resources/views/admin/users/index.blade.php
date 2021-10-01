@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1>All Users</h1> <h5><a href="{{route('admin.users.create')}}">Create a new user</a></h5>
     <table class="table">
         <thead>
         <tr>
@@ -13,18 +14,21 @@
         </tr>
         </thead>
         <tbody>
+
         @foreach($users as $user)
             <tr>
                 <td>{{$user['id']}}</td>
                 <td>{{$user['name']}}</td>
                 <td>{{$user['email']}}</td>
                 <td>{{$user['role_id']}}</td>
-                <td>{{$user->role()->get()->first()->name}}</td>
+{{--                <td>{{$user->role()->get()->first()->name}}</td>--}}
+                <td>1</td>
                 @if(empty($user['deleted_at']))
                     <td >Yes</td>
                 @else
                     <td>No</td>
                 @endif
+                <td><a href="{{route('admin.users.edit',$user['id'])}}">Edit</a></td>
             </tr>
         @endforeach
         </tbody>

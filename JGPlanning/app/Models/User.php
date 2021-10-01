@@ -36,6 +36,7 @@ class User extends Authenticatable
 
     public $timestamps = true;
 
+
     public function role(): HasOne
     {
         return $this->hasOne(Role::class, 'id');
