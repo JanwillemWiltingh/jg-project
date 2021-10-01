@@ -6,20 +6,26 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Start</th>
-                    <th scope="col">Comment</th>
+                    <th scope="col">Gebruiker</th>
+                    <th scope="col">Start tijd</th>
+                    <th scope="col">Totaal gewerkt</th>
                 </tr>
             </thead>
-            <tbody>@dd($clocks)
-                @foreach($clocks as $clock)
+            <tbody>
+                @if($user_id !== null)
+                    @foreach($user_id as $id)
+                        <tr>
+                            <th scope="row">{{ $loop->index }}</th>
+{{--                            <td>{{ $clock->user()->get()->first()->name }}</td>--}}
+{{--                            <td>Otto</td>--}}
+{{--                            <td>@mdo</td>--}}
+                        </tr>
+                    @endforeach
+                @else
                     <tr>
-                        <th scope="row">{{ $loop->index }}</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td colspan="4">No one has clocked in yet</td>
                     </tr>
-                @endforeach
+                @endif
             </tbody>
         </table>
     </div>

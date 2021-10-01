@@ -23,9 +23,9 @@ class ClockController extends Controller
         $users = User::all();
 
         $clocks = Clock::all()
-            ->where('time', '>=', date('Y-m-d').' 00:00:00')
-            ->last();
-        return view('admin.clock-in.index')->with(['clocks' => $clocks]);
+            ->where('time', '>=', date('Y-m-d').' 00:00:00');
+        $user_id = $clocks->unique('user_id');
+        return view('admin.clock-in.index')->with(['clocks' => $clocks, 'user_id' => $user_id]);
     }
 
     /**

@@ -60,6 +60,16 @@ The above copyright notice and this permission notice shall be included in all c
 
                         <br>
 
+                        <li class="nav-item active">
+                            <a class="nav-link nav-color" href="{{route('admin.clock.index')}}">
+                                <i class="fa fa-clock"></i>
+                                <p>Clock</p>
+                            </a>
+                            <br>
+                        </li>
+
+                        <br>
+
                         <li class="nav-item {{ (Request::is('rooster') or Request::is('rooster/*')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('rooster.index')}}">
                                 <i class="fa fa-clock"></i>
