@@ -37,7 +37,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');
     });
 
-    Route::name('users.')->prefix('users/')->middleware('correct.role')->group(function (){
+    Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [App\Http\Controllers\Admin\UserController::class,'index'])->name('index');
         Route::get('/show', [App\Http\Controllers\Admin\UserController::class,'show'])->name('show');
         Route::get('/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('create');
