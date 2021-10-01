@@ -40,7 +40,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="sidebar-wrapper">
                     <ul class="nav">
 
-                        <li class="nav-item {{ (Request::is('/') or Request::is('dashboard/*')) ? 'active' : '' }}">
+                        <li class="nav-item active">
                             <a class="nav-link nav-color" href="{{route('dashboard.home')}}">
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
@@ -54,6 +54,16 @@ The above copyright notice and this permission notice shall be included in all c
                             <a class="nav-link nav-color" href="{{route('admin.users.index')}}">
                                 <i class="fa fa-clock"></i>
                                 <p>Users</p>
+                            </a>
+                            <br>
+                        </li>
+
+                        <br>
+
+                        <li class="nav-item active">
+                            <a class="nav-link nav-color" href="{{route('admin.clock.index')}}">
+                                <i class="fa fa-clock"></i>
+                                <p>Clock</p>
                             </a>
                             <br>
                         </li>

@@ -19687,8 +19687,6 @@ Copyright (c) 2015 Daniel Eden
     display: none !important;
   }
 }
-
-
 .login-page {
     display: flex;
     align-items: center;
@@ -19703,7 +19701,7 @@ Copyright (c) 2015 Daniel Eden
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    width: 25%;
+    width: 375px;
     height: 100%;
     padding: 20px;
     background: white;

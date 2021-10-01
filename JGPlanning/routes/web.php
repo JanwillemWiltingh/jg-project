@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, RoosterController};
-use App\Http\Controllers\Admin\{ClockController};
+use App\Http\Controllers\Admin\{UserController,ClockController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,14 +37,14 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');
     });
 
-    Route::name('users.')->prefix('users/')->middleware('correct.role')->group(function (){
-        Route::get('/', [App\Http\Controllers\Admin\UserController::class,'index'])->name('index');
-        Route::get('/show', [App\Http\Controllers\Admin\UserController::class,'show'])->name('show');
-        Route::get('/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('create');
-        Route::get('/store', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('store');
-        Route::get('/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('edit');
-        Route::get('/update', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('update');
-        Route::get('/destroy/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('destroy');
+    Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){
+        Route::get('/', [UserController::class,'index'])->name('index');
+        Route::get('/show', [UserController::class,'show'])->name('show');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::get('/store', [UserController::class, 'store'])->name('store');
+        Route::get('/edit', [UserController::class, 'edit'])->name('edit');
+        Route::get('/update', [UserController::class, 'update'])->name('update');
+        Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 });
 
