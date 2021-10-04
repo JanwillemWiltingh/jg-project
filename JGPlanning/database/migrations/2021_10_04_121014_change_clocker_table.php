@@ -34,8 +34,8 @@ class ChangeClockerTable extends Migration
             $table->dateTime('time');
             $table->boolean('start');
 
-            $table->dropColumn('start');
-            $table->dropColumn('end');
+            $table->dropColumn('start_time');
+            $table->dropColumn('end_time');
             $table->dropColumn('date');
         });
     }
