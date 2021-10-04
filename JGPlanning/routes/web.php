@@ -32,6 +32,9 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/', [RoosterController::class, 'index'])->name('index');
 });
 
+Route::get('/availability', [RoosterController::class, 'add_availability'])->name('availability');
+Route::post('/availability-edit', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');

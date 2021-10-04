@@ -23,9 +23,12 @@ class Availability extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'start',
         'end',
         'from_home',
         'comment'
     ];
+
+    public $timestamps = false;
 }

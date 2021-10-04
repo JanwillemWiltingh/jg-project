@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Availability;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CalendarService
 {
@@ -11,7 +12,7 @@ class CalendarService
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
-        $lessons   = Availability::all();
+        $lessons   = Availability::where('user_id', Auth::user()->id)->get();
 
         foreach ($timeRange as $time)
         {
