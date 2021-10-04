@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -20,77 +22,18 @@ class ClockController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-
-        $clocks = Clock::all()
-            ->where('time', '>=', date('Y-m-d').' 00:00:00');
-        $user_id = $clocks->unique('user_id');
-        return view('admin.clock-in.index')->with(['clocks' => $clocks, 'user_id' => $user_id]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(15);
+        return view('admin.clock-in.index')->with(['clocks' => $clocks]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Clock $clock
+     * @return Application|Factory|View
      */
-    public function show($id)
+    public function show(Clock $clock)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('admin.clock-in.show')->with(['clock' => $clock]);
     }
 }

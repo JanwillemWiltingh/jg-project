@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,15 +19,21 @@ class DashboardController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * @return Application|Factory|View
+     */
     public function index()
     {
         $user = Auth::user();
-        $clock = Clock::all()
-            ->where('user_id', $user['id'])
-            ->where('time', '>=', date('Y-m-d').' 00:00:00')
-            ->last();
-        return view('dashboard.index')
-            ->with(['start' => $clock['start'] ?? False]);
+        $clock = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString())->last();
+
+        if($clock == null) {
+            return view('dashboard.index')->with(['start' => False]);
+        } else if($clock['end_time'] === null) {
+            return view('dashboard.index')->with(['start' => True]);
+        } else {
+            return view('dashboard.index')->with(['start' => False]);
+        }
     }
 
     /**
@@ -33,36 +42,31 @@ class DashboardController extends Controller
     public function clock(): RedirectResponse
     {
         $user = Auth::user();
-        $clocks = Clock::all()
-            ->where('user_id', $user['id'])
-            ->where('time', '>=', date('Y-m-d').' 00:00:00');
-        $message = null;
-        if($this->isWorkHours()) {
-            if($clocks->count() === 0){
+        $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
+
+        if($clocks->count() == 0) {
+            Clock::create([
+                'comment' => 'Test Comment 1',
+                'user_id' => $user['id'],
+                'start_time' => Carbon::now()->addHours(2)->toTimeString(),
+                'end_time' => null,
+                'date' => Carbon::now()->toDateString()
+            ]);
+        } else {
+            if($clocks->last()['end_time'] != null) {
                 Clock::create([
-                    'time' => Carbon::now()
-                        ->addHours(2)
-                        ->toDateTimeString(),
-                    'start' => True,
-                    'comment' => 'Start of Day',
+                    'comment' => 'Test Comment 2',
                     'user_id' => $user['id'],
+                    'start_time' => Carbon::now()->addHours(2)->toTimeString(),
+                    'end_time' => null,
+                    'date' => Carbon::now()->toDateString()
                 ]);
             } else {
-                $clock = $clocks->last();
-                Clock::create([
-                    'time' => Carbon::now()
-                        ->addHours(2)
-                        ->toDateTimeString(),
-                    'start' => !$clock['start'],
-                    'comment' => 'Start of Day',
-                    'user_id' => $user['id'],
-                ]);
+                $clocks->last()->update(['end_time' => Carbon::now()->addHours(2)->toTimeString()]);
             }
-        } else {
-            $message = 'Error';
         }
 
-        return redirect()->back()->with(['error' => $message]);
+        return redirect()->back();
     }
 
     /**

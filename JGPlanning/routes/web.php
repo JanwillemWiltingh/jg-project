@@ -35,6 +35,7 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');
+        Route::get('/show/{clock}', [ClockController::class, 'show'])->name('show');
     });
 
     Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){
