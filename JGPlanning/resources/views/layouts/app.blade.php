@@ -48,7 +48,7 @@ The above copyright notice and this permission notice shall be included in all c
                         </li>
 
 
-                        <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
+                        <li class="nav-item active {{ (request()->is('admin/users') or request()->is('admin/users/*')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
                                 <i class="fa fa-user"></i>
                                 <p>Gebruikers</p>
@@ -56,7 +56,7 @@ The above copyright notice and this permission notice shall be included in all c
                         </li>
 
 
-                        <li class="nav-item active {{ (request()->is('admin/clock')) ? 'nav-color-active' : '' }}">
+                        <li class="nav-item active {{ (request()->is('admin/clock') or request()->is('admin/clock/*')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
                                 <i class="fa fa-clock"></i>
                                 <p>Klok</p>
@@ -64,14 +64,14 @@ The above copyright notice and this permission notice shall be included in all c
                         </li>
 
 
-                        <li class="nav-item active {{ (request()->is('rooster')) ? 'nav-color-active' : '' }}">
+                        <li class="nav-item active {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 180px;">
                                 <i class="fa fa-calendar"></i>
                                 <p>Rooster</p>
                             </a>
                         </li>
 
-                        <li class="nav-item active {{ (request()->is('admin/available')) ? 'nav-color-active' : '' }}">
+                        <li class="nav-item active {{ (request()->is('admin/available') or request()->is('admin/available/*')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 240px;">
                                 <i class="fa fa-clock"></i>
                                 <p>Beschikbaarheid</p>
