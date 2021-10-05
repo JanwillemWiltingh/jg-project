@@ -8,17 +8,21 @@
                     <th scope="col">#</th>
                     <th scope="col">Gebruiker</th>
                     <th scope="col">Start tijd</th>
+                    <th scope="col">Eind tijd</th>
                     <th scope="col">Totaal gewerkt</th>
+                    <th scope="col">Aantekening</th>
                 </tr>
             </thead>
             <tbody>
-                @if($user_id !== null)
-                    @foreach($user_id as $id)
+                @if($clocks->count() != 0)
+                    @foreach($clocks as $clock)
                         <tr>
                             <th scope="row">{{ $loop->index }}</th>
-{{--                            <td>{{ $clock->user()->get()->first()->name }}</td>--}}
-{{--                            <td>Otto</td>--}}
-{{--                            <td>@mdo</td>--}}
+                            <td>{{ $clock->user()->get()->first()['name'] }}</td>
+                            <td>{{ $clock->reformatTime('start_time') }}</td>
+                            <td>{{ $clock->reformatTime('end_time') }}</td>
+                            <td>{{ $clock->timeWorkedToday() }}</td>
+                            <td>{{ $clock['comment'] }}</td>
                         </tr>
                     @endforeach
                 @else
@@ -28,5 +32,6 @@
                 @endif
             </tbody>
         </table>
+        {{ $clocks->links() }}
     </div>
 @endsection
