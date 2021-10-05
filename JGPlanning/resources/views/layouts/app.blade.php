@@ -51,7 +51,7 @@ The above copyright notice and this permission notice shall be included in all c
                         <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
                                 <i class="fa fa-user"></i>
-                                <p>Users</p>
+                                <p>Gebruikers</p>
                             </a>
                         </li>
 
@@ -59,7 +59,7 @@ The above copyright notice and this permission notice shall be included in all c
                         <li class="nav-item active {{ (request()->is('admin/clock')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
                                 <i class="fa fa-clock"></i>
-                                <p>Clock</p>
+                                <p>Klok</p>
                             </a>
                         </li>
 
@@ -71,6 +71,12 @@ The above copyright notice and this permission notice shall be included in all c
                             </a>
                         </li>
 
+                        <li class="nav-item active {{ (request()->is('admin/available')) ? 'nav-color-active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 240px;">
+                                <i class="fa fa-clock"></i>
+                                <p>Beschikbaarheid</p>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
