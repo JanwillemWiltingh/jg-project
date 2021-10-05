@@ -39,7 +39,6 @@ The above copyright notice and this permission notice shall be included in all c
                     </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
-
                         <li class="nav-item active {{ (request()->is('/')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('dashboard.home')}}" >
                                 <i class="material-icons">dashboard</i>
@@ -48,20 +47,23 @@ The above copyright notice and this permission notice shall be included in all c
                         </li>
 
 
-                        <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
-                                <i class="fa fa-user"></i>
-                                <p>Gebruikers</p>
-                            </a>
-                        </li>
+                        @can('admin-users')
+                            <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
+                                <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
+                                    <i class="fa fa-user"></i>
+                                    <p>Gebruikers</p>
+                                </a>
+                            </li>
+                        @endcan
 
-
-                        <li class="nav-item active {{ (request()->is('admin/clock')) ? 'nav-color-active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
-                                <i class="fa fa-clock"></i>
-                                <p>Klok</p>
-                            </a>
-                        </li>
+                        @can('admin-clocker')
+                            <li class="nav-item active {{ (request()->is('admin/clock')) ? 'nav-color-active' : '' }}">
+                                <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
+                                    <i class="fa fa-clock"></i>
+                                    <p>Klok</p>
+                                </a>
+                            </li>
+                        @endcan
 
 
                         <li class="nav-item active {{ (request()->is('rooster')) ? 'nav-color-active' : '' }}">
@@ -137,8 +139,9 @@ The above copyright notice and this permission notice shall be included in all c
                 </nav>
                 <br>
                 <br>
-                <br>
 
+                <br>
+                {{\Illuminate\Support\Facades\Auth::user()->role}}
                 <!-- Modal -->
                 <div class="modal fade" id="dropDownMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">

@@ -5260,7 +5260,6 @@ $(document).ready(function () {
     }
   });
   $('#dropDownMenu').removeClass("modal-backdrop");
-  $('#time_picker_av_start').min("8:00");
 });
 
 /***/ }),
