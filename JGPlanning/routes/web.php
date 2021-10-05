@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, RoosterController};
-use App\Http\Controllers\Admin\{UserController,ClockController};
+use App\Http\Controllers\Admin\{UserController,ClockController, AvailabilityController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +46,10 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/edit', [UserController::class, 'edit'])->name('edit');
         Route::get('/update', [UserController::class, 'update'])->name('update');
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::name('available.')->prefix('available/')->middleware('ensure.admin')->group(function (){
+        Route::get('/', [AvailabilityController::class, 'index'])->name('index');
     });
 });
 
