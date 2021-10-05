@@ -1,5 +1,56 @@
 @extends('layouts.app')
+
 @section('content')
+{{--    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#availabilityModal">--}}
+{{--        Launch demo modal--}}
+{{--    </button>--}}
+{{--    --}}
+    <a href="{{route('availability')}}"><i class="fa fa-plus"></i> Basic 9/5 schedule</a> <br>
+    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModal"><i class="fa fa-pen"></i> Edit a day</a> <br>
+
+@foreach ($errors->all() as $error)
+    <p style="color:red;">{{ $error }}</p>
+@endforeach
+
+    <div class="modal fade" id="availabilityModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="a">Edit Availability</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{{route('edit_availability')}}">
+                    @csrf
+                    <div class="modal-body">
+                        <label>
+                            <p>Start time:</p>
+                            <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
+                        </label>
+                        <label>
+                            <p>End Time:</p>
+                            <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
+                        </label>
+                        <label>
+                            <p>Weekday:</p>
+                            <select class="form-control dropdown-planning" style="width: 170%; height: 70% !important;" name="weekdays">
+                                @for($i = 1; $i < count($weekDays) + 1; $i++)
+                                    <option value="{{$i}}">{{$weekDays[$i]}}</option>
+                                @endfor
+                            </select>
+                        </label>
+                        <p style="font-size: 12px" class="text-warning">@lang('general.warning_availability')</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary nav-colo">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <div class="content" style="width: 315% !important;">
         <div class="row">
             <div class="col-lg-12">
@@ -13,11 +64,11 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <table class="table table-bordered">
+                        <table class="card-body table calender">
                             <thead>
-                                <th width="125">Time</th>
+                                <th width="125" style="border: none;">Time</th>
                                 @foreach($weekDays as $day)
-                                    <th width="13%">{{ $day }}</th>
+                                    <th width="13%" style="border: none;">{{ $day }}</th>
                                 @endforeach
                             </thead>
                             <tbody>
@@ -27,11 +78,10 @@
                                         {{ $time }}
                                     </td>
                                     @foreach($days as $value)
-
                                         @if (is_array($value))
-                                            <td rowspan="{{ $value['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
+                                            <th rowspan="{{ $value['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
                                                 boy what the boy
-                                            </td>
+                                            </th>
                                         @elseif ($value === 1)
                                             <td></td>
                                         @endif
