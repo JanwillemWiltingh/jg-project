@@ -33,7 +33,7 @@ class CalendarService
                         'rowspan'      => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end'])->format('H:i:s'))->diff($time_start)->format('%H') * 2
                     ]);
                 }
-                else if (!$lessons->where('weekdays', $index)->where('start','<', $time_start)->where('end', '>=', $time_end)->count())
+                else if (!$lessons->where('weekdays', $index)->where('start','<', $time_start)->where('end', '>', $time_end)->count())
                 {
                     array_push($calendarData[$timeText], 1);
                 }

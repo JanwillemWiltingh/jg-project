@@ -40,45 +40,37 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="sidebar-wrapper">
                     <ul class="nav">
 
-                        <li class="nav-item active">
-                            <a class="nav-link nav-color" href="{{route('dashboard.home')}}">
+                        <li class="nav-item active {{ (request()->is('/')) ? 'nav-color-active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('dashboard.home')}}" >
                                 <i class="material-icons">dashboard</i>
                                 <p>Dashboard</p>
                             </a>
-                            <br>
                         </li>
 
-                        <br>
 
-                        <li class="nav-item active">
-                            <a class="nav-link nav-color" href="{{route('admin.users.index')}}">
-                                <i class="fa fa-clock"></i>
+                        <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
+                                <i class="fa fa-user"></i>
                                 <p>Users</p>
                             </a>
-                            <br>
                         </li>
 
-                        <br>
 
-                        <li class="nav-item active {{ (request()->is('admin/cities')) ? 'active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('admin.clock.index')}}">
+                        <li class="nav-item active {{ (request()->is('admin/clock')) ? 'nav-color-active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
                                 <i class="fa fa-clock"></i>
                                 <p>Clock</p>
                             </a>
-                            <br>
                         </li>
 
-                        <br>
 
-                        <li class="nav-item active">
-                            <a class="nav-link nav-color" href="{{route('rooster.index')}}">
-                                <i class="fa fa-clock"></i>
+                        <li class="nav-item active {{ (request()->is('rooster')) ? 'nav-color-active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 180px;">
+                                <i class="fa fa-calendar"></i>
                                 <p>Rooster</p>
                             </a>
-                            <br>
                         </li>
 
-                        <br>
                     </ul>
                 </div>
             </div>
