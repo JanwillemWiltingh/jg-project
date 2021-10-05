@@ -49,29 +49,36 @@ class RoosterController extends Controller
     public function edit_availability(Request $request)
     {
         $validated = $request->validate([
-            'start_time' => [''],
-            'end_time' => [''],
-            'weekdays' => ['required',
-                Rule::unique('availability')->where(function ($query) {
-                    return $query->where('user_id ', Auth::user()->id);
-                })
-            ],
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'weekdays' => ['required'],
         ]);
 
 
-        $Availability = Availability::where('user_id', Auth::user()->id)->where('weekdays', $validated['weekday'])->first();
+        $start_time = strtotime($validated['start_time']);
+        $start_round = 30*60;
+        $start_rounded = round($start_time / $start_round) * $start_round;
+        $start_date = date("H:i:s", $start_rounded);
+
+
+        $end_time = strtotime($validated['end_time']);
+        $end_round = 30*60;
+        $end_rounded = round($end_time / $end_round) * $end_round;
+        $end_date = date("H:i:s", $end_rounded);
+
+
+        $Availability = Availability::where('user_id', Auth::user()->id)->where('weekdays', $validated['weekdays'])->first();
 
         if (is_null($Availability))
         {
             return back()->with('error', "We couldn't find Availability on this day.");
         }
 
-        $Availability->start = $validated['start_time'];
-        $Availability->end = $validated['end_time'];
+        $Availability->start = $start_date;
+        $Availability->end = $end_date;
 
         $Availability->save();
 
-        return($Availability->start);
+        return back();
     }
-
 }

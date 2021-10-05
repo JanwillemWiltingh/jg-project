@@ -40,6 +40,7 @@
                                 @endfor
                             </select>
                         </label>
+                        <p style="font-size: 12px" class="text-warning">@lang('general.warning_availability')</p>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary nav-colo">Save changes</button>
@@ -63,11 +64,11 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <table class="table table-bordered">
+                        <table class="card-body table calender">
                             <thead>
-                                <th width="125">Time</th>
+                                <th width="125" style="border: none;">Time</th>
                                 @foreach($weekDays as $day)
-                                    <th width="13%">{{ $day }}</th>
+                                    <th width="13%" style="border: none;">{{ $day }}</th>
                                 @endforeach
                             </thead>
                             <tbody>
@@ -78,9 +79,9 @@
                                     </td>
                                     @foreach($days as $value)
                                         @if (is_array($value))
-                                            <td rowspan="{{ $value['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
+                                            <th rowspan="{{ $value['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
                                                 boy what the boy
-                                            </td>
+                                            </th>
                                         @elseif ($value === 1)
                                             <td></td>
                                         @endif

@@ -60,7 +60,7 @@ The above copyright notice and this permission notice shall be included in all c
 
                         <br>
 
-                        <li class="nav-item active">
+                        <li class="nav-item active {{ (request()->is('admin/cities')) ? 'active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('admin.clock.index')}}">
                                 <i class="fa fa-clock"></i>
                                 <p>Clock</p>
