@@ -22,7 +22,7 @@ class ClockController extends Controller
      */
     public function index()
     {
-        $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(15);
+        $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(5);
         return view('admin.clock-in.index')->with(['clocks' => $clocks]);
     }
 
