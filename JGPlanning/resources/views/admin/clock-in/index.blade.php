@@ -1,22 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Gebruikers</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="GET" action="{{ route('admin.clock.index') }}">
+                            <div class="form-group">
+                                <label for="users">Gebruikers</label>
+                                <select name="user" class="form-control" id="users">
+                                    @foreach($users as $user)
+                                        <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ $user['name'] }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Datum</label>
+                                <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Selecteer</button>
+                        </form>
+
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <table class="table table-striped table-hover">
+            <div class="col-md-6">
+                <table id="table" class="table table-striped table-hover">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -46,9 +58,9 @@
                     @endif
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-center">
-                    {{$clocks->links()}}
-                </div>
+{{--                <div class="d-flex justify-content-center">--}}
+{{--                    {{$clocks->links()}}--}}
+{{--                </div>--}}
             </div>
         </div>
     </div>
