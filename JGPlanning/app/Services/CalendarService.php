@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class CalendarService
 {
-    public function generateCalendarData($weekDays)
+    public function generateCalendarData($weekDays, $userID)
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
-        $lessons   = Availability::where('user_id', Auth::user()->id)->get();
+        $lessons   = Availability::where('user_id', $userID)->get();
 
         foreach ($timeRange as $time)
         {

@@ -41,7 +41,21 @@ class AuthServiceProvider extends ServiceProvider
             return False;
         });
 
+        Gate:: define('admin-beschikbaarheid', function (User $user){
+            if($user['role_id'] == 1) {
+                return True;
+            }
+            return False;
+        });
+
         Gate:: define('employee-clocker', function (User $user){
+            if($user['role_id'] == 2) {
+                return True;
+            }
+            return False;
+        });
+
+        Gate:: define('employee-rooster', function (User $user){
             if($user['role_id'] == 2) {
                 return True;
             }

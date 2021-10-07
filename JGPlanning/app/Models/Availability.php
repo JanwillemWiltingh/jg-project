@@ -27,7 +27,9 @@ class Availability extends Model
         'start',
         'end',
         'from_home',
-        'comment'
+        'comment',
+        'date',
+        'weekdays'
     ];
 
     public $timestamps = false;
