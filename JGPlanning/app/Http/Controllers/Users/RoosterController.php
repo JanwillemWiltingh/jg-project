@@ -125,23 +125,4 @@ class RoosterController extends Controller
         $availability->delete();
         return back();
     }
-
-    public function index_admin()
-    {
-
-        return view('admin.rooster.index');
-    }
-//
-//
-//    public function user_availability(CalendarService $calendarService)
-//    {
-//        $userID = Auth::user()->id;
-//        $weekDays     = Availability::WEEK_DAYS;
-//        $calendarData = $calendarService->generateCalendarData($weekDays, $userID);
-//
-//        return view('admin.rooster.index', compact(
-//            'weekDays',
-//            'calendarData'
-//        ));
-//    }
 }

@@ -12,5 +12,6 @@ $(document).ready(function (){
             // $('#arrow').removeClass('fa-caret-up');
         }
     });
-    $('#dropDownMenu').removeClass("modal-backdrop");
+
+    $('#admin_availability').dataTable();
 });

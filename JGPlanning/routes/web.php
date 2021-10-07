@@ -52,13 +52,9 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
-    Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
-        Route::get('/users', [RoosterController::class, 'index_admin'])->name('admin_index');
-        Route::get('/{user}', [RoosterController::class, 'user_availability'])->name('user_availability');
-    });
-
     Route::name('available.')->prefix('available/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [AvailabilityController::class, 'index'])->name('index');
+        Route::get('/{user}', [AvailabilityController::class, 'user_availability'])->name('user_availability');
     });
 });
 
