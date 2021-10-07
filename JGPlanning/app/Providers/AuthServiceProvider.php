@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -27,15 +28,38 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate:: define('admin-clocker', function (User $user){
-            return $user->hasRole('Admin');
+            if($user['role_id'] == 1) {
+                return True;
+            }
+            return False;
         });
 
         Gate:: define('admin-users', function (User $user){
-            return $user->hasRole('Admin');
+            if($user['role_id'] == 1) {
+                return True;
+            }
+            return False;
+        });
+
+        Gate:: define('admin-beschikbaarheid', function (User $user){
+            if($user['role_id'] == 1) {
+                return True;
+            }
+            return False;
         });
 
         Gate:: define('employee-clocker', function (User $user){
-            return $user->hasRole('Employee');
+            if($user['role_id'] == 2) {
+                return True;
+            }
+            return False;
+        });
+
+        Gate:: define('employee-rooster', function (User $user){
+            if($user['role_id'] == 2) {
+                return True;
+            }
+            return False;
         });
     }
 }

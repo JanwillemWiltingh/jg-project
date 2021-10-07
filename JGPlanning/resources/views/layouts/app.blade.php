@@ -45,6 +45,15 @@ The above copyright notice and this permission notice shall be included in all c
                                 <p>Dashboard</p>
                             </a>
                         </li>
+{{--                        Users--}}
+                        @can('employee-rooster')
+                            <li class="nav-item active {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}">
+                                <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 60px;">
+                                    <i class="fa fa-calendar"></i>
+                                    <p>Rooster</p>
+                                </a>
+                            </li>
+                        @endcan
 
 
                         @can('admin-users')
@@ -57,6 +66,14 @@ The above copyright notice and this permission notice shall be included in all c
                         @endcan
 
                         @can('admin-clocker')
+                            <li class="nav-item active {{ (request()->is('admin/clock') or request()->is('admin/clock/*')) ? 'nav-color-active' : '' }}">
+                                <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
+                                    <i class="fa fa-clock"></i>
+                                    <p>Klok</p>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('admin-clocker')
                             <li class="nav-item active {{ (request()->is('admin/clock')) ? 'nav-color-active' : '' }}">
                                 <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
                                     <i class="fa fa-clock"></i>
@@ -65,20 +82,14 @@ The above copyright notice and this permission notice shall be included in all c
                             </li>
                         @endcan
 
-
-                        <li class="nav-item active {{ (request()->is('rooster')) ? 'nav-color-active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 180px;">
-                                <i class="fa fa-calendar"></i>
-                                <p>Rooster</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item active {{ (request()->is('admin/available')) ? 'nav-color-active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 240px;">
-                                <i class="fa fa-clock"></i>
-                                <p>Beschikbaarheid</p>
-                            </a>
-                        </li>
+                        @can('admin-beschikbaarheid')
+                            <li class="nav-item active {{ (request()->is('admin/available') or request()->is('admin/available/*')) ? 'nav-color-active' : '' }}">
+                                <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 180px;">
+                                    <i class="fa fa-clock"></i>
+                                    <p>Beschikbaarheid</p>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </div>
             </div>
@@ -141,7 +152,6 @@ The above copyright notice and this permission notice shall be included in all c
                 <br>
 
                 <br>
-                {{\Illuminate\Support\Facades\Auth::user()->role}}
                 <!-- Modal -->
                 <div class="modal fade" id="dropDownMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">

@@ -32,8 +32,9 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/', [RoosterController::class, 'index'])->name('index');
 });
 
-Route::get('/availability', [RoosterController::class, 'add_availability'])->name('availability');
-Route::post('/availability-edit', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+Route::post('/availability', [RoosterController::class, 'add_availability'])->name('availability');
+Route::post('/availability-edit/', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+Route::get('/{user}/availability-delete/{weekday}', [RoosterController::class, 'delete_availability'])->name('delete_availability');
 
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
@@ -49,6 +50,11 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/edit', [UserController::class, 'edit'])->name('edit');
         Route::get('/update', [UserController::class, 'update'])->name('update');
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
+        Route::get('/users', [RoosterController::class, 'index_admin'])->name('admin_index');
+        Route::get('/{user}', [RoosterController::class, 'user_availability'])->name('user_availability');
     });
 
     Route::name('available.')->prefix('available/')->middleware('ensure.admin')->group(function (){
