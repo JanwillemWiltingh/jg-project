@@ -13,7 +13,7 @@
                 <tbody>
                     @foreach($users as $u)
                         <tr>
-                            <td><a href="{{route('user_availability', $u->id)}}">{{$u->name}} <i class="fa fa-arrow-right" style="text-align: right"></i></a></td>
+                            <td><a href="{{route('admin.available.user_availability', $u->id)}}">{{$u->name}} <i class="fa fa-arrow-right" style="text-align: right"></i></a></td>
                         </tr>
                     @endforeach
                 </tbody>

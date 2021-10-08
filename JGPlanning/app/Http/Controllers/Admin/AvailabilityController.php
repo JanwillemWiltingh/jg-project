@@ -23,7 +23,7 @@ class AvailabilityController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::where('role_id', 2)->get();
         return view('admin.availability.index', compact(
             'users',
         ));
@@ -31,13 +31,15 @@ class AvailabilityController extends Controller
 
     public function user_availability($user, CalendarService $calendarService)
     {
-        dd($user);
+        $availability = Availability::where('user_id', $user);
         $weekDays     = Availability::WEEK_DAYS;
         $calendarData = $calendarService->generateCalendarData($weekDays, $user);
 
         return view('admin.rooster.index', compact(
             'weekDays',
-            'calendarData'
+            'calendarData',
+            'availability',
+            'user'
         ));
     }
 }

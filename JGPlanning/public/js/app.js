@@ -5260,6 +5260,10 @@ $(document).ready(function () {
     }
   });
   $('#admin_availability').dataTable();
+  $('#admin-availability-dropdown').change(function () {
+    var user = this.value;
+    window.location = user;
+  });
 });
 
 /***/ }),

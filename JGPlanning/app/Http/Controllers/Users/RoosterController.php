@@ -20,15 +20,16 @@ class RoosterController extends Controller
 
     public function index(CalendarService $calendarService)
     {
-        $userID = Auth::user()->id;
+        $user = Auth::user()->id;
         $weekDays     = Availability::WEEK_DAYS;
-        $availability = Availability::where('user_id', $userID)->get();
-        $calendarData = $calendarService->generateCalendarData($weekDays, $userID);
+        $availability = Availability::where('user_id', $user)->get();
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user);
 
         return view('users.rooster.index', compact(
             'weekDays',
             'calendarData',
-            'availability'
+            'availability',
+            'user'
         ));
     }
 
@@ -39,7 +40,10 @@ class RoosterController extends Controller
             'end_time' => ['required'],
             'weekday' => ['required'],
             'user_id' => ['required'],
+            'from_home' => [],
+            'comment' => [],
         ]);
+
         $start_time = strtotime($validated['start_time']);
         $start_round = 30*60;
         $start_rounded = round($start_time / $start_round) * $start_round;
@@ -66,13 +70,21 @@ class RoosterController extends Controller
             return back()->with('error', 'De ingevulde begin tijd is later dan de eind tijd');
         }
 
+        if ($validated['from_home'])
+        {
+            $from_home = 1;
+        }
+        else
+        {
+            $from_home = 0;
+        }
 
         Availability::create([
             'user_id' => $validated['user_id'],
             'start' => $start_date,
             'end' => $end_date,
-            'from_home' => '0',
-            'comment' => '',
+            'from_home' => $from_home,
+            'comment' => $validated['comment'],
             'date' => Carbon::now()->format('Y-m-d'),
             'weekdays' => $validated['weekday'],
         ]);
@@ -87,6 +99,8 @@ class RoosterController extends Controller
             'end_time' => ['required'],
             'weekday' => ['required'],
             'user_id' => ['required'],
+            'from_home' => [],
+            'comment' => [],
         ]);
         $start_time = strtotime($validated['start_time']);
         $start_round = 30*60;
@@ -104,10 +118,21 @@ class RoosterController extends Controller
             return back()->with('error', 'De ingevulde begin tijd is later dan de eind tijd');
         }
 
+        if ($validated['from_home'])
+        {
+            $from_home = 1;
+        }
+        else
+        {
+            $from_home = 0;
+        }
+
         $availability = Availability::where('user_id', $validated['user_id'])->where('weekdays', $validated['weekday'])->first();
 
         $availability->start = $start_date;
         $availability->end = $end_date;
+        $availability->from_home = $from_home;
+        $availability->comment = $validated['comment'];
 
         $availability->update();
 

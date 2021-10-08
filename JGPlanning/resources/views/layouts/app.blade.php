@@ -45,7 +45,9 @@ The above copyright notice and this permission notice shall be included in all c
                                 <p>Dashboard</p>
                             </a>
                         </li>
-{{--                        Users--}}
+
+{{--                    Users--}}
+
                         @can('employee-rooster')
                             <li class="nav-item active {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}">
                                 <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 60px;">
@@ -55,7 +57,6 @@ The above copyright notice and this permission notice shall be included in all c
                             </li>
                         @endcan
 
-
                         @can('admin-users')
                             <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
                                 <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
@@ -64,6 +65,8 @@ The above copyright notice and this permission notice shall be included in all c
                                 </a>
                             </li>
                         @endcan
+
+{{--                    Admin--}}
 
                         @can('admin-clocker')
                             <li class="nav-item active {{ (request()->is('admin/clock') or request()->is('admin/clock/*')) ? 'nav-color-active' : '' }}">
@@ -85,7 +88,7 @@ The above copyright notice and this permission notice shall be included in all c
                         @can('admin-beschikbaarheid')
                             <li class="nav-item active {{ (request()->is('admin/available') or request()->is('admin/available/*')) ? 'nav-color-active' : '' }}">
                                 <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 180px;">
-                                    <i class="fa fa-clock"></i>
+                                    <i class="fa fa-calendar"></i>
                                     <p>Beschikbaarheid</p>
                                 </a>
                             </li>
