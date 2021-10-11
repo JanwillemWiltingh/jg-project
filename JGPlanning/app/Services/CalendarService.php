@@ -3,17 +3,25 @@
 namespace App\Services;
 
 use App\Models\Availability;
+use App\Models\Rooster;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class CalendarService
 {
-    public function generateCalendarData($weekDays, $userID)
+    public function generateCalendarData($weekDays, $userID, $isRooster)
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
-        $lessons   = Availability::where('user_id', $userID)->get();
 
+        if($isRooster)
+        {
+            $lessons   = Rooster::where('user_id', $userID)->get();
+        }
+        else
+        {
+            $lessons   = Availability::where('user_id', $userID)->get();
+        }
         foreach ($timeRange as $time)
         {
             $timeText = $time['start'] . ' - ' . $time['end'];

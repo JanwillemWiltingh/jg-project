@@ -8,25 +8,29 @@
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="weekday" id="weekday">
+                    <input type="hidden" name="is_rooster" id="is_rooster">
                     <input type="hidden" name="user_id" value="{{request('user')}}">
+
                     <label style="width: 49%">
                         <p>Start time:</p>
                         <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
                     </label>
+
                     <label style="width: 49%">
                         <p>End Time:</p>
                         <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                     </label>
+
                     <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
                     <label style="width: 100%">
                         <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment"></textarea>
                     </label>
-                    <label class="toggle-box">
-                        <input type="checkbox" name="from_home">
-                        <span class="toggle-box-slider"></span>
-                    </label>
-                    <label>
-                        <p>Van thuis</p>
+
+                    <input type="checkbox" id="switch" class="toggle-box" name="from_home"/>
+                    <label for="switch" class="toggle-label"></label>
+
+                    <label for="switch">
+                        <p>Van huis</p>
                     </label>
                 </div>
                 <div class="modal-footer">
@@ -50,6 +54,7 @@
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="weekday" id="weekday_edit">
+                    <input type="hidden" name="is_user" id="is_rooster_edit">
                     <input type="hidden" name="user_id" value="{{request('user')}}">
                     <label style="width: 49%">
                         <p>Start time:</p>

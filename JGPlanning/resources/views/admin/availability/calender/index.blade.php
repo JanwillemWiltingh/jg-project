@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('modals')
     <div class="content fadeInDown" style="width: 315% !important;">
         <form id="admin-availability" type="GET">
             @csrf
@@ -41,12 +40,6 @@
                                     @for($i = 1; $i < count($weekDays) + 1; $i++)
                                         <th width="13%" style="border: none; text-align: center">
                                             {{ $weekDays[$i] }}
-                                            @if(is_null($availability->where('weekdays', $i)->first()))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
-                                            @else
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
-                                                <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i])}}"><i class="fa fa-trash"></i></a>
-                                            @endif
                                         </th>
                                     @endfor
                                     </thead>
@@ -89,8 +82,6 @@
         <script>
             function modalData(weekday, id)
             {
-                document.getElementById('is_rooster').value = true;
-                document.getElementById('is_rooster_edit').value = true;
                 document.getElementById('weekday').value = weekday;
                 document.getElementById('weekday_edit').value = weekday;
             }
