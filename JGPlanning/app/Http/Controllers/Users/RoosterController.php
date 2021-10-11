@@ -201,12 +201,6 @@ class RoosterController extends Controller
 
     public function show_rooster(CalendarService $calendarService, CheckIfIsInWeek $check)
     {
-        $beginDate = Carbon::now();
-        $endDate = $beginDate->addDays(8);
-
-        $c = $check->CheckInWeek($beginDate, $endDate);
-
-
         $isRooster = true;
         $user = Auth::user()->id;
         $weekDays     = Availability::WEEK_DAYS;

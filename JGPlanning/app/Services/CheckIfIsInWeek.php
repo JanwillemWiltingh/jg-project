@@ -9,6 +9,6 @@ class CheckIfIsInWeek
 {
     public function CheckInWeek($beginDate, $endDate)
     {
-        dd($beginDate . $endDate);
+        return $beginDate . " " . $endDate;
     }
 }

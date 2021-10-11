@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
+use App\Services\CheckIfIsInWeek;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -22,8 +23,13 @@ class DashboardController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(CheckIfIsInWeek $check)
     {
+        $beginDate = Carbon::now();
+        $endDate = $beginDate->addDays(8);
+
+        dd($check->CheckInWeek($beginDate, $endDate));
+
         $user = Auth::user();
         $clock = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString())->last();
 
