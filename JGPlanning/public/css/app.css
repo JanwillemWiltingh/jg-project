@@ -19773,11 +19773,28 @@ Copyright (c) 2015 Daniel Eden
     left: 0;
     transition: all 0.2s;
 }
-
-.nav-color:hover {
-    left: 10px;
+.nav-color::after {
+    content: "";
+    border-bottom: 2px solid white;
+    display: block;
+    width: 0;
+    transition: width .3s;
 }
 
+.nav-color:hover::after {
+    width: 50%;
+}
+
+.nav-color:hover {
+    left: 5px;
+}
+
+.nav-color-active {
+    position: absolute;
+    left: 5px;
+    width: 100%;
+    background: linear-gradient(190deg, rgba(41,41,224,1) 50%, rgba(0,212,255,1) 100%) !important;
+}
 
 .linklike-button {
     background: none!important;
@@ -19789,5 +19806,23 @@ Copyright (c) 2015 Daniel Eden
     color: #069;
     text-decoration: underline;
     cursor: pointer;
+}
+.calender {
+    border-spacing: 0;
+    border-collapse: collapse !important;
+    border-radius: 15px;
+}
+.calender thead td {
+    border: none !important;
+}
+.calender thead{
+    background: linear-gradient(90deg, rgba(41,41,224,1) 0%, rgba(0,212,255,1) 100%);
+    color: white;
+    text-align: center;
+}
+
+.calender th{
+    font-weight: lighter;
+    border: 1px solid grey;
 }
 

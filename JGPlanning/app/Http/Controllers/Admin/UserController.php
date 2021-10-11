@@ -115,15 +115,18 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user->id)],
-            'password' => ['required'],
-            'password_confirmation' => ['required'],
+            'password' => ['nullable'],
+            'password_confirmation' => ['nullable'],
             'roles' =>['required'],
         ]);
         if($validated['password'] != $validated['password_confirmation']){
             return redirect()->back()->with(["message"=>"Passwords don't match"]);
         }
-
-        $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'password' => Hash::make($validated['password']), 'role_id' => $validated['roles']]);
+        if(empty($validated['password'])){
+            $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'role_id' => $validated['roles']]);
+        }else{
+            $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'password' => Hash::make($validated['password']), 'role_id' => $validated['roles']]);
+        }
 
         return redirect()->back()->with(['message'=>'User updated successfully']);
     }

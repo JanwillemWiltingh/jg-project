@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,5 +52,20 @@ class User extends Authenticatable
     public function hasRole($role): bool
     {
         return $this->role()->get()->unique()->where('name', $role)->first() != null;
+    }
+
+    public function isClockedIn(): string
+    {
+        $latest = $this->clocks()->get()->last();
+        if($latest['start'] == True) {
+            return 'Ja';
+        }
+        return "Nee";
+    }
+
+    public function startTimeToday()
+    {
+        $first_clock = $this->clocks()->get()->first();
+        return explode(' ', $first_clock['time'])[1];
     }
 }

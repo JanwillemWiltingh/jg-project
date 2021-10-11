@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, RoosterController};
-use App\Http\Controllers\Admin\{UserController,ClockController};
+use App\Http\Controllers\Admin\{UserController,ClockController, AvailabilityController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,9 +32,14 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/', [RoosterController::class, 'index'])->name('index');
 });
 
+Route::post('/availability', [RoosterController::class, 'add_availability'])->name('availability');
+Route::post('/availability-edit/', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+Route::get('/{user}/availability-delete/{weekday}', [RoosterController::class, 'delete_availability'])->name('delete_availability');
+
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');
+        Route::get('/show/{clock}', [ClockController::class, 'show'])->name('show');
     });
 
     Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){
@@ -45,6 +50,15 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
         Route::get('/update/{user}', [UserController::class, 'update'])->name('update');
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
+        Route::get('/users', [RoosterController::class, 'index_admin'])->name('admin_index');
+        Route::get('/{user}', [RoosterController::class, 'user_availability'])->name('user_availability');
+    });
+
+    Route::name('available.')->prefix('available/')->middleware('ensure.admin')->group(function (){
+        Route::get('/', [AvailabilityController::class, 'index'])->name('index');
     });
 });
 
