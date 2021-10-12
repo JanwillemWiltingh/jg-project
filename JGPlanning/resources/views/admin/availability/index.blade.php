@@ -5,7 +5,7 @@
         <div class="col-md-8">
             <div class="card" style="padding: 15px 15px">
                 <label>
-                    <p>Kies een gebruiker waarvan je de rooster wilt bewerken</p>
+                    <p>Kies een gebruiker waarvan je de beschikbaarheid wilt bewerken</p>
                 </label>
                 <table class="table table-bordered" id="admin_availability">
                     <thead>
