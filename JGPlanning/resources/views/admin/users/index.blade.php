@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>All Users</h1> <h5><a href="{{route('admin.users.create')}}">Create a new user</a></h5>
+    <h1>All Users</h1>
+    <h5><a href="{{route('admin.users.create')}}">Create a new user</a></h5>
+    @if(session()->get('message')) {{ session()->get('message') }} @endif
     <table class="table">
         <thead>
         <tr>
@@ -29,6 +31,7 @@
                     <td>No</td>
                 @endif
                 <td><a href="{{route('admin.users.edit',$user['id'])}}">Edit</a></td>
+                <td><a href="{{route('admin.users.destroy',$user['id'])}}">@if(empty($user['deleted_at']))Delete @else Un-Delete @endif</a></td>
             </tr>
         @endforeach
         </tbody>

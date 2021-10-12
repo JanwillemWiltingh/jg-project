@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
+use DateTime;
 class UserController extends Controller
 {
     public function __construct()
@@ -26,7 +26,6 @@ class UserController extends Controller
      */
     public function index()
     {
-
         $users = User::all();
         return view('admin/users/index')->with(['users'=>$users]);
     }
@@ -46,9 +45,9 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return Application|Factory|View|\Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => ['required'],
@@ -67,7 +66,7 @@ class UserController extends Controller
         $user['role_id'] = $validated['roles'];
         $user->save();
 
-        return redirect()->back()->with(['message'=>'User created successfully']);
+        return view('admin.users.index')->with(['message'=>'User created successfully']);
 
 
 
@@ -119,6 +118,7 @@ class UserController extends Controller
             'password_confirmation' => ['nullable'],
             'roles' =>['required'],
         ]);
+//        dd(empty($validated['password']));
         if($validated['password'] != $validated['password_confirmation']){
             return redirect()->back()->with(["message"=>"Passwords don't match"]);
         }
@@ -127,7 +127,6 @@ class UserController extends Controller
         }else{
             $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'password' => Hash::make($validated['password']), 'role_id' => $validated['roles']]);
         }
-
         return redirect()->back()->with(['message'=>'User updated successfully']);
     }
 
@@ -135,11 +134,18 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Application|Factory|View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User $user)
     {
-        $users = User::all();
-        return view('admin/users/destroy')->with(['users'=>$users]);
+        if(empty($user['deleted_at'])){
+            $now = new DateTime();
+            $user->update(['deleted_at' => $now]);
+            return redirect()->back()->with(['message'=>'User deleted successfully']);
+        }else{
+            $user->update(['deleted_at' => NULL]);
+            return redirect()->back()->with(['message'=>'User un-deleted successfully']);
+        }
+        //return view('admin/users/destroy')->with(['user'=>$user]);
     }
 }

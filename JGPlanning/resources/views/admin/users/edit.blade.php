@@ -35,7 +35,7 @@
         <label style="color: black; font-size: 20px;">What role does the user get?</label>
         <select name="roles" style="display: block; width: 100px;">
             @foreach($roles as $role)
-                <option value="{{$role['id']}}">{{$role['name']}}</option>
+                <option value="{{$role['id']}}" @if($role['id'] == $user['role_id'] || old('roles') == $role['id']) selected @endif>{{$role['name']}}</option>
             @endforeach
             @if($errors->has('roles'))
                 <div class="error">{{ $errors->first('roles') }}</div>
