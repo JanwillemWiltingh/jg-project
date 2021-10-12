@@ -23,7 +23,7 @@ class DashboardController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function index(CheckIfIsInWeek $check)
+    public function index()
     {
         $user = Auth::user();
         $clock = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString())->last();
