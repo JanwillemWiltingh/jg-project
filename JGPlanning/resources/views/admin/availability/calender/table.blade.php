@@ -3,7 +3,7 @@
 @section('content')
     <div class="container fadeInDown">
         <div class="col-md-8">
-            <div class="card" style="width: 500%; padding: 15px 15px">
+            <div class="card" style="padding: 15px 15px">
                 <label>
                     <p>Kies een gebruiker waarvan je de rooster wilt bewerken</p>
                 </label>

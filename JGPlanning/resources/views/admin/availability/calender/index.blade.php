@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="content fadeInDown" style="width: 315% !important;">
+    <div class="content fadeInDown">
         <form id="admin-availability" type="GET">
             @csrf
             <label>
