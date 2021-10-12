@@ -13,6 +13,8 @@
             <th scope="col">Role_id</th>
             <th scope="col">Role</th>
             <th scope="col">Active</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -23,8 +25,7 @@
                 <td>{{$user['name']}}</td>
                 <td>{{$user['email']}}</td>
                 <td>{{$user['role_id']}}</td>
-{{--                <td>{{$user->role()->get()->first()->name}}</td>--}}
-                <td>1</td>
+                <td>{{$user->role()->get()->first()->name}}</td>
                 @if(empty($user['deleted_at']))
                     <td >Yes</td>
                 @else
