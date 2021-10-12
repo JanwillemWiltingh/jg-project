@@ -25,6 +25,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
+        'deleted_at',
     ];
 
     /**
@@ -38,9 +40,10 @@ class User extends Authenticatable
 
     public $timestamps = true;
 
+
     public function role(): HasOne
     {
-        return $this->hasOne(Role::class, 'id');
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 
     public function clocks(): HasMany

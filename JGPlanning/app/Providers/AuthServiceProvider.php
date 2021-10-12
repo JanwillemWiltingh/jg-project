@@ -33,6 +33,9 @@ class AuthServiceProvider extends ServiceProvider
             }
             return False;
         });
+        Gate:: define('admin-users', function (User $user){
+            return $user->hasRole('Admin');
+        });
 
         Gate:: define('admin-users', function (User $user){
             if($user['role_id'] == 1) {
