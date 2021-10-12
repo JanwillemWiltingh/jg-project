@@ -19826,3 +19826,49 @@ Copyright (c) 2015 Daniel Eden
     border: 1px solid grey;
 }
 
+.toggle-box {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+.toggle-label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px;
+    height: 25px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.toggle-label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+.toggle-box:checked + label {
+    background: rgba(0,212,255,1) ;
+}
+
+.toggle-box:checked + label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+.toggle-label:active:after {
+    width: 20px;
+}
+
+
+
+
