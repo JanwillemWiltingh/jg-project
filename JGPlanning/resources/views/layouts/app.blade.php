@@ -170,9 +170,7 @@ The above copyright notice and this permission notice shall be included in all c
                     </div>
                 </div>
                 <div class="container">
-                    <div class="col-md-4">
-                        @yield('content')
-                    </div>
+                    @yield('content')
                 </div>
             </div>
         </div>

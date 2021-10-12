@@ -2,9 +2,9 @@
 
 @section('content')
 
-    <div class="container">
+{{--    <div class="container">--}}
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-2">
                 <div class="row">
                     <div class="col-md-12">
                         <form method="GET" action="{{ route('admin.clock.index') }}">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <table id="table" class="table table-striped table-hover">
                     <thead>
                     <tr>
@@ -63,5 +63,5 @@
 {{--                </div>--}}
             </div>
         </div>
-    </div>
+{{--    </div>--}}
 @endsection
