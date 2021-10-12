@@ -40,14 +40,18 @@ class DashboardController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function clock(): RedirectResponse
+    public function clock(Request $request): RedirectResponse
     {
+        $validated = $request->validate([
+            'comment' => ['nullable', 'string'],
+        ]);
+
         $user = Auth::user();
         $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
 
         if($clocks->count() == 0) {
             Clock::create([
-                'comment' => 'Test Comment 1',
+                'comment' => $validated['comment'],
                 'user_id' => $user['id'],
                 'start_time' => Carbon::now()->addHours(2)->toTimeString(),
                 'end_time' => null,
@@ -56,7 +60,7 @@ class DashboardController extends Controller
         } else {
             if($clocks->last()['end_time'] != null) {
                 Clock::create([
-                    'comment' => 'Test Comment 2',
+                    'comment' => $validated['comment'],
                     'user_id' => $user['id'],
                     'start_time' => Carbon::now()->addHours(2)->toTimeString(),
                     'end_time' => null,
