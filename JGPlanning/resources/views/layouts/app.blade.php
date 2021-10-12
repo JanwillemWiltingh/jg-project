@@ -124,6 +124,13 @@ The above copyright notice and this permission notice shall be included in all c
                                     <p style="color: white">Rooster</p>
                                 </a>
                             </li>
+
+                            <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
+                                <a class="nav-link nav-color" href="{{route('admin.rooster.index')}}" style="margin-top: 360px;">
+                                    <i class="fa fa-calendar" style="color: white"></i>
+                                    <p style="color: white">Vergelijken</p>
+                                </a>
+                            </li>
                         @endcan
                     </ul>
                 </div>
