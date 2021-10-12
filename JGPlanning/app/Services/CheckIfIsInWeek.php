@@ -9,6 +9,13 @@ class CheckIfIsInWeek
 {
     public function CheckInWeek($beginDate, $endDate)
     {
-        return $beginDate . " " . $endDate;
+        if($beginDate->startOfWeek()->format('Y-m-d') == $endDate->startOfWeek()->format('Y-m-d'))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
