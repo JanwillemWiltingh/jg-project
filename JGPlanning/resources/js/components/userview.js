@@ -1,3 +1,4 @@
+
 $(document).ready(function (){
     $("body").on("click", "#delete_day", function() {
         if($('#delete_day_div').css('display') === 'none')
@@ -12,5 +13,12 @@ $(document).ready(function (){
             // $('#arrow').removeClass('fa-caret-up');
         }
     });
-    $('#dropDownMenu').removeClass("modal-backdrop");
+
+    $('#admin_availability').dataTable();
+
+    $('#admin-availability-dropdown').change( function () {
+        let user = this.value;
+
+        window.location = user;
+    });
 });

@@ -12,6 +12,8 @@ The above copyright notice and this permission notice shall be included in all c
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title>JG planning</title>
+
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
@@ -45,16 +47,32 @@ The above copyright notice and this permission notice shall be included in all c
                                 <p>Dashboard</p>
                             </a>
                         </li>
-{{--                        Users--}}
+
+{{--                    Users--}}
+
                         @can('employee-rooster')
-                            <li class="nav-item active {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}">
-                                <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 60px;">
-                                    <i class="fa fa-calendar"></i>
-                                    <p>Rooster</p>
+                            <li class="nav-item ">
+                                <a class="nav-link nav-color" style="margin-top: 60px;">
+                                    <i class="fa fa-calendar" style="color: white"></i>
+                                    <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -15px; margin-right: 6px"></i>
+                                    <p style="color: white">Tijden</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item {{ (request()->is('rooster') or request()->is('beschikbaarheid')) ? 'nav-color-active' : '' }}" style="position:absolute; left: 22px; width: 90%">
+                                <a class="nav-link nav-color" href="{{route('beschikbaarheid.index')}}" style="margin-top: 120px;">
+                                    <i class="fa fa-calendar" style="color: white"></i>
+                                    <p style="color: white">Beschikbaarheid</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
+                                <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 180px;">
+                                    <i class="fa fa-calendar" style="color: white"></i>
+                                    <p style="color: white">Rooster</p>
                                 </a>
                             </li>
                         @endcan
-
 
                         @can('admin-users')
                             <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
@@ -64,6 +82,8 @@ The above copyright notice and this permission notice shall be included in all c
                                 </a>
                             </li>
                         @endcan
+
+{{--                    Admin--}}
 
                         @can('admin-clocker')
                             <li class="nav-item active {{ (request()->is('admin/clock') or request()->is('admin/clock/*')) ? 'nav-color-active' : '' }}">
@@ -83,10 +103,25 @@ The above copyright notice and this permission notice shall be included in all c
                         @endcan
 
                         @can('admin-beschikbaarheid')
-                            <li class="nav-item active {{ (request()->is('admin/available') or request()->is('admin/available/*')) ? 'nav-color-active' : '' }}">
-                                <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 180px;">
-                                    <i class="fa fa-clock"></i>
-                                    <p>Beschikbaarheid</p>
+                            <li class="nav-item active">
+                                <a class="nav-link nav-color" href="" style="margin-top: 180px;">
+                                    <i class="fa fa-calendar"></i>
+                                    <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -20px; margin-right: -5px"></i>
+                                    <p>Beschikbaarheid beheren</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item {{ (request()->is('admin/available') or request()->is('beschikbaarheid')) ? 'nav-color-active' : '' }}" style="position:absolute; left: 22px; width: 90%">
+                                <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 240px;">
+                                    <i class="fa fa-calendar" style="color: white"></i>
+                                    <p style="color: white">Beschikbaarheid</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
+                                <a class="nav-link nav-color" href="{{route('admin.rooster.index')}}" style="margin-top: 300px;">
+                                    <i class="fa fa-calendar" style="color: white"></i>
+                                    <p style="color: white">Rooster</p>
                                 </a>
                             </li>
                         @endcan
@@ -178,6 +213,8 @@ The above copyright notice and this permission notice shall be included in all c
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
         <script type="text/javascript" src="{{asset('/js/app.js')}}"></script>
     </body>
 </html>
