@@ -22,16 +22,28 @@ class ClockController extends Controller
      */
     public function index(Request $request)
     {
-       $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(5);
+
+       $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(15);
        $now = Carbon::now()->toDateString();
        $users = User::all();
 
         if($request->all() != []) {
-            $request->session()->flash('date', $request['date']);
-            $request->session()->flash('user', $request['user']);
-            $clocks = Clock::where('date', $request['date'])
-                ->where('user_id', $request['user'])
-                ->paginate(5);
+            $validated = $request->validate([
+                'date' => ['required'],
+                'user' => ['required']
+            ]);
+
+            $request->session()->flash('date', $validated['date']);
+            $request->session()->flash('user', $validated['user']);
+
+            if($validated['user'] != 0) {
+                $clocks = Clock::where('date', $validated['date'])
+                    ->where('user_id', $validated['user'])
+                    ->paginate(15);
+            } else {
+                $clocks = Clock::where('date', $validated['date'])
+                    ->paginate(15);
+            }
         }
         return view('admin.clock-in.index')->with(['clocks' => $clocks, 'now' => $now, 'users' => $users]);
     }

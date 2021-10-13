@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, RoosterController};
-use App\Http\Controllers\Admin\{UserController,ClockController, AvailabilityController};
+use App\Http\Controllers\Admin\{UserController,ClockController, AvailabilityController, CompareController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -66,6 +66,10 @@ Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [AvailabilityController::class, 'index_rooster'])->name('index');
         Route::get('/{user}', [AvailabilityController::class, 'user_rooster'])->name('user_rooster');
+    });
+
+    Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){
+        Route::get('/', [CompareController::class, 'index'])->name('index');
     });
 });
 
