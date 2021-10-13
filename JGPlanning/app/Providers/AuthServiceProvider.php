@@ -28,24 +28,27 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate:: define('admin-clocker', function (User $user){
-            if($user['role_id'] == 1) {
+            if($user['role_id'] == 1 || $user['role_id'] == 3) {
                 return True;
             }
             return False;
         });
         Gate:: define('admin-users', function (User $user){
-            return $user->hasRole('Admin');
+            if($user['role_id'] == 1 || $user['role_id'] == 3) {
+                return True;
+            }
+            return False;
         });
 
         Gate:: define('admin-users', function (User $user){
-            if($user['role_id'] == 1) {
+            if($user['role_id'] == 1 || $user['role_id'] == 3) {
                 return True;
             }
             return False;
         });
 
         Gate:: define('admin-beschikbaarheid', function (User $user){
-            if($user['role_id'] == 1) {
+            if($user['role_id'] == 1 || $user['role_id'] == 3) {
                 return True;
             }
             return False;

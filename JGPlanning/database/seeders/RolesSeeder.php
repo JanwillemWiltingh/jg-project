@@ -28,7 +28,10 @@ class RolesSeeder extends Seeder
         ]);
 
         DB::table('roles')->insert([
-            'name' => 'Employee'
+            'name' => 'Employee',
+        ]);
+        DB::table('roles')->insert([
+            'name' => 'Maintainer',
         ]);
     }
 }
