@@ -24,14 +24,15 @@ class RolesSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         DB::table('roles')->insert([
-            'name' => 'Admin',
+            'name' => 'maintainer',
         ]);
 
         DB::table('roles')->insert([
-            'name' => 'Employee',
+            'name' => 'admin',
         ]);
+
         DB::table('roles')->insert([
-            'name' => 'Maintainer',
+            'name' => 'employee',
         ]);
     }
 }

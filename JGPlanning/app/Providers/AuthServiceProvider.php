@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
+    private $roles;
     /**
      * The policy mappings for the application.
      *
@@ -26,43 +27,44 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        $this->roles = Role::$roles;
 
         Gate:: define('admin-clocker', function (User $user){
-            if($user['role_id'] == 1 || $user['role_id'] == 3) {
+            if($user['role_id'] == $this->roles['admin'] || $user['role_id'] == $this->roles['maintainer']) {
                 return True;
             }
             return False;
         });
         Gate:: define('admin-users', function (User $user){
-            if($user['role_id'] == 1 || $user['role_id'] == 3) {
+            if($user['role_id'] == $this->roles['admin'] || $user['role_id'] == $this->roles['maintainer']) {
                 return True;
             }
             return False;
         });
 
         Gate:: define('admin-users', function (User $user){
-            if($user['role_id'] == 1 || $user['role_id'] == 3) {
+            if($user['role_id'] == $this->roles['admin'] || $user['role_id'] == $this->roles['maintainer']) {
                 return True;
             }
             return False;
         });
 
         Gate:: define('admin-beschikbaarheid', function (User $user){
-            if($user['role_id'] == 1 || $user['role_id'] == 3) {
+            if($user['role_id'] == $this->roles['admin'] || $user['role_id'] == $this->roles['maintainer']) {
                 return True;
             }
             return False;
         });
 
         Gate:: define('employee-clocker', function (User $user){
-            if($user['role_id'] == 2) {
+            if($user['role_id'] == $this->roles['employee']) {
                 return True;
             }
             return False;
         });
 
         Gate:: define('employee-rooster', function (User $user){
-            if($user['role_id'] == 2) {
+            if($user['role_id'] == $this->roles['employee']) {
                 return True;
             }
             return False;

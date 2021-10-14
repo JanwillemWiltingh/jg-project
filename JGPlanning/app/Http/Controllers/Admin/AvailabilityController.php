@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Availability;
 use App\Models\Clock;
+use App\Models\Role;
 use App\Models\Rooster;
 use App\Models\User;
 use App\Services\CalendarService;
@@ -24,7 +25,9 @@ class AvailabilityController extends Controller
      */
     public function index()
     {
-        $users = User::where('role_id', 2)->get();
+        $roles = Role::$roles;
+        $users = User::where('role_id', $roles['admin'])->get();
+
         return view('admin.availability.index', compact(
             'users',
         ));
@@ -32,7 +35,9 @@ class AvailabilityController extends Controller
 
     public function index_rooster()
     {
-        $users = User::where('role_id', 2)->get();
+        $roles = Role::$roles;
+        $users = User::where('role_id', $roles['admin'])->get();
+
         return view('admin.availability.calender.table', compact(
             'users',
         ));

@@ -52,6 +52,7 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $roles = Role::$roles;
         $validated = $request->validate([
             'name' => ['required'],
             'email' => ['required','unique:users,email'],
@@ -60,8 +61,8 @@ class UserController extends Controller
         ]);
 
         $current_user = Auth::user();
-        if($current_user['role_id'] == 1){
-            $validated['roles'] = 2;
+        if($current_user['role_id'] == $roles['maintainer']){
+            $validated['roles'] = $roles['admin'];
         }
         $user = new User;
         $user['name'] = $validated['name'];
@@ -107,31 +108,40 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): RedirectResponse
     {
+        $auth_user = Auth::user();
+        $roles = Role::$roles;
+        $maintainer_count = User::all()->where('role_id', $roles['maintainer'])->count();
+
         $validated = $request->validate([
             'name' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
-            'password' => ['nullable'],
-            'password_confirmation' => ['nullable'],
+            'password' => ['nullable', 'confirmed'],
             'roles' =>['required'],
         ]);
 
-        if($validated['password'] != $validated['password_confirmation']){
-            return redirect()->back()->with(["message"=>"Passwords don't match"]);
-        }
-        $current_user = Auth::user();
-        $user_role = $current_user['role_id'];
-        $maintainer_count = User::all()->where('role_id', 3)->count();
-        //see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
-        if($maintainer_count <= 1 && $user_role != $validated['roles'] && $user['role_id'] == $user_role){
+        //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
+        if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
             return redirect()->back()->with(['message'=>'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast']);
         }
-        if($current_user['role_id'] == 1){
-            $validated['roles'] = 2;
+
+        //  When the admin edit's a user set the role to 2
+        if($auth_user['role_id'] == $roles['maintainer']){
+            $validated['roles'] = $roles['admin'];
         }
+
         if(empty($validated['password'])){
-            $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'role_id' => $validated['roles']]);
+            $user->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'role_id' => $validated['roles']
+            ]);
         }else{
-            $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'password' => Hash::make($validated['password']), 'role_id' => $validated['roles']]);
+            $user->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role_id' => $validated['roles']
+            ]);
         }
         return redirect()->back()->with(['message'=>'User updated successfully']);
     }
