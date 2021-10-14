@@ -129,11 +129,10 @@ class UserController extends Controller
             return redirect()->back()->with(["message"=>"Passwords don't match"]);
         }
         $current_user = Auth::user();
-        $user_id = $current_user['id'];
-        $user_db = User::all()->where('email', $current_user['email'])->first();
+        $user_role = $current_user['role_id'];
         $maintainer_count = User::all()->where('role_id', 3)->count();
-        //see if the maintainer is editing himself
-        if($maintainer_count <= 1 && $user_id == $user_db['id']){
+        //see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
+        if($maintainer_count <= 1 && $user_role != $validated['roles'] && $user['role_id'] == $user_role){
             return redirect()->back()->with(['message'=>'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast']);
         }
         if($current_user['role_id'] == 1){
