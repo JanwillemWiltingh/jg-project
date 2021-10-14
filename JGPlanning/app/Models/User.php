@@ -70,4 +70,20 @@ class User extends Authenticatable
         $first_clock = $this->clocks()->get()->first();
         return explode(' ', $first_clock['time'])[1];
     }
+
+    public function workedInAMonth($month): array
+    {
+        $clocks = $this->clocks()->whereMonth('date', '=','10')->get();
+        $time = 0;
+
+        if($clocks->count() > 0) {
+            foreach($clocks as $clock) {
+                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+            }
+
+            return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
+        }
+
+        return ['-', 0];
+    }
 }
