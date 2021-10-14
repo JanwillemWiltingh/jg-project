@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use phpDocumentor\Reflection\Types\False_;
 
 class User extends Authenticatable
 {
@@ -56,13 +57,16 @@ class User extends Authenticatable
         return $this->role()->get()->unique()->where('name', $role)->first() != null;
     }
 
-    public function isClockedIn(): string
+    public function isClockedIn(): bool
     {
-        $latest = $this->clocks()->get()->last();
-        if($latest['start'] == True) {
-            return 'Ja';
+        $last_clock = Clock::all()->where('user_id', $this['id'])->where('date', Carbon::now()->toDateString())->last();
+        if($last_clock == null) {
+            return False;
+        } else if($last_clock['end_time'] === null) {
+            return True;
+        } else {
+            return False;
         }
-        return "Nee";
     }
 
     public function startTimeToday()
