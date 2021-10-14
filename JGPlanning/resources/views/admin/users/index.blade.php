@@ -4,7 +4,7 @@
     @if($user_session['role_id'] == 3)
         <h1>All Users</h1>
         {{--Fancy points; if you are an admin, you will see employee. Maintainer sees normal user--}}
-        <h5><a href="{{route('admin.users.create')}}">Create a new @if($user_session['role_id'] == 3) User @else Employee @endif</a></h5>
+        <h5><strong><a class="table-label" href="{{route('admin.users.create')}}">Create a new User</a></strong></h5>
         @if(session()->get('message')) {{ session()->get('message') }} @endif
         <table class="table">
             <thead>
@@ -43,16 +43,15 @@
                     @else
                         <td>No</td>
                     @endif
-                    <td><a href="{{route('admin.users.edit',$user['id'])}}">Bewerk</a></td>
-                    <td><a href="{{route('admin.users.destroy',$user['id'])}}">@if($user['role_id'] != 3)@if(empty($user['deleted_at']))Zet naar Inactief @else Zet naar Actief @endif @endif</a></td>
+                    <td><strong><a class="table-label" href="{{route('admin.users.edit',$user['id'])}}">Bewerk</a></strong></td>
+                    <td><strong><a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">@if($user['role_id'] != 3)@if(empty($user['deleted_at']))Zet naar Inactief @else Zet naar Actief @endif @endif</a></strong></td>
                 </tr>
             @endforeach
             </tbody>
         </table>
     @else
         <h1>All Users</h1>
-        {{--Fancy points; if you are an admin, you will see employee. Maintainer sees normal user--}}
-        <h5><a href="{{route('admin.users.create')}}">Create a new @if($user_session['role_id'] == 3) User @else Employee @endif</a></h5>
+        <h5><a class="table-label" href="{{route('admin.users.create')}}">Create a new Employee</a></h5>
         @if(session()->get('message')) {{ session()->get('message') }} @endif
         <table class="table">
             <thead>
@@ -93,13 +92,13 @@
                     @endif
                     {{--Admin's and Maintainers can't be deleted nor be edited--}}
                     @if($user['role_id'] == 2)
-                        <td><a href="{{route('admin.users.edit',$user['id'])}}">Bewerk</a></td>
+                        <td><a class="table-label" href="{{route('admin.users.edit',$user['id'])}}">Bewerk</a></td>
                     @else <td><i>Kan alleen Employee's bewerken</i></td>
                     @endif
                     @if($user['role_id'] == 1 || $user['role_id'] == 3)
                         <td><i>Kan geen admin verwijderen</i></td>
                     @else
-                        <td><a href="{{route('admin.users.destroy',$user['id'])}}">@if(empty($user['deleted_at']))Zet naar Inactief @else Zet naar Actief @endif</a></td>
+                        <td><a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">@if(empty($user['deleted_at']))Zet naar Inactief @else Zet naar Actief @endif</a></td>
                     @endif
                 </tr>
             @endforeach
