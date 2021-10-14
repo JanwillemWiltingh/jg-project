@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -17,7 +19,10 @@ class CompareController extends Controller
      */
     public function index()
     {
-        return view('admin.compare.index');
+        $users = User::all();
+        $now = Carbon::now()->toDateString();
+
+        return view('admin.compare.index')->with(['users' => $users, 'now' => $now]);
     }
 
     /**
