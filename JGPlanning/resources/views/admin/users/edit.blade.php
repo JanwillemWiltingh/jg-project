@@ -31,7 +31,9 @@
             @if($errors->has('password_confirmation'))
                 <div class="error">{{ $errors->first('password_confirmation') }}</div>
             @endif
-        </label><hr>
+        </label><br>
+        @if($user_session['role_id'] == 3)
+        <hr>
         <label style="color: black; font-size: 20px;">What role does the user get?</label>
         <select name="roles" style="display: block; width: 100px;">
             @foreach($roles as $role)
@@ -39,6 +41,9 @@
             @endforeach
             @if($errors->has('roles'))
                 <div class="error">{{ $errors->first('roles') }}</div>
+            @endif
+            @else
+                <input type="hidden" name="roles" value="2">
             @endif
         </select><br>
         <input style="display: block;" type="submit" value="Save">

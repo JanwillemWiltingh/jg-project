@@ -104,7 +104,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles]);
+        $user_session = Auth::user();
+        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
 
     }
 
@@ -124,16 +125,19 @@ class UserController extends Controller
             'password_confirmation' => ['nullable'],
             'roles' =>['required'],
         ]);
-        $maintainer_count = User::all()->where('role_id', 3)->count();
-        if($maintainer_count >= 1 && $validated['roles'] != 3){
-            return redirect()->back()->with(['message'=>'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast']);
-        }
-        $current_user = Auth::user();
-        if($current_user['role_id'] == 1){
-            $validated['roles'] = 2;
-        }
         if($validated['password'] != $validated['password_confirmation']){
             return redirect()->back()->with(["message"=>"Passwords don't match"]);
+        }
+        $current_user = Auth::user();
+        $user_id = $current_user['id'];
+        $user_db = User::all()->where('email', $current_user['email'])->first();
+        $maintainer_count = User::all()->where('role_id', 3)->count();
+        //see if the maintainer is editing himself
+        if($maintainer_count <= 1 && $user_id == $user_db['id']){
+            return redirect()->back()->with(['message'=>'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast']);
+        }
+        if($current_user['role_id'] == 1){
+            $validated['roles'] = 2;
         }
         if(empty($validated['password'])){
             $user->update(['name' => $validated['name'], 'email' => $validated['email'], 'role_id' => $validated['roles']]);
