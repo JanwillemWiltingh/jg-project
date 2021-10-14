@@ -15,6 +15,7 @@ class Role extends Model
         'name'
     ];
 
+    //  TODO: Dit verbeteren naar iets meer dynamisch
     public static $roles = [
         'maintainer' => 1,
         'admin' => 2,
