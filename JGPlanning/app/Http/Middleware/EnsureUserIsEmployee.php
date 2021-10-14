@@ -21,7 +21,7 @@ class EnsureUserIsEmployee
         $user = Auth::user();
         $roles = Role::$roles;
         $role_id = $user['role_id'];
-        if($role_id == $roles['employee']){
+        if($role_id == $roles['admin'] or $role_id == $roles['maintainer']){
             abort(403);
         }
 
