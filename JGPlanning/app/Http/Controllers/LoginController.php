@@ -21,11 +21,18 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
+
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
-            return redirect()->route('dashboard.home')->with('msg', 'Signed in');
+            $user = User::all()->where('email', $validated['email'])->first();
+            if(!empty($user['deleted_at'])){
+                //singed niet in
+                return redirect()->back()->withErrors(['status' =>'Login details are not valid']);
+            }else{
+                //singed wel in
+                $request->session()->regenerate();
+                return redirect()->route('dashboard.home')->with('msg', 'Signed in');
+            }
         }
 
         return redirect()->back()->withErrors(['status' =>'Login details are not valid']);

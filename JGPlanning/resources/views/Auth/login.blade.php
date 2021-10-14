@@ -34,8 +34,8 @@
                 <div id="formFooter" style="text-align: center; margin: 15px;">
                     <a class="underlineHover" href="#">Forgot Password?</a>
                 </div>
-                @error('msg')
-                error
+                @error('status')
+                <label class="error-label"><strong>{{$errors->first('status')}}</strong></label>
                 @enderror
             </form>
     </div>

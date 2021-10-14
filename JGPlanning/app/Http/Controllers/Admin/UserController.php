@@ -27,7 +27,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin/users/index')->with(['users'=>$users]);
+        $user_session = Auth::user();
+        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);
     }
 
     /**
@@ -38,7 +39,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('admin/users/create')->with(['roles'=>$roles]);
+        $user_session = Auth::user();
+        return view('admin/users/create')->with(['roles'=>$roles, 'user_session' => $user_session]);
     }
 
     /**
@@ -59,6 +61,10 @@ class UserController extends Controller
         if($validated['password'] != $validated['password_confirmation']){
             return redirect()->back()->with(["message"=>"Passwords don't match"]);
         }
+        $current_user = Auth::user();
+        if($current_user['role_id'] == 1){
+            $validated['roles'] = 2;
+        }
         $user = new User;
         $user['name'] = $validated['name'];
         $user['email'] = $validated['email'];
@@ -66,7 +72,7 @@ class UserController extends Controller
         $user['role_id'] = $validated['roles'];
         $user->save();
 
-        return view('admin.users.index')->with(['message'=>'User created successfully']);
+        return redirect()->route('admin.users.index')->with(['message'=>'User created successfully']);
 
 
 
@@ -118,7 +124,14 @@ class UserController extends Controller
             'password_confirmation' => ['nullable'],
             'roles' =>['required'],
         ]);
-//        dd(empty($validated['password']));
+        $maintainer_count = User::all()->where('role_id', 3)->count();
+        if($maintainer_count >= 1 && $validated['roles'] != 3){
+            return redirect()->back()->with(['message'=>'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast']);
+        }
+        $current_user = Auth::user();
+        if($current_user['role_id'] == 1){
+            $validated['roles'] = 2;
+        }
         if($validated['password'] != $validated['password_confirmation']){
             return redirect()->back()->with(["message"=>"Passwords don't match"]);
         }
