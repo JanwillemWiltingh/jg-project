@@ -28,8 +28,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
+        $roles = Role::$roles;
         $user_session = Auth::user();
-        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);
+        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session, 'roles' => $roles]);
     }
 
     /**
