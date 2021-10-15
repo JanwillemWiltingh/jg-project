@@ -27,15 +27,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $clock = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString())->last();
-
-        if($clock == null) {
-            return view('dashboard.index')->with(['start' => False]);
-        } else if($clock['end_time'] === null) {
-            return view('dashboard.index')->with(['start' => True]);
-        } else {
-            return view('dashboard.index')->with(['start' => False]);
-        }
+        return view('dashboard.index')->with(['start' => $user->isClockedIn()]);
     }
 
     /**

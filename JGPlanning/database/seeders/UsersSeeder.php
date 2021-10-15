@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -25,14 +26,14 @@ class UsersSeeder extends Seeder
             'name' => 'robert',
             'email' => 'robert@gmail.com',
             'password' => Hash::make('123'),
-            'role_id' => '1',
+            'role_id' => Role::$roles['maintainer'],
         ]);
 
         DB::table('users')->insert([
             'name' => 'willem',
             'email' => 'mail@mail.com',
             'password' => Hash::make('welkom'),
-            'role_id' => '1',
+            'role_id' => Role::$roles['maintainer'],
         ]);
     }
 }

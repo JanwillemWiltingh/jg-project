@@ -38,7 +38,7 @@ The above copyright notice and this permission notice shall be included in all c
 
                   Tip 2: you can also add an image using data-image tag
               -->
-                <div class="logo"><a class="simple-text logo-normal">
+                <div class="logo"><a class="simple-text logo-normal" href="{{route('dashboard.home')}}" style="text-decoration: none;">
                         JGPlanning
                     </a></div>
                 <div class="sidebar-wrapper">
@@ -61,14 +61,14 @@ The above copyright notice and this permission notice shall be included in all c
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ (request()->is('rooster') or request()->is('beschikbaarheid')) ? 'nav-color-active' : '' }}" style="position:absolute; left: 22px; width: 90%">
+                            <li class="nav-item {{ (request()->is('beschikbaarheid') or request()->is('beschikbaarheid/*')) ? 'nav-color-active' : '' }}" style="position:absolute; left: 22px; width: 90%">
                                 <a class="nav-link nav-color" href="{{route('beschikbaarheid.index')}}" style="margin-top: 120px;">
                                     <i class="fa fa-calendar" style="color: white"></i>
                                     <p style="color: white">Beschikbaarheid</p>
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
+                            <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
                                 <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 180px;">
                                     <i class="fa fa-calendar" style="color: white"></i>
                                     <p style="color: white">Rooster</p>
@@ -89,14 +89,6 @@ The above copyright notice and this permission notice shall be included in all c
 
                         @can('admin-clocker')
                             <li class="nav-item active {{ (request()->is('admin/clock') or request()->is('admin/clock/*')) ? 'nav-color-active' : '' }}">
-                                <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
-                                    <i class="fa fa-clock"></i>
-                                    <p>Klok</p>
-                                </a>
-                            </li>
-                        @endcan
-                        @can('admin-clocker')
-                            <li class="nav-item active {{ (request()->is('admin/clock')) ? 'nav-color-active' : '' }}">
                                 <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
                                     <i class="fa fa-clock"></i>
                                     <p>Klok</p>

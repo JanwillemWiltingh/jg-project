@@ -14,10 +14,10 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    @if($start == False)
-                        <button type="submit" class="btn btn-dark">Clock In</button>
-                    @else
+                    @if($start)
                         <button type="submit" class="btn btn-dark">Clock Out</button>
+                    @else
+                        <button type="submit" class="btn btn-dark">Clock In</button>
                     @endif
                 </div>
             </div>

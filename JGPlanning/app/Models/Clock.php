@@ -33,7 +33,7 @@ class Clock extends Model
     public function reformatTime(string $name)
     {
         if($this[$name] != null) {
-            return date('H:i', strtotime($this['start_time']));
+            return date('H:i', strtotime($this[$name]));
         }
         return null;
     }

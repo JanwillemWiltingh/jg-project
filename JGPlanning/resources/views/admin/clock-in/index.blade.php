@@ -11,8 +11,9 @@
                             <div class="form-group">
                                 <label for="users">Gebruikers</label>
                                 <select name="user" class="form-control" id="users">
+                                    <option value="0">Alle Gebruikers</option>
                                     @foreach($users as $user)
-                                        <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ $user['name'] }}</option>
+                                        <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['name']) }}</option>
                                     @endforeach
                                 </select>
 
@@ -44,7 +45,7 @@
                         @foreach($clocks as $clock)
                             <tr>
                                 <th scope="row">{{ $loop->index }}</th>
-                                <td>{{ $clock->user()->get()->first()['name'] }}</td>
+                                <td>{{ ucfirst($clock->user()->get()->first()['name']) }}</td>
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
                                 <td>{{ $clock->timeWorkedToday() }}</td>
@@ -53,14 +54,14 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="6">Niemand is nog ingeklokked</td>
+                            <td colspan="6">Werkenemers zijn/hebben nog ingeklokked</td>
                         </tr>
                     @endif
                     </tbody>
                 </table>
-{{--                <div class="d-flex justify-content-center">--}}
-{{--                    {{$clocks->links()}}--}}
-{{--                </div>--}}
+                <div class="d-flex justify-content-center">
+                    {{$clocks->links()}}
+                </div>
             </div>
         </div>
 {{--    </div>--}}
