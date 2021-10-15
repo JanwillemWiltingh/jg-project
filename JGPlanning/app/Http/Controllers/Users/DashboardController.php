@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
+use App\Models\User;
 use App\Services\CheckIfIsInWeek;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -80,5 +81,10 @@ class DashboardController extends Controller
             return True;
         }
         return False;
+    }
+
+    public function profile(){
+        $user = Auth::user();
+        return view('dashboard.profile')->with('user', $user);
     }
 }
