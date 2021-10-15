@@ -29,7 +29,6 @@ The above copyright notice and this permission notice shall be included in all c
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
 
     </head>
-
     <body>
         <div class="wrapper ">
             <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
@@ -58,13 +57,6 @@ The above copyright notice and this permission notice shall be included in all c
                                     <i class="fa fa-calendar" style="color: white"></i>
                                     <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -15px; margin-right: 6px"></i>
                                     <p style="color: white">Tijden</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item {{ (request()->is('beschikbaarheid') or request()->is('beschikbaarheid/*')) ? 'nav-color-active' : '' }}" style="position:absolute; left: 22px; width: 90%">
-                                <a class="nav-link nav-color" href="{{route('beschikbaarheid.index')}}" style="margin-top: 120px;">
-                                    <i class="fa fa-calendar" style="color: white"></i>
-                                    <p style="color: white">Beschikbaarheid</p>
                                 </a>
                             </li>
 
