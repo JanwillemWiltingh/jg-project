@@ -65,8 +65,8 @@ class UserController extends Controller
         ]);
 
         $current_user = Auth::user();
-        if($current_user['role_id'] == $roles['maintainer']){
-            $validated['roles'] = $roles['admin'];
+        if($current_user['role_id'] == $roles['admin']){
+            $validated['roles'] = $roles['employee'];
         }
         $user = new User;
         $user['name'] = $validated['name'];
@@ -131,8 +131,8 @@ class UserController extends Controller
         }
 
         //  When the admin edit's a user set the role to 2
-        if($auth_user['role_id'] == $roles['maintainer']){
-            $validated['roles'] = $roles['admin'];
+        if($auth_user['role_id'] == $roles['admin']){
+            $validated['roles'] = $roles['employee'];
         }
 
         if(empty($validated['password'])){
