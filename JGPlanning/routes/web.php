@@ -66,6 +66,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [AvailabilityController::class, 'index_rooster'])->name('index');
         Route::get('/{user}', [AvailabilityController::class, 'user_rooster'])->name('user_rooster');
+        Route::post('/{user}/available_days', [RoosterController::class, 'push_days'])->name('push_days');
     });
 });
 

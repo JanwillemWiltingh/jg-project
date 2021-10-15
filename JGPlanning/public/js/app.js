@@ -5254,15 +5254,39 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 $(document).ready(function () {
   $("body").on("click", "#delete_day", function () {
     if ($('#delete_day_div').css('display') === 'none') {
-      document.getElementById('delete_day_div').style.display = "block"; // $('#arrow').addClass('fa-caret-up');
+      $('#arrow').addClass('fa-caret-up');
     } else {
-      document.getElementById('delete_day_div').style.display = "none"; // $('#arrow').removeClass('fa-caret-up');
+      $('#arrow').removeClass('fa-caret-up');
     }
   });
   $('#admin_availability').dataTable();
   $('#admin-availability-dropdown').change(function () {
-    var user = this.value;
-    window.location = user;
+    window.location = this.value;
+  });
+  $('#disableDays1, #disableDays2, #disableDays3, #disableDays4, #disableDays5, #disableDays6, #disableDays7').on('change', function () {
+    var id = $('#userIdDisableDays').val();
+    var ArrayAvailableDays = [];
+
+    for (var i = 1; i < 8; i++) {
+      if ($('#disableDays' + i + ":checked").val()) {
+        ArrayAvailableDays.push($('#disableDays' + i).val());
+      } else {
+        ArrayAvailableDays.push(null);
+      }
+    }
+
+    $.ajax({
+      type: "POST",
+      url: id + "/available_days",
+      data: {
+        data: ArrayAvailableDays
+      },
+      dataType: 'json',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    location.reload();
   });
 });
 

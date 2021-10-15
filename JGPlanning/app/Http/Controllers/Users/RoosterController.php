@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Models\Availability;
 use App\Models\Rooster;
+use App\Models\User;
 use App\Services\CalendarService;
 use App\Services\CheckIfIsInWeek;
 use Carbon\Carbon;
@@ -70,7 +71,7 @@ class RoosterController extends Controller
 
         if (!$check_availability == null)
         {
-            if ($check_availability->start < $validated['end_time'])
+            if ($check_availability->start-time < $validated['end_time'])
             {
                 return back()->with('error', 'De uren die je hebt ingevuld overlappen uren die ja al hebt ingeplanned');
             }
@@ -213,5 +214,18 @@ class RoosterController extends Controller
             'availability',
             'calendarData'
         ));
+    }
+
+    public function push_days($user, Request $request)
+    {
+        $validated = $request->validate([
+            'data' => ['required', 'array']
+        ]);
+
+        $update = User::where('id', $user)->update([
+            'unavailable_days' => $validated['data']
+        ]);
+
+        return redirect()->back();
     }
 }

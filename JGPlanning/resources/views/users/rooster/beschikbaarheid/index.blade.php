@@ -12,7 +12,7 @@
         {{ session()->get('error') }}
     </p>
 @endif
-    <div class="content fadeInDown" style="width: 315% !important;">
+    <div class="content fadeInDown">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">

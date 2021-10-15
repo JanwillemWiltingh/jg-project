@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    <input type="hidden" value="test" name="yes">
+    {{request()->input('yes')}}
+
     <div class="content fadeInDown">
 
     @foreach ($errors->all() as $error)

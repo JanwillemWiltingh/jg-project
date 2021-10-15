@@ -131,5 +131,18 @@
     width: 20px;
 }
 
+.hover-navbar-content {
+    position: relative;
+    left: -250px;
+    transition: all 0.5s ease-in-out;
+}
 
+.hover-navbar:hover + .hover-navbar-content {
+    position: relative;
+    left: 0;
+}
 
+.hover-navbar-content:hover {
+    position: relative;
+    left: 0;
+}

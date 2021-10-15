@@ -40,6 +40,7 @@ class AvailabilityController extends Controller
 
     public function user_availability($user, CalendarService $calendarService)
     {
+        $user = User::find($user);
         $isRooster    = false;
         $availability = Availability::where('user_id', $user)->get();
         $weekDays     = Availability::WEEK_DAYS;
@@ -54,16 +55,18 @@ class AvailabilityController extends Controller
 
     public function user_rooster(CalendarService $calendarService, $user)
     {
+        $user_info = User::find($user);
         $isRooster    = true;
         $availability = Rooster::where('user_id', $user)->get();
         $weekDays     = Availability::WEEK_DAYS;
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $isRooster);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $isRooster);
 
         return view('admin.rooster.index', compact(
             'weekDays',
             'calendarData',
             'availability',
-            'user'
+            'user',
+            'user_info'
         ));
     }
 }
