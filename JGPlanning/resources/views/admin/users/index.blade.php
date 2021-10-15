@@ -64,7 +64,7 @@
                 @if($user['role_id'] == $roles['admin'] or $user['role_id'] == $roles['maintainer'])
                     <td><i>Kan geen admin verwijderen</i></td>
                 @else
-                    <td><strong><a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">@if($user['role_id'] != 3)@if(empty($user['deleted_at']))Zet naar Inactief @else Zet naar Actief @endif @endif</a></strong></td>
+                    <td><strong><a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">@if(empty($user['deleted_at']))Zet naar Inactief @else Zet naar Actief @endif</a></strong></td>
                 @endif
             </tr>
         @endforeach

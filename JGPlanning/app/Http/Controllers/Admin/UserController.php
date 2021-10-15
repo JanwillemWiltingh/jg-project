@@ -62,8 +62,8 @@ class UserController extends Controller
         ]);
 
         $current_user = Auth::user();
-        if($current_user['role_id'] == $roles['maintainer']){
-            $validated['roles'] = $roles['admin'];
+        if($current_user['role_id'] == $roles['admin']){
+            $validated['roles'] = $roles['employee'];
         }
         $user = new User;
         $user['name'] = $validated['name'];
@@ -94,7 +94,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
+//        $roles = Role::all();
+        $roles = Role::$roles;
         $user_session = Auth::user();
         return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
 
@@ -112,22 +113,20 @@ class UserController extends Controller
         $auth_user = Auth::user();
         $roles = Role::$roles;
         $maintainer_count = User::all()->where('role_id', $roles['maintainer'])->count();
-
         $validated = $request->validate([
             'name' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'password' => ['nullable', 'confirmed'],
             'roles' =>['required'],
         ]);
-
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
             return redirect()->back()->with(['message'=>'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast']);
         }
 
         //  When the admin edit's a user set the role to 2
-        if($auth_user['role_id'] == $roles['maintainer']){
-            $validated['roles'] = $roles['admin'];
+        if($auth_user['role_id'] == $roles['admin']){
+            $validated['roles'] = $roles['employee'];
         }
 
         if(empty($validated['password'])){

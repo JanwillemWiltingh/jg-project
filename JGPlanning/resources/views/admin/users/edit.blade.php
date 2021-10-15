@@ -32,12 +32,12 @@
                 <div class="error">{{ $errors->first('password_confirmation') }}</div>
             @endif
         </label><br>
-        @if($user_session['role_id'] == 3)
+        @if($user_session['role_id'] == $roles['maintainer'])
         <hr>
         <label style="color: black; font-size: 20px;">What role does the user get?</label>
         <select name="roles" style="display: block; width: 100px;">
             @foreach($roles as $role)
-                <option value="{{$role['id']}}" @if($role['id'] == $user['role_id'] || old('roles') == $role['id']) selected @endif>{{$role['name']}}</option>
+                <option value="{{$role['id']}}" @if($role == $user['role_id'] || old('roles') == $role['id']) selected @endif>{{$role}}</option>
             @endforeach
             @if($errors->has('roles'))
                 <div class="error">{{ $errors->first('roles') }}</div>
