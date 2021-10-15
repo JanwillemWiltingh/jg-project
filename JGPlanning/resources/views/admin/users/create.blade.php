@@ -33,7 +33,7 @@
             @endif
         </label><br>
         {{--If you are the maintainer, you are able to edit the role of a person--}}
-        @if($user_session['role_id'] == 3)
+        @if($user_session['role_id'] == $role_ids['maintainer'])
         <hr>
         <label style="color: black; font-size: 20px;">What role does the user get?</label>
         <select name="roles" style="display: block; width: 100px;">
