@@ -21,7 +21,7 @@ class EnsureUserIsAdmin
         $user = Auth::user();
         $roles = Role::$roles;
         $role_id = $user['role_id'];
-        if($role_id == $roles['admin']){
+        if($role_id == $roles['employee']){
             abort(403);
         }
 
