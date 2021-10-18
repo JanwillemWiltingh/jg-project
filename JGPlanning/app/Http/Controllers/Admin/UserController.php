@@ -75,7 +75,7 @@ class UserController extends Controller
         $user['role_id'] = $validated['roles'];
         $user->save();
 
-        return redirect()->route('admin.users.index')->with(['message'=>'User created successfully']);
+        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
     }
 
     /**
