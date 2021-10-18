@@ -41,6 +41,18 @@ class DashboardController extends Controller
 
         $user = Auth::user();
         $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
+        $start_time = Carbon::parse('08:30:00');
+        $end_time = Carbon::parse('17:30:00');
+
+//        When someone clocks in before or after working hours give an error message and don't clock them in
+        if(!$user->isClockedIn()) {
+            if($start_time->isFuture()) {
+                return redirect()->back()->with(['error'=> 'Er kan pas vanaf 08:30 ingeklokt worden']);
+            } elseif ($end_time->isPast()) {
+                return redirect()->back()->with(['error' => 'Werktijden zijn voorbij, er kan niet meer ingeklokt worden']);
+            }
+        }
+
 
         if($clocks->count() == 0) {
             Clock::create([

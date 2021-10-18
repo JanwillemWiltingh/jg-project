@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+{{--  TODO: Mogelijk met Jessenger package controleren of iemand op mobiel bezig is of niet  --}}
     <div class="container">
         <form action="{{ route('dashboard.clock') }}" method="post">
             @csrf
