@@ -80,7 +80,7 @@
                         @else
                             <strong>
                                 <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">
-                                    @if($user['role_id'] != 3)
+                                    @if($user['role_id'] != 1)
                                         @if(empty($user['deleted_at']))
                                             Zet naar Inactief
                                         @else
@@ -93,7 +93,7 @@
                     @elseif($user_session['role_id'] == $roles['maintainer'])
                         <strong>
                             <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">
-                                @if($user['role_id'] != 3)
+                                @if($user['role_id'] != 1)
                                     @if(empty($user['deleted_at']))
                                         Zet naar Inactief
                                     @else
