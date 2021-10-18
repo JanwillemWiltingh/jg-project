@@ -23,7 +23,7 @@
                 {{ session()->get('error') }}
             </p>
         @endif
-
+        <div class="loader d-none" id="loader"></div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -36,45 +36,82 @@
                             @endif
                             <div>
                                 <table class="card-body table table-bordered">
-                                    <thead>
-                                    <th width="125" style="border: none; text-align: center">Time</th>
+                                    <thead >
+                                    <th width="14%" style="border: none; text-align: center; border-radius: 15px 15px 0 0 !important;" >Time</th>
                                     @for($i = 1; $i < count($weekDays) + 1; $i++)
-                                        <th width="13%" style="border: none; text-align: center">
-                                            {{ $weekDays[$i] }}
-                                            @if(is_null($availability->where('weekdays', $i)->first()))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
-                                            @else
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
-                                                <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i])}}"><i class="fa fa-trash"></i></a>
-                                            @endif
-                                        </th>
+                                        @if(is_null(json_decode($user_info->unavailable_days)))
+                                            <th width="14%" style="border: none; text-align: center;">
+                                                <form method="post" id="dayForm">
+                                                    @csrf
+                                                    {{ $weekDays[$i] }}
+                                                    <input type="hidden" id="userIdDisableDays" value="{{request('user')}}">
+
+                                                    <input type="checkbox" id="disableDays{{$i}}" class="toggle-box" name="from_home"/>
+                                                    <label for="disableDays{{$i}}" class="toggle-label" style="width: 25%; top: -25px; margin-bottom: -22px"></label>
+                                                </form>
+                                            </th>
+                                        @else
+                                            <th width="14%" style="border: none; text-align: center; @if(!is_null(json_decode($user_info->unavailable_days)[$i - 1])) background: lightgrey @endif">
+                                                <form method="post" id="dayForm">
+                                                    @csrf
+                                                    {{ $weekDays[$i] }}
+                                                    <input type="hidden" id="userIdDisableDays" value="{{request('user')}}">
+
+                                                    <input type="checkbox" id="disableDays{{$i}}" class="toggle-box" name="from_home" @if(!is_null(json_decode($user_info->unavailable_days)[$i - 1])) checked @endif/>
+                                                    <label for="disableDays{{$i}}" class="toggle-label" style="width: 25%; top: -25px; margin-bottom: -22px"></label>
+                                                </form>
+                                            </th>
+                                        @endif
                                     @endfor
                                     </thead>
+
                                     <tbody>
                                     @foreach($calendarData as $time => $days)
                                         <tr>
                                             <td>
                                                 {{ $time }}
                                             </td>
-                                            @foreach($days as $value)
-                                                @if (is_array($value))
-                                                    <th rowspan="{{ $value['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
-                                                        @if($value['from_home'] == 1)
-                                                            <p style="font-weight: lighter">Thuis</p>
-                                                        @else
-                                                            <p style="font-weight: lighter">Op kantoor</p>
-                                                        @endif
+                                            @for($i = 0; $i < count($days); $i++)
+                                                @if(is_null(json_decode($user_info->unavailable_days)))
+                                                    @if(is_array($days[$i]))
+                                                        <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
+                                                            @if($days[$i]['from_home'] == 1)
+                                                                <p style="font-weight: lighter">Thuis</p>
+                                                            @else
+                                                                <p style="font-weight: lighter">Op kantoor</p>
+                                                            @endif
 
-                                                        @if(!$value['comment'] == "")
-                                                            "{{$value['comment']}}"
-                                                        @endif
+                                                            @if(!$days[$i]['comment'] == "")
+                                                                "{{$days[$i]['comment']}}"
+                                                            @endif
 
-                                                        <p style="font-weight: lighter">{{$value['start_time']}} - {{$value['end_time']}}</p>
-                                                    </th>
-                                                @elseif ($value === 1)
-                                                    <td></td>
+                                                            <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p>
+                                                        </th>
+                                                    @elseif ($days[$i] === 1)
+                                                        <td></td>
+                                                    @endif
+                                                @else
+                                                    @if (json_decode($user_info->unavailable_days)[$i] == "on")
+                                                        <td style="background: lightgray; border-bottom: none !important;"></td>
+                                                    @elseif(is_array($days[$i]))
+                                                        <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="background-color:#f0f0f0">
+                                                            @if($days[$i]['from_home'] == 1)
+                                                                <p style="font-weight: lighter">Thuis</p>
+                                                            @else
+                                                                <p style="font-weight: lighter">Op kantoor</p>
+                                                            @endif
+
+                                                            @if(!$days[$i]['comment'] == "")
+                                                                "{{$days[$i]['comment']}}"
+                                                            @endif
+
+                                                            <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p>
+                                                        </th>
+                                                    @elseif ($days[$i] === 1)
+                                                        <td></td>
+                                                    @endif
                                                 @endif
-                                            @endforeach
+                                            @endfor
                                         </tr>
                                     @endforeach
                                     </tbody>

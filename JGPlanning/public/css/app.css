@@ -19868,6 +19868,12 @@ Copyright (c) 2015 Daniel Eden
 .toggle-label:active:after {
     width: 20px;
 }
+
+.hover-navbar-content {
+    position: relative;
+    left: -250px;
+    transition: all 0.5s ease-in-out;
+}
 .error-label{
     color: red;
     font-size: 14px;
@@ -19888,13 +19894,41 @@ Copyright (c) 2015 Daniel Eden
 }
 .table-label-red:hover{
     text-decoration: none;
-    transition: 0.6s;
+    transition: 0.2s;
     color: #bf1f1f;
 }
 
+.hover-navbar:hover + .hover-navbar-content {
+    position: relative;
+    left: 0;
+}
 .black-label-text {
     color:black !important;
 }
 
 
+.hover-navbar-content:hover {
+    position: relative;
+    left: 0;
+}
+
+.loader {
+    border: 6px solid #f3f3f3; /* Light grey */
+    border-top: 6px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 
