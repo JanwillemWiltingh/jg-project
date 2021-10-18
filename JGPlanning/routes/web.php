@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\{LoginController};
-use App\Http\Controllers\Users\{DashboardController, RoosterController};
+use App\Http\Controllers\Users\{DashboardController, RoosterController, ProfileController};
 use App\Http\Controllers\Admin\{UserController,ClockController, AvailabilityController, CompareController};
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +25,13 @@ Route::name('auth.')->prefix('auth/')->group(function (){
 
 Route::name('dashboard.')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('home');
-    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
+});
+
+Route::name('profile.')->prefix('profiel/')->group(function (){
+    Route::get('/', [ProfileController::class, 'profile'])->name('index');
+    Route::get('/edit/{user}', [ProfileController::class, 'edit'])->name('edit');
+    Route::get('/update/{user}', [ProfileController::class, 'update'])->name('update');
 });
 
 Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){

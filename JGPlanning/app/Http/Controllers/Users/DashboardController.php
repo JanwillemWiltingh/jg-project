@@ -94,9 +94,4 @@ class DashboardController extends Controller
         }
         return False;
     }
-
-    public function profile(){
-        $user = Auth::user();
-        return view('dashboard.profile')->with('user', $user);
-    }
 }
