@@ -11,12 +11,15 @@ class Rooster extends Model
 
     protected $fillable = [
         'user_id',
-        'start',
-        'end',
+        'start_time',
+        'end_time',
         'from_home',
         'comment',
         'date',
-        'weekdays'
+        'weekdays',
+        'start_week',
+        'end_week',
+        'rooster'
     ];
 
     use HasFactory;
