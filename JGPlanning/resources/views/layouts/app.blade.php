@@ -176,7 +176,7 @@ The above copyright notice and this permission notice shall be included in all c
                         <div class="modal-content">
                             <div class="modal-body">
 
-                                <a href="{{route('dashboard.profile')}}">Profiel</a>
+                                <a href="{{route('profile.index')}}">Profiel</a>
                                 <hr>
                                 <a href="#">Help</a> <br>
                                 <hr>
