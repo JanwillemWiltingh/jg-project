@@ -28,8 +28,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        $roles = Role::$roles;
         $user_session = Auth::user();
+        $roles = Role::$roles;
+
         return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session, 'roles' => $roles]);
     }
 
@@ -40,9 +41,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
         $user_session = Auth::user();
-        return view('admin/users/create')->with(['roles'=>$roles, 'user_session' => $user_session]);
+        $roles = Role::all();
+        $role_ids = Role::$roles;
+
+        return view('admin/users/create')->with(['roles'=>$roles, 'user_session' => $user_session, 'role_ids' => $role_ids]);
     }
 
     /**
@@ -62,8 +65,8 @@ class UserController extends Controller
         ]);
 
         $current_user = Auth::user();
-        if($current_user['role_id'] == $roles['maintainer']){
-            $validated['roles'] = $roles['admin'];
+        if($current_user['role_id'] == $roles['admin']){
+            $validated['roles'] = $roles['employee'];
         }
         $user = new User;
         $user['name'] = $validated['name'];
@@ -72,7 +75,7 @@ class UserController extends Controller
         $user['role_id'] = $validated['roles'];
         $user->save();
 
-        return redirect()->route('admin.users.index')->with(['message'=>'User created successfully']);
+        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
     }
 
     /**
@@ -94,9 +97,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
         $user_session = Auth::user();
-        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
+        $roles = Role::all();
+        $role_ids = Role::$roles;
+
+        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session, 'role_ids' => $role_ids]);
 
     }
 
@@ -122,12 +127,12 @@ class UserController extends Controller
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
-            return redirect()->back()->with(['message'=>'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast']);
+            return redirect()->back()->with(['message'=> ['message' => 'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast', 'type' => 'danger']]);
         }
 
         //  When the admin edit's a user set the role to 2
-        if($auth_user['role_id'] == $roles['maintainer']){
-            $validated['roles'] = $roles['admin'];
+        if($auth_user['role_id'] == $roles['admin']){
+            $validated['roles'] = $roles['employee'];
         }
 
         if(empty($validated['password'])){
@@ -144,7 +149,7 @@ class UserController extends Controller
                 'role_id' => $validated['roles']
             ]);
         }
-        return redirect()->back()->with(['message'=>'User updated successfully']);
+        return redirect()->back()->with(['message' => ['message' => 'User updated successfully', 'type' => 'success']]);
     }
 
     /**

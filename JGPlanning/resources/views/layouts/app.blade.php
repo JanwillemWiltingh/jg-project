@@ -175,14 +175,15 @@ The above copyright notice and this permission notice shall be included in all c
                     <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
                         <div class="modal-content">
                             <div class="modal-body">
+
+                                <a href="{{route('dashboard.profile')}}">Profiel</a>
+                                <hr>
+                                <a href="#">Help</a> <br>
+                                <hr>
                                 <form action="{{ route('auth.logout') }}" method="POST">
                                     @csrf
                                     <button class="linklike-button">Logout</button>
                                 </form>
-
-                                <hr>
-
-                                <a href="#">Help</a> <br>
                             </div>
                         </div>
                     </div>

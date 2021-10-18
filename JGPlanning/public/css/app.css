@@ -19898,10 +19898,17 @@ Copyright (c) 2015 Daniel Eden
     color: #bf1f1f;
 }
 
+<<<<<<< HEAD
 .hover-navbar:hover + .hover-navbar-content {
     position: relative;
     left: 0;
 }
+=======
+.black-label-text {
+    color:black !important;
+}
+
+>>>>>>> e151e28c8119bcffd129fe6f2deca44e8199cdb5
 
 .hover-navbar-content:hover {
     position: relative;

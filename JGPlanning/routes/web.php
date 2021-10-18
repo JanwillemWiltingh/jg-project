@@ -25,6 +25,7 @@ Route::name('auth.')->prefix('auth/')->group(function (){
 
 Route::name('dashboard.')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('home');
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
 });
 
