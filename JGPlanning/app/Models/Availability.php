@@ -11,13 +11,12 @@ class Availability extends Model
     protected $table = 'availability';
 
     const WEEK_DAYS = [
-        '1' => 'Monday',
-        '2' => 'Tuesday',
-        '3' => 'Wednesday',
-        '4' => 'Thursday',
-        '5' => 'Friday',
-        '6' => 'Saturday',
-        '7' => 'Sunday'
+        '1' => 'Maandag',
+        '2' => 'Dinsdag',
+        '3' => 'Woensdag',
+        '4' => 'Donderdag',
+        '5' => 'Vrijdag',
+        '6' => 'Zaterdag',
     ];
 
     use HasFactory;
@@ -29,7 +28,8 @@ class Availability extends Model
         'from_home',
         'comment',
         'date',
-        'weekdays'
+        'weekdays',
+        'unavailable_days'
     ];
 
     public $timestamps = false;

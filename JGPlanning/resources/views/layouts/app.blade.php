@@ -14,6 +14,8 @@ The above copyright notice and this permission notice shall be included in all c
     <head>
         <title>JG planning</title>
 
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
@@ -27,7 +29,6 @@ The above copyright notice and this permission notice shall be included in all c
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
 
     </head>
-
     <body>
         <div class="wrapper ">
             <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
@@ -51,27 +52,22 @@ The above copyright notice and this permission notice shall be included in all c
 {{--                    Users--}}
 
                         @can('employee-rooster')
-                            <li class="nav-item ">
-                                <a class="nav-link nav-color" style="margin-top: 60px;">
+                            <li class="nav-item  active hover-navbar">
+                                <a class="nav-link nav-color " style="margin-top: 60px;">
                                     <i class="fa fa-calendar" style="color: white"></i>
                                     <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -15px; margin-right: 6px"></i>
                                     <p style="color: white">Tijden</p>
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ (request()->is('beschikbaarheid') or request()->is('beschikbaarheid/*')) ? 'nav-color-active' : '' }}" style="position:absolute; left: 22px; width: 90%">
-                                <a class="nav-link nav-color" href="{{route('beschikbaarheid.index')}}" style="margin-top: 120px;">
-                                    <i class="fa fa-calendar" style="color: white"></i>
-                                    <p style="color: white">Beschikbaarheid</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
-                                <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 180px;">
-                                    <i class="fa fa-calendar" style="color: white"></i>
-                                    <p style="color: white">Rooster</p>
-                                </a>
-                            </li>
+                            <div class="@if(!request()->is('rooster')) hover-navbar-content @endif">
+                                <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px ;width: 90%">
+                                    <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 120px;">
+                                        <i class="fa fa-calendar" style="color: white"></i>
+                                        <p style="color: white">Rooster</p>
+                                    </a>
+                                </li>
+                            </div>
                         @endcan
 
                         @can('admin-users')
@@ -95,34 +91,22 @@ The above copyright notice and this permission notice shall be included in all c
                         @endcan
 
                         @can('admin-beschikbaarheid')
-                            <li class="nav-item active">
-                                <a class="nav-link nav-color" style="margin-top: 180px;">
+                            <li class="nav-item active hover-navbar">
+                                <a class="nav-link nav-color" href="" style="margin-top: 180px;">
                                     <i class="fa fa-calendar"></i>
                                     <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -20px; margin-right: -5px"></i>
                                     <p>Beschikbaarheid beheren</p>
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ (request()->is('admin/available') or request()->is('admin/available/*')) ? 'nav-color-active' : '' }}" style="position:absolute; left: 22px; width: 90%">
-                                <a class="nav-link nav-color" href="{{route('admin.available.index')}}" style="margin-top: 240px;">
-                                    <i class="fa fa-calendar" style="color: white"></i>
-                                    <p style="color: white">Beschikbaarheid</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item {{ (request()->is('admin/rooster') or request()->is('admin/rooster/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
-                                <a class="nav-link nav-color" href="{{route('admin.rooster.index')}}" style="margin-top: 300px;">
-                                    <i class="fa fa-calendar" style="color: white"></i>
-                                    <p style="color: white">Rooster</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item {{ (request()->is('admin/vergelijken') or request()->is('admin/vergelijken/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
-                                <a class="nav-link nav-color" href="{{route('admin.compare.index')}}" style="margin-top: 360px;">
-                                    <i class="fa fa-calendar" style="color: white"></i>
-                                    <p style="color: white">Vergelijken</p>
-                                </a>
-                            </li>
+                            <div class="hover-navbar-content">
+                                <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
+                                    <a class="nav-link nav-color" href="{{route('admin.rooster.index')}}" style="margin-top: 240px;">
+                                        <i class="fa fa-calendar" style="color: white"></i>
+                                        <p style="color: white">Rooster</p>
+                                    </a>
+                                </li>
+                            </div>
                         @endcan
                     </ul>
                 </div>

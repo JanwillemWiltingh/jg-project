@@ -9,7 +9,11 @@
                 <div class="modal-body">
                     <input type="hidden" name="weekday" id="weekday">
                     <input type="hidden" name="is_rooster" id="is_rooster">
-                    <input type="hidden" name="user_id" value="{{request('user')}}">
+                    @if(request('admin'))
+                        <input type="hidden" name="user_id" value="{{request('user')}}">
+                    @else
+                        <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                    @endif
 
                     <label style="width: 49%">
                         <p>Start time:</p>
@@ -53,9 +57,13 @@
             <form method="post" action="{{route('edit_availability')}}">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" name="weekday" id="weekday_edit">
+                    <input type="hidden" name="weekday" id="weekday_edit">`
                     <input type="hidden" name="is_user" id="is_rooster_edit">
-                    <input type="hidden" name="user_id" value="{{request('user')}}">
+                    @if(request('admin'))
+                        <input type="hidden" name="user_id" value="{{request('user')}}">
+                    @else
+                        <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                    @endif
                     <label style="width: 49%">
                         <p>Start time:</p>
                         <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">

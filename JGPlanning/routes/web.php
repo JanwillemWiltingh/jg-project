@@ -63,15 +63,10 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
-    Route::name('available.')->prefix('available/')->middleware('ensure.admin')->group(function (){
-        Route::get('/', [AvailabilityController::class, 'index'])->name('index');
-        Route::get('/{user}', [AvailabilityController::class, 'user_availability'])->name('user_availability');
-    });
-
-
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [AvailabilityController::class, 'index_rooster'])->name('index');
         Route::get('/{user}', [AvailabilityController::class, 'user_rooster'])->name('user_rooster');
+        Route::post('/{user}/available_days', [RoosterController::class, 'push_days'])->name('push_days');
     });
 
     Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){
