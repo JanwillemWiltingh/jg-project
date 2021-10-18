@@ -26,7 +26,7 @@ class AvailabilityController extends Controller
     public function index()
     {
         $roles = Role::$roles;
-        $users = User::where('role_id', $roles['admin'])->get();
+        $users = User::where('role_id', $roles['employee'])->get();
 
         return view('admin.availability.index', compact(
             'users',
@@ -36,7 +36,7 @@ class AvailabilityController extends Controller
     public function index_rooster()
     {
         $roles = Role::$roles;
-        $users = User::where('role_id', $roles['admin'])->get();
+        $users = User::where('role_id', $roles['employee'])->get();
 
         return view('admin.availability.calender.table', compact(
             'users',

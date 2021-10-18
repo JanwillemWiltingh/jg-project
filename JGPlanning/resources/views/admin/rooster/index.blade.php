@@ -23,6 +23,7 @@
                 {{ session()->get('error') }}
             </p>
         @endif
+        <div class="loader d-none" id="loader"></div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">

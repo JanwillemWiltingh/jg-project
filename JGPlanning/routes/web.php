@@ -28,10 +28,6 @@ Route::name('dashboard.')->group(function (){
     Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
 });
 
-Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){
-    Route::get('/', [RoosterController::class, 'index'])->name('index');
-});
-
 Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/', [RoosterController::class, 'show_rooster'])->name('index');
 });
@@ -56,12 +52,6 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/update/{user}', [UserController::class, 'update'])->name('update');
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
-
-    Route::name('available.')->prefix('available/')->middleware('ensure.admin')->group(function (){
-        Route::get('/', [AvailabilityController::class, 'index'])->name('index');
-        Route::get('/{user}', [AvailabilityController::class, 'user_availability'])->name('user_availability');
-    });
-
 
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [AvailabilityController::class, 'index_rooster'])->name('index');

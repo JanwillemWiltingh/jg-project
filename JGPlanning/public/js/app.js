@@ -5267,14 +5267,15 @@ $(document).ready(function () {
     var id = $('#userIdDisableDays').val();
     var ArrayAvailableDays = [];
 
-    for (var i = 1; i < 8; i++) {
+    for (var i = 1; i < 7; i++) {
       if ($('#disableDays' + i + ":checked").val()) {
         ArrayAvailableDays.push($('#disableDays' + i).val());
       } else {
-        ArrayAvailableDays.push(null);
+        ArrayAvailableDays.push("");
       }
     }
 
+    console.log(ArrayAvailableDays);
     $.ajax({
       type: "POST",
       url: id + "/available_days",
@@ -5286,7 +5287,11 @@ $(document).ready(function () {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
     });
-    location.reload();
+    $('#loader').removeClass('d-none');
+    setTimeout(function () {
+      console.log('wait, hammer time');
+      location.reload();
+    }, 1000);
   });
 });
 

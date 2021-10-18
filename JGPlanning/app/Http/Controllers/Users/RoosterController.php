@@ -90,30 +90,15 @@ class RoosterController extends Controller
             $from_home = 0;
         }
 
-        if ($validated['is_rooster'])
-        {
-            Rooster::create([
-                'user_id' => $validated['user_id'],
-                'start' => $start_date,
-                'end' => $end_date,
-                'from_home' => $from_home,
-                'comment' => $validated['comment'],
-                'date' => Carbon::now()->format('Y-m-d'),
-                'weekdays' => $validated['weekday'],
-            ]);
-        }
-        else
-        {
-            Availability::create([
-                'user_id' => $validated['user_id'],
-                'start' => $start_date,
-                'end' => $end_date,
-                'from_home' => $from_home,
-                'comment' => $validated['comment'],
-                'date' => Carbon::now()->format('Y-m-d'),
-                'weekdays' => $validated['weekday'],
-            ]);
-        }
+
+        Rooster::create([
+            'user_id' => $validated['user_id'],
+            'start_time' => $start_date,
+            'end_time' => $end_date,
+            'from_home' => $from_home,
+            'comment' => $validated['comment'],
+            'weekdays' => $validated['weekday'],
+        ]);
 
         return back();
     }
@@ -163,8 +148,8 @@ class RoosterController extends Controller
             $availability = Availability::where('user_id', $validated['user_id'])->where('weekdays', $validated['weekday'])->first();
         }
 
-        $availability->start = $start_date;
-        $availability->end = $end_date;
+        $availability->start_time = $start_date;
+        $availability->end_time = $end_date;
         $availability->from_home = $from_home;
         $availability->comment = $validated['comment'];
 
@@ -200,19 +185,22 @@ class RoosterController extends Controller
     }
 
 
-    public function show_rooster(CalendarService $calendarService, CheckIfIsInWeek $check)
+    public function show_rooster(CalendarService $calendarService)
     {
         $isRooster = true;
         $user = Auth::user()->id;
         $weekDays     = Availability::WEEK_DAYS;
-        $availability = Availability::where('user_id', $user)->get();
+        $availability = Rooster::where('user_id', $user)->get();
         $calendarData = $calendarService->generateCalendarData($weekDays, $user, $isRooster);
+
+        $user_info = User::find($user);
 
         return view('users.rooster.index', compact(
             'user',
             'weekDays',
             'availability',
-            'calendarData'
+            'calendarData',
+            'user_info'
         ));
     }
 
@@ -221,6 +209,27 @@ class RoosterController extends Controller
         $validated = $request->validate([
             'data' => ['required', 'array']
         ]);
+
+
+
+        for ($i = 1; $i < 6; $i++)
+        {
+            if ($validated['data'][$i - 1])
+            {
+                if(Rooster::all()->where('user_id', $user)->where('weekdays', $i)->first())
+                {
+                    $updaterooster = Rooster::where('weekdays', $i)->where('user_id', $user)->update([
+                        'disabled' => true
+                    ]);
+                }
+            }
+            else
+            {
+                $updaterooster = Rooster::where('weekdays', $i)->where('user_id', $user)->update([
+                    'disabled' => false
+                ]);
+            }
+        }
 
         $update = User::where('id', $user)->update([
             'unavailable_days' => $validated['data']

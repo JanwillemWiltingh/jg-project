@@ -17,7 +17,7 @@ $(document).ready(function () {
     $('#disableDays1, #disableDays2, #disableDays3, #disableDays4, #disableDays5, #disableDays6, #disableDays7').on('change', function () {
         let id = $('#userIdDisableDays').val();
         let ArrayAvailableDays = [];
-        for (let i = 1; i < 8; i++)
+        for (let i = 1; i < 7; i++)
         {
             if ($('#disableDays' + i + ":checked").val())
             {
@@ -28,10 +28,13 @@ $(document).ready(function () {
             else
             {
                 ArrayAvailableDays.push(
-                    null
+                    ""
                 );
             }
         }
+
+        console.log(ArrayAvailableDays);
+
         $.ajax({
             type: "POST",
             url : id + "/available_days",
@@ -42,6 +45,10 @@ $(document).ready(function () {
             },
         })
 
-        location.reload();
+        $('#loader').removeClass('d-none');
+        setTimeout(function () {
+            console.log('wait, hammer time');
+            location.reload();
+        }, 1000);
     });
 });

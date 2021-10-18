@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Availability;
-use App\Models\Rooster;
+use App\Models\{Rooster, User};
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use function PHPUnit\Framework\isNull;
 
 class CalendarService
 {
@@ -15,6 +15,9 @@ class CalendarService
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
         $lessons   = Rooster::where('user_id', $userID)->get();
+
+        $user = User::find($userID);
+
 
 
         foreach ($timeRange as $time)
@@ -36,17 +39,28 @@ class CalendarService
 
                 if ($lesson)
                 {
-                    array_push($calendarData[$timeText], [
-                        'rowspan'      => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
-                        'from_home'    => $lesson['from_home'],
-                        'comment'      => $lesson['comment'],
-                        'start_time'   => $start,
-                        'end_time'     => $end,
-                    ]);
+//                    if((json_decode($user->unavailable_days)[$index - 1]) == "on" || $lesson->disabled == 1)
+//                    {
+//                        array_push($calendarData[$timeText], 2);
+//                    }
+//                    else
+//                    {
+                        array_push($calendarData[$timeText], [
+                            'rowspan'      => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
+                            'from_home'    => $lesson['from_home'],
+                            'comment'      => $lesson['comment'],
+                            'start_time'   => $start,
+                            'end_time'     => $end,
+                        ]);
+//                    }
                 }
                 else if (!$lessons->where('weekdays', $index)->where('start_time','<', $time_start)->where('end_time', '>=', $time_end)->count())
                 {
                     array_push($calendarData[$timeText], 1);
+                }
+                else if ((json_decode($user->unavailable_days)[$index]) == "on")
+                {
+                    array_push($calendarData[$timeText], 2);
                 }
                 else
                 {
