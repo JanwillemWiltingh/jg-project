@@ -108,16 +108,48 @@ class User extends Authenticatable
 
     public function plannedWorkAMonth($year, $month): array
     {
-//        $date = Carbon::now()->setISODate($year, $month);
-        $new_date = new Carbon($year.'-'.$month.'-01');
-        $days_of_month = $new_date->daysInMonth;
+//        Get all the roosters from the users from the given year
+        $roosters = $this->roosters()->get();
+
+//        Get the first day of the give month and year
+        $first_day_of_month = new Carbon($year.'-'.$month.'-01');
+
+//        using the newly made day get the amount of days in this month
+        $days_of_month = $first_day_of_month->daysInMonth;
+
+//        using the days in this month to get the last day of the month
+        $last_day_of_month = new Carbon($year.'-'.$month.'-'.$days_of_month);
+
+//        us the first and last day of the month to get the first and last week number of this month
+        $first_week = $first_day_of_month->weekOfYear;
+        $last_week = $last_day_of_month->weekOfYear;
+
+//        Make a new collection
+        $collection = collect();
+
+//        Filter all roosters
+        foreach ($roosters as $rooster) {
+            $in_range = false;
+
+            if($rooster['year'].'.'.$rooster['start_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['start_week'] <= $year.'.'.$last_week) {
+                $in_range = true;
+            }
+
+            if($rooster['year'].'.'.$rooster['end_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['end_week'] <= $year.'.'.$last_week) {
+                $in_range = true;
+            }
+
+            if($in_range) {
+                $collection->push($rooster);
+            }
+        }
 
         for ($i = 1; $i <= $days_of_month; $i++) {
-            print('OwO');
+//            print($i.' ');
         }
+
         if($this['id'] == 2) {
-            dd($days_of_month);
-            dd($this->roosters()->get());
+            dd($collection);
         }
 
         return ['-', 0];
