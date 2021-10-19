@@ -163,10 +163,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->back()->with(['message'=>'User deleted successfully']);
+            return redirect()->back()->with(['message' => ['message' => 'User deleted successfully', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->back()->with(['message'=>'User un-deleted successfully']);
+            return redirect()->back()->with(['message' => ['message' => 'User un-deleted successfully', 'type' => 'success']]);
         }
         //return view('admin/users/destroy')->with(['user'=>$user]);
     }

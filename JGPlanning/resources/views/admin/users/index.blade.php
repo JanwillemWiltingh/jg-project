@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session()->get('message'))
+        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
+            {{ session()->get('message')['message'] }}
+        </div>
+    @endif
     <h1>Alle Gebruikers</h1>
 
     <h5>
@@ -8,7 +13,6 @@
             <a class="table-label" href="{{route('admin.users.create')}}">Create a new User</a>
         </strong>
     </h5>
-    @if(session()->get('message')) {{ session()->get('message') }} @endif
     <table class="table">
         <thead>
             <tr>
@@ -40,7 +44,7 @@
                 <td>{{$user['role_id']}}</td>
 
                 {{--Big letter maintainer--}}
-                <td>@if($user->hasRole('maintainer'))<strong>{{$user->role()->get()->first()->name}}</strong> @else {{$user->role()->get()->first()->name}} @endif</td>
+                <td>@if($user->hasRole('maintainer'))<strong>{{ucfirst($user->role()->get()->first()->name)}}</strong> @else {{ucfirst($user->role()->get()->first()->name)}} @endif</td>
 
                 {{--Shows if the user is soft-deleted(active) or not--}}
                 <td>
