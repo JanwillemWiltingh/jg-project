@@ -46,7 +46,7 @@
                 <td>{{$user['role_id']}}</td>
 
                 {{--Big letter maintainer--}}
-                <td>@if($user->hasRole('maintainer'))<strong>{{$user->role()->get()->first()->name}}</strong> @else {{$user->role()->get()->first()->name}} @endif</td>
+                <td>@if($user->hasRole('maintainer'))<strong>{{ucfirst($user->role()->get()->first()->name)}}</strong> @else {{ucfirst($user->role()->get()->first()->name)}} @endif</td>
 
                 {{--Shows if the user is soft-deleted(active) or not--}}
                 <td>
