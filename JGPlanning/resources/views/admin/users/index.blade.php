@@ -1,14 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Alle Gebruikers</h1>
-
-    <h5>
-        <strong>
-            <a class="table-label" href="{{route('admin.users.create')}}">Create a new User</a>
-        </strong>
-    </h5>
-    @if(session()->get('message')) {{ session()->get('message') }} @endif
+    @if(session()->get('message'))
+        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
+            {{ session()->get('message')['message'] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    @endif
+    <h1>Alle Gebruikers <strong><a href="{{route('admin.users.create')}}"><i class="fa-solid fa-user-plus"></i></a></strong></h1>
+{{--    <h5>--}}
+{{--        <strong>--}}
+{{--            <a class="btn btn-primary table-label-create" href="{{route('admin.users.create')}}">Create a new User</a>--}}
+{{--        </strong>--}}
+{{--    </h5>--}}
     <table class="table">
         <thead>
             <tr>
@@ -18,6 +23,7 @@
                 <th scope="col"><strong>Role_id</strong></th>
                 <th scope="col"><strong>Role</strong></th>
                 <th scope="col"><strong>Active</strong></th>
+                <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -58,12 +64,12 @@
                             <i>Kan alleen Employee's bewerken</i>
                         @else
                             <strong>
-                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}">Bewerk</a>
+                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}"><i class="fa-solid fa-user-pen"></i></a>
                             </strong>
                         @endif
                     @elseif($user_session['role_id'] == $roles['maintainer'])
                         <strong>
-                            <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}">Bewerk</a>
+                            <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}"><i class="fa-solid fa-user-pen"></i></a>
                         </strong>
                     @endif
                 </td>
@@ -78,9 +84,9 @@
                                 <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">
                                     @if($user['role_id'] != 1)
                                         @if(empty($user['deleted_at']))
-                                            Zet naar Inactief
+                                            <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-slash"></i></a>
                                         @else
-                                            Zet naar Actief
+                                            <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-check"></i><a/>
                                         @endif
                                     @endif
                                 </a>
@@ -88,17 +94,18 @@
                         @endif
                     @elseif($user_session['role_id'] == $roles['maintainer'])
                         <strong>
-                            <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">
-                                @if($user['role_id'] != 1)
-                                    @if(empty($user['deleted_at']))
-                                        Zet naar Inactief
-                                    @else
-                                        Zet naar Actief
-                                    @endif
+                            @if($user['role_id'] != 1)
+                                @if(empty($user['deleted_at']))
+                                    <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-slash"></i></a>
+                                @else
+                                    <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-check"></i><a/>
                                 @endif
-                            </a>
+                            @endif
                         </strong>
                     @endif
+                </td>
+                <td>
+                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}"><i class="fa-solid fa-user-gear"></i></a>
                 </td>
             </tr>
         @endforeach
