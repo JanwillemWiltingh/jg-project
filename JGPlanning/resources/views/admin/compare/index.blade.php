@@ -51,7 +51,7 @@
                                 <th scope="row">{{ $loop->index }}</th>
                                 <td>{{ $user['name'] }}</td>
                                 <td>{{ $user->workedInAMonth(10)[0] }}</td>
-                                <td>2</td>
+                                <td>{{ $user->plannedWorkAMonth(2021, 10)[0] }}</td>
                                 <td>3</td>
                             </tr>
                         @endforeach
