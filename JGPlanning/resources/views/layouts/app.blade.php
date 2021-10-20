@@ -106,6 +106,13 @@ The above copyright notice and this permission notice shall be included in all c
                                         <p style="color: white">Rooster</p>
                                     </a>
                                 </li>
+
+                                <li class="nav-item {{ (request()->is('admin/vergelijken') or request()->is('admin/vergelijken/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
+                                    <a class="nav-link nav-color" href="{{route('admin.compare.index')}}" style="margin-top: 300px;">
+                                        <i class="fa fa-calendar" style="color: white"></i>
+                                        <p style="color: white">Vergelijken</p>
+                                    </a>
+                                </li>
                             </div>
                         @endcan
                     </ul>
@@ -176,7 +183,7 @@ The above copyright notice and this permission notice shall be included in all c
                         <div class="modal-content">
                             <div class="modal-body">
 
-                                <a href="{{route('dashboard.profile')}}">Profiel</a>
+                                <a href="{{route('profile.index')}}">Profiel</a>
                                 <hr>
                                 <a href="#">Help</a> <br>
                                 <hr>

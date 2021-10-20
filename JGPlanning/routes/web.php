@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\{LoginController};
-use App\Http\Controllers\Users\{DashboardController, RoosterController};
+use App\Http\Controllers\Users\{DashboardController, RoosterController, ProfileController};
 use App\Http\Controllers\Admin\{UserController,ClockController, RoosterAdminController, CompareController};
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +25,17 @@ Route::name('auth.')->prefix('auth/')->group(function (){
 
 Route::name('dashboard.')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('home');
-    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
+});
+
+Route::name('profile.')->prefix('profiel/')->group(function (){
+    Route::get('/', [ProfileController::class, 'profile'])->name('index');
+    Route::get('/edit/{user}', [ProfileController::class, 'edit'])->name('edit');
+    Route::get('/update/{user}', [ProfileController::class, 'update'])->name('update');
+});
+
+Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){
+    Route::get('/', [RoosterController::class, 'index'])->name('index');
 });
 
 Route::name('rooster.')->prefix('rooster/')->group(function (){
@@ -46,7 +55,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
 
     Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [UserController::class,'index'])->name('index');
-        Route::get('/show', [UserController::class,'show'])->name('show');
+        Route::get('/show/{user}', [UserController::class,'show'])->name('show');
         Route::get('/create', [UserController::class, 'create'])->name('create');
         Route::get('/store', [UserController::class, 'store'])->name('store');
         Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');

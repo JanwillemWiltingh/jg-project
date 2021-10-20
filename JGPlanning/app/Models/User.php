@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(Clock::class);
     }
 
+    public function roosters(): HasMany
+    {
+        return $this->hasMany(Rooster::class);
+    }
+
     public function hasRole($role): bool
     {
         return $this->role()->get()->unique()->where('name', $role)->first() != null;
@@ -99,5 +104,22 @@ class User extends Authenticatable
         }
 
         return '';
+    }
+
+    public function plannedWorkAMonth($year, $month): array
+    {
+//        $date = Carbon::now()->setISODate($year, $month);
+        $new_date = new Carbon($year.'-'.$month.'-01');
+        $days_of_month = $new_date->daysInMonth;
+
+        for ($i = 1; $i <= $days_of_month; $i++) {
+            print('OwO');
+        }
+        if($this['id'] == 2) {
+            dd($days_of_month);
+            dd($this->roosters()->get());
+        }
+
+        return ['-', 0];
     }
 }

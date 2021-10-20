@@ -98,11 +98,11 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view('admin/users/show')->with(['user' => $user]);
     }
 
     /**
@@ -179,11 +179,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->back()->with(['message'=>'User deleted successfully']);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User Deleted successfully', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->back()->with(['message'=>'User un-deleted successfully']);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User un-Deleted successfully', 'type' => 'success']]);
         }
-        //return view('admin/users/destroy')->with(['user'=>$user]);
     }
 }
