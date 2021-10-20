@@ -18,11 +18,11 @@
         <thead>
             <tr>
                 <th scope="col"><strong>#</strong></th>
-                <th scope="col"><strong>Name</strong></th>
-                <th scope="col"><strong>Email</strong></th>
-                <th scope="col"><strong>Role_id</strong></th>
-                <th scope="col"><strong>Role</strong></th>
-                <th scope="col"><strong>Active</strong></th>
+                <th scope="col"><strong>Naam</strong></th>
+                <th scope="col"><strong>E-mail</strong></th>
+                <th scope="col"><strong>Rol Id</strong></th>
+                <th scope="col"><strong>Rol</strong></th>
+                <th scope="col"><strong>Actief?</strong></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>

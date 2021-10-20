@@ -25,10 +25,10 @@ class RoosterController extends Controller
     public function index(CalendarService $calendarService)
     {
         $isRooster = false;
-        $user = Auth::user()->id;
+        $user = Auth::user();
         $weekDays     = Availability::WEEK_DAYS;
-        $availability = Availability::where('user_id', $user)->get();
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $isRooster);
+        $availability = Availability::where('user_id', $user['id'])->get();
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user['id'], $isRooster);
 
         return view('users.rooster.beschikbaarheid.index', compact(
             'weekDays',
@@ -46,7 +46,7 @@ class RoosterController extends Controller
             'weekday' => ['required'],
             'user_id' => ['required'],
             'is_rooster' => ['required'],
-            'comment' => [],
+            'comment' => ['nullable'],
         ]);
 
         $start_time = strtotime($validated['start_time']);
@@ -71,14 +71,14 @@ class RoosterController extends Controller
 
         if (!$check_availability == null)
         {
-            if ($check_availability->start-time < $validated['end_time'])
+            if ($check_availability['start_time'] < $validated['end_time'])
             {
-                return back()->with('error', 'De uren die je hebt ingevuld overlappen uren die ja al hebt ingeplanned');
+                return back()->with(['message'=>['message' => 'De uren die je hebt ingevuld overlappen uren die ja al hebt ingeplanned', 'type' => 'danger']]);
             }
         }
         if ($start_date > $end_date)
         {
-            return back()->with('error', 'De ingevulde begin tijd is later dan de eind tijd');
+            return back()->with(['message'=>['message' => 'De ingevulde begin tijd is later dan de eind tijd', 'type' => 'danger']]);
         }
 
         if ($request->input('from_home'))
@@ -112,7 +112,7 @@ class RoosterController extends Controller
             'user_id' => ['required'],
             'is_rooster' => ['required'],
             'from_home' => [],
-            'comment' => [],
+            'comment' => ['nullable'],
         ]);
         $start_time = strtotime($validated['start_time']);
         $start_round = 30*60;
@@ -168,12 +168,12 @@ class RoosterController extends Controller
         }
 
         $availability->delete();
-        return back();
+        return back()->with(['message'=>['message' => 'Rooster Verwijderd', 'type' => 'success']]);;
     }
 
-    public function delete_rooster($user, $weekday)
+    public function delete_rooster(User $user, $weekday)
     {
-        $availability = Rooster::where('user_id', $user)->where('weekdays', $weekday)->first();
+        $availability = Rooster::where('user_id', $user['id'])->where('weekdays', $weekday)->first();
 
         if (is_null($availability))
         {
@@ -188,19 +188,19 @@ class RoosterController extends Controller
     public function show_rooster(CalendarService $calendarService)
     {
         $isRooster = true;
-        $user = Auth::user()->id;
+        $user = Auth::user();
+        $users = User::all();
         $weekDays     = Availability::WEEK_DAYS;
-        $availability = Rooster::where('user_id', $user)->get();
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $isRooster);
+        $availability = Rooster::where('user_id', $user['id'])->get();
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user['id'], $isRooster);
 
-        $user_info = User::find($user);
 
         return view('users.rooster.index', compact(
             'user',
             'weekDays',
             'availability',
             'calendarData',
-            'user_info'
+            'users'
         ));
     }
 

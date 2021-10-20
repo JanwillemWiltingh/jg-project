@@ -16,6 +16,7 @@ use Illuminate\Validation\Rule;
 use DateTime;
 class UserController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -75,7 +76,7 @@ class UserController extends Controller
         $user['role_id'] = $validated['roles'];
         $user->save();
 
-        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
+        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
     }
 
     /**
@@ -127,7 +128,7 @@ class UserController extends Controller
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
-            return redirect()->back()->with(['message'=> ['message' => 'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast', 'type' => 'danger']]);
+            return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
         }
 
         //  When the admin edit's a user set the role to 2
@@ -149,7 +150,7 @@ class UserController extends Controller
                 'role_id' => $validated['roles']
             ]);
         }
-        return redirect()->back()->with(['message' => ['message' => 'User updated successfully', 'type' => 'success']]);
+        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
 
     /**
@@ -163,10 +164,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User Deleted successfully', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Verwijderd!', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User un-Deleted successfully', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Hersteld!', 'type' => 'success']]);
         }
     }
 }
