@@ -57,7 +57,7 @@
             <form method="post" action="{{route('edit_availability')}}">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" name="weekday" id="weekday_edit">`
+                    <input type="hidden" name="weekday" id="weekday_edit">
                     <input type="hidden" name="is_user" id="is_rooster_edit">
                     @if(request('admin'))
                         <input type="hidden" name="user_id" value="{{request('user')}}">

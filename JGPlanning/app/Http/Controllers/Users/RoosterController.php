@@ -22,22 +22,35 @@ class RoosterController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(CalendarService $calendarService)
+//  Functie om het rooster te laten zien
+    public function index(CalendarService $calendarService, $week)
     {
-        $isRooster = false;
-        $user = Auth::user()->id;
-        $weekDays     = Availability::WEEK_DAYS;
-        $availability = Availability::where('user_id', $user)->get();
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $isRooster);
+        $current_week = Carbon::now()->setISODate(date('Y'), $week);
+        $start_of_week = $current_week->startOfWeek()->format('d-M');
+        $end_of_week = $current_week->endOfWeek()->format('d-M');
 
-        return view('users.rooster.beschikbaarheid.index', compact(
+        $weekstring = $start_of_week . " - ". $end_of_week;
+
+        $week_number = $week;
+        $user = Auth::id();
+        $weekDays     = Availability::WEEK_DAYS;
+        $availability = Rooster::where('user_id', $user)->first();
+
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week_number);
+
+        $user_info = User::find($user);
+
+        return view('users.rooster.index', compact(
+            'user',
             'weekDays',
-            'calendarData',
             'availability',
-            'user'
+            'calendarData',
+            'user_info',
+            'weekstring'
         ));
     }
 
+//  Functie om een dag toe te voegen
     public function add_availability(Request $request)
     {
         $validated = $request->validate([
@@ -103,6 +116,7 @@ class RoosterController extends Controller
         return back();
     }
 
+//  Functie om een dag te bewerken
     public function edit_availability(Request $request)
     {
         $validated = $request->validate([
@@ -110,7 +124,6 @@ class RoosterController extends Controller
             'end_time' => ['required'],
             'weekday' => ['required'],
             'user_id' => ['required'],
-            'is_rooster' => ['required'],
             'from_home' => [],
             'comment' => [],
         ]);
@@ -130,7 +143,7 @@ class RoosterController extends Controller
             return back()->with('error', 'De ingevulde begin tijd is later dan de eind tijd');
         }
 
-        if ($validated['from_home'])
+        if (isset($validated['from_home']))
         {
             $from_home = 1;
         }
@@ -139,78 +152,43 @@ class RoosterController extends Controller
             $from_home = 0;
         }
 
-        if ($validated['is_rooster'])
-        {
-            $availability = Rooster::where('user_id', $validated['user_id'])->where('weekdays', $validated['weekday'])->first();
-        }
-        else
-        {
-            $availability = Availability::where('user_id', $validated['user_id'])->where('weekdays', $validated['weekday'])->first();
-        }
 
-        $availability->start_time = $start_date;
-        $availability->end_time = $end_date;
-        $availability->from_home = $from_home;
-        $availability->comment = $validated['comment'];
-
-        $availability->update();
+        Rooster::all()
+            ->where('user_id', $validated['user_id'])
+            ->where('weekdays', $validated['weekday'])
+            ->first()
+            ->update([
+                'start_time' => $start_date,
+                'end_time' => $end_date,
+                'from_home' => $from_home,
+                'comment' => "",
+            ]);
 
         return back();
     }
 
-    public function delete_availability($user, $weekday)
-    {
-        $availability = Availability::where('user_id', $user)->where('weekdays', $weekday)->first();
-
-        if (is_null($availability))
-        {
-            return back()->with('error', "Couldn't find data of this day");
-        }
-
-        $availability->delete();
-        return back();
-    }
-
+//  Functie om een dag uit de rooster te deleten
     public function delete_rooster($user, $weekday)
     {
-        $availability = Rooster::where('user_id', $user)->where('weekdays', $weekday)->first();
+        $rooster = Rooster::where('user_id', $user)->where('weekdays', $weekday)->first();
 
-        if (is_null($availability))
+        if (is_null($rooster))
         {
             return back()->with('error', "Couldn't find data of this day");
         }
 
-        $availability->delete();
+        $rooster->delete();
         return back();
     }
 
 
-    public function show_rooster(CalendarService $calendarService)
-    {
-        $isRooster = true;
-        $user = Auth::user()->id;
-        $weekDays     = Availability::WEEK_DAYS;
-        $availability = Rooster::where('user_id', $user)->get();
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $isRooster);
 
-        $user_info = User::find($user);
-
-        return view('users.rooster.index', compact(
-            'user',
-            'weekDays',
-            'availability',
-            'calendarData',
-            'user_info'
-        ));
-    }
-
+//  Functie om een gebruikers daggen die disabled zijn te sturen naar de database
     public function push_days($user, Request $request)
     {
         $validated = $request->validate([
             'data' => ['required', 'array']
         ]);
-
-
 
         for ($i = 1; $i < 6; $i++)
         {

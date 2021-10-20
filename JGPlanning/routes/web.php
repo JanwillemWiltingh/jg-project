@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, RoosterController, ProfileController};
-use App\Http\Controllers\Admin\{UserController,ClockController, AvailabilityController, CompareController};
+use App\Http\Controllers\Admin\{UserController,ClockController, RoosterAdminController, CompareController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,12 +39,12 @@ Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){
 });
 
 Route::name('rooster.')->prefix('rooster/')->group(function (){
-    Route::get('/', [RoosterController::class, 'show_rooster'])->name('index');
+    Route::get('/{week}', [RoosterController::class, 'index'])->name('index');
 });
 
+//TODO: nog onder rooster/* brengen maar ik ben er nog te bang voor aangezien ik nog bezig ben met inplannen voor de toekomst.
 Route::post('/availability', [RoosterController::class, 'add_availability'])->name('availability');
 Route::post('/availability-edit/', [RoosterController::class, 'edit_availability'])->name('edit_availability');
-Route::get('/{user}/availability-delete/{weekday}', [RoosterController::class, 'delete_availability'])->name('delete_availability');
 Route::get('/{user}/rooster-delete/{weekday}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 
 Route::name('admin.')->prefix('admin/')->group(function (){
@@ -64,9 +64,9 @@ Route::name('admin.')->prefix('admin/')->group(function (){
     });
 
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
-        Route::get('/', [AvailabilityController::class, 'index_rooster'])->name('index');
-        Route::get('/{user}', [AvailabilityController::class, 'user_rooster'])->name('user_rooster');
-        Route::post('/{user}/available_days', [RoosterController::class, 'push_days'])->name('push_days');
+        Route::get('/', [RoosterAdminController::class, 'index_rooster'])->name('index');
+        Route::get('/{user}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
+        Route::post('/{user}/available_days', [RoosterAdminController::class, 'push_days'])->name('push_days');
     });
 
     Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){
