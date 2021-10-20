@@ -15,14 +15,40 @@ class CompareController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
         $users = User::all();
-        $now = Carbon::now()->toDateString();
+        $all_users = User::all();
+        $month = Carbon::now()->year.'-'.Carbon::now()->month;
+        $week = Carbon::now()->year.'-W'.Carbon::now()->week;
 
-        return view('admin.compare.index')->with(['users' => $users, 'now' => $now]);
+        if($request->all() != []) {
+            $validated = $request->validate([
+                'month' => ['required'],
+                'week' => ['required'],
+                'user' => ['required'],
+                'date-format' => ['required'],
+            ]);
+//            dd($validated['DateFormat']);
+            $request->session()->flash('month', $validated['month']);
+            $request->session()->flash('week', $validated['week']);
+            $request->session()->flash('user', $validated['user']);
+            $request->session()->flash('date-format', $validated['date-format']);
+
+            if($validated['user'] != 0) {
+                $users = User::where('id', $validated['user'])->get();
+            }
+        }
+
+        return view('admin.compare.index')->with([
+            'users' => $users,
+            'all_users' => $all_users,
+            'month' => $month,
+            'week' => $week
+        ]);
     }
 
     /**

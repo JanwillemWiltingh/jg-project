@@ -91,7 +91,27 @@ class User extends Authenticatable
                 $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
             }
 
-            return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
+            $weeks = floor($time / 604800);
+            $remainder = $time - ($weeks * 604800);
+
+            $days = floor($remainder / 86400);
+            $remainder = $remainder - ($days * 86400);
+
+            $hours = floor($remainder / 3600);
+            $remainder = $remainder - ($hours * 3600);
+
+            $minutes = floor($remainder / 60);
+            $seconds = $remainder - ($minutes * 60);
+
+            return [
+                CarbonInterval::seconds($time)->cascade()->forHumans(),
+                $time,
+                'weeks' => $weeks,
+                'days' => $days,
+                'hours' => $hours,
+                'minutes' => $minutes,
+                'seconds' => $seconds,
+            ];
         }
 
         return ['-', 0];
@@ -110,48 +130,51 @@ class User extends Authenticatable
     {
 //        Get all the roosters from the users from the given year
         $roosters = $this->roosters()->get();
-
-//        Get the first day of the give month and year
-        $first_day_of_month = new Carbon($year.'-'.$month.'-01');
+        if($roosters->count() > 0) {
+            //        Get the first day of the give month and year
+            $first_day_of_month = new Carbon($year.'-'.$month.'-01');
 
 //        using the newly made day get the amount of days in this month
-        $days_of_month = $first_day_of_month->daysInMonth;
+            $days_of_month = $first_day_of_month->daysInMonth;
 
 //        using the days in this month to get the last day of the month
-        $last_day_of_month = new Carbon($year.'-'.$month.'-'.$days_of_month);
+            $last_day_of_month = new Carbon($year.'-'.$month.'-'.$days_of_month);
 
 //        us the first and last day of the month to get the first and last week number of this month
-        $first_week = $first_day_of_month->weekOfYear;
-        $last_week = $last_day_of_month->weekOfYear;
+            $first_week = $first_day_of_month->weekOfYear;
+            $last_week = $last_day_of_month->weekOfYear;
 
 //        Make a new collection
-        $collection = collect();
+            $collection = collect();
 
 //        Filter all roosters
-        foreach ($roosters as $rooster) {
-            $in_range = false;
+            foreach ($roosters as $rooster) {
+                $in_range = false;
 
-            if($rooster['year'].'.'.$rooster['start_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['start_week'] <= $year.'.'.$last_week) {
-                $in_range = true;
+                if($rooster['year'].'.'.$rooster['start_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['start_week'] <= $year.'.'.$last_week) {
+                    $in_range = true;
+                }
+
+                if($rooster['year'].'.'.$rooster['end_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['end_week'] <= $year.'.'.$last_week) {
+                    $in_range = true;
+                }
+
+                if($in_range) {
+                    $collection->push($rooster);
+                }
             }
-
-            if($rooster['year'].'.'.$rooster['end_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['end_week'] <= $year.'.'.$last_week) {
-                $in_range = true;
+            $time = 0;
+            for ($i = 1; $i <= $days_of_month; $i++) {
+                $date = new Carbon($year.'-'.$month.'-'.$i);
+                $week_number = $date->weekOfYear;
+                $day_of_week = $date->dayOfWeek;
+                $current_rooster = $collection->where('start_week', '<=', $week_number)->where('end_week', '>=', $week_number)->where('weekdays', $day_of_week)->first();
+                if($current_rooster != null) {
+                    $time += Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
+                }
             }
-
-            if($in_range) {
-                $collection->push($rooster);
-            }
+            return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
         }
-
-        for ($i = 1; $i <= $days_of_month; $i++) {
-//            print($i.' ');
-        }
-
-        if($this['id'] == 2) {
-            dd($collection);
-        }
-
         return ['-', 0];
     }
 }
