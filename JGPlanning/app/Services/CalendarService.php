@@ -9,16 +9,23 @@ use function PHPUnit\Framework\isNull;
 
 class CalendarService
 {
-    public function generateCalendarData($weekDays, $userID, $isRooster)
+    public function generateCalendarData($weekDays, $userID, $week_number)
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
-        $lessons   = Rooster::where('user_id', $userID)->get();
+        $lessons   = Rooster::where('user_id', $userID)->first();
+
+//        if (in_array($week_number, range($lessons->start_week, $lessons->end_week)))
+//        {
+//            return "yes";
+//        }
+//        else
+//        {
+//            return "no";
+//        }
 
         $user = User::find($userID);
-
-
 
         foreach ($timeRange as $time)
         {
@@ -30,44 +37,55 @@ class CalendarService
             foreach ($weekDays as $index => $day)
             {
                 $lesson = $lessons->where('weekdays', $index)->where('start_time', $time_start)->first();
-
                 if($lesson)
                 {
-                    $start = substr($lesson->start_time, "0", "5");;
-                    $end = substr($lesson->end_time, "0", "5");;
+                    $start = substr($lesson->start_time, "0", "5");
+                    $end = substr($lesson->end_time, "0", "5");
                 }
 
-                if ($lesson)
+                if (json_decode($user->unavailable_days))
                 {
-//                    if((json_decode($user->unavailable_days)[$index - 1]) == "on" || $lesson->disabled == 1)
-//                    {
-//                        array_push($calendarData[$timeText], 2);
-//                    }
-//                    else
-//                    {
+                    if (json_decode($user->unavailable_days)[$index - 1] == "on")
+                    {
+                        if($timeText == "08:00 - 08:30")
+                        {
+                            array_push($calendarData[$timeText], [
+                                'rowspan'      => 20,
+                                'from_home'    => "",
+                                'comment'      => "Disabled",
+                                'start_time'   => "",
+                                'end_time'     => "",
+                            ]);
+                        }
+                        else
+                        {
+                            array_push($calendarData[$timeText], 0);
+                        }
+                    }
+                    else if ($lesson)
+                    {
                         array_push($calendarData[$timeText], [
-                            'rowspan'      => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
-                            'from_home'    => $lesson['from_home'],
-                            'comment'      => $lesson['comment'],
-                            'start_time'   => $start,
-                            'end_time'     => $end,
+                            'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
+                            'from_home' => $lesson['from_home'],
+                            'comment' => $lesson['comment'],
+                            'start_time' => $start,
+                            'end_time' => $end,
                         ]);
-//                    }
-                }
-                else if (!$lessons->where('weekdays', $index)->where('start_time','<', $time_start)->where('end_time', '>=', $time_end)->count())
-                {
-                    array_push($calendarData[$timeText], 1);
-                }
-                else if ((json_decode($user->unavailable_days)[$index]) == "on")
-                {
-                    array_push($calendarData[$timeText], 2);
-                }
-                else
-                {
-                    array_push($calendarData[$timeText], 0);
+                    }
+
+                    else if (!$lessons->where('weekdays', $index)->where('start_time', '<', $time['start'])->where('end_time', '>=', $time['end'])->count())
+                    {
+                        array_push($calendarData[$timeText], 1);
+                    }
+
+                    else
+                    {
+                        array_push($calendarData[$timeText], 0);
+                    }
                 }
             }
         }
+//        dd($calendarData);
         return $calendarData;
     }
 }
