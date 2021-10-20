@@ -5289,9 +5289,8 @@ $(document).ready(function () {
     });
     $('#loader').removeClass('d-none');
     setTimeout(function () {
-      console.log('wait, hammer time');
       location.reload();
-    }, 1000);
+    }, 100);
   });
 });
 

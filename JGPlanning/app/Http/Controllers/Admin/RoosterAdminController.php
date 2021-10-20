@@ -16,23 +16,15 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AvailabilityController extends Controller
+class RoosterAdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return Application|Factory|View
      */
-    public function index()
-    {
-        $roles = Role::$roles;
-        $users = User::where('role_id', $roles['employee'])->get();
 
-        return view('admin.availability.index', compact(
-            'users',
-        ));
-    }
-
+//  Functie om gebruikers hun roosters te zien.
     public function index_rooster()
     {
         $users = User::all();
@@ -42,21 +34,7 @@ class AvailabilityController extends Controller
         ));
     }
 
-    public function user_availability($user, CalendarService $calendarService)
-    {
-        $user = User::find($user);
-        $isRooster    = false;
-        $availability = Availability::where('user_id', $user)->get();
-        $weekDays     = Availability::WEEK_DAYS;
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $isRooster);
-        return view('admin.availability.calender.index', compact(
-            'weekDays',
-            'calendarData',
-            'availability',
-            'user'
-        ));
-    }
-
+//  Functie voor admins om naar gebruikers hun rooster te kijken.
     public function user_rooster(CalendarService $calendarService, $user)
     {
         $user_info = User::find($user);
@@ -72,5 +50,40 @@ class AvailabilityController extends Controller
             'user',
             'user_info'
         ));
+    }
+
+//  Functie om de array met de disabled dagen te sturen naar de database.
+    public function push_days($user, Request $request)
+    {
+        $validated = $request->validate([
+            'data' => ['required', 'array']
+        ]);
+
+
+
+        for ($i = 1; $i < 6; $i++)
+        {
+            if ($validated['data'][$i - 1])
+            {
+                if(Rooster::all()->where('user_id', $user)->where('weekdays', $i)->first())
+                {
+                    $updaterooster = Rooster::where('weekdays', $i)->where('user_id', $user)->update([
+                        'disabled' => true
+                    ]);
+                }
+            }
+            else
+            {
+                $updaterooster = Rooster::where('weekdays', $i)->where('user_id', $user)->update([
+                    'disabled' => false
+                ]);
+            }
+        }
+
+        $update = User::where('id', $user)->update([
+            'unavailable_days' => $validated['data']
+        ]);
+
+        return redirect()->back();
     }
 }
