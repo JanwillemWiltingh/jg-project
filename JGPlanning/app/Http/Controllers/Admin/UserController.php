@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\Rooster;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -54,7 +55,7 @@ class UserController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $roles = Role::$roles;
         $validated = $request->validate([
@@ -68,14 +69,29 @@ class UserController extends Controller
         if($current_user['role_id'] == $roles['admin']){
             $validated['roles'] = $roles['employee'];
         }
-        $user = new User;
-        $user['name'] = $validated['name'];
-        $user['email'] = $validated['email'];
-        $user['password'] = Hash::make($validated['password']);
-        $user['role_id'] = $validated['roles'];
-        $user->save();
 
-        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
+        $newUser = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role_id' => $validated['roles'],
+        ]);
+
+        for ($i = 1; $i < 6; $i++)
+        {
+            Rooster::create([
+                'user_id' => $newUser->id,
+                'start_time' => '08:30:00',
+                'end_time' => '17:00:00',
+                'comment' => "",
+                'from_home' => 0,
+                'weekdays' => $i,
+                'created_at' => date('Y-m-d h:i:s'),
+                'updated_at' => date('Y-m-d h:i:s'),
+            ]);
+        }
+
+//        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
     }
 
     /**
