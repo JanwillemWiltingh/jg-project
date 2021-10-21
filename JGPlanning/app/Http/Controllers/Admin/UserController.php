@@ -60,7 +60,9 @@ class UserController extends Controller
     {
         $roles = Role::$roles;
         $validated = $request->validate([
-            'name' => ['required'],
+            'firstname' => ['required'],
+            'middlename' => ['nullable'],
+            'lastname' => ['required'],
             'email' => ['required','unique:users,email'],
             'password' => ['required', 'confirmed'],
             'roles' =>['required'],
@@ -72,7 +74,9 @@ class UserController extends Controller
         }
 
         $newUser = User::create([
-            'name' => $validated['name'],
+            'firstname' => $validated['firstname'],
+            'middlename' => $validated['middlename'],
+            'lastname' => $validated['lastname'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role_id' => $validated['roles'],
@@ -137,7 +141,9 @@ class UserController extends Controller
         $maintainer_count = User::all()->where('role_id', $roles['maintainer'])->count();
 
         $validated = $request->validate([
-            'name' => ['required'],
+            'firstname' => ['required'],
+            'middlename' => ['nullable'],
+            'lastname' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'password' => ['nullable', 'confirmed'],
             'roles' =>['required'],
@@ -155,16 +161,20 @@ class UserController extends Controller
 
         if(empty($validated['password'])){
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
-                'role_id' => $validated['roles']
+                'role_id' => $validated['roles'],
             ]);
         }else{
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
-                'role_id' => $validated['roles']
+                'role_id' => $validated['roles'],
             ]);
         }
         return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);

@@ -36,7 +36,7 @@ class RoosterController extends Controller
         $weekDays     = Availability::WEEK_DAYS;
         $availability = Rooster::where('user_id', $user)->first();
 
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week_number);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user);
 
         $user_info = User::find($user);
 

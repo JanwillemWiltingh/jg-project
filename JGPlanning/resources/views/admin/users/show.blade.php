@@ -2,6 +2,7 @@
 
 @section('content')
     <h1>Gebruiker Informatie <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step"></i></a></h1>
+{{--  USER ID  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
@@ -10,14 +11,34 @@
             </div>
         </div>
     </div>
+{{--  USER FIRSTNAME  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
-                <label class="black-label-text" for="name">Naam</label>
-                <input type="text" class="form-control" id="name" value="@if(empty($user['name']))NULL @else{{$user['name']}} @endif" aria-describedby="name" placeholder="Naam" disabled>
+                <label class="black-label-text" for="firstname">Voornaam</label>
+                <input type="text" class="form-control" id="firstname" value="@if(empty($user['firstname']))NULL @else{{$user['firstname']}} @endif" aria-describedby="firstname" placeholder="Voornaam" disabled>
             </div>
         </div>
     </div>
+{{--  USER MIDDLENAME  --}}
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label class="black-label-text" for="middlename">Tussenvoegsel</label>
+                <input type="text" class="form-control" id="middlename" value="@if(empty($user['middlename']))NULL @else{{$user['middlename']}} @endif" aria-describedby="middlename" placeholder="Tussenvoegsel" disabled>
+            </div>
+        </div>
+    </div>
+{{--  USER LASTNAME  --}}
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label class="black-label-text" for="lastname">Achternaam</label>
+                <input type="text" class="form-control" id="lastname" value="@if(empty($user['lastname']))NULL @else{{$user['lastname']}} @endif" aria-describedby="lastname" placeholder="Achternaam" disabled>
+            </div>
+        </div>
+    </div>
+{{--  USER EMAIL  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
@@ -26,6 +47,7 @@
             </div>
         </div>
     </div>
+{{--  USER PASSWORD  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
@@ -34,6 +56,7 @@
             </div>
         </div>
     </div>
+{{--  USER CREATED  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
@@ -42,6 +65,7 @@
             </div>
         </div>
     </div>
+{{--  USER LAST UPDATED  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
@@ -50,6 +74,7 @@
             </div>
         </div>
     </div>
+{{--  USER DELETED  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
@@ -58,6 +83,7 @@
             </div>
         </div>
     </div>
+{{--  USER ROLE_ID  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">
@@ -66,6 +92,7 @@
             </div>
         </div>
     </div>
+{{--  USER ROLE  --}}
     <div class="row">
         <div class="col-3">
             <div class="form-group">

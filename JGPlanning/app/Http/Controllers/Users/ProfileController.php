@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use MongoDB\Driver\Session;
 
 class ProfileController extends Controller
 {
@@ -81,24 +82,30 @@ class ProfileController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required'],
+            'firstname' => ['required'],
+            'middlename' => ['nullable'],
+            'lastname' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'password' => ['nullable', 'confirmed'],
         ]);
 
         if(empty($validated['password'])){
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
             ]);
         }else{
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
             ]);
         }
-        return redirect()->back()->with(['message' => ['message' => 'User updated successfully', 'type' => 'success']]);
+        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
 
     /**

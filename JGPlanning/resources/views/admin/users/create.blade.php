@@ -13,11 +13,35 @@
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
-                    <label class="black-label-text" for="name">Naam</label>
-                    <input type="text" class="form-control" id="name" name="name" aria-describedby="name" placeholder="Naam">
+                    <label class="black-label-text" for="firstname">Voornaam</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" aria-describedby="firstname" placeholder="Voornaam">
 
-                    @if($errors->has('name'))
-                        <div class="error">{{ $errors->first('name') }}</div>
+                    @if($errors->has('firstname'))firstname
+                        <div class="error">{{ $errors->first('firstname') }}</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="black-label-text" for="middlename">Tussenvoegsel</label>
+                    <input type="text" class="form-control" id="middlename" name="middlename" aria-describedby="middlename" placeholder="Tussenvoegsel">
+
+                    @if($errors->has('middlename'))
+                        <div class="error">{{ $errors->first('middlename') }}</div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="black-label-text" for="lastname">Achternaam</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" aria-describedby="lastname" placeholder="Achternaam">
+
+                    @if($errors->has('lastname'))
+                        <div class="error">{{ $errors->first('lastname') }}</div>
                     @endif
                 </div>
             </div>

@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session()->get('message'))
+        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
+            {{ session()->get('message')['message'] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    @endif
     @include('modals')
     <div class="content fadeInDown">
         <form id="admin-availability" type="GET">
@@ -9,20 +16,20 @@
                 <p>Bekijk gebruikers opgegeven beschikbaarheid:</p>
             </label>
             <select name="user" class="form-control" id="admin-availability-dropdown">
-                @foreach(\App\Models\User::where('role_id', 2)->get() as $user)
-                    <option value="{{$user->id}}" @if(request('user') == $user->id) selected @endif>{{$user->name}}</option>
+                @foreach(\App\Models\User::get() as $user)
+                    <option value="{{$user['id']}}" @if(request('user') == $user['id']) selected @endif>{{$user['firstname']}} @if(!empty($user['middlename'])) {{$user['middlename']}}  @endif{{$user['lastname']}}</option>
                 @endforeach
             </select>
         </form>
 
-        @foreach ($errors->all() as $error)
-            <p style="color:red;">{{ $error }}</p>
-        @endforeach
-        @if(session()->has('error'))
-            <p style="color:red;">
-                {{ session()->get('error') }}
-            </p>
-        @endif
+{{--        @foreach ($errors->all() as $error)--}}
+{{--            <p style="color:red;">{{ $error }}</p>--}}
+{{--        @endforeach--}}
+{{--        @if(session()->has('error'))--}}
+{{--            <p style="color:red;">--}}
+{{--                {{ session()->get('error') }}--}}
+{{--            </p>--}}
+{{--        @endif--}}
         <div class="loader d-none" id="loader"></div>
         <div class="row">
             <div class="col-lg-12">
