@@ -27,8 +27,7 @@ class RoosterAdminController extends Controller
 //  Functie om gebruikers hun roosters te zien.
     public function index_rooster()
     {
-        $roles = Role::$roles;
-        $users = User::where('role_id', $roles['employee'])->get();
+        $users = User::all();
 
         return view('admin.availability.calender.table', compact(
             'users',

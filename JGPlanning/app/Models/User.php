@@ -24,7 +24,9 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'middlename',
+        'lastname',
         'email',
         'password',
         'role_id',
@@ -60,7 +62,7 @@ class User extends Authenticatable
 
     public function hasRole($role): bool
     {
-        return $this->role()->get()->unique()->where('name', $role)->first() != null;
+        return $this->role()->get()->unique()->where('firstname', $role)->first() != null;
     }
 
     public function isClockedIn(): bool

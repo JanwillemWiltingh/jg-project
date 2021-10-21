@@ -28,7 +28,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('dashboard.index')->with(['start' => $user->isClockedIn()]);
+        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user]);
     }
 
     /**

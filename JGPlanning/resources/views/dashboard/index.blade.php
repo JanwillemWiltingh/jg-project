@@ -3,6 +3,7 @@
 @section('content')
 {{--  TODO: Mogelijk met Jessenger package controleren of iemand op mobiel bezig is of niet  --}}
     <div class="container">
+        <h1>Welkom {{$user['firstname']}}!</h1>
         <form action="{{ route('dashboard.clock') }}" method="post">
             @csrf
             <div class="row">

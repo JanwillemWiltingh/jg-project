@@ -5,8 +5,32 @@
     <div class="row">
         <div class="col-3">
             <div class="form-group">
-                <label class="black-label-text" for="name">Name</label>
-                <input type="text" class="form-control" id="name" value="{{$user['name']}}" aria-describedby="name" placeholder="Name" disabled>
+                <label class="black-label-text" for="name">Voornaam</label>
+                <input type="text" class="form-control" id="name" value="{{$user['firstname']}}" aria-describedby="name" placeholder="Voornaam" disabled>
+                @if($errors->has('name'))
+                    <div class="error">{{ $errors->first('name') }}</div>
+                @endif
+            </div>
+        </div>
+    </div>
+    @if(!empty($user['middlename']))
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label class="black-label-text" for="name">Middlename</label>
+                <input type="text" class="form-control" id="name" value="{{$user['middlename']}}" aria-describedby="name" placeholder="Voornaam" disabled>
+                @if($errors->has('name'))
+                    <div class="error">{{ $errors->first('name') }}</div>
+                @endif
+            </div>
+        </div>
+    </div>
+    @endif
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label class="black-label-text" for="name">Achternaam</label>
+                <input type="text" class="form-control" id="name" value="{{$user['lastname']}}" aria-describedby="name" placeholder="Achternaam" disabled>
                 @if($errors->has('name'))
                     <div class="error">{{ $errors->first('name') }}</div>
                 @endif
