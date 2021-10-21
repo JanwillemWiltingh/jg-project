@@ -14,7 +14,7 @@ $(document).ready(function () {
     $('input[name="date-format"]').change(function () {
         const a = $('input[name="date-format"]:checked').val();
         console.log(a);
-        
+
         if(a === 'month') {
             $('#month-group').show();
             $('#week-group').hide();

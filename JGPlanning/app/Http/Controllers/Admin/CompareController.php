@@ -25,6 +25,7 @@ class CompareController extends Controller
         $month = Carbon::now()->year.'-'.Carbon::now()->month;
         $week = Carbon::now()->year.'-W'.Carbon::now()->week;
 
+        $input_field = 'month';
         if($request->all() != []) {
             $validated = $request->validate([
                 'month' => ['required'],
@@ -32,7 +33,7 @@ class CompareController extends Controller
                 'user' => ['required'],
                 'date-format' => ['required'],
             ]);
-//            dd($validated['DateFormat']);
+
             $request->session()->flash('month', $validated['month']);
             $request->session()->flash('week', $validated['week']);
             $request->session()->flash('user', $validated['user']);
@@ -41,13 +42,16 @@ class CompareController extends Controller
             if($validated['user'] != 0) {
                 $users = User::where('id', $validated['user'])->get();
             }
+
+            $input_field = $validated['date-format'];
         }
 
         return view('admin.compare.index')->with([
             'users' => $users,
             'all_users' => $all_users,
             'month' => $month,
-            'week' => $week
+            'week' => $week,
+            'input_field' => $input_field
         ]);
     }
 

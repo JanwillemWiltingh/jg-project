@@ -21,11 +21,7 @@
                             @foreach (['month' => 'Maand', 'week' => 'Week'] as $id => $format)
                                 <div class="form-check">
                                     <input type="radio" name="date-format" id="{{ $id }}" value="{{ $id }}"
-                                        @if(old('date-format') !== null)
-                                            @if(old('date-format') == $id)
-                                                checked
-                                            @endif
-                                        @elseif($id == 'month')
+                                        @if($id == $input_field)
                                             checked
                                         @endif>
                                     <label for="{{ $id }}">{{ $format }}</label>
@@ -67,18 +63,29 @@
                             <tr>
                                 <th scope="row">{{ $loop->index }}</th>
                                 <td>{{ $user['name'] }}</td>
-                                <td>{{ $user->workedInAMonth(10)[1] }} Seconds</td>
                                 <td>
-                                    {{ $user->plannedWorkAMonth(2021, 10)[1] }} Seconds
-{{--                                    {{ $user->workedInAMonth(10)['weeks'] }} Weeks--}}
-{{--                                    {{ $user->workedInAMonth(10)['days'] }} Days--}}
-{{--                                    {{ $user->workedInAMonth(10)['hours'] }} Hours--}}
-{{--                                    {{ $user->workedInAMonth(10)['minutes'] }} Minutes--}}
-{{--                                    {{ $user->workedInAMonth(10)['seconds'] }} Seconds--}}
+                                    @if($input_field == 'week')
+                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                    @else
+                                        {{ $user->workedInAMonth(explode('-', $month)[1])[0] }}
+                                    @endif
                                 </td>
-                                <td @if(($user->workedInAMonth(10)[1] - $user->plannedWorkAMonth(2021, 10)[1]) < 0) class="table-danger" @else class="table-success" @endif>
-                                    {{ $user->workedInAMonth(10)[1] - $user->plannedWorkAMonth(2021, 10)[1] }} Seconds
+                                <td>
+                                    @if($input_field == 'week')
+                                        {{ $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                    @else
+                                        {{ $user->plannedWorkAMonth(2021, explode('-', $month)[1])[0] }}
+                                    @endif
                                 </td>
+                                @if($input_field == 'week')
+                                    <td @if($user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[1] - $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[1] < 0) class="table-danger" @else class="table-success" @endif>
+                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[1] - $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[1] }} Seconds
+                                    </td>
+                                @else
+                                    <td @if(($user->workedInAMonth(explode('-', $month)[1])[1] - $user->plannedWorkAMonth(2021, explode('-', $month)[1])[1]) < 0) class="table-danger" @else class="table-success" @endif>
+                                        {{ $user->workedInAMonth(explode('-', $month)[1])[1] - $user->plannedWorkAMonth(2021, explode('-', $month)[1])[1] }}
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>

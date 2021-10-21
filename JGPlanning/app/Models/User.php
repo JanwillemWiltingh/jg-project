@@ -81,42 +81,6 @@ class User extends Authenticatable
         return explode(' ', $first_clock['time'])[1];
     }
 
-    public function workedInAMonth($month): array
-    {
-        $clocks = $this->clocks()->whereMonth('date', '=','10')->get();
-        $time = 0;
-
-        if($clocks->count() > 0) {
-            foreach($clocks as $clock) {
-                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
-            }
-
-            $weeks = floor($time / 604800);
-            $remainder = $time - ($weeks * 604800);
-
-            $days = floor($remainder / 86400);
-            $remainder = $remainder - ($days * 86400);
-
-            $hours = floor($remainder / 3600);
-            $remainder = $remainder - ($hours * 3600);
-
-            $minutes = floor($remainder / 60);
-            $seconds = $remainder - ($minutes * 60);
-
-            return [
-                CarbonInterval::seconds($time)->cascade()->forHumans(),
-                $time,
-                'weeks' => $weeks,
-                'days' => $days,
-                'hours' => $hours,
-                'minutes' => $minutes,
-                'seconds' => $seconds,
-            ];
-        }
-
-        return ['-', 0];
-    }
-
     public function isCurrentUser(): string
     {
         if($this['id'] == Auth::id()) {
@@ -124,6 +88,58 @@ class User extends Authenticatable
         }
 
         return '';
+    }
+
+    public function workedInAMonth($month): array
+    {
+        $clocks = $this->clocks()->whereMonth('date', '=',$month)->get();
+        $time = 0;
+
+        if($clocks->count() > 0) {
+            foreach($clocks as $clock) {
+                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+            }
+
+//            $weeks = floor($time / 604800);
+//            $remainder = $time - ($weeks * 604800);
+//
+//            $days = floor($remainder / 86400);
+//            $remainder = $remainder - ($days * 86400);
+//
+//            $hours = floor($remainder / 3600);
+//            $remainder = $remainder - ($hours * 3600);
+//
+//            $minutes = floor($remainder / 60);
+//            $seconds = $remainder - ($minutes * 60);
+
+            return [
+                CarbonInterval::seconds($time)->cascade()->forHumans(),
+                $time,
+            ];
+        }
+
+        return ['-', 0];
+    }
+
+    public function workedInAWeek($week): array
+    {
+        $clocks = $this->clocks()->get();
+
+        if($clocks->count() > 0) {
+            $time = 0;
+            foreach($clocks as $clock) {
+                if(Carbon::parse($clock['date'])->weekOfYear == $week) {
+                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                }
+            }
+
+            return [
+                CarbonInterval::seconds($time)->cascade()->forHumans(),
+                $time,
+            ];
+        }
+
+        return ['-', 0];
     }
 
     public function plannedWorkAMonth($year, $month): array
@@ -175,6 +191,30 @@ class User extends Authenticatable
             }
             return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
         }
+        return ['-', 0];
+    }
+
+    public function plannedWorkAWeek($year, $week): array
+    {
+        $roosters = $this->roosters()->get();
+
+        if($roosters->count() > 0) {
+            //        Make a new collection
+            $collection = collect();
+
+            foreach($roosters as $rooster) {
+                if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
+                    $collection->push($rooster);
+                }
+            }
+
+            $time = 0;
+            foreach($collection as $day) {
+                $time += Carbon::parse($day['end_time'])->diffInSeconds(Carbon::parse($day['start_time']));
+            }
+            return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
+        }
+
         return ['-', 0];
     }
 }
