@@ -18,11 +18,13 @@
         <thead>
             <tr>
                 <th scope="col"><strong>#</strong></th>
-                <th scope="col"><strong>Name</strong></th>
-                <th scope="col"><strong>Email</strong></th>
-                <th scope="col"><strong>Role_id</strong></th>
-                <th scope="col"><strong>Role</strong></th>
-                <th scope="col"><strong>Active</strong></th>
+                <th scope="col"><strong>Voornaam</strong></th>
+                <th scope="col"><strong>Tussenvoegsel</strong></th>
+                <th scope="col"><strong>Achternaam</strong></th>
+                <th scope="col"><strong>E-mail</strong></th>
+                <th scope="col"><strong>Rol Id</strong></th>
+                <th scope="col"><strong>Rol</strong></th>
+                <th scope="col"><strong>Actief?</strong></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -35,11 +37,19 @@
                 <th scope="row">{{ $loop->index }}</th>
                 {{--Check the email from the current user and the email in the database to show who is selected(logged in)--}}
                 <td>
-                    @if($user['id'] == $user_session['id'])
-                        <strong>{{$user['name']}}</strong>
-                    @else
-                        {{$user['name']}}
-                    @endif
+                    {{$user['firstname']}}
+                </td>
+                @if(empty($user['middlename']))
+                    <td>
+                        <i>NULL</i>
+                    </td>
+                @else
+                    <td>
+                        {{$user['middlename']}}
+                    </td>
+                @endif
+                <td>
+                    {{$user['lastname']}}
                 </td>
 
                 <td>{{$user['email']}}</td>

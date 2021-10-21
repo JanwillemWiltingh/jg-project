@@ -9,21 +9,13 @@ use function PHPUnit\Framework\isNull;
 
 class CalendarService
 {
-    public function generateCalendarData($weekDays, $userID, $week_number)
+    public function generateCalendarData($weekDays, $userID)
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
         $lessons   = Rooster::where('user_id', $userID)->first();
 
-//        if (in_array($week_number, range($lessons->start_week, $lessons->end_week)))
-//        {
-//            return "yes";
-//        }
-//        else
-//        {
-//            return "no";
-//        }
 
         $user = User::find($userID);
 
@@ -36,9 +28,17 @@ class CalendarService
             $time_end = $time['end']. ':00';
             foreach ($weekDays as $index => $day)
             {
-                $lesson = $lessons->where('weekdays', $index)->where('start_time', $time_start)->first();
+                if($lessons)
+                {
+                    $lesson = $lessons->where('weekdays', $index)->where('start_time', $time_start)->first();
+                }
+                else
+                {
+                    $lesson = "";
+                }
                 if($lesson)
                 {
+                    $lesson = $lessons->where('weekdays', $index)->where('start_time', $time_start)->first();
                     $start = substr($lesson->start_time, "0", "5");
                     $end = substr($lesson->end_time, "0", "5");
                 }

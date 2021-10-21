@@ -38,22 +38,31 @@
                                         <th width="14%" style="border: none; text-align: center;">
                                             {{ $weekDays[$i] }}
                                             @if(is_null(json_decode($user_info->unavailable_days)[$i - 1]))
-                                                @if(is_null($availability->where('weekdays', $i)->first()))
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
+                                                @if($availability)
+                                                    @if(is_null($availability->where('weekdays', $i)->first()))
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
+                                                    @else
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
+                                                        <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i])}}"><i class="fa fa-trash"></i></a>
+                                                    @endif
                                                 @else
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
-                                                    <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i])}}"><i class="fa fa-trash"></i></a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
                                                 @endif
                                             @endif
                                         </th>
                                     @else
                                         <th width="14%" style="border: none; text-align: center; @if(!is_null(json_decode($user_info->unavailable_days)[$i - 1])) background: lightgrey @endif">
                                             {{ $weekDays[$i] }}
-                                            @if(is_null($availability->where('weekdays', $i)->first()))
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
+
+                                            @if($availability)
+                                                @if(is_null($availability->where('weekdays', $i)->first()))
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
+                                                @else
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
+                                                    <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i])}}"><i class="fa fa-trash"></i></a>
+                                                @endif
                                             @else
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
-                                                <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i])}}"><i class="fa fa-trash"></i></a>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
                                             @endif
                                         </th>
                                     @endif

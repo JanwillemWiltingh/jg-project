@@ -23,14 +23,16 @@ class UsersSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         DB::table('users')->insert([
-            'name' => 'robert',
+            'firstname' => 'Robert',
+            'lastname' => 'Polman',
             'email' => 'robert@gmail.com',
             'password' => Hash::make('123'),
             'role_id' => Role::$roles['maintainer'],
         ]);
 
         DB::table('users')->insert([
-            'name' => 'willem',
+            'firstname' => 'Jan-Willem',
+            'lastname' => 'Willtigh',
             'email' => 'mail@mail.com',
             'password' => Hash::make('welkom'),
             'role_id' => Role::$roles['maintainer'],
