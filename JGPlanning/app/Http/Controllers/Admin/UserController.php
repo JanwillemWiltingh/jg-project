@@ -31,9 +31,8 @@ class UserController extends Controller
     {
         $users = User::all();
         $user_session = Auth::user();
-        $roles = Role::$roles;
 
-        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session, 'roles' => $roles]);
+        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);
     }
 
     /**
@@ -45,9 +44,8 @@ class UserController extends Controller
     {
         $user_session = Auth::user();
         $roles = Role::all();
-        $role_ids = Role::$roles;
 
-        return view('admin/users/create')->with(['roles'=>$roles, 'user_session' => $user_session, 'role_ids' => $role_ids]);
+        return view('admin/users/create')->with(['roles'=>$roles, 'user_session' => $user_session]);
     }
 
     /**
@@ -58,7 +56,6 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $roles = Role::$roles;
         $validated = $request->validate([
             'firstname' => ['required'],
             'middlename' => ['nullable'],
@@ -69,8 +66,8 @@ class UserController extends Controller
         ]);
 
         $current_user = Auth::user();
-        if($current_user['role_id'] == $roles['admin']){
-            $validated['roles'] = $roles['employee'];
+        if($current_user['role_id'] == Role::getRoleID('admin')){
+            $validated['roles'] = Role::getRoleID('employee');
         }
 
         $newUser = User::create([
@@ -103,7 +100,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param User $user
      * @return Application|Factory|View
      */
     public function show(User $user)
@@ -121,9 +118,8 @@ class UserController extends Controller
     {
         $user_session = Auth::user();
         $roles = Role::all();
-        $role_ids = Role::$roles;
 
-        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session, 'role_ids' => $role_ids]);
+        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
 
     }
 
@@ -133,12 +129,12 @@ class UserController extends Controller
      * @param Request $request
      * @param User $user
      * @return RedirectResponse
+     * @throws \Exception
      */
     public function update(Request $request, User $user): RedirectResponse
     {
         $auth_user = Auth::user();
-        $roles = Role::$roles;
-        $maintainer_count = User::all()->where('role_id', $roles['maintainer'])->count();
+        $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
             'firstname' => ['required'],
@@ -155,8 +151,8 @@ class UserController extends Controller
         }
 
         //  When the admin edit's a user set the role to 2
-        if($auth_user['role_id'] == $roles['admin']){
-            $validated['roles'] = $roles['employee'];
+        if($auth_user['role_id'] == Role::getRoleID('admin')){
+            $validated['roles'] = Role::getRoleID('employee');
         }
 
         if(empty($validated['password'])){

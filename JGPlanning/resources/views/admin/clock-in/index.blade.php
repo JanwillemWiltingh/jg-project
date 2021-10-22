@@ -37,7 +37,6 @@
                         <th scope="col">Start tijd</th>
                         <th scope="col">Eind tijd</th>
                         <th scope="col">Totaal ingeklokt</th>
-                        <th scope="col">Totaal gewerkt</th>
                         <th scope="col">Aantekening</th>
                     </tr>
                     </thead>
@@ -50,7 +49,6 @@
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
                                 <td>{{ $clock->timeWorkedToday(false) }}</td>
-                                <td>{{ $clock->timeWorkedToday(true) }}</td>
                                 <td>{{ $clock['comment'] }}</td>
                             </tr>
                         @endforeach

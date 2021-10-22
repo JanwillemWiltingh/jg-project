@@ -22,7 +22,7 @@
                 <th scope="col"><strong>Tussenvoegsel</strong></th>
                 <th scope="col"><strong>Achternaam</strong></th>
                 <th scope="col"><strong>E-mail</strong></th>
-                <th scope="col"><strong>Rol Id</strong></th>
+                <th scope="col"><strong>Rol ID</strong></th>
                 <th scope="col"><strong>Rol</strong></th>
                 <th scope="col"><strong>Actief?</strong></th>
                 <th scope="col"></th>
@@ -69,15 +69,15 @@
 
                 {{-- Check if the user is allowed to edit the user --}}
                 <td>
-                    @if($user_session['role_id'] == $roles['admin'])
-                        @if($user['role_id'] != $roles['employee'])
+                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin'))
+                        @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
                             <i>Kan alleen Employee's bewerken</i>
                         @else
                             <strong>
                                 <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}"><i class="fa-solid fa-user-pen"></i></a>
                             </strong>
                         @endif
-                    @elseif($user_session['role_id'] == $roles['maintainer'])
+                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
                         <strong>
                             <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}"><i class="fa-solid fa-user-pen"></i></a>
                         </strong>
@@ -86,13 +86,13 @@
 
                 {{-- Check if the user is allowed to delete the user --}}
                 <td>
-                    @if($user_session['role_id'] == $roles['admin'])
-                        @if($user['role_id'] != $roles['employee'])
+                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin'))
+                        @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
                             <i>Kan alleen employee's verwijderen</i>
                         @else
                             <strong>
                                 <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">
-                                    @if($user['role_id'] != 1)
+                                    @if($user['role_id'] != App\Models\Role::getRoleID('maintainer'))
                                         @if(empty($user['deleted_at']))
                                             <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-slash"></i></a>
                                         @else
@@ -102,9 +102,9 @@
                                 </a>
                             </strong>
                         @endif
-                    @elseif($user_session['role_id'] == $roles['maintainer'])
+                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
                         <strong>
-                            @if($user['role_id'] != 1)
+                            @if($user['role_id'] != App\Models\Role::getRoleID('maintainer'))
                                 @if(empty($user['deleted_at']))
                                     <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-slash"></i></a>
                                 @else
