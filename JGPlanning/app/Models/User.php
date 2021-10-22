@@ -83,22 +83,6 @@ class User extends Authenticatable
         return explode(' ', $first_clock['time'])[1];
     }
 
-    public function workedInAMonth($month): array
-    {
-        $clocks = $this->clocks()->whereMonth('date', '=','10')->get();
-        $time = 0;
-
-        if($clocks->count() > 0) {
-            foreach($clocks as $clock) {
-                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
-            }
-
-            return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
-        }
-
-        return ['-', 0];
-    }
-
     public function isCurrentUser(): string
     {
         if($this['id'] == Auth::id()) {
@@ -108,20 +92,145 @@ class User extends Authenticatable
         return '';
     }
 
-    public function plannedWorkAMonth($year, $month): array
+    public function workedInAMonth($month): array
     {
-//        $date = Carbon::now()->setISODate($year, $month);
-        $new_date = new Carbon($year.'-'.$month.'-01');
-        $days_of_month = $new_date->daysInMonth;
+        $clocks = $this->clocks()->whereMonth('date', '=',$month)->get();
+        $time = 0;
 
-        for ($i = 1; $i <= $days_of_month; $i++) {
-            print('OwO');
-        }
-        if($this['id'] == 2) {
-            dd($days_of_month);
-            dd($this->roosters()->get());
+        if($clocks->count() > 0) {
+            foreach($clocks as $clock) {
+                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+            }
+
+//            $weeks = floor($time / 604800);
+//            $remainder = $time - ($weeks * 604800);
+//
+//            $days = floor($remainder / 86400);
+//            $remainder = $remainder - ($days * 86400);
+//
+//            $hours = floor($remainder / 3600);
+//            $remainder = $remainder - ($hours * 3600);
+//
+//            $minutes = floor($remainder / 60);
+//            $seconds = $remainder - ($minutes * 60);
+
+            return [
+                CarbonInterval::seconds($time)->cascade()->forHumans(),
+                $time,
+            ];
         }
 
         return ['-', 0];
+    }
+
+    public function workedInAWeek($week): array
+    {
+        $clocks = $this->clocks()->get();
+
+        if($clocks->count() > 0) {
+            $time = 0;
+            foreach($clocks as $clock) {
+                if(Carbon::parse($clock['date'])->weekOfYear == $week) {
+                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                }
+            }
+
+            return [
+                CarbonInterval::seconds($time)->cascade()->forHumans(),
+                $time,
+            ];
+        }
+
+        return ['-', 0];
+    }
+
+    public function plannedWorkAMonth($year, $month): array
+    {
+//        Get all the roosters from the users from the given year
+        $roosters = $this->roosters()->get();
+        if($roosters->count() > 0) {
+            //        Get the first day of the give month and year
+            $first_day_of_month = new Carbon($year.'-'.$month.'-01');
+
+//        using the newly made day get the amount of days in this month
+            $days_of_month = $first_day_of_month->daysInMonth;
+
+//        using the days in this month to get the last day of the month
+            $last_day_of_month = new Carbon($year.'-'.$month.'-'.$days_of_month);
+
+//        us the first and last day of the month to get the first and last week number of this month
+            $first_week = $first_day_of_month->weekOfYear;
+            $last_week = $last_day_of_month->weekOfYear;
+
+//        Make a new collection
+            $collection = collect();
+
+//        Filter all roosters
+            foreach ($roosters as $rooster) {
+                $in_range = false;
+
+                if($rooster['year'].'.'.$rooster['start_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['start_week'] <= $year.'.'.$last_week) {
+                    $in_range = true;
+                }
+
+                if($rooster['year'].'.'.$rooster['end_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['end_week'] <= $year.'.'.$last_week) {
+                    $in_range = true;
+                }
+
+                if($in_range) {
+                    $collection->push($rooster);
+                }
+            }
+            $time = 0;
+            for ($i = 1; $i <= $days_of_month; $i++) {
+                $date = new Carbon($year.'-'.$month.'-'.$i);
+                $week_number = $date->weekOfYear;
+                $day_of_week = $date->dayOfWeek;
+                $current_rooster = $collection->where('start_week', '<=', $week_number)->where('end_week', '>=', $week_number)->where('weekdays', $day_of_week)->first();
+                if($current_rooster != null) {
+                    $time += Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
+                }
+            }
+            return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
+        }
+        return ['-', 0];
+    }
+
+    public function plannedWorkAWeek($year, $week): array
+    {
+        $roosters = $this->roosters()->get();
+
+        if($roosters->count() > 0) {
+            //        Make a new collection
+            $collection = collect();
+
+            foreach($roosters as $rooster) {
+                if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
+                    $collection->push($rooster);
+                }
+            }
+
+            $time = 0;
+            foreach($collection as $day) {
+                $time += Carbon::parse($day['end_time'])->diffInSeconds(Carbon::parse($day['start_time']));
+            }
+            return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
+        }
+
+        return ['-', 0];
+    }
+
+    public function compareWeekWorked($year, $week): array
+    {
+        $difference = $this->workedInAWeek($week)[1] - $this->plannedWorkAWeek($year, $week)[1];
+
+        return [CarbonInterval::seconds($difference)->cascade()->forHumans(), $difference];
+    }
+
+    public function compareMonthWorked($year, $month): array
+    {
+        $difference = $this->workedInAMonth($month)[1] - $this->plannedWorkAMonth($year, $month)[1];
+
+        return [CarbonInterval::seconds($difference)->cascade()->forHumans(), $difference];
     }
 }
