@@ -18,13 +18,6 @@ class Role extends Model
         'name'
     ];
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->maintainer = 1;
-    }
-    
     /**
      * Get the id of a role. When an incorrect role name has been given it will, on default, throw an error.
      * If turned off it will give a value of 3, 'Employee' ID, or another value when given
@@ -37,9 +30,11 @@ class Role extends Model
      */
     public static function getRoleID(string $role_name, bool $throw_error = true, int $fallback_id = 3): ?int
     {
+        //  Try to get, from the given string, an id
         try {
             return DB::table('roles')->select('id')->where('name', $role_name)->get()->first()->id;
         } catch (Exception $exception) {
+            //  Throw an error or if desired return a choosen default value
             if($throw_error) {
                 throw new Exception($exception->getMessage());
             } else {
