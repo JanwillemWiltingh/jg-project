@@ -12,7 +12,7 @@
                             <select name="user" class="form-control" id="users">
                                 <option value="0">Alle Gebruikers</option>
                                 @foreach($all_users as $user)
-                                    <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['name']) }}</option>
+                                    <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ucfirst($user['lastname'])}}</option>
                                 @endforeach
                             </select>
                         </div>
