@@ -52,7 +52,7 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Gebruikersnaam</th>
+                            <th scope="col">Naam</th>
                             <th scope="col">Tijd Gewerkt</th>
                             <th scope="col">Tijd Ingepland</th>
                             <th scope="col">Verschil</th>
@@ -62,7 +62,7 @@
                         @foreach($users as $user)
                             <tr>
                                 <th scope="row">{{ $loop->index }}</th>
-                                <td>{{ $user['name'] }}</td>
+                                <td>{{ $user['firstname'] }} {{ $user['middlename'] }} {{ $user['lastname'] }}</td>
                                 <td>
                                     @if($input_field == 'week')
                                         {{ $user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[0] }}
@@ -78,12 +78,21 @@
                                     @endif
                                 </td>
                                 @if($input_field == 'week')
-                                    <td @if($user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[1] - $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[1] < 0) class="table-danger" @else class="table-success" @endif>
-                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[1] - $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[1] }} Seconds
+                                    <td @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $week)[1]))[1] < 0) class="table-danger" @else class="table-success" @endif>
+                                        @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $week)[1]))[1] == 0)
+                                            0 seconde
+                                        @else
+                                            {{ $user->compareWeekWorked(2021, str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                        @endif
                                     </td>
                                 @else
-                                    <td @if(($user->workedInAMonth(explode('-', $month)[1])[1] - $user->plannedWorkAMonth(2021, explode('-', $month)[1])[1]) < 0) class="table-danger" @else class="table-success" @endif>
-                                        {{ $user->workedInAMonth(explode('-', $month)[1])[1] - $user->plannedWorkAMonth(2021, explode('-', $month)[1])[1] }}
+                                    <td @if($user->compareMonthWorked(2021, explode('-', $month)[1]) < 0) class="table-danger" @else class="table-success" @endif>
+                                        @if($user->compareMonthWorked(2021, explode('-', $month)[1])[1] == 0)
+                                            0 seconde
+                                        @else
+                                            {{ $user->compareMonthWorked(2021, explode('-', $month)[1])[0] }}
+                                        @endif
+
                                     </td>
                                 @endif
                             </tr>

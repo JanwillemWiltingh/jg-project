@@ -219,4 +219,18 @@ class User extends Authenticatable
 
         return ['-', 0];
     }
+
+    public function compareWeekWorked($year, $week): array
+    {
+        $difference = $this->workedInAWeek($week)[1] - $this->plannedWorkAWeek($year, $week)[1];
+
+        return [CarbonInterval::seconds($difference)->cascade()->forHumans(), $difference];
+    }
+
+    public function compareMonthWorked($year, $month): array
+    {
+        $difference = $this->workedInAMonth($month)[1] - $this->plannedWorkAMonth($year, $month)[1];
+
+        return [CarbonInterval::seconds($difference)->cascade()->forHumans(), $difference];
+    }
 }

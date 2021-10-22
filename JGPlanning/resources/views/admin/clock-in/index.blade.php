@@ -46,7 +46,7 @@
                         @foreach($clocks as $clock)
                             <tr>
                                 <th scope="row">{{ $loop->index }}</th>
-                                <td>{{ ucfirst($clock->user()->get()->first()['name']) }}</td>
+                                <td>{{ ucfirst($clock->user()->get()->first()['firstname']) }} {{ $clock->user()->get()->first()['middlename'] }} {{ ucfirst($clock->user()->get()->first()['lastname']) }}</td>
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
                                 <td>{{ $clock->timeWorkedToday(false) }}</td>
