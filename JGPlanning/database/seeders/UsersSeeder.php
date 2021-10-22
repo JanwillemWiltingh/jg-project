@@ -4,6 +4,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ class UsersSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws Exception
      */
     public function run()
     {
@@ -27,7 +29,7 @@ class UsersSeeder extends Seeder
             'lastname' => 'Polman',
             'email' => 'robert@gmail.com',
             'password' => Hash::make('123'),
-            'role_id' => Role::$roles['maintainer'],
+            'role_id' => Role::getRoleID('maintainer'),
         ]);
 
         DB::table('users')->insert([
@@ -35,7 +37,7 @@ class UsersSeeder extends Seeder
             'lastname' => 'Willtigh',
             'email' => 'mail@mail.com',
             'password' => Hash::make('welkom'),
-            'role_id' => Role::$roles['maintainer'],
+            'role_id' => Role::getRoleID('maintainer'),
         ]);
     }
 }

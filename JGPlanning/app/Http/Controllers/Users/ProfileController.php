@@ -21,9 +21,9 @@ class ProfileController extends Controller
      */
     public function profile(User $user){
         $roles = Role::all();
-        $role_ids = Role::$roles;
         $user = Auth::user();
-        return view('profile.profile')->with(['user' => $user, 'roles' => $roles, 'role_ids' => $role_ids]);
+
+        return view('profile.profile')->with(['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -39,7 +39,7 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -68,16 +68,16 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $roles = Role::all();
-        $role_ids = Role::$roles;
-        return view('profile.edit')->with(['user' => $user, 'role_ids' => $role_ids, 'roles' => $roles]);
+
+        return view('profile.edit')->with(['user' => $user, 'roles' => $roles]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
      */
     public function update(Request $request, User $user): RedirectResponse
     {

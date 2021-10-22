@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        @if($user_session['role_id'] == $role_ids['maintainer'])
+        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
             <hr>
             <label class="black-label-text" style="font-size: 20px;">Welke rol krijgt de gebruiker?</label>
             <div class="row">
