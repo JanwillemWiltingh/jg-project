@@ -96,7 +96,7 @@
                                         @if(empty($user['deleted_at']))
                                             <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-slash"></i></a>
                                         @else
-                                            <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-check"></i><a/>
+                                            <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-check"></i></a>
                                         @endif
                                     @endif
                                 </a>

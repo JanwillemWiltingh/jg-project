@@ -71,9 +71,9 @@ class UserController extends Controller
         }
 
         $newUser = User::create([
-            'firstname' => $validated['firstname'],
-            'middlename' => $validated['middlename'],
-            'lastname' => $validated['lastname'],
+            'firstname' => ucfirst($validated['firstname']),
+            'middlename' => ($validated['middlename']),
+            'lastname' => ucfirst($validated['lastname']),
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role_id' => $validated['roles'],
@@ -105,7 +105,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin/users/show')->with(['user' => $user]);
+        $user_session = Auth::user();
+        return view('admin/users/show')->with(['user' => $user, 'user_session' => $user_session]);
     }
 
     /**
@@ -157,17 +158,17 @@ class UserController extends Controller
 
         if(empty($validated['password'])){
             $user->update([
-                'firstname' => $validated['firstname'],
+                'firstname' => ucfirst($validated['firstname']),
                 'middlename' => $validated['middlename'],
-                'lastname' => $validated['lastname'],
+                'lastname' => ucfirst($validated['lastname']),
                 'email' => $validated['email'],
                 'role_id' => $validated['roles'],
             ]);
         }else{
             $user->update([
-                'firstname' => $validated['firstname'],
+                'firstname' => ucfirst($validated['firstname']),
                 'middlename' => $validated['middlename'],
-                'lastname' => $validated['lastname'],
+                'lastname' => ucfirst($validated['lastname']),
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'role_id' => $validated['roles'],
