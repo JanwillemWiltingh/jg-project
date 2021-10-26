@@ -103,10 +103,10 @@
     </div>
 {{--  if they are maintainer they are allowed to edit anything  --}}
     @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-        <a href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
+        <a class="btn btn-primary" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
     @endif
 {{--    if they are admin they can only edit employee--}}
     @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && $user['role_id'] == App\Models\Role::getRoleID('employee'))
-        <a href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
+        <a class="btn btn-primary" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
     @endif
 @endsection

@@ -56,7 +56,7 @@
                 <td>{{$user['role_id']}}</td>
 
                 {{--Big letter maintainer--}}
-                <td>@if($user->hasRole('maintainer'))<strong>{{ucfirst($user->role()->get()->first()->name)}}</strong> @else {{ucfirst($user->role()->get()->first()->name)}} @endif</td>
+                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{ucfirst($user->role()->get()->first()->name)}}</strong> @else {{ucfirst($user->role()->get()->first()->name)}} @endif</td>
 
                 {{--Shows if the user is soft-deleted(active) or not--}}
                 <td>
