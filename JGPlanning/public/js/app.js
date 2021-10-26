@@ -5210,6 +5210,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./components/userview */ "./resources/js/components/userview.js");
 
+__webpack_require__(/*! ./components/switch-input-fieds */ "./resources/js/components/switch-input-fieds.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -5242,6 +5244,40 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/switch-input-fieds.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/switch-input-fieds.js ***!
+  \*******************************************************/
+/***/ (() => {
+
+$(document).ready(function () {
+  var a = $('input[name="date-format"]:checked').val();
+  console.log(a);
+
+  if (a === 'month') {
+    $('#month-group').show();
+    $('#week-group').hide();
+  } else {
+    $('#month-group').hide();
+    $('#week-group').show();
+  }
+
+  $('input[name="date-format"]').change(function () {
+    var a = $('input[name="date-format"]:checked').val();
+    console.log(a);
+
+    if (a === 'month') {
+      $('#month-group').show();
+      $('#week-group').hide();
+    } else {
+      $('#month-group').hide();
+      $('#week-group').show();
+    }
+  });
+});
 
 /***/ }),
 

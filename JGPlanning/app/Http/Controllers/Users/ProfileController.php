@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use MongoDB\Driver\Session;
 
 class ProfileController extends Controller
 {
@@ -20,9 +21,9 @@ class ProfileController extends Controller
      */
     public function profile(User $user){
         $roles = Role::all();
-        $role_ids = Role::$roles;
         $user = Auth::user();
-        return view('profile.profile')->with(['user' => $user, 'roles' => $roles, 'role_ids' => $role_ids]);
+
+        return view('profile.profile')->with(['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -38,7 +39,7 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -67,38 +68,44 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $roles = Role::all();
-        $role_ids = Role::$roles;
-        return view('profile.edit')->with(['user' => $user, 'role_ids' => $role_ids, 'roles' => $roles]);
+
+        return view('profile.edit')->with(['user' => $user, 'roles' => $roles]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param User $user
+     * @return RedirectResponse
      */
     public function update(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required'],
+            'firstname' => ['required'],
+            'middlename' => ['nullable'],
+            'lastname' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'password' => ['nullable', 'confirmed'],
         ]);
 
         if(empty($validated['password'])){
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
             ]);
         }else{
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
             ]);
         }
-        return redirect()->back()->with(['message' => ['message' => 'User updated successfully', 'type' => 'success']]);
+        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
 
     /**

@@ -36,7 +36,7 @@
                         <th scope="col">Gebruiker</th>
                         <th scope="col">Start tijd</th>
                         <th scope="col">Eind tijd</th>
-                        <th scope="col">Totaal gewerkt</th>
+                        <th scope="col">Totaal ingeklokt</th>
                         <th scope="col">Aantekening</th>
                     </tr>
                     </thead>
@@ -45,10 +45,10 @@
                         @foreach($clocks as $clock)
                             <tr>
                                 <th scope="row">{{ $loop->index }}</th>
-                                <td>{{ ucfirst($clock->user()->get()->first()['name']) }}</td>
+                                <td>{{ ucfirst($clock->user()->get()->first()['firstname']) }} {{ $clock->user()->get()->first()['middlename'] }} {{ ucfirst($clock->user()->get()->first()['lastname']) }}</td>
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
-                                <td>{{ $clock->timeWorkedToday() }}</td>
+                                <td>{{ $clock->timeWorkedToday(false) }}</td>
                                 <td>{{ $clock['comment'] }}</td>
                             </tr>
                         @endforeach

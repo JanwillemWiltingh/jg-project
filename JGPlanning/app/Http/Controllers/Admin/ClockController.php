@@ -18,6 +18,7 @@ class ClockController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Application|Factory|View
      */
     public function index(Request $request)

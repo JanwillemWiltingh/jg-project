@@ -38,11 +38,16 @@ class Clock extends Model
         return null;
     }
 
-    public function timeWorkedToday(): string
+    public function timeWorkedToday(bool $break): string
     {
         if($this['end_time'] != null) {
             $first_time = Carbon::parse($this['start_time']);
             $second_time = Carbon::parse($this['end_time']);
+
+            if($break) {
+                $second_time = Carbon::parse($this['end_time'])->subMinutes(30);
+            }
+
             $time = $first_time->diffInSeconds($second_time);
 
             return CarbonInterval::seconds($time)->cascade()->forHumans();

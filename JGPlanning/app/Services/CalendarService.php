@@ -16,6 +16,8 @@ class CalendarService
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
         $lessons   = Rooster::all()->where('user_id', $userID);
+        $lessons   = Rooster::where('user_id', $userID)->first();
+
 
         $user = User::find($userID);
 

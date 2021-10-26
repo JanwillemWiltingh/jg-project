@@ -17,6 +17,7 @@ use Illuminate\Validation\Rule;
 use DateTime;
 class UserController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -30,9 +31,8 @@ class UserController extends Controller
     {
         $users = User::all();
         $user_session = Auth::user();
-        $roles = Role::$roles;
 
-        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session, 'roles' => $roles]);
+        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);
     }
 
     /**
@@ -44,9 +44,8 @@ class UserController extends Controller
     {
         $user_session = Auth::user();
         $roles = Role::all();
-        $role_ids = Role::$roles;
 
-        return view('admin/users/create')->with(['roles'=>$roles, 'user_session' => $user_session, 'role_ids' => $role_ids]);
+        return view('admin/users/create')->with(['roles'=>$roles, 'user_session' => $user_session]);
     }
 
     /**
@@ -55,23 +54,26 @@ class UserController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $roles = Role::$roles;
         $validated = $request->validate([
-            'name' => ['required'],
+            'firstname' => ['required'],
+            'middlename' => ['nullable'],
+            'lastname' => ['required'],
             'email' => ['required','unique:users,email'],
             'password' => ['required', 'confirmed'],
             'roles' =>['required'],
         ]);
 
         $current_user = Auth::user();
-        if($current_user['role_id'] == $roles['admin']){
-            $validated['roles'] = $roles['employee'];
+        if($current_user['role_id'] == Role::getRoleID('admin')){
+            $validated['roles'] = Role::getRoleID('employee');
         }
 
         $newUser = User::create([
-            'name' => $validated['name'],
+            'firstname' => $validated['firstname'],
+            'middlename' => $validated['middlename'],
+            'lastname' => $validated['lastname'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role_id' => $validated['roles'],
@@ -92,12 +94,13 @@ class UserController extends Controller
         }
 
 //        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
+        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param User $user
      * @return Application|Factory|View
      */
     public function show(User $user)
@@ -115,9 +118,8 @@ class UserController extends Controller
     {
         $user_session = Auth::user();
         $roles = Role::all();
-        $role_ids = Role::$roles;
 
-        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session, 'role_ids' => $role_ids]);
+        return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
 
     }
 
@@ -127,15 +129,17 @@ class UserController extends Controller
      * @param Request $request
      * @param User $user
      * @return RedirectResponse
+     * @throws \Exception
      */
     public function update(Request $request, User $user): RedirectResponse
     {
         $auth_user = Auth::user();
-        $roles = Role::$roles;
-        $maintainer_count = User::all()->where('role_id', $roles['maintainer'])->count();
+        $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
-            'name' => ['required'],
+            'firstname' => ['required'],
+            'middlename' => ['nullable'],
+            'lastname' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'password' => ['nullable', 'confirmed'],
             'roles' =>['required'],
@@ -143,29 +147,33 @@ class UserController extends Controller
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
-            return redirect()->back()->with(['message'=> ['message' => 'WAARSCHUWING!!! Er is nog één maintainer over! Role niet aangepast', 'type' => 'danger']]);
+            return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
         }
 
         //  When the admin edit's a user set the role to 2
-        if($auth_user['role_id'] == $roles['admin']){
-            $validated['roles'] = $roles['employee'];
+        if($auth_user['role_id'] == Role::getRoleID('admin')){
+            $validated['roles'] = Role::getRoleID('employee');
         }
 
         if(empty($validated['password'])){
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
-                'role_id' => $validated['roles']
+                'role_id' => $validated['roles'],
             ]);
         }else{
             $user->update([
-                'name' => $validated['name'],
+                'firstname' => $validated['firstname'],
+                'middlename' => $validated['middlename'],
+                'lastname' => $validated['lastname'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
-                'role_id' => $validated['roles']
+                'role_id' => $validated['roles'],
             ]);
         }
-        return redirect()->back()->with(['message' => ['message' => 'User updated successfully', 'type' => 'success']]);
+        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
 
     /**
@@ -179,10 +187,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User Deleted successfully', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Verwijderd!', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User un-Deleted successfully', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Hersteld!', 'type' => 'success']]);
         }
     }
 }
