@@ -13,7 +13,7 @@
                                 <select name="user" class="form-control" id="users">
                                     <option value="0">Alle Gebruikers</option>
                                     @foreach($users as $user)
-                                        <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['name']) }}</option>
+                                        <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ucfirst($user['lastname'])}}</option>
                                     @endforeach
                                 </select>
 
@@ -45,7 +45,7 @@
                         @foreach($clocks as $clock)
                             <tr>
                                 <th scope="row">{{ $loop->index }}</th>
-                                <td>{{ ucfirst($clock->user()->get()->first()['firstname']) }} {{ $clock->user()->get()->first()['middlename'] }} {{ ucfirst($clock->user()->get()->first()['lastname']) }}</td>
+                                <td>{{ $clock->user()->get()->first()['firstname'] }} {{ $clock->user()->get()->first()['middlename'] }} {{ $clock->user()->get()->first()['lastname'] }}</td>
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
                                 <td>{{ $clock->timeWorkedToday(false) }}</td>
