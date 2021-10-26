@@ -28,7 +28,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user]);
+        $now = Carbon::now();
+
+        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now]);
     }
 
     /**
@@ -36,6 +38,7 @@ class DashboardController extends Controller
      */
     public function clock(Request $request): RedirectResponse
     {
+//        TODO: Errors aanpassen
         $validated = $request->validate([
             'comment' => ['nullable', 'string'],
         ]);

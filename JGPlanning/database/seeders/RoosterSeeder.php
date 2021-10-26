@@ -25,7 +25,7 @@ class RoosterSeeder extends Seeder
         foreach($arrays as $array) {
             for($i = 1; $i <= 5; $i++) {
                 DB::table('rooster')->insert([
-                    'start_time' => '09:00:00',
+                    'start_time' => '08:30:00',
                     'end_time' => '17:00:00',
                     'comment' => 'Seeded Comment',
                     'from_home' => 0,
