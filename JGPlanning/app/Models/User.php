@@ -93,10 +93,20 @@ class User extends Authenticatable
     }
 
     public function getNextRooster() {
+//        Get the rooster of today
         $current_rooster = Auth::user()->getRoosterFromToday();
-        $roosters = $this->roosters()->get();
-        $next = $roosters->where('id', $current_rooster['id'] + 1)->first();
-        return $next;
+
+//        Als er een rooster voor morgen is vraag alle roosters op van deze gebruiker
+        if(is_a($current_rooster, 'Illuminate\Database\Eloquent\Collection')) {
+            $roosters = $this->roosters()->get();
+
+            if ($roosters->count() > 0) {
+                return $roosters->where('id', $current_rooster['id'] + 1)->first();
+            }
+        }
+
+
+        return ['weekdays' => 0, 'start_time' => '00:00', 'end_time' => '00:00'];
     }
 
     public function isCurrentUser(): string {

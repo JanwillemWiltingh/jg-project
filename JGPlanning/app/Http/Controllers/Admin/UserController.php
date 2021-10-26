@@ -90,6 +90,7 @@ class UserController extends Controller
                 'weekdays' => $i,
                 'created_at' => date('Y-m-d h:i:s'),
                 'updated_at' => date('Y-m-d h:i:s'),
+                'year' => date('Y'),
             ]);
         }
 

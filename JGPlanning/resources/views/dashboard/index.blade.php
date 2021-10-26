@@ -171,7 +171,13 @@
                                     <i class="fas fa-clock fa-3x"></i>
                                 </div>
                                 <div class="media-body pl-3">
-                                    <h4>Uren voor {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>
+                                    <h4>
+                                        @if($user->getNextRooster()['weekdays'] == 0)
+                                            Geen nieuw rooster
+                                        @else
+                                            Uren voor {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}
+                                        @endif
+                                    </h4>
                                     <span>{{ $now->format('d F Y') }}</span>
                                 </div>
                                 <div class="align-self-center">
