@@ -130,7 +130,11 @@ class User extends Authenticatable
 
         if($clocks->count() > 0) {
             foreach($clocks as $clock) {
-                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                if($clock['end_time'] == null){
+                    $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                } else {
+                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                }
             }
 
             return [
@@ -149,7 +153,11 @@ class User extends Authenticatable
             $time = 0;
             foreach($clocks as $clock) {
                 if(Carbon::parse($clock['date'])->weekOfYear == $week) {
-                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                    if($clock['end_time'] == null){
+                        $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                    } else {
+                        $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                    }
                 }
             }
 
@@ -169,7 +177,11 @@ class User extends Authenticatable
         if($clocks->count() > 0) {
             $time = 0;
             foreach($clocks as $clock) {
-                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                if($clock['end_time'] == null) {
+                    $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                } else {
+                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                }
             }
 
             return [
