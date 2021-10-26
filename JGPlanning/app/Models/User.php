@@ -45,28 +45,23 @@ class User extends Authenticatable
     public $timestamps = true;
 
 
-    public function role(): HasOne
-    {
+    public function role(): HasOne {
         return $this->hasOne(Role::class, 'id', 'role_id');
     }
 
-    public function clocks(): HasMany
-    {
+    public function clocks(): HasMany {
         return $this->hasMany(Clock::class);
     }
 
-    public function roosters(): HasMany
-    {
+    public function roosters(): HasMany {
         return $this->hasMany(Rooster::class);
     }
 
-    public function hasRole($role): bool
-    {
+    public function hasRole($role): bool {
         return $this->role()->get()->unique()->where('firstname', $role)->first() != null;
     }
 
-    public function isClockedIn(): bool
-    {
+    public function isClockedIn(): bool {
         $last_clock = Clock::all()->where('user_id', $this['id'])->where('date', Carbon::now()->toDateString())->last();
         if($last_clock == null) {
             return False;
@@ -77,14 +72,34 @@ class User extends Authenticatable
         }
     }
 
-    public function startTimeToday()
-    {
+    public function startTimeToday() {
         $first_clock = $this->clocks()->get()->first();
         return explode(' ', $first_clock['time'])[1];
     }
 
-    public function isCurrentUser(): string
-    {
+    public function getRoosterFromToday() {
+        $week_number = Carbon::now()->weekOfYear;
+        $day_number = Carbon::now()->dayOfWeek;
+
+        $roosters = $this->roosters()->where('weekdays', $day_number)->get();
+
+        foreach($roosters as $rooster) {
+            if($rooster['start_week'] <= $week_number and $rooster['end_week'] >= $week_number) {
+                return $rooster;
+            }
+        }
+
+        return ['start_time' => '00:00', 'end_time' => '00:00'];
+    }
+
+    public function getNextRooster() {
+        $current_rooster = Auth::user()->getRoosterFromToday();
+        $roosters = $this->roosters()->get();
+        $next = $roosters->where('id', $current_rooster['id'] + 1)->first();
+        return $next;
+    }
+
+    public function isCurrentUser(): string {
         if($this['id'] == Auth::id()) {
             return 'table-light';
         }
@@ -92,8 +107,7 @@ class User extends Authenticatable
         return '';
     }
 
-    public function workedInAMonth($month): array
-    {
+    public function workedInAMonth($month): array {
         $clocks = $this->clocks()->whereMonth('date', '=',$month)->get();
         $time = 0;
 
@@ -123,8 +137,7 @@ class User extends Authenticatable
         return ['-', 0];
     }
 
-    public function workedInAWeek($week): array
-    {
+    public function workedInAWeek($week): array {
         $clocks = $this->clocks()->get();
 
         if($clocks->count() > 0) {
@@ -144,8 +157,26 @@ class User extends Authenticatable
         return ['-', 0];
     }
 
-    public function plannedWorkAMonth($year, $month): array
-    {
+    public function workedInADay($year, $month, $day) {
+        $date = Carbon::parse($year.'-'.$month.'-'.$day);
+        $clocks = $this->clocks()->where('date', $date)->get();
+
+        if($clocks->count() > 0) {
+            $time = 0;
+            foreach($clocks as $clock) {
+                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+            }
+
+            return [
+                CarbonInterval::seconds($time)->cascade()->forHumans(),
+                $time,
+            ];
+        }
+
+        return ['-', 0];
+    }
+
+    public function plannedWorkAMonth($year, $month): array {
 //        Get all the roosters from the users from the given year
         $roosters = $this->roosters()->get();
         if($roosters->count() > 0) {
@@ -196,8 +227,7 @@ class User extends Authenticatable
         return ['-', 0];
     }
 
-    public function plannedWorkAWeek($year, $week): array
-    {
+    public function plannedWorkAWeek($year, $week): array {
         $roosters = $this->roosters()->get();
 
         if($roosters->count() > 0) {
@@ -220,15 +250,25 @@ class User extends Authenticatable
         return ['-', 0];
     }
 
-    public function compareWeekWorked($year, $week): array
-    {
+    public function plannedWorkADay($year, $week, $day): array {
+        $roosters = $this->roosters()->where('weekdays', $day)->get();
+        foreach($roosters as $rooster) {
+            if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
+                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time']));
+
+                return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
+            }
+        }
+        return ['-', 0];
+    }
+
+    public function compareWeekWorked($year, $week): array {
         $difference = $this->workedInAWeek($week)[1] - $this->plannedWorkAWeek($year, $week)[1];
 
         return [CarbonInterval::seconds($difference)->cascade()->forHumans(), $difference];
     }
 
-    public function compareMonthWorked($year, $month): array
-    {
+    public function compareMonthWorked($year, $month): array {
         $difference = $this->workedInAMonth($month)[1] - $this->plannedWorkAMonth($year, $month)[1];
 
         return [CarbonInterval::seconds($difference)->cascade()->forHumans(), $difference];
