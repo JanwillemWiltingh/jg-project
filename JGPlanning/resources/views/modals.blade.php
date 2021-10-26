@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="a">Add Availability</h5>
             </div>
-            <form method="post" action="{{route('availability')}}">
+            <form method="post" action="{{route('availability', request('week'))}}">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="weekday" id="weekday">
@@ -28,6 +28,11 @@
                     <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
                     <label style="width: 100%">
                         <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment"></textarea>
+                    </label>
+
+                    <label>
+                        <p>Eind week:</p>
+                        <input type="week" class="form-control" name="week">
                     </label>
 
                     <input type="checkbox" id="switch" class="toggle-box" name="from_home"/>
@@ -54,7 +59,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post" action="{{route('edit_availability')}}">
+            <form method="post" action="{{route('edit_availability', request('week'))}}">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="weekday" id="weekday_edit">

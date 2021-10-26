@@ -43,9 +43,9 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
 });
 
 //TODO: nog onder rooster/* brengen maar ik ben er nog te bang voor aangezien ik nog bezig ben met inplannen voor de toekomst.
-Route::post('/availability', [RoosterController::class, 'add_availability'])->name('availability');
-Route::post('/availability-edit/', [RoosterController::class, 'edit_availability'])->name('edit_availability');
-Route::get('/{user}/rooster-delete/{weekday}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
+Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
+Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
