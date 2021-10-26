@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -78,17 +80,21 @@ class User extends Authenticatable
     }
 
     public function getRoosterFromToday() {
+//        Take the week and day numbers from today
         $week_number = Carbon::now()->weekOfYear;
         $day_number = Carbon::now()->dayOfWeek;
 
+//        Get the rooster where the day_number is the same as today
         $roosters = $this->roosters()->where('weekdays', $day_number)->get();
 
+//        Loop through all the given roosters to find the rooster that fits for today
         foreach($roosters as $rooster) {
             if($rooster['start_week'] <= $week_number and $rooster['end_week'] >= $week_number) {
                 return $rooster;
             }
         }
 
+//        return this when no rooster could be found that fits
         return ['start_time' => '00:00', 'end_time' => '00:00'];
     }
 
@@ -96,15 +102,16 @@ class User extends Authenticatable
 //        Get the rooster of today
         $current_rooster = Auth::user()->getRoosterFromToday();
 
-//        Als er een rooster voor morgen is vraag alle roosters op van deze gebruiker
-        if(is_a($current_rooster, 'Illuminate\Database\Eloquent\Collection')) {
+        try {
+            $count = count($current_rooster);
+        } catch (Exception $exception) {
+            //        Als er een rooster voor morgen is vraag alle roosters op van deze gebruiker
             $roosters = $this->roosters()->get();
 
             if ($roosters->count() > 0) {
                 return $roosters->where('id', $current_rooster['id'] + 1)->first();
             }
         }
-
 
         return ['weekdays' => 0, 'start_time' => '00:00', 'end_time' => '00:00'];
     }
@@ -125,18 +132,6 @@ class User extends Authenticatable
             foreach($clocks as $clock) {
                 $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
             }
-
-//            $weeks = floor($time / 604800);
-//            $remainder = $time - ($weeks * 604800);
-//
-//            $days = floor($remainder / 86400);
-//            $remainder = $remainder - ($days * 86400);
-//
-//            $hours = floor($remainder / 3600);
-//            $remainder = $remainder - ($hours * 3600);
-//
-//            $minutes = floor($remainder / 60);
-//            $seconds = $remainder - ($minutes * 60);
 
             return [
                 CarbonInterval::seconds($time)->cascade()->forHumans(),
