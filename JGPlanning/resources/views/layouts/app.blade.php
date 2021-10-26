@@ -165,8 +165,8 @@ The above copyright notice and this permission notice shall be included in all c
                                             </li>-->
                                 <li class="nav-item dropdown">
                                     <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#dropDownMenu" data-backdrop="false">
+                                        {{\Illuminate\Support\Facades\Auth::user()['firstname']}} <i class="fa fa-user"></i>
                                         <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>
-                                        <i class="fa fa-user"></i>
                                     </button>
                                 </li>
                             </ul>
@@ -185,7 +185,7 @@ The above copyright notice and this permission notice shall be included in all c
 
                                 <a href="{{route('profile.index')}}">Profiel</a>
                                 <hr>
-                                <a href="#">Help</a> <br>
+                                <a href="{{route('help.index')}}">Help</a> <br>
                                 <hr>
                                 <form action="{{ route('auth.logout') }}" method="POST">
                                     @csrf

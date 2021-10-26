@@ -20,7 +20,7 @@ class Rooster extends Model
         'start_week',
         'end_week',
         'rooster',
-        'year'
+        'year',
     ];
 
     use HasFactory;
