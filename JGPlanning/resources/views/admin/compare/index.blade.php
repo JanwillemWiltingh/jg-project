@@ -12,7 +12,7 @@
                             <select name="user" class="form-control" id="users">
                                 <option value="0">Alle Gebruikers</option>
                                 @foreach($all_users as $user)
-                                    <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['name']) }}</option>
+                                    <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ ucfirst($user['lastname']) }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -65,16 +65,16 @@
                                 <td>{{ $user['firstname'] }} {{ $user['middlename'] }} {{ $user['lastname'] }}</td>
                                 <td>
                                     @if($input_field == 'week')
-                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[0] }} ({{ number_format($user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[1] / 3600, 1) }} uur)
                                     @else
-                                        {{ $user->workedInAMonth(explode('-', $month)[1])[0] }}
+                                        {{ $user->workedInAMonth(explode('-', $month)[1])[0] }} ({{ number_format($user->workedInAMonth(explode('-', $month)[1])[1] / 3600, 1) }} uur)
                                     @endif
                                 </td>
                                 <td>
                                     @if($input_field == 'week')
-                                        {{ $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                        {{ $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[0] }} ({{ number_format($user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[1] / 3600, 1) }})
                                     @else
-                                        {{ $user->plannedWorkAMonth(2021, explode('-', $month)[1])[0] }}
+                                        {{ $user->plannedWorkAMonth(2021, explode('-', $month)[1])[0] }} ({{ number_format($user->plannedWorkAMonth(2021, explode('-', $month)[1])[1] / 3600, 1) }})
                                     @endif
                                 </td>
                                 @if($input_field == 'week')
