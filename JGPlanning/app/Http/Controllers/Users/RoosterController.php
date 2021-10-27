@@ -65,9 +65,7 @@ class RoosterController extends Controller
 
         $weekstring = $start_of_week . " - ". $end_of_week;
 
-        $week_number = $week;
-
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week_number);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week);
         $user_info = User::find($user);
 
         return view('users.rooster.index', compact(

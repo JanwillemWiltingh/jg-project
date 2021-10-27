@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Availability;
 use App\Models\Clock;
+use App\Models\DisabledDays;
 use App\Models\Role;
 use App\Models\Rooster;
 use App\Models\User;
@@ -35,20 +36,58 @@ class RoosterAdminController extends Controller
     }
 
 //  Functie voor admins om naar gebruikers hun rooster te kijken.
-    public function user_rooster(CalendarService $calendarService, $user)
+    public function user_rooster(CalendarService $calendarService, $user, $week)
     {
         $user_info = User::find($user);
-        $isRooster    = true;
-        $availability = Rooster::where('user_id', $user)->get();
+
         $weekDays     = Availability::WEEK_DAYS;
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $isRooster);
+
+        $array1 = [];
+        $disabled_array = [];
+        $disabled_days = DisabledDays::all()
+            ->where('user_id', $user)
+            ->where('start_week', '<=', $week)
+            ->where('end_week', '>=', $week)
+            ->sortBy('weekday');
+
+        $disabled_count = count($disabled_days);
+
+        foreach ($disabled_days as $dd)
+        {
+            array_push($array1, $dd->weekday);
+        }
+
+        foreach ($weekDays as $index => $day)
+        {
+            if (in_array($index, $array1))
+            {
+                array_push($disabled_array, 1);
+            }
+            else
+            {
+                array_push($disabled_array, null);
+            }
+        }
+
+        $current_week = Carbon::now()
+            ->setISODate(date('Y'), $week);
+
+        $start_of_week = $current_week->startOfWeek()->format('d-M');
+        $end_of_week = $current_week->endOfWeek()->format('d-M');
+
+        $weekstring = $start_of_week . " - ". $end_of_week;
+
+        $availability = Rooster::where('user_id', $user)->get();
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $week);
 
         return view('admin.rooster.index', compact(
             'weekDays',
             'calendarData',
             'availability',
             'user',
-            'user_info'
+            'user_info',
+            'weekstring',
+            'disabled_array'
         ));
     }
 

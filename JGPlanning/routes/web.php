@@ -65,8 +65,8 @@ Route::name('admin.')->prefix('admin/')->group(function (){
 
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [RoosterAdminController::class, 'index_rooster'])->name('index');
-        Route::get('/{user}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
-        Route::post('/{user}/available_days', [RoosterAdminController::class, 'push_days'])->name('push_days');
+        Route::get('/{user}/{week}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
+        Route::post('/{user}/{week}/available_days', [RoosterAdminController::class, 'push_days'])->name('push_days');
     });
 
     Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){

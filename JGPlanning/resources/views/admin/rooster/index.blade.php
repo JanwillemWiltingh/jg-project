@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+
+    @include('modals')
+
     @if(session()->get('message'))
         <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
             {{ session()->get('message')['message'] }}
@@ -8,7 +11,6 @@
             </button>
         </div>
     @endif
-    @include('modals')
     <div class="content fadeInDown">
         <form id="admin-availability" type="GET">
             @csrf
@@ -21,15 +23,6 @@
                 @endforeach
             </select>
         </form>
-
-{{--        @foreach ($errors->all() as $error)--}}
-{{--            <p style="color:red;">{{ $error }}</p>--}}
-{{--        @endforeach--}}
-{{--        @if(session()->has('error'))--}}
-{{--            <p style="color:red;">--}}
-{{--                {{ session()->get('error') }}--}}
-{{--            </p>--}}
-{{--        @endif--}}
         <div class="loader d-none" id="loader"></div>
         <div class="row">
             <div class="col-lg-12">
@@ -41,61 +34,67 @@
                                     {{ session('status') }}
                                 </div>
                             @endif
-                            <div>
-                                <table class="card-body table table-bordered">
-                                    <thead >
-                                    <th width="14%" style="border: none; text-align: center; border-radius: 15px 15px 0 0 !important;" >Time</th>
-                                    @for($i = 1; $i < count($weekDays) + 1; $i++)
-                                        <th width="14%" style="border: none; text-align: center;">
-                                            <form method="post" id="dayForm">
-                                                @csrf
-                                                {{ $weekDays[$i] }}
-                                                <input type="hidden" id="userIdDisableDays" value="{{request('user')}}">
+                                <div>
+                                    <a style="float: right; font-size: 25px" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') + 1])}}"><i class="fa fa-arrow-right" ></i></a>
+                                    <p style="text-align: center; font-size: 25px">
+                                        {{$weekstring}}
+                                    </p>
+                                    <a style="float: left; font-size: 25px; margin-top: -53px" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') - 1] )}}"><i class="fa fa-arrow-left" ></i></a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#disableModal"><p  style="text-align: center; font-size: 15px; margin-top: -10px">Dagen uitzetten</p></a>
+                                </div>
+                            <table class="card-body table table-bordered">
+                                <thead >
+                                <th width="14%" style="border: none; text-align: center; border-radius: 15px 15px 0 0 !important;" >Time</th>
+                                @for($i = 1; $i < count($weekDays) + 1; $i++)
+                                    <th width="14%" style="border: none; text-align: center;">
+                                        <form method="post" id="dayForm">
+                                            @csrf
+                                            {{ $weekDays[$i] }}
+{{--                                                <input type="hidden" id="userIdDisableDays" value="{{request('user')}}">--}}
 
-                                                <input type="checkbox" id="disableDays{{$i}}" class="toggle-box" name="from_home" @if($user_info->unavailable_days and !is_null(json_decode($user_info->unavailable_days)[$i - 1])) checked @endif/>
-                                                <label for="disableDays{{$i}}" class="toggle-label" style="width: 25%; top: -25px; margin-bottom: -22px"></label>
-                                            </form>
-                                        </th>
-                                    @endfor
-                                    </thead>
+{{--                                                <input type="checkbox" id="disableDays{{$i}}" class="toggle-box" name="from_home" @if($user_info->unavailable_days and !is_null(json_decode($user_info->unavailable_days)[$i - 1])) checked @endif/>--}}
+{{--                                                <label for="disableDays{{$i}}" class="toggle-label" style="width: 25%; top: -25px; margin-bottom: -22px"></label>--}}
+                                        </form>
+                                    </th>
+                                @endfor
+                                </thead>
 
-                                    <tbody>
-                                    @foreach($calendarData as $time => $days)
-                                        <tr>
-                                            <td>
-                                                {{ $time }}
-                                            </td>
-                                            @for($i = 0; $i < count($days); $i++)
-                                                @if(is_array($days[$i]))
-                                                    <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['from_home'] != "") background-color: lightblue; @else background-color:#f0f0f0; @endif border-radius: 5px;">
+                                <tbody>
+                                @foreach($calendarData as $time => $days)
+                                    <tr>
+                                        <td>
+                                            {{ $time }}
+                                        </td>
+                                        @for($i = 0; $i < count($days); $i++)
+                                            @if(is_array($days[$i]))
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['from_home'] != "") background-color: lightblue; @else background-color:#f0f0f0; @endif border-radius: 5px;">
 
-                                                        @if($days[$i]['from_home'] != "")
-                                                            @if($days[$i]['from_home'] == 1)
-                                                                <p style="font-weight: lighter">Thuis</p>
-                                                            @else
-                                                                <p style="font-weight: lighter">Op kantoor</p>
-                                                            @endif
+                                                    @if($days[$i]['from_home'] != "")
+                                                        @if($days[$i]['from_home'] == 1)
+                                                            <p style="font-weight: lighter">Thuis</p>
+                                                        @else
+                                                            <p style="font-weight: lighter">Op kantoor</p>
                                                         @endif
+                                                    @endif
 
-                                                        @if(!$days[$i]['comment'] == "")
-                                                            {{$days[$i]['comment']}}
-                                                        @endif
+                                                    @if(!$days[$i]['comment'] == "")
+                                                        {{$days[$i]['comment']}}
+                                                    @endif
 
-                                                        @if($days[$i]['start_time'] != "")
-                                                            <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p>
-                                                        @endif
-                                                    </th>
-                                                @elseif ($days[$i] === 1)
-                                                    <td></td>
-                                                @elseif ($days[$i] === 0)
+                                                    @if($days[$i]['start_time'] != "")
+                                                        <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p>
+                                                    @endif
+                                                </th>
+                                            @elseif ($days[$i] === 1)
+                                                <td></td>
+                                            @elseif ($days[$i] === 0)
 
-                                                @endif
-                                            @endfor
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                            @endif
+                                        @endfor
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
