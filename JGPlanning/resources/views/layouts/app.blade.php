@@ -38,7 +38,7 @@ The above copyright notice and this permission notice shall be included in all c
                   Tip 2: you can also add an image using data-image tag
               -->
                 <div class="logo"><a class="simple-text logo-normal" href="{{route('dashboard.home')}}" style="text-decoration: none;">
-                        JGPlanning
+                        <img style="margin-top: -20px; margin-bottom: -20px;" src="{{asset('storage/img/JG planning logo.png')}}">
                     </a></div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
