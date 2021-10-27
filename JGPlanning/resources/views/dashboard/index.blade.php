@@ -191,7 +191,7 @@
                                     @if($user->getNextRooster()['weekdays'] == 0)
                                         <span>Geen nieuwe rooster</span>
                                     @else
-{{--                                        <h4>Uren voor {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>--}}
+                                        <h4>Uren voor {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>
                                         <span>{{ $now->format('d F Y') }}</span>
                                     @endif
                                 </div>
