@@ -23,7 +23,6 @@ class ClockController extends Controller
      */
     public function index(Request $request)
     {
-
        $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(15);
        $now = Carbon::now()->toDateString();
        $users = User::all();
