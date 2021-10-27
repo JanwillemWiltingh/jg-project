@@ -114,7 +114,7 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param User $user
-     * @return RedirectResponse
+     * @return Application|Factory|View|RedirectResponse
      */
     public function edit(User $user)
     {

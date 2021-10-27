@@ -12,6 +12,8 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ClockController extends Controller
 {
@@ -26,7 +28,7 @@ class ClockController extends Controller
        $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(15);
        $now = Carbon::now()->toDateString();
        $users = User::all();
-
+       $user_session = Auth::user();
         if($request->all() != []) {
             $validated = $request->validate([
                 'date' => ['required'],
@@ -45,7 +47,7 @@ class ClockController extends Controller
                     ->paginate(15);
             }
         }
-        return view('admin.clock-in.index')->with(['clocks' => $clocks, 'now' => $now, 'users' => $users]);
+        return view('admin.clock-in.index')->with(['clocks' => $clocks, 'now' => $now, 'users' => $users, 'user_session' => $user_session]);
     }
 
     /**
@@ -57,6 +59,25 @@ class ClockController extends Controller
     public function show(Clock $clock)
     {
         return view('admin.clock-in.show')->with(['clock' => $clock]);
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     */
+    public function edit(User $user, Clock $clock){
+        $user_session = Auth::user();
+        $clock_by_id = DB::table('clocker')->where('user_id', $user['id'])->first();
+
+        return view('admin/clock-in/edit')->with(['user' => $user, 'user_session' => $user_session, 'clock_by_id' => $clock_by_id]);
+    }
+    public function update(Clock $clock, Request $request ){
+        $validated = $request->validate([
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'total_hours' => ['required'],
+        ]);
+        
     }
 }
 
