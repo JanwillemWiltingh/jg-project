@@ -107,8 +107,8 @@ class User extends Authenticatable
         } catch (Exception $exception) {
             //        Als er een rooster voor morgen is vraag alle roosters op van deze gebruiker
             $roosters = $this->roosters()->get();
-//            dd($roosters);
             if ($roosters->count() > 0) {
+//                Foreach loop to get the next rooster
                 $i = false;
                 foreach($roosters as $rooster) {
                     if($i == true) {
