@@ -14,7 +14,7 @@
 {{--            <a class="btn btn-primary table-label-create" href="{{route('admin.users.create')}}">Create a new User</a>--}}
 {{--        </strong>--}}
 {{--    </h5>--}}
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col"><strong>#</strong></th>
@@ -71,7 +71,7 @@
                 <td>
                     @if($user_session['role_id'] == App\Models\Role::getRoleID('admin'))
                         @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
-                            <i>Kan alleen Employee's bewerken</i>
+                            <i class="fa-solid fa-user-lock"></i>
                         @else
                             <strong>
                                 <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}"><i class="fa-solid fa-user-pen"></i></a>
@@ -88,7 +88,7 @@
                 <td>
                     @if($user_session['role_id'] == App\Models\Role::getRoleID('admin'))
                         @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
-                            <i>Kan alleen employee's verwijderen</i>
+                            <i class="fa-solid fa-user-lock"></i>
                         @else
                             <strong>
                                 <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}">
