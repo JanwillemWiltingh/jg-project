@@ -38,7 +38,6 @@ class RoosterSeeder extends Seeder
                 ]);
             }
         }
-
         foreach($arrays as $array) {
             for($i = 1; $i <= 5; $i++) {
                 DB::table('rooster')->insert([
