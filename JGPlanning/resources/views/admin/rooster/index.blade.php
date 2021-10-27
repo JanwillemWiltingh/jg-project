@@ -1,17 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-
-    @include('modals')
-
-    @if(session()->get('message'))
-        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
-            {{ session()->get('message')['message'] }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-        </div>
-    @endif
+@include('modals')
     <div class="content fadeInDown">
+        @if($errors->all())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach ($errors->all() as $error)
+                    {{ $error }}
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
+        @endif
+        @if(session()->get('message'))
+            <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
+                {{ session()->get('message')['message'] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
+        @endif
         <form id="admin-availability" type="GET">
             @csrf
             <label>
@@ -47,14 +54,7 @@
                                 <th width="14%" style="border: none; text-align: center; border-radius: 15px 15px 0 0 !important;" >Time</th>
                                 @for($i = 1; $i < count($weekDays) + 1; $i++)
                                     <th width="14%" style="border: none; text-align: center;">
-                                        <form method="post" id="dayForm">
-                                            @csrf
-                                            {{ $weekDays[$i] }}
-{{--                                                <input type="hidden" id="userIdDisableDays" value="{{request('user')}}">--}}
-
-{{--                                                <input type="checkbox" id="disableDays{{$i}}" class="toggle-box" name="from_home" @if($user_info->unavailable_days and !is_null(json_decode($user_info->unavailable_days)[$i - 1])) checked @endif/>--}}
-{{--                                                <label for="disableDays{{$i}}" class="toggle-label" style="width: 25%; top: -25px; margin-bottom: -22px"></label>--}}
-                                        </form>
+                                        {{ $weekDays[$i] }}
                                     </th>
                                 @endfor
                                 </thead>
@@ -78,7 +78,11 @@
                                                     @endif
 
                                                     @if(!$days[$i]['comment'] == "")
-                                                        {{$days[$i]['comment']}}
+                                                        {{$days[$i]['comment']}} <br>
+                                                    @endif
+
+                                                    @if($days[$i]['comment'] == "Disabled")
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none;"><i class="fa fa-pencil-alt"></i></a>
                                                     @endif
 
                                                     @if($days[$i]['start_time'] != "")

@@ -186,6 +186,7 @@
                                 <div class="align-self-center">
                                     <i class="far fa-clock fa-4x"></i>
                                 </div>
+{{--                                @dd($user->getNextRooster())--}}
                                 <div class="media-body pl-3">
                                     <h4>Volgende rooster</h4>
                                     @if($user->getNextRooster()['weekdays'] == 0)
@@ -209,6 +210,6 @@
             </div>
         </div>
     </div>
-
+<a style="color: white; cursor: pointer" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
     @if(session()->get('error')) {{ session()->get('error') }} @endif
 @endsection

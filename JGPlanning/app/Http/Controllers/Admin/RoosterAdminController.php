@@ -125,4 +125,73 @@ class RoosterAdminController extends Controller
 
         return redirect()->back();
     }
+
+    public function disable_days(Request $request, $user)
+    {
+        $validated = $request->validate([
+            'weekday' => ['required'],
+            'start_week' => ['required'],
+            'end_week' => ['required']
+        ]);
+
+        $start_week = substr($validated['start_week'], '6');
+        $end_week = substr($validated['end_week'], '6');
+
+        $checkDisabled = DisabledDays::all()
+            ->where('user_id', $user)
+            ->where('weekday', $validated['weekday']);
+
+        foreach ($checkDisabled as $cd)
+        {
+            if (in_array($cd->start_week, range($start_week,$end_week)) || in_array($cd->end_week, range($start_week,$end_week)))
+            {
+                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+            }
+        }
+
+        if ($start_week > $end_week)
+        {
+            return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
+        }
+
+        DisabledDays::create([
+            'user_id' => $user,
+            'weekday' => $validated['weekday'],
+            'start_week' => $start_week,
+            'end_week' => $end_week
+        ]);
+
+        return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
+    }
+
+    public function edit_disable_days (Request $request, $user, $week)
+    {
+        $validated = $request->validate([
+            'weekday' => ['required'],
+            'start_week' => ['required'],
+            'end_week' => ['required']
+        ]);
+
+        $start_week = substr($validated['start_week'], '6');
+        $end_week = substr($validated['end_week'], '6');
+
+        $checkDisabled = DisabledDays::all()
+            ->where('user_id', $user)
+            ->where('weekday', $validated['weekday']);
+
+        foreach ($checkDisabled as $cd)
+        {
+            if (in_array($cd->start_week, range($start_week,$end_week)) || in_array($cd->end_week, range($start_week,$end_week)))
+            {
+                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+            }
+        }
+
+        if ($start_week > $end_week)
+        {
+            return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
+        }
+
+//        return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
+    }
 }
