@@ -1,33 +1,33 @@
 @if(!request('admin'))
-    <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Weken uitzetten</h5>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{{route('admin.rooster.disable_days', request('user'))}}">
-                        @csrf
-                        <label style="width: 100%">
-                            <p>Kies een dag:</p>
-                            <select class="form-control" name="weekday">
-                                @for($i = 1; $i < count($weekDays); $i++)
-                                    <option value="{{$i}}">{{$weekDays[$i]}}</option>
-                                @endfor
-                            </select>
-                        </label>
+{{--    <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">--}}
+{{--        <div class="modal-dialog" role="document">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="modal-header">--}}
+{{--                    <h5 class="modal-title">Weken uitzetten</h5>--}}
+{{--                </div>--}}
+{{--                <div class="modal-body">--}}
+{{--                    <form method="post" action="{{route('admin.rooster.disable_days', request('user'))}}">--}}
+{{--                        @csrf--}}
+{{--                        <label style="width: 100%">--}}
+{{--                            <p>Kies een dag:</p>--}}
+{{--                            <select class="form-control" name="weekday">--}}
+{{--                                @for($i = 1; $i < count($weekDays); $i++)--}}
+{{--                                    <option value="{{$i}}">{{$weekDays[$i]}}</option>--}}
+{{--                                @endfor--}}
+{{--                            </select>--}}
+{{--                        </label>--}}
 
-                        <label style="width: 49%">
-                            <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week" id="start_week">
-                        </label>
+{{--                        <label style="width: 49%">--}}
+{{--                            <p>Kies een begin week:</p>--}}
+{{--                            <input class="form-control" type="week" name="start_week" id="start_week">--}}
+{{--                        </label>--}}
 
-                        <label style="width: 49%">
-                            <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week" id="end_week">
-                        </label>
-                        <input type="submit" class="btn btn-success float-right">
-                    </form>
+{{--                        <label style="width: 49%">--}}
+{{--                            <p>Kies een eind week:</p>--}}
+{{--                            <input class="form-control" type="week" name="end_week" id="end_week">--}}
+{{--                        </label>--}}
+{{--                        <input type="submit" class="btn btn-success float-right">--}}
+{{--                    </form>--}}
 {{--                    <div class="row">--}}
 {{--                        @for($i = 0; $i < count($weekDays); $i++)--}}
 {{--                            <div class="col-md-2">--}}
@@ -45,36 +45,36 @@
 {{--                            </div>--}}
 {{--                        @endfor--}}
 {{--                    </div>--}}
-                </div>
-            </div>
-        </div>
-    </div>
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
-    <div class="modal fade" id="editDisableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Weken bewerken</h5>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{{route('admin.rooster.edit_disable_days', ['user' => request('user'), 'week' => request('week')])}}">
-                        @csrf
+{{--    <div class="modal fade" id="editDisableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">--}}
+{{--        <div class="modal-dialog" role="document">--}}
+{{--            <div class="modal-content">--}}
+{{--                <div class="modal-header">--}}
+{{--                    <h5 class="modal-title">Weken bewerken</h5>--}}
+{{--                </div>--}}
+{{--                <div class="modal-body">--}}
+{{--                    <form method="post" action="{{route('admin.rooster.edit_disable_days', ['user' => request('user'), 'week' => request('week')])}}">--}}
+{{--                        @csrf--}}
 
-                        <label style="width: 49%">
-                            <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week" id="start_week">
-                        </label>
+{{--                        <label style="width: 49%">--}}
+{{--                            <p>Kies een begin week:</p>--}}
+{{--                            <input class="form-control" type="week" name="start_week" id="start_week">--}}
+{{--                        </label>--}}
 
-                        <label style="width: 49%">
-                            <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week" id="end_week">
-                        </label>
-                        <input type="submit" class="btn btn-success float-right">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+{{--                        <label style="width: 49%">--}}
+{{--                            <p>Kies een eind week:</p>--}}
+{{--                            <input class="form-control" type="week" name="end_week" id="end_week">--}}
+{{--                        </label>--}}
+{{--                        <input type="submit" class="btn btn-success float-right">--}}
+{{--                    </form>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 @else
     <div class="modal fade" id="availabilityModalAdd" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
         <div class="modal-dialog" role="document">
