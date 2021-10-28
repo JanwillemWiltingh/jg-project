@@ -38,6 +38,7 @@
                         <th scope="col">Eind tijd</th>
                         <th scope="col">Totaal ingeklokt</th>
                         <th scope="col">Aantekening</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -48,8 +49,13 @@
                                 <td>{{ $clock->user()->get()->first()['firstname'] }} {{ $clock->user()->get()->first()['middlename'] }} {{ $clock->user()->get()->first()['lastname'] }}</td>
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
-                                <td>{{ $clock->timeWorkedToday(false) }}</td>
+                                <td>{{ $clock->timeWorkedToday(false)}}</td>
                                 <td>{{ $clock['comment'] }}</td>
+                                @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && !empty($clock['end_time']))
+                                    <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen"></i></a></td>
+                                @else
+                                    <td></td>
+                                @endif
                             </tr>
                         @endforeach
                     @else
