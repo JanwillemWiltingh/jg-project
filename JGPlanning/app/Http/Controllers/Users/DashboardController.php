@@ -71,12 +71,12 @@ class DashboardController extends Controller
                 Clock::create([
                     'comment' => $validated['comment'],
                     'user_id' => $user['id'],
-                    'start_time' => Carbon::now()->addHours(2)->toTimeString(),
+                    'start_time' => Carbon::now()->addHours(2)->format('H:i'),
                     'end_time' => null,
                     'date' => Carbon::now()->toDateString()
                 ]);
             } else {
-                $clocks->last()->update(['end_time' => Carbon::now()->addHours(2)->toTimeString()]);
+                $clocks->last()->update(['end_time' => Carbon::now()->addHours(2)->format('H:i')]);
             }
         }
 

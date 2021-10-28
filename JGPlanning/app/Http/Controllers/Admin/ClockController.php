@@ -7,6 +7,7 @@ use App\Models\Clock;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use DateInterval;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -65,19 +66,63 @@ class ClockController extends Controller
      * @param Request $request
      * @param User $user
      */
-    public function edit(User $user, Clock $clock){
+    public function edit(Clock $clock){
         $user_session = Auth::user();
-        $clock_by_id = DB::table('clocker')->where('user_id', $user['id'])->first();
-
-        return view('admin/clock-in/edit')->with(['user' => $user, 'user_session' => $user_session, 'clock_by_id' => $clock_by_id]);
+        $start_time = $clock['start_time'];
+        $end_time = $clock['end_time'];
+        $start_time = Carbon::parse($start_time);
+        if(empty($end_time)){
+            $end_time = Carbon::now()->addHours(2);
+        }else{
+            $end_time = Carbon::parse($end_time);
+        }
+        $total_difference_in_seconds = $end_time->diffInSeconds($start_time);
+        $total_difference_in_hours = $total_difference_in_seconds / 3600;
+        return view('admin/clock-in/edit')->with(['user_session' => $user_session, 'clock' => $clock, 'total_difference' => $total_difference_in_hours]);
     }
     public function update(Clock $clock, Request $request ){
         $validated = $request->validate([
             'start_time' => ['required'],
             'end_time' => ['required'],
-            'total_hours' => ['required'],
         ]);
-        
+//        calculate the total hours in seconds
+//        database total difference
+//        $clock_by_id = DB::table('clocker')->where('id', $clock['id'])->first();
+//        $start_time = $clock_by_id->start_time;
+//        $end_time = $clock_by_id->end_time;
+//
+//        $start_time = Carbon::parse($start_time);
+//        if(empty($end_time)){
+//            $end_time = Carbon::now()->addHours(2);
+//        }else{
+//            $end_time = Carbon::parse($end_time);
+//        }
+//        $total_difference_in_seconds = $end_time->diffInSeconds($start_time);
+//        $total_difference_in_hours = $total_difference_in_seconds / 3600;
+//        $total_difference_r = round($total_difference_in_hours, 2);
+//        //request total difference
+//        $rStart = $request['start_time'];
+//        $rEnd = $request['end_time'];
+//        $rTotal = $request['total_hours'];
+//        $rStart = Carbon::parse($rStart);
+//        if(empty($rEnd)){
+//            $rEnd = Carbon::now()->addHours(2);
+//        }else{
+//            $rEnd = Carbon::parse($rEnd);
+//        }
+//        //see if the start_time hasn't changed and the total hours did, so we can update the end time
+//        if($request['end_time'] == $clock['end_time'] && $request['start_time'] == $clock['start_time'] && $validated['total_hours'] != $total_difference_r){
+//            $end_time->add(new DateInterval('PT'.$total_difference_in_seconds.''));
+//        }
+//        dd($request['end_time'], $clock['end_time'], $request['total_hours'], $total_difference_r);
+
+        $clock->update([
+           'start_time' => $validated['start_time'],
+           'end_time'   => $validated['end_time'],
+
+        ]);
+
+        return redirect()->back()->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success']]);
     }
 }
 
