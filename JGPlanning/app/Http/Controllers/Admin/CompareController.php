@@ -23,19 +23,19 @@ class CompareController extends Controller
         $users = User::all();
         $all_users = User::all();
         $month = Carbon::now()->year.'-'.Carbon::now()->month;
-        $week = Carbon::now()->year.'-W'.Carbon::now()->week;
+        $weeks = Carbon::now()->year.'-W'.Carbon::now()->week;
 
         $input_field = 'month';
         if($request->all() != []) {
             $validated = $request->validate([
                 'month' => ['required'],
-                'week' => ['required'],
+                'weeks' => ['required'],
                 'user' => ['required'],
                 'date-format' => ['required'],
             ]);
 
             $request->session()->flash('month', $validated['month']);
-            $request->session()->flash('week', $validated['week']);
+            $request->session()->flash('weeks', $validated['weeks']);
             $request->session()->flash('user', $validated['user']);
             $request->session()->flash('date-format', $validated['date-format']);
 
@@ -50,7 +50,7 @@ class CompareController extends Controller
             'users' => $users,
             'all_users' => $all_users,
             'month' => $month,
-            'week' => $week,
+            'weeks' => $weeks,
             'input_field' => $input_field
         ]);
     }
