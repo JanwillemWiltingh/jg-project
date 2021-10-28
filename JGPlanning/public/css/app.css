@@ -19768,7 +19768,7 @@ Copyright (c) 2015 Daniel Eden
 
 .nav-color {
     width: 89%;
-    background: linear-gradient(90deg, #1A6686 0%, #1C88A4 100%);
+    background: linear-gradient(90deg, rgba(41,41,224,1) 0%, rgba(0,212,255,1) 100%);
     position: absolute;
     left: 0;
     transition: all 0.2s;
@@ -19879,6 +19879,12 @@ Copyright (c) 2015 Daniel Eden
     font-size: 14px;
     margin-left: 43px;
 }
+
+.warning-label {
+    color: red;
+    font-size: 14px;
+}
+
 .table-label{
     text-decoration: none;
     color: #006aff;
