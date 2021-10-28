@@ -47,9 +47,9 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
 });
 
 //TODO: nog onder rooster/* brengen maar ik ben er nog te bang voor aangezien ik nog bezig ben met inplannen voor de toekomst.
-Route::post('/availability', [RoosterController::class, 'add_availability'])->name('availability');
-Route::post('/availability-edit/', [RoosterController::class, 'edit_availability'])->name('edit_availability');
-Route::get('/{user}/rooster-delete/{weekday}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
+Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
+Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
@@ -71,8 +71,10 @@ Route::name('admin.')->prefix('admin/')->group(function (){
 
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [RoosterAdminController::class, 'index_rooster'])->name('index');
-        Route::get('/{user}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
-        Route::post('/{user}/available_days', [RoosterAdminController::class, 'push_days'])->name('push_days');
+        Route::get('/{user}/{week}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
+        Route::post('/{user}/{week}/available_days', [RoosterAdminController::class, 'push_days'])->name('push_days');
+        Route::post('/{user}/disable_days', [RoosterAdminController::class, 'disable_days'])->name('disable_days');
+        Route::post('/{user}/{week}/edit_disable_days', [RoosterAdminController::class, 'edit_disable_days'])->name('edit_disable_days');
     });
 
     Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){

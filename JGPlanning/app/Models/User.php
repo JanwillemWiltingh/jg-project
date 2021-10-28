@@ -107,8 +107,20 @@ class User extends Authenticatable
         } catch (Exception $exception) {
             //        Als er een rooster voor morgen is vraag alle roosters op van deze gebruiker
             $roosters = $this->roosters()->get();
-
             if ($roosters->count() > 0) {
+//                Foreach loop to get the next rooster
+                $i = false;
+                foreach($roosters as $rooster) {
+                    if($i == true) {
+                        return $rooster;
+                        break;
+                    }
+
+                    if($rooster['id'] == $current_rooster['id']) {
+                        $i = true;
+                    }
+                }
+
                 return $roosters->where('id', $current_rooster['id'] + 1)->first();
             }
         }
