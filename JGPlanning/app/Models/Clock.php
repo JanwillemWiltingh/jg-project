@@ -7,6 +7,8 @@ use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Collection;
 
 class Clock extends Model
 {
@@ -24,6 +26,19 @@ class Clock extends Model
     ];
 
     public $timestamps = false;
+
+    /**
+     * Function for checking if the ip the user is on is correct
+     *
+     * @param Request $request
+     * @return bool
+     */
+    public static function isIPCorrect(Request $request): bool {
+        $ip = $request->ip();
+        $valid_ip = '192.168.1.';
+
+        return str_contains($ip, $valid_ip);
+    }
 
     public function user(): BelongsTo
     {
