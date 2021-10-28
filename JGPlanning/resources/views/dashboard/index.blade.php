@@ -1,8 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-{{--  TODO: Mogelijk met Jessenger package controleren of iemand op mobiel bezig is of niet  --}}
 {{--    Cards should imitate this: https://codepen.io/lesliesamafful/pen/oNXgmBG?editors=1010   --}}
+
+    @if(session()->get('message'))
+        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
+            {{ session()->get('message')['message'] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-12">
             <h1>Welkom {{$user['firstname']}}!</h1>
@@ -144,7 +152,7 @@
                                 @if($start)
                                     <button type="submit" class="btn btn-dark float-right">Clock Out</button>
                                 @else
-                                    <button type="submit" class="btn btn-dark float-right">Clock In</button>
+                                    <button type="submit" class="btn btn-dark float-right" @if(!$allowed) DISABLED @endif>Clock In</button>
                                 @endif
                             </div>
                         </div>
