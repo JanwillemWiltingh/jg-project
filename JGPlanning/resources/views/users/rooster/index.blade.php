@@ -4,15 +4,22 @@
     @include('modals')
 
 <div class="content fadeInDown">
-
-@foreach ($errors->all() as $error)
-    <p style="color:red;">{{ $error }}</p>
-@endforeach
-@if(session()->has('error'))
-    <p style="color:red;">
-        {{ session()->get('error') }}
-    </p>
-@endif
+    @if($errors->all())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @foreach ($errors->all() as $error)
+                {{ $error }}
+            @endforeach
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    @endif
+    @if(session()->get('message'))
+        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
+            {{ session()->get('message')['message'] }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    @endif
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -23,29 +30,33 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <div>
-{{--                            <div class="border-bottom">--}}
-{{--                                <a style="float: right; font-size: 25px" href="#"><i class="fa fa-arrow-right" ></i></a>--}}
-{{--                                <p style="text-align: center; font-size: 25px">{{$weekstring}}</p>--}}
-{{--                                <a style="float: left; font-size: 25px; margin-top: -53px" href="#"><i class="fa fa-arrow-left" ></i></a>--}}
-{{--                            </div>--}}
-                            </a>
+                                <div>
+                                    <a style="float: right; font-size: 25px" href="{{route('rooster.index', request('week') + 1)}}"><i class="fa fa-arrow-right" ></i></a>
+                                    <p style="text-align: center; font-size: 25px">{{$weekstring}}</p>
+                                    <a style="float: left; font-size: 25px; margin-top: -53px" href="{{route('rooster.index', request('week') - 1)}}"><i class="fa fa-arrow-left" ></i></a>
+                                </div>
+                            <form id="week_form">
+                                <input type="hidden" value="{{request('week')}}" id="hidden_week">
+                                <input type="week" class="form-control" name="week" id="week">
+                            </form>
                             <table class="card-body table table-bordered">
                                 <thead>
                                 <th width="14%" style="border: none; text-align: center">Time</th>
                                 @for($i = 1; $i < count($weekDays) + 1; $i++)
-                                    @if(!is_null(json_decode($user_info->unavailable_days)))
+                                    @if($disabled_array)
                                         <th width="14%" style="border: none; text-align: center;">
                                             {{ $weekDays[$i] }}
-                                            @if(is_null(json_decode($user_info->unavailable_days)[$i - 1]))
-                                                @if($availability)
-                                                    @if(is_null($availability->where('weekdays', $i)->first()))
+                                            @if($availability)
+                                                @if(!$disabled_array[$i - 1])
+                                                    @if(is_null($availability->where('weekdays', $i)->where('start_week', '<=', request('week'))->where('end_week', '>=', request('week'))->first()))
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
                                                     @else
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
-                                                        <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i])}}"><i class="fa fa-trash"></i></a>
+                                                        <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i, 'week' => request('week')])}}"><i class="fa fa-trash"></i></a>
                                                     @endif
-                                                @else
+                                                @endif
+                                            @else
+                                                @if(!$disabled_array[$i - 1])
                                                     <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
                                                 @endif
                                             @endif
@@ -53,9 +64,8 @@
                                     @else
                                         <th width="14%" style="border: none; text-align: center; @if(!is_null(json_decode($user_info->unavailable_days)[$i - 1])) background: lightgrey @endif">
                                             {{ $weekDays[$i] }}
-
                                             @if($availability)
-                                                @if(is_null($availability->where('weekdays', $i)->first()))
+                                                @if(is_null($availability->where('weekdays', $i)->where('start_week', '<=', request('week'))->where('end_week', '>=', request('week'))->first()))
                                                     <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
                                                 @else
                                                     <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
@@ -76,7 +86,7 @@
                                         </td>
                                         @for($i = 0; $i < count($days); $i++)
                                             @if(is_array($days[$i]))
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['start_time'] != "") background-color: lightblue; @else background-color:#f0f0f0; @endif border-radius: 5px;">
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['start_time'] != "") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
 
                                                     @if($days[$i]['start_time'] != "")
                                                         @if($days[$i]['from_home'])

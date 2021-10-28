@@ -50,4 +50,8 @@ $(document).ready(function () {
             location.reload();
         }, 100);
     });
+
+    $('#week').on('change', function () {
+        window.location.href = this.value.substring(6);
+    });
 });
