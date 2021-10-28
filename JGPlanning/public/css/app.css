@@ -19879,6 +19879,12 @@ Copyright (c) 2015 Daniel Eden
     font-size: 14px;
     margin-left: 43px;
 }
+
+.warning-label {
+    color: red;
+    font-size: 14px;
+}
+
 .table-label{
     text-decoration: none;
     color: #006aff;
@@ -19944,4 +19950,9 @@ Copyright (c) 2015 Daniel Eden
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.thick-table-border {
+    border-right: 2px solid black;
+}
+
 
