@@ -141,6 +141,12 @@
     font-size: 14px;
     margin-left: 43px;
 }
+
+.warning-label {
+    color: red;
+    font-size: 14px;
+}
+
 .table-label{
     text-decoration: none;
     color: #006aff;

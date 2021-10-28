@@ -25,49 +25,41 @@ class DashboardController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $now = Carbon::now();
 
-        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now]);
+        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request)]);
     }
 
     /**
+     * @param Request $request
      * @return RedirectResponse
      */
     public function clock(Request $request): RedirectResponse
     {
-//        TODO: Errors aanpassen
-        $validated = $request->validate([
-            'comment' => ['nullable', 'string'],
-        ]);
+        if(Clock::isIPCorrect($request)) {
+            $validated = $request->validate([
+                'comment' => ['nullable', 'string'],
+            ]);
 
-        $user = Auth::user();
-        $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
-        $start_time = Carbon::parse('08:30:00');
-        $end_time = Carbon::parse('17:30:00');
+            $user = Auth::user();
+            $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
+            $start_time = Carbon::parse('08:30:00');
+            $end_time = Carbon::parse('17:30:00');
 
 //        When someone clocks in before or after working hours give an error message and don't clock them in
-        if(!$user->isClockedIn()) {
-            if($start_time->isFuture()) {
-                return redirect()->back()->with(['error'=> 'Er kan pas vanaf 08:30 ingeklokt worden']);
-            } elseif ($end_time->isPast()) {
-                return redirect()->back()->with(['error' => 'Werktijden zijn voorbij, er kan niet meer ingeklokt worden']);
+            if(!$user->isClockedIn()) {
+                if($start_time->isFuture()) {
+                    return redirect()->back()->with(['message'=> ['message' => 'Er kan pas vanaf 08:30 ingeklokt worden', 'type' => 'danger']]);
+                } elseif ($end_time->isPast()) {
+                    return redirect()->back()->with(['message' => ['message' => 'Werktijden zijn voorbij, er kan niet meer ingeklokt worden', 'type' => 'danger']]);
+                }
             }
-        }
 
 
-        if($clocks->count() == 0) {
-            Clock::create([
-                'comment' => $validated['comment'],
-                'user_id' => $user['id'],
-                'start_time' => Carbon::now()->addHours(2)->toTimeString(),
-                'end_time' => null,
-                'date' => Carbon::now()->toDateString()
-            ]);
-        } else {
-            if($clocks->last()['end_time'] != null) {
+            if($clocks->count() == 0) {
                 Clock::create([
                     'comment' => $validated['comment'],
                     'user_id' => $user['id'],
@@ -76,7 +68,17 @@ class DashboardController extends Controller
                     'date' => Carbon::now()->toDateString()
                 ]);
             } else {
-                $clocks->last()->update(['end_time' => Carbon::now()->addHours(2)->toTimeString()]);
+                if($clocks->last()['end_time'] != null) {
+                    Clock::create([
+                        'comment' => $validated['comment'],
+                        'user_id' => $user['id'],
+                        'start_time' => Carbon::now()->addHours(2)->toTimeString(),
+                        'end_time' => null,
+                        'date' => Carbon::now()->toDateString()
+                    ]);
+                } else {
+                    $clocks->last()->update(['end_time' => Carbon::now()->addHours(2)->toTimeString()]);
+                }
             }
         }
 
