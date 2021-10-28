@@ -126,6 +126,7 @@ class RoosterAdminController extends Controller
         return redirect()->back();
     }
 
+//  functie om uitgezette datums aan te makken.
     public function disable_days(Request $request, $user)
     {
         $validated = $request->validate([
@@ -149,7 +150,7 @@ class RoosterAdminController extends Controller
             }
         }
 
-        if ($start_week > $end_week)
+        if ($start_week < $end_week)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
         }
@@ -164,6 +165,7 @@ class RoosterAdminController extends Controller
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
     }
 
+//  functie om uitgezette datums te bewerken
     public function edit_disable_days (Request $request, $user, $week)
     {
         $validated = $request->validate([
@@ -177,21 +179,34 @@ class RoosterAdminController extends Controller
 
         $checkDisabled = DisabledDays::all()
             ->where('user_id', $user)
-            ->where('weekday', $validated['weekday']);
+            ->where('weekday', $validated['weekday'])
+            ->where('start_week', '<=', $week)
+            ->where('end_week', '>=', $week)
+            ->first();
 
-        foreach ($checkDisabled as $cd)
-        {
-            if (in_array($cd->start_week, range($start_week,$end_week)) || in_array($cd->end_week, range($start_week,$end_week)))
-            {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
-            }
-        }
 
         if ($start_week > $end_week)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
         }
 
-//        return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
+        $checkDisabled->update([
+                'start_week' => $start_week,
+                'end_week' => $end_week
+            ]);
+
+        return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
+    }
+    public function delete_disable_days($user, $week, $weekday)
+    {
+        DisabledDays::all()
+            ->where('user_id', $user)
+            ->where('weekday', $weekday)
+            ->where('start_time', '<=', $week)
+            ->where('end_week', '>=', $week)
+            ->first()
+            ->delete();
+
+        return back()->with(['message' => ['message' => 'De aangegeven weken zijn verwijderd', 'type' => 'success']]);
     }
 }

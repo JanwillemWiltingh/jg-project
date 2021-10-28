@@ -28,8 +28,9 @@ class RoosterController extends Controller
 
         $weekDays     = Availability::WEEK_DAYS;
 
-        $availability = Rooster::where('user_id', $user)->first();
+        $availability = Rooster::where('user_id', $user)->get();
 
+//        dd($availability);
         $array1 = [];
         $disabled_array = [];
         $disabled_days = DisabledDays::all()
@@ -38,7 +39,6 @@ class RoosterController extends Controller
             ->where('end_week', '>=', $week)
             ->sortBy('weekday');
 
-        $disabled_count = count($disabled_days);
 
         foreach ($disabled_days as $dd)
         {
@@ -156,15 +156,16 @@ class RoosterController extends Controller
 //  Functie om een dag te bewerken
     public function edit_availability(Request $request, $start_week)
     {
-//        $validated = $request->validate([
-//            'start_time' => ['required'],
-//            'end_time' => ['required'],
-//            'weekday' => ['required'],
-//            'user_id' => ['required'],
-//            'from_home' => [],
-//            'comment' => [],
-//            'week' => ['required'],
-//        ]);
+        $validated = $request->validate([
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'weekday' => ['required'],
+            'user_id' => ['required'],
+            'from_home' => [],
+            'comment' => [],
+//            'start_week' => ['required'],
+//            'end_week' => ['required'],
+        ]);
 
 
         $start_time = strtotime($validated['start_time']);
@@ -181,9 +182,9 @@ class RoosterController extends Controller
         $end_week = substr($validated['week'], 6);
 
 //        Checked of de week die is ingevuld niet eerder is dan de huidige week.
-        if (!$end_week > $start_week)
+        if (!substr($validated['end_week'], 6) > substr($validated['start_week'], 6))
         {
-            return back()->with('error', 'De week die u heeft ingevuld is eerder dan de begin week');
+            return back()->with('error', 'De begin week die u heeft ingevuld is later dan de ingevulde eind week');
         }
 
         if ($start_date > $end_date)

@@ -41,14 +41,14 @@
                                     {{ session('status') }}
                                 </div>
                             @endif
-                                <div>
+                                <div style="text-align: center !important; font-size: 25px">
                                     <a style="float: right; font-size: 25px" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') + 1])}}"><i class="fa fa-arrow-right" ></i></a>
-                                    <p style="text-align: center; font-size: 25px">
-                                        {{$weekstring}}
-                                    </p>
-                                    <a style="float: left; font-size: 25px; margin-top: -53px" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') - 1] )}}"><i class="fa fa-arrow-left" ></i></a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#disableModal"><p  style="text-align: center; font-size: 15px; margin-top: -10px">Dagen uitzetten</p></a>
+                                    {{$weekstring}}
+                                    <a style="float: left; font-size: 25px;" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') - 1] )}}"><i class="fa fa-arrow-left" ></i></a>
                                 </div>
+                                <p style="text-align: center;">
+                                    <a style="font-size: 15px; margin-top: -10px" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">Dagen uitzetten</a>
+                                </p>
                             <table class="card-body table table-bordered">
                                 <thead >
                                 <th width="14%" style="border: none; text-align: center; border-radius: 15px 15px 0 0 !important;" >Time</th>
@@ -82,7 +82,8 @@
                                                     @endif
 
                                                     @if($days[$i]['comment'] == "Disabled")
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none;"><i class="fa fa-pencil-alt"></i></a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none;" onclick="modalData({{$i}})"><i class="fa fa-pencil-alt"></i></a>
+                                                        <a href="{{route('admin.rooster.delete_disable_days', ['user' => request('user'), 'week' => request('week'), 'weekday' => $i + 1])}}" style="font-weight: lighter; text-decoration: none;"><i class="fa fa-trash"></i></a>
                                                     @endif
 
                                                     @if($days[$i]['start_time'] != "")
@@ -106,12 +107,9 @@
         </div>
 
         <script>
-            function modalData(weekday, id)
+            function modalData(weekday)
             {
-                document.getElementById('is_rooster').value = true;
-                document.getElementById('is_rooster_edit').value = true;
-                document.getElementById('weekday').value = weekday;
-                document.getElementById('weekday_edit').value = weekday;
+                document.getElementById('weekday').value = weekday + 1;
             }
         </script>
 @endsection
