@@ -119,7 +119,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $user_session = Auth::user();
-        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session == Role::getRoleID('admin')){
+        if($user['role_id'] == Role::getRoleID('admin') && $user_session['role_id'] == Role::getRoleID('admin')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
         $roles = Role::all();
@@ -192,7 +192,12 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         $user_session = Auth::user();
-        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session == Role::getRoleID('admin')){
+        $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
+        //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
+        if($maintainer_count <= 1  && $user['role_id'] == $user_session['role_id']){
+            return redirect()->back()->with(['message'=> ['message' => 'Error', 'type' => 'danger']]);
+        }
+        if($user['role_id'] == Role::getRoleID('admin') && $user_session['role_id'] == Role::getRoleID('admin')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
         if(empty($user['deleted_at'])){

@@ -1,5 +1,10 @@
 <?php
 
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, HelpController, RoosterController, ProfileController};
 use App\Http\Controllers\Admin\{UserController,ClockController, RoosterAdminController, CompareController};
@@ -15,33 +20,39 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 
+//auth login
 Route::name('auth.')->prefix('auth/')->group(function (){
     Route::post('/login', [LoginController::class, 'login'])->name('login');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
+//dashboard
 Route::name('dashboard.')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('home');
     Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
 });
 
+//help
 Route::name('help.')->prefix('help/')->group(function (){
     Route::get('/', [HelpController::class, 'help'])->name('index');
 });
 
+//profiel
 Route::name('profile.')->prefix('profiel/')->group(function (){
     Route::get('/', [ProfileController::class, 'profile'])->name('index');
     Route::get('/edit/{user}', [ProfileController::class, 'edit'])->name('edit');
     Route::get('/update/{user}', [ProfileController::class, 'update'])->name('update');
 });
 
+//beschikbaarheid
 Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){
     Route::get('/', [RoosterController::class, 'index'])->name('index');
 });
 
+//rooster
 Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/{week}', [RoosterController::class, 'index'])->name('index');
 });
@@ -51,6 +62,7 @@ Route::post('/availability/{week}', [RoosterController::class, 'add_availability
 Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
 Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 
+//admin
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');
@@ -59,6 +71,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/update/{clock}', [ClockController::class, 'update'])->name('update');
     });
 
+//admin users table
     Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [UserController::class,'index'])->name('index');
         Route::get('/show/{user}', [UserController::class,'show'])->name('show');
@@ -69,6 +82,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
+//admin rooster table
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [RoosterAdminController::class, 'index_rooster'])->name('index');
         Route::get('/{user}/{week}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
@@ -77,8 +91,53 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::post('/{user}/{week}/edit_disable_days', [RoosterAdminController::class, 'edit_disable_days'])->name('edit_disable_days');
     });
 
+//admin compare table
     Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [CompareController::class, 'index'])->name('index');
     });
 });
 
+//password reset
+Route::get('/forgot-password', function () {
+    return view('Auth.forgot_password');
+})->middleware('guest')->name('password.request');
+
+//Route::post('/forgot-password', function (Request $request) {
+//    $request->validate(['email' => 'required|email']);
+//
+//    $status = Password::sendResetLink(
+//        $request->only('email')
+//    );
+//
+//    return $status === Password::RESET_LINK_SENT
+//        ? back()->with(['status' => __($status)])
+//        : back()->withErrors(['email' => __($status)]);
+//})->middleware('guest')->name('password.email');
+//
+//Route::get('/reset-password/{token}', function ($token) {
+//    return view('auth.reset-password', ['token' => $token]);
+//})->middleware('guest')->name('password.reset');
+//Route::post('/reset-password', function (Request $request) {
+//    $request->validate([
+//        'token' => 'required',
+//        'email' => 'required|email',
+//        'password' => 'required|min:8|confirmed',
+//    ]);
+//
+//    $status = Password::reset(
+//        $request->only('email', 'password', 'password_confirmation', 'token'),
+//        function ($user, $password) {
+//            $user->forceFill([
+//                'password' => Hash::make($password)
+//            ])->setRememberToken(Str::random(60));
+//
+//            $user->save();
+//
+//            event(new PasswordReset($user));
+//        }
+//    );
+//
+//    return $status === Password::PASSWORD_RESET
+//        ? redirect()->route('login')->with('status', __($status))
+//        : back()->withErrors(['email' => [__($status)]]);
+//})->middleware('guest')->name('password.update');
