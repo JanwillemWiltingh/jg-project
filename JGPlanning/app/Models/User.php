@@ -121,8 +121,11 @@ class User extends Authenticatable
                         $i = true;
                     }
                 }
+                $next = $roosters->where('id', $current_rooster['id'] + 1)->first();
 
-                return $roosters->where('id', $current_rooster['id'] + 1)->first();
+                if($next != null) {
+                    return $next;
+                }
             }
         }
 
