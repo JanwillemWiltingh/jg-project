@@ -36,22 +36,7 @@
             <label class="black-label-text" style="font-size: 20px;">Welke rol krijgt de gebruiker?</label>
             <div class="row">
                 <div class="col-3">
-                    <div class="form-group">
-                        <label class="black-label-text" for="roles">Rollen</label>
-                        <select class="form-control" name="roles" id="roles">
-                            @foreach($roles as $role)
-                                <option value="{{$role['id']}}" @if(old('roles') == $role['id']) selected @endif>{{$role['name']}}</option>
-                            @endforeach
-                        </select>
-
-                        @if($errors->has('roles'))
-                            <div class="error">
-                                <label class="warning-label">
-                                    {{ $errors->first('roles') }}
-                                </label>
-                            </div>
-                        @endif
-                    </div>
+                    <x-forms.single-select :array="$roles" field="name" name="roles" capitalize="true"></x-forms.single-select>
                 </div>
             </div>
         @else

@@ -35,18 +35,7 @@
             <label class="black-label-text" style="font-size: 20px;">Welke rol krijgt de gebruiker?</label>
             <div class="row">
                 <div class="col-3">
-                    <div class="form-group">
-                        <label class="black-label-text" for="roles">Rollen</label>
-                        <select class="form-control" name="roles" id="roles">
-                            @foreach($roles as $role)
-                                <option value="{{$role['id']}}" @if(old('roles') == $role['id']) selected @elseif($role['id'] == $user['role_id']) selected @endif>{{$role['name']}}</option>
-                            @endforeach
-                        </select>
-
-                        @if($errors->has('roles'))
-                            <div class="error">{{ $errors->first('roles') }}</div>
-                        @endif
-                    </div>
+                    <x-forms.single-select :array="$roles" field="name" name="roles" value="{{ $user['role_id'] }}" capitalize="true"></x-forms.single-select>
                 </div>
             </div>
         @else
