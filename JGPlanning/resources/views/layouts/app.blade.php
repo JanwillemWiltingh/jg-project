@@ -196,13 +196,7 @@ The above copyright notice and this permission notice shall be included in all c
                     </div>
                 </div>
                 <div class="container">
-                    @if(session()->get('message'))
-                        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
-                            {{ session()->get('message')['message'] }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                            </button>
-                        </div>
-                    @endif
+                    <x-alert/>
 
                     @yield('content')
                 </div>
