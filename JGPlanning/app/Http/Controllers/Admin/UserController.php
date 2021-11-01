@@ -119,7 +119,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $user_session = Auth::user();
-        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session == Role::getRoleID('admin')){
+        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session['role_id'] == Role::getRoleID('admin')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
         $roles = Role::all();
