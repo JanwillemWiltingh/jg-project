@@ -78,11 +78,11 @@
 
             <div class="col-3">
                 <div class="form-group">
-                    <label class="black-label-text" for="old_password">Oud Wachtwoord</label>
-                    <input type="password" class="form-control" id="old_password" name="old_password" value="{{ old('old_password') }}" aria-describedby="old_password" placeholder="Voer je oude wachtwoord in">
+                    <label class="black-label-text" for="current_password">Huidig Wachtwoord</label>
+                    <input type="password" class="form-control" id="current_password" name="current_password" value="{{ old('current_password') }}" aria-describedby="current_password" placeholder="Voer je huidige wachtwoord in">
 
-                    @if($errors->has('old_password'))
-                        <div class="error">{{ $errors->first('old_password') }}</div>
+                    @if($errors->has('current_password'))
+                        <div class="error">{{ $errors->first('current_password') }}</div>
                     @endif
                 </div>
             </div>
