@@ -196,7 +196,7 @@ The above copyright notice and this permission notice shall be included in all c
                     </div>
                 </div>
                 <div class="container">
-                    <x-alert/>
+                    <x-alert></x-alert>
 
                     @yield('content')
                 </div>
