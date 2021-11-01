@@ -156,15 +156,15 @@ class RoosterController extends Controller
 //  Functie om een dag te bewerken
     public function edit_availability(Request $request, $start_week)
     {
-//        $validated = $request->validate([
-//            'start_time' => ['required'],
-//            'end_time' => ['required'],
-//            'weekday' => ['required'],
-//            'user_id' => ['required'],
-//            'from_home' => [],
-//            'comment' => [],
-//            'week' => ['required'],
-//        ]);
+        $validated = $request->validate([
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'weekday' => ['required'],
+            'user_id' => ['required'],
+            'from_home' => [],
+            'comment' => [],
+            'week' => ['required'],
+        ]);
 
 
         $start_time = strtotime($validated['start_time']);

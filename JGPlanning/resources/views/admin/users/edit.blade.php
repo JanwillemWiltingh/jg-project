@@ -5,71 +5,29 @@
     <form method="get" action="{{ route('admin.users.update', $user['id']) }}">
         <div class="row">
             <div class="col-3">
-                <div class="form-group">
-                    <label class="black-label-text" for="firstname">Voornaam</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" value="{{ old('firstname') ?? $user['firstname'] }}" aria-describedby="firstname" placeholder="Voornaam">
-
-                    @if($errors->has('firstname'))
-                        <div class="error">{{ $errors->first('firstname') }}</div>
-                    @endif
-                </div>
+                <x-forms.input type="text" name="firstname" value="{{ $user['firstname'] }}"></x-forms.input>
             </div>
 
             <div class="col-3">
-                <div class="form-group">
-                    <label class="black-label-text" for="middlename">Tussenvoegsel</label>
-                    <input type="text" class="form-control" id="middlename" name="middlename" value="{{ old('middlename') ?? $user['middlename'] }}" aria-describedby="middlename" placeholder="Tussenvoegsel">
-
-                    @if($errors->has('middlename'))
-                        <div class="error">{{ $errors->first('middlename') }}</div>
-                    @endif
-                </div>
+                <x-forms.input type="text" name="middlename" value="{{ $user['middlename'] }}"></x-forms.input>
             </div>
 
             <div class="col-3">
-                <div class="form-group">
-                    <label class="black-label-text" for="lastname">Achternaam</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" value="{{ old('lastname') ?? $user['lastname'] }}" aria-describedby="lastname" placeholder="Achternaam">
-
-                    @if($errors->has('lastname'))
-                        <div class="error">{{ $errors->first('lastname') }}</div>
-                    @endif
-                </div>
+                <x-forms.input type="text" name="lastname" value="{{ $user['lastname'] }}"></x-forms.input>
             </div>
         </div>
         <div class="row">
             <div class="col-3">
-                <div class="form-group">
-                    <label class="black-label-text" for="email">E-mail</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') ?? $user['email']}}" aria-describedby="email" placeholder="E-mail">
-
-                    @if($errors->has('email'))
-                        <div class="error">{{ $errors->first('email') }}</div>
-                    @endif
-                </div>
+                <x-forms.input type="email" name="email" value="{{ $user['email'] }}"></x-forms.input>
             </div>
         </div>
         <div class="row">
             <div class="col-3">
-                <div class="form-group">
-                    <label class="black-label-text" for="password">Wachtwoord</label>
-                    <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" aria-describedby="password" placeholder="Wachtwoord">
-
-                    @if($errors->has('password'))
-                        <div class="error">{{ $errors->first('password') }}</div>
-                    @endif
-                </div>
+                <x-forms.input type="password" name="password"></x-forms.input>
             </div>
 
             <div class="col-3">
-                <div class="form-group">
-                    <label class="black-label-text" for="password_confirmation">Bevestig Wachtwoord</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" value="{{ old('password_confirmation') }}" aria-describedby="password_confirmation" placeholder="Bevestig Password">
-
-                    @if($errors->has('password_confirmation'))
-                        <div class="error">{{ $errors->first('password_confirmation') }}</div>
-                    @endif
-                </div>
+                <x-forms.input type="password" name="password_confirmation"></x-forms.input>
             </div>
         </div>
         @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
