@@ -3,14 +3,6 @@
 @section('content')
 {{--    Cards should imitate this: https://codepen.io/lesliesamafful/pen/oNXgmBG?editors=1010   --}}
 
-    @if(session()->get('message'))
-        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
-            {{ session()->get('message')['message'] }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-        </div>
-    @endif
-
     <div class="row">
         <div class="col-12">
             <h1>Welkom {{$user['firstname']}}!</h1>
@@ -219,5 +211,4 @@
         </div>
     </div>
 <a style="color: white; cursor: pointer" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
-    @if(session()->get('error')) {{ session()->get('error') }} @endif
 @endsection

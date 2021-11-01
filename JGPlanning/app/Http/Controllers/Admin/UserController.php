@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\Rooster;
 use App\Models\User;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -53,6 +54,7 @@ class UserController extends Controller
      *
      * @param Request $request
      * @return RedirectResponse
+     * @throws Exception
      */
     public function store(Request $request): RedirectResponse
     {
@@ -115,6 +117,7 @@ class UserController extends Controller
      *
      * @param User $user
      * @return Application|Factory|View|RedirectResponse
+     * @throws Exception
      */
     public function edit(User $user)
     {
@@ -134,7 +137,7 @@ class UserController extends Controller
      * @param Request $request
      * @param User $user
      * @return RedirectResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function update(Request $request, User $user): RedirectResponse
     {
@@ -188,6 +191,7 @@ class UserController extends Controller
      *
      * @param User $user
      * @return RedirectResponse
+     * @throws Exception
      */
     public function destroy(User $user): RedirectResponse
     {

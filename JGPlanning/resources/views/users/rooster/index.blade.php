@@ -13,13 +13,6 @@
             </button>
         </div>
     @endif
-    @if(session()->get('message'))
-        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
-            {{ session()->get('message')['message'] }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-        </div>
-    @endif
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -52,7 +45,7 @@
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
                                                     @else
                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
-                                                        <a href="{{route('delete_rooster', ['user' => $user, 'weekday' =>$i, 'week' => request('week')])}}"><i class="fa fa-trash"></i></a>
+                                                        <a href="{{route('rooster.delete_rooster', ['user' => $user, 'weekday' =>$i, 'week' => request('week')])}}"><i class="fa fa-trash"></i></a>
                                                     @endif
                                                 @endif
                                             @else

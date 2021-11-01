@@ -1,13 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @if(session()->get('message'))
-        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
-            {{ session()->get('message')['message'] }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-        </div>
-    @endif
     <h1>Bewerk Gebruiker <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step"></i></a></h1>
     <form method="get" action="{{ route('admin.users.update', $user['id']) }}">
         <div class="row">

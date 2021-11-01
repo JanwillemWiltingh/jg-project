@@ -92,7 +92,7 @@ The above copyright notice and this permission notice shall be included in all c
 
                         @can('admin-beschikbaarheid')
                             <li class="nav-item active hover-navbar">
-                                <a class="nav-link nav-color" href="" style="margin-top: 180px;">
+                                <a class="nav-link nav-color" style="margin-top: 180px;">
                                     <i class="fa fa-calendar"></i>
                                     <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -20px; margin-right: -5px"></i>
                                     <p>Beschikbaarheid beheren</p>
@@ -196,6 +196,14 @@ The above copyright notice and this permission notice shall be included in all c
                     </div>
                 </div>
                 <div class="container">
+                    @if(session()->get('message'))
+                        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
+                            {{ session()->get('message')['message'] }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            </button>
+                        </div>
+                    @endif
+
                     @yield('content')
                 </div>
             </div>
