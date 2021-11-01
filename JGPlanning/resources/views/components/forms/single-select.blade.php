@@ -5,7 +5,8 @@
     </label>
     <select class="form-control"
             name="{{ $name }}"
-            id="{{ $name }}">
+            id="{{ $name }}"
+            @if($disabled) disabled @endif>
         @foreach($array as $data)
             <option value="{{$data['id']}}"
                     @if(old($name) == $data['id'])

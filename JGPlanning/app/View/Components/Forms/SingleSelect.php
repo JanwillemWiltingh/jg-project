@@ -14,19 +14,21 @@ class SingleSelect extends Component
     public $name;
     public $value;
     public $capitalize;
+    public $disabled;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($array, string $field, string $name, int $value=null, bool $capitalize=false)
+    public function __construct($array, string $field, string $name, int $value=null, bool $capitalize=false, bool $disabled=false)
     {
         $this->array = $array;
         $this->field = $field;
         $this->name = $name;
         $this->value = $value;
         $this->capitalize = $capitalize;
+        $this->disabled = $disabled;
     }
 
     /**
