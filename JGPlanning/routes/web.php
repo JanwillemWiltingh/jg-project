@@ -38,21 +38,15 @@ Route::name('profile.')->prefix('profiel/')->group(function (){
     Route::get('/update/{user}', [ProfileController::class, 'update'])->name('update');
 });
 
-Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){
-    Route::get('/', [RoosterController::class, 'index'])->name('index');
-});
-
 Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::post('/manage_disable', [RoosterController::class, 'manage_disable_days'])->name('manage_disable_days');
     Route::post('/manage_day_disable', [RoosterController::class, 'manage_delete_days'])->name('manage_delete_days');
     Route::get('/{week}', [RoosterController::class, 'index'])->name('index');
     Route::post('/disable_days', [RoosterController::class, 'disable_days'])->name('disable_days');
+    Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
+    Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+    Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 });
-
-//TODO: nog onder rooster/* brengen maar ik ben er nog te bang voor aangezien ik nog bezig ben met inplannen voor de toekomst.
-Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
-Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
-Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){

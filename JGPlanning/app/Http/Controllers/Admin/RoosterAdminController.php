@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Availability;
-use App\Models\Clock;
 use App\Models\DisabledDays;
-use App\Models\Role;
 use App\Models\Rooster;
 use App\Models\User;
 use App\Services\CalendarService;
@@ -15,7 +13,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class RoosterAdminController extends Controller
 {
