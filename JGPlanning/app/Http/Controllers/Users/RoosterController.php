@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Services\TimeService;
 use App\Models\{User,Rooster,DisabledDays,Availability};
 use App\Services\CalendarService;
 use App\Services\CheckIfIsInWeek;
@@ -28,8 +29,9 @@ class RoosterController extends Controller
 
         $weekDays     = Availability::WEEK_DAYS;
 
-        $availability = Rooster::where('user_id', $user)->first();
+        $availability = Rooster::where('user_id', $user)->get();
 
+//        dd($availability);
         $array1 = [];
         $disabled_array = [];
         $disabled_days = DisabledDays::all()
@@ -38,7 +40,6 @@ class RoosterController extends Controller
             ->where('end_week', '>=', $week)
             ->sortBy('weekday');
 
-        $disabled_count = count($disabled_days);
 
         foreach ($disabled_days as $dd)
         {
@@ -80,7 +81,7 @@ class RoosterController extends Controller
     }
 
 //  Functie om een dag toe te voegen
-    public function add_availability(Request $request, $start_week)
+    public function add_availability(TimeService $time, Request $request, $start_week)
     {
         $validated = $request->validate([
             'start_time' => ['required'],
@@ -91,16 +92,9 @@ class RoosterController extends Controller
             'week' => ['required'],
         ]);
 
-        $start_time = strtotime($validated['start_time']);
-        $start_round = 30*60;
-        $start_rounded = round($start_time / $start_round) * $start_round;
-        $start_date = date("H:i:s", $start_rounded);
+        $start_time = $time->roundTime($validated['start_time'], 30);
 
-
-        $end_time = strtotime($validated['end_time']);
-        $end_round = 30*60;
-        $end_rounded = round($end_time / $end_round) * $end_round;
-        $end_date = date("H:i:s", $end_rounded);
+        $end_time  = $time->roundTime($validated['end_time'], 30);
 
         $end_week = substr($validated['week'], 6);
 
@@ -123,7 +117,7 @@ class RoosterController extends Controller
         }
 
 //        Kijkt of de begin tijd niet later is dan de eind tijd die is ingevuld
-        if ($start_date > $end_date)
+        if ($start_time > $end_time)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin tijd is later dan de eind tijd', 'type' => 'danger']]);
         }
@@ -141,8 +135,8 @@ class RoosterController extends Controller
 //        creërt een record in de database voor de dag
         Rooster::create([
             'user_id' => $validated['user_id'],
-            'start_time' => $start_date,
-            'end_time' => $end_date,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
             'from_home' => $from_home,
             'comment' => $validated['comment'],
             'weekdays' => $validated['weekday'],
@@ -154,39 +148,47 @@ class RoosterController extends Controller
     }
 
 //  Functie om een dag te bewerken
-    public function edit_availability(Request $request, $start_week)
+    public function edit_availability(TimeService $time, Request $request, $week)
     {
-//        $validated = $request->validate([
-//            'start_time' => ['required'],
-//            'end_time' => ['required'],
-//            'weekday' => ['required'],
-//            'user_id' => ['required'],
-//            'from_home' => [],
-//            'comment' => [],
-//            'week' => ['required'],
-//        ]);
+        $validated = $request->validate([
+            'start_time' => ['required'],
+            'end_time' => ['required'],
+            'weekday' => ['required'],
+            'user_id' => ['required'],
+            'from_home' => [],
+            'comment' => [],
+            'start_week' => ['required'],
+            'end_week' => ['required'],
+        ]);
+
+        $start_time = $time->roundTime($validated['start_time'], 30);
+
+        $end_time  = $time->roundTime($validated['end_time'], 30);
+
+        $start_week = substr($validated['start_week'], 6);
+        $end_week = substr($validated['end_week'], 6);
+
+        $check_rooster = Rooster::all()
+            ->where('user_id', Auth::id())
+            ->where('weekdays', $validated['weekday']);
 
 
-        $start_time = strtotime($validated['start_time']);
-        $start_round = 30*60;
-        $start_rounded = round($start_time / $start_round) * $start_round;
-        $start_date = date("H:i:s", $start_rounded);
-
-
-        $end_time = strtotime($validated['end_time']);
-        $end_round = 30*60;
-        $end_rounded = round($end_time / $end_round) * $end_round;
-        $end_date = date("H:i:s", $end_rounded);
-
-        $end_week = substr($validated['week'], 6);
+        foreach ($check_rooster as $cr)
+        {
+            if (in_array($cr->start_week, range($start_week,$end_week)) || in_array($cr->end_week, range($start_week,$end_week)))
+            {
+                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+            }
+        }
 
 //        Checked of de week die is ingevuld niet eerder is dan de huidige week.
         if (!$end_week > $start_week)
         {
-            return back()->with('error', 'De week die u heeft ingevuld is eerder dan de begin week');
+            return back()->with('error', 'De begin week die u heeft ingevuld is later dan de ingevulde eind week');
         }
 
-        if ($start_date > $end_date)
+
+        if ($start_time > $end_time)
         {
             return back()->with('error', 'De ingevulde begin tijd is later dan de eind tijd');
         }
@@ -204,14 +206,16 @@ class RoosterController extends Controller
         Rooster::all()
             ->where('user_id', $validated['user_id'])
             ->where('weekdays', $validated['weekday'])
-            ->where('start_week', '<=', $start_week)
-            ->where('end_week', '>=', $start_week)
+            ->where('start_week', '<=', $week)
+            ->where('end_week', '>=', $week)
             ->first()
             ->update([
-                'start_time' => $start_date,
-                'end_time' => $end_date,
+                'start_time' => $start_time,
+                'end_time' => $end_time,
                 'from_home' => $from_home,
-                'comment' => "",
+                'comment' => $validated['comment'],
+                'start_week' => $start_week,
+                'end_week' => $end_week
             ]);
 
         return back();

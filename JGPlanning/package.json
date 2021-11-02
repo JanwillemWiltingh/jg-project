@@ -21,6 +21,7 @@
         "datatables.net": "^1.11.3",
         "datatables.net-dt": "^1.11.3",
         "jqeury": "0.0.1-security",
-        "jquery": "^3.6.0"
+        "jquery": "^3.6.0",
+        "jquery-ui": "^1.13.0"
     }
 }

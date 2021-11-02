@@ -38,9 +38,10 @@ class RoosterAdminController extends Controller
 //  Functie voor admins om naar gebruikers hun rooster te kijken.
     public function user_rooster(CalendarService $calendarService, $user, $week)
     {
+        $disabled = DisabledDays::all()->where('user_id', $user);
         $user_info = User::find($user);
 
-        $weekDays     = Availability::WEEK_DAYS;
+        $weekDays  = Availability::WEEK_DAYS;
 
         $array1 = [];
         $disabled_array = [];
@@ -49,6 +50,8 @@ class RoosterAdminController extends Controller
             ->where('start_week', '<=', $week)
             ->where('end_week', '>=', $week)
             ->sortBy('weekday');
+
+        $disabled = DisabledDays::all();
 
         $disabled_count = count($disabled_days);
 
@@ -87,7 +90,8 @@ class RoosterAdminController extends Controller
             'user',
             'user_info',
             'weekstring',
-            'disabled_array'
+            'disabled_array',
+            'disabled'
         ));
     }
 
@@ -97,7 +101,6 @@ class RoosterAdminController extends Controller
         $validated = $request->validate([
             'data' => ['required', 'array']
         ]);
-
 
 
         for ($i = 1; $i < 6; $i++)
@@ -126,6 +129,7 @@ class RoosterAdminController extends Controller
         return redirect()->back();
     }
 
+//  functie om uitgezette datums aan te makken.
     public function disable_days(Request $request, $user)
     {
         $validated = $request->validate([
@@ -149,7 +153,7 @@ class RoosterAdminController extends Controller
             }
         }
 
-        if ($start_week > $end_week)
+        if ($start_week < $end_week)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
         }
@@ -164,6 +168,7 @@ class RoosterAdminController extends Controller
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
     }
 
+//  functie om uitgezette datums te bewerken
     public function edit_disable_days (Request $request, $user, $week)
     {
         $validated = $request->validate([
@@ -177,21 +182,57 @@ class RoosterAdminController extends Controller
 
         $checkDisabled = DisabledDays::all()
             ->where('user_id', $user)
-            ->where('weekday', $validated['weekday']);
+            ->where('weekday', $validated['weekday'])
+            ->where('start_week', '<=', $week)
+            ->where('end_week', '>=', $week)
+            ->first();
 
-        foreach ($checkDisabled as $cd)
-        {
-            if (in_array($cd->start_week, range($start_week,$end_week)) || in_array($cd->end_week, range($start_week,$end_week)))
-            {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
-            }
-        }
 
         if ($start_week > $end_week)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
         }
 
-//        return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
+        $checkDisabled->update([
+                'start_week' => $start_week,
+                'end_week' => $end_week
+            ]);
+
+        return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
+    }
+    public function delete_disable_days($user, $week, $weekday)
+    {
+        DisabledDays::all()
+            ->where('user_id', $user)
+            ->where('weekday', $weekday)
+            ->where('start_time', '<=', $week)
+            ->where('end_week', '>=', $week)
+            ->first()
+            ->delete();
+
+        return back()->with(['message' => ['message' => 'De aangegeven weken zijn verwijderd', 'type' => 'success']]);
+    }
+
+    public function manage_disable_days(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => ['required'],
+        ]);
+
+        DisabledDays::all()
+            ->where('id', $validate['id'])
+            ->first()
+            ->delete();
+    }
+    public function manage_delete_days(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => ['required'],
+        ]);
+
+        Rooster::all()
+            ->where('id', $validate['id'])
+            ->first()
+            ->delete();
     }
 }

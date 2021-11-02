@@ -54,4 +54,56 @@ $(document).ready(function () {
     $('#week').on('change', function () {
         window.location.href = this.value.substring(6);
     });
+
+    $('#manageDropdown').on('change', function () {
+        if (this.value == "Uitgezette dagen")
+        {
+            $('#DaysDiv').hide();
+            $('#disabledDaysDiv').show();
+        }
+        else
+        {
+            $('#DaysDiv').show();
+            $('#disabledDaysDiv').hide();
+        }
+    });
+
+    for (let i = 1; i <= 7; i++)
+    {
+        for (let a = 1; a <= $('#count_disable'+ i).val(); a++)
+        {
+            $('#remove_disable_days'+ a + i).on('click', function (){
+                let id = $('#id_disable' + a + i).val();
+                $.ajax({
+                    type: "POST",
+                    data: {id: id},
+                    url : "/admin/rooster/manage_disable",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                })
+            });
+        }
+    }
+
+    for (let i = 1; i <= 7; i++)
+    {
+        for (let a = 1; a <= $('#count_disable'+ i).val(); a++)
+        {
+            $('#remove_days'+ a + i).on('click', function (){
+                let id = $('#id' + a + i).val();
+
+                console.log(id);
+
+                $.ajax({
+                    type: "POST",
+                    data: {id:id},
+                    url : "/admin/rooster/manage_day_disable",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                })
+            });
+        }
+    }
 });
