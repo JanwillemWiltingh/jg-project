@@ -69,42 +69,42 @@
                                 </td>
                                 <td>
                                     @if($input_field == 'week')
-                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $weeks)[1]))[0] }}
                                     @else
                                         {{ $user->workedInAMonth(explode('-', $month)[1])[0] }}
                                     @endif
                                 </td>
                                 <td class="thick-table-border">
-                                    @if($input_field == 'week')
-                                        {{ number_format($user->workedInAWeek(str_replace('W', '',explode('-', $week)[1]))[1] / 3600, 1) }} uur
+                                    @if($input_field == 'weeks')
+                                        {{ number_format($user->workedInAWeek(str_replace('W', '',explode('-', $weeks)[1]))[1] / 3600, 1) }} uur
                                     @else
                                         {{ number_format($user->workedInAMonth(explode('-', $month)[1])[1] / 3600, 1) }} uur
                                     @endif
                                 </td>
                                 <td>
-                                    @if($input_field == 'week')
-                                        {{ $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                    @if($input_field == 'weeks')
+                                        {{ $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $weeks)[1]))[0] }}
                                     @else
                                         {{ $user->plannedWorkAMonth(2021, explode('-', $month)[1])[0] }}
                                     @endif
                                 </td>
                                 <td>
-                                    @if($input_field == 'week')
-                                        {{ number_format($user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $week)[1]))[1] / 3600, 1) }} uur
+                                    @if($input_field == 'weeks')
+                                        {{ number_format($user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $weeks)[1]))[1] / 3600, 1) }} uur
                                     @else
                                         {{ number_format($user->plannedWorkAMonth(2021, explode('-', $month)[1])[1] / 3600, 1) }} uur
                                     @endif
                                 </td>
-                                @if($input_field == 'week')
-                                    <td @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $week)[1]))[1] < 0) class="table-danger" @else class="table-success" @endif>
-                                        @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $week)[1]))[1] == 0)
+                                @if($input_field == 'weeks')
+                                    <td @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $weeks)[1]))[1] < 0) class="table-danger" @else class="table-success" @endif>
+                                        @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $weeks)[1]))[1] == 0)
                                             0 seconde
                                         @else
-                                            {{ $user->compareWeekWorked(2021, str_replace('W', '',explode('-', $week)[1]))[0] }}
+                                            {{ $user->compareWeekWorked(2021, str_replace('W', '',explode('-', $weeks)[1]))[0] }}
                                         @endif
                                     </td>
                                 @else
-                                    <td @if($user->compareMonthWorked(2021, explode('-', $month)[1]) < 0) class="table-danger" @else class="table-success" @endif>
+                                    <td @if($user->compareMonthWorked(2021, explode('-', $month)[1])[1] < 0) class="table-danger" @else class="table-success" @endif>
                                         @if($user->compareMonthWorked(2021, explode('-', $month)[1])[1] == 0)
                                             0 seconde
                                         @else

@@ -55,6 +55,8 @@ Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');
         Route::get('/show/{clock}', [ClockController::class, 'show'])->name('show');
+        Route::get('/edit/{clock}', [ClockController::class, 'edit'])->name('edit');
+        Route::get('/update/{clock}', [ClockController::class, 'update'])->name('update');
     });
 
     Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){

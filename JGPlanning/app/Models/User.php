@@ -120,8 +120,11 @@ class User extends Authenticatable
                         $i = true;
                     }
                 }
+                $next = $roosters->where('id', $current_rooster['id'] + 1)->first();
 
-                return $roosters->where('id', $current_rooster['id'] + 1)->first();
+                if($next != null) {
+                    return $next;
+                }
             }
         }
 
@@ -248,7 +251,7 @@ class User extends Authenticatable
                 $day_of_week = $date->dayOfWeek;
                 $current_rooster = $collection->where('start_week', '<=', $week_number)->where('end_week', '>=', $week_number)->where('weekdays', $day_of_week)->first();
                 if($current_rooster != null) {
-                    $time += Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
+                    $time += Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time'])) - 1800;
                 }
             }
             return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
@@ -271,7 +274,7 @@ class User extends Authenticatable
 
             $time = 0;
             foreach($collection as $day) {
-                $time += Carbon::parse($day['end_time'])->diffInSeconds(Carbon::parse($day['start_time']));
+                $time += Carbon::parse($day['end_time'])->diffInSeconds(Carbon::parse($day['start_time'])) - 1800;
             }
             return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
         }
@@ -283,7 +286,7 @@ class User extends Authenticatable
         $roosters = $this->roosters()->where('weekdays', $day)->get();
         foreach($roosters as $rooster) {
             if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
-                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time']));
+                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time'])) - 1800;
 
                 return [CarbonInterval::seconds($time)->cascade()->forHumans(), $time];
             }

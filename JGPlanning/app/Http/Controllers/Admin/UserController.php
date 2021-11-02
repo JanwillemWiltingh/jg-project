@@ -114,11 +114,14 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param User $user
-     * @return Application|Factory|View
+     * @return Application|Factory|View|RedirectResponse
      */
     public function edit(User $user)
     {
         $user_session = Auth::user();
+        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session == Role::getRoleID('admin')){
+            return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
+        }
         $roles = Role::all();
 
         return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
@@ -136,6 +139,7 @@ class UserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $auth_user = Auth::user();
+
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
@@ -146,6 +150,7 @@ class UserController extends Controller
             'password' => ['nullable', 'confirmed'],
             'roles' =>['required'],
         ]);
+
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
@@ -186,6 +191,10 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
+        $user_session = Auth::user();
+        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session == Role::getRoleID('admin')){
+            return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
+        }
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);

@@ -67,6 +67,6 @@ class Clock extends Model
 
             return CarbonInterval::seconds($time)->cascade()->forHumans();
         }
-        return '';
+        return '-';
     }
 }
