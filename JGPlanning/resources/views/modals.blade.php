@@ -134,7 +134,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Uitgezette weken beheren</h5>
+                    <h5 class="modal-title">Weken beheren</h5>
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Weken</p>
@@ -170,7 +170,7 @@
                     </div>
 
                     <div class="row"  style="display: none" id="addWeeks">
-                        <form method="post" action="{{route('availability', request('week'))}}">
+                        <form method="post" action="{{route('rooster.availability', request('week'))}}">
                             @csrf
                                 <input type="hidden" name="weekday" id="weekday">
                                 <input type="hidden" name="is_rooster" id="is_rooster">
@@ -196,19 +196,23 @@
                                     <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment"></textarea>
                                 </label>
 
-                                <label>
+                                <label style="width: 49.8%">
+                                    <p>Begin week:</p>
+                                    <input type="week" class="form-control" name="begin_week">
+                                </label>
+
+                                <label style="width: 49.8%">
                                     <p>Eind week:</p>
                                     <input type="week" class="form-control" name="week">
                                 </label>
 
-                                <input type="checkbox" id="switch" class="toggle-box" name="from_home"/>
-                                <label for="switch" class="toggle-label"></label>
+                                <input type="checkbox" id="switch" class="toggle-box " name="from_home" />
+                                <label for="switch" class="toggle-label float-right" ></label>
 
-                                <label for="switch">
-                                    <p>Van huis</p>
-                                </label>
+                                <p class="float-right" style="margin-right: 15px">Van huis</p>
                             <br>
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <br>
+                            <button type="submit" class="btn btn-success float-right">Submit</button>
                         </form>
                     </div>
 
@@ -290,7 +294,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="a">Add Availability</h5>
                 </div>
-                <form method="post" action="{{route('availability', request('week'))}}">
+                <form method="post" action="{{route('rooster.availability', request('week'))}}">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="weekday" id="weekday">
@@ -346,7 +350,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="{{route('edit_availability', request('week'))}}">
+                <form method="post" action="{{route('rooster.edit_availability', request('week'))}}">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="weekday" id="weekday_edit">

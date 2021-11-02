@@ -89,6 +89,7 @@ class RoosterController extends Controller
             'weekday' => ['required'],
             'user_id' => ['required'],
             'comment' => [],
+            'begin_week' => [],
             'week' => ['required'],
         ]);
 
@@ -97,6 +98,11 @@ class RoosterController extends Controller
         $end_time  = $time->roundTime($validated['end_time'], 30);
 
         $end_week = substr($validated['week'], 6);
+
+        if ($validated['begin_week'])
+        {
+            $start_week = substr($validated['start_week'], 6);
+        }
 
 //        Checked of de week die is ingevuld niet eerder is dan de huidige week.
         if (!$end_week > $start_week)
@@ -133,6 +139,7 @@ class RoosterController extends Controller
         }
 
 //        creërt een record in de database voor de dag
+
         Rooster::create([
             'user_id' => $validated['user_id'],
             'start_time' => $start_time,
