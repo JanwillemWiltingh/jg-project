@@ -202,15 +202,17 @@ The above copyright notice and this permission notice shall be included in all c
 
                     @yield('content')
 
-                    <!-- Sweet Alert voor later -->
+                    <!-- Sweet Alert -->
                     @if(!session()->has('first_time_session'))
-                        <script>
-                            swal({
-                                title: "Pas Op!",
-                                text: "U gebruikt firefox, sommige functionaliteit zoals datum kieze werken nu niet!",
-                                icon: "warning",
-                            });
-                        </script>
+                        @if(App\Models\Browser::getBrowserName() == 'Firefox')
+                            <script>
+                                swal({
+                                    title: "Pas Op!",
+                                    text: "U gebruikt firefox, sommige functionaliteit zoals datum kieze werken nu niet!",
+                                    icon: "warning",
+                                });
+                            </script>
+                        @endif
                         @php session()->put('first_time_session', true) @endphp
                     @endif
 
