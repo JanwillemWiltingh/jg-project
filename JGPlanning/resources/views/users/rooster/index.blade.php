@@ -30,11 +30,14 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                                <div>
-                                    <a style="float: right; font-size: 25px" href="{{route('rooster.index', request('week') + 1)}}"><i class="fa fa-arrow-right" ></i></a>
-                                    <p style="text-align: center; font-size: 25px">{{$weekstring}}</p>
-                                    <a style="float: left; font-size: 25px; margin-top: -53px" href="{{route('rooster.index', request('week') - 1)}}"><i class="fa fa-arrow-left" ></i></a>
-                                </div>
+                            <div style="text-align: center !important; font-size: 25px">
+                                <a style="float: right; font-size: 25px" href="{{route('rooster.index', request('week') + 1)}}"><i class="fa fa-arrow-right" ></i></a>
+                                <p style="text-align: center; font-size: 25px">{{$weekstring}}</p>
+                                <a style="float: left; font-size: 25px; margin-top: -53px" href="{{route('rooster.index', request('week') - 1)}}"><i class="fa fa-arrow-left" ></i></a>
+                            </div>
+                            <p style="text-align: center;">
+                                <a style="font-size: 15px; margin-top: -10px" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">Dagen uitzetten</a>
+                            </p>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="week" class="form-control" name="week" id="week">
@@ -96,7 +99,13 @@
                                                     @endif
 
                                                     @if(!$days[$i]['comment'] == "")
-                                                        {{$days[$i]['comment']}}
+                                                        @if($days[$i]['comment'] == "Disabled")
+                                                            <p style="color: black">{{$days[$i]['comment']}}</p>
+                                                        @else
+                                                            "{{$days[$i]['comment']}}"
+                                                        @endif
+                                                    @else
+                                                        Geen opmerking
                                                     @endif
 
                                                     @if($days[$i]['start_time'] != "")

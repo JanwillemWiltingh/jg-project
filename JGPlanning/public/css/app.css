@@ -19687,6 +19687,7 @@ Copyright (c) 2015 Daniel Eden
     display: none !important;
   }
 }
+
 .login-page {
     display: flex;
     align-items: center;
@@ -19756,11 +19757,6 @@ Copyright (c) 2015 Daniel Eden
 .jg-color-gradient-2 {background: linear-gradient(90deg, #CB6827 0%, #1C88A4 100%) !important;}
 .jg-color-gradient-3 {background: linear-gradient(90deg, #1A6686 0%, #1C88A4 100%) !important;}
 .jg-color-gradient-4 {background: linear-gradient(90deg, #CB6827 0%, #1A6686 100%) !important;}
-
-.test {
-    font-size: 64371px;
-    color: red;
-}
 
 .dropdown_button {
     background: none;
@@ -20013,5 +20009,24 @@ Copyright (c) 2015 Daniel Eden
     font-size: 70px;
     margin-right: 2px;
 }
+/* width */
+.scrollbar-manage::-webkit-scrollbar {
+    width: 5px;
+}
 
+/* Track */
+.scrollbar-manage::-webkit-scrollbar-track {
+    background: none !important;
+}
+
+/* Handle */
+.scrollbar-manage::-webkit-scrollbar-thumb {
+    border-radius: 25px;
+    background: #1C88A4 !important;
+}
+
+/* Handle on hover */
+.scrollbar-manage::-webkit-scrollbar-thumb:hover {
+    background: #1A6686 !important;
+}
 

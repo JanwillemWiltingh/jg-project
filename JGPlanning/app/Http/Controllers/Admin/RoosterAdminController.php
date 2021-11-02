@@ -153,7 +153,7 @@ class RoosterAdminController extends Controller
             }
         }
 
-        if ($start_week < $end_week)
+        if ($start_week > $end_week)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
         }

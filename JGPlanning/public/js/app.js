@@ -5340,21 +5340,44 @@ $(document).ready(function () {
       $('#disabledDaysDiv').hide();
     }
   });
+  $('#weekDropdown').on('change', function () {
+    if (this.value == "Uitzetten") {
+      $('#addWeeks').hide();
+      $('#addDisable').show();
+    } else {
+      $('#addWeeks').show();
+      $('#addDisable').hide();
+    }
+  });
 
   var _loop = function _loop(i) {
     var _loop3 = function _loop3(a) {
       $('#remove_disable_days' + a + i).on('click', function () {
         var id = $('#id_disable' + a + i).val();
-        $.ajax({
-          type: "POST",
-          data: {
-            id: id
-          },
-          url: "/admin/rooster/manage_disable",
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-        });
+
+        if ($('#role' + a + i).val() === "User") {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/rooster/manage_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        } else {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/admin/rooster/manage_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        }
       });
     };
 
@@ -5371,17 +5394,30 @@ $(document).ready(function () {
     var _loop4 = function _loop4(a) {
       $('#remove_days' + a + _i).on('click', function () {
         var id = $('#id' + a + _i).val();
-        console.log(id);
-        $.ajax({
-          type: "POST",
-          data: {
-            id: id
-          },
-          url: "/admin/rooster/manage_day_disable",
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-        });
+
+        if ($('#role' + a + _i).val() === "User") {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/rooster/manage_day_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        } else {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/admin/rooster/manage_day_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        }
       });
     };
 

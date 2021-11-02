@@ -21,7 +21,7 @@ class RoosterSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
 //        39 - 43
-        $arrays = [[36, 38], [39, 42], [43, 49]];
+        $arrays = [[36, 38], [39, 42], [43, 49], [50, 52]];
         foreach($arrays as $array) {
             for($i = 1; $i <= 5; $i++) {
                 DB::table('rooster')->insert([

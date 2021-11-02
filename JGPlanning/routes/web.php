@@ -43,7 +43,10 @@ Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){
 });
 
 Route::name('rooster.')->prefix('rooster/')->group(function (){
+    Route::post('/manage_disable', [RoosterController::class, 'manage_disable_days'])->name('manage_disable_days');
+    Route::post('/manage_day_disable', [RoosterController::class, 'manage_delete_days'])->name('manage_delete_days');
     Route::get('/{week}', [RoosterController::class, 'index'])->name('index');
+    Route::post('/disable_days', [RoosterController::class, 'disable_days'])->name('disable_days');
 });
 
 //TODO: nog onder rooster/* brengen maar ik ben er nog te bang voor aangezien ik nog bezig ben met inplannen voor de toekomst.

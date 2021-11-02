@@ -29,7 +29,7 @@ The above copyright notice and this permission notice shall be included in all c
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
 
     </head>
-    <body style="overflow: hidden">
+    <body>
         <div class="wrapper ">
             <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
                 <!--
