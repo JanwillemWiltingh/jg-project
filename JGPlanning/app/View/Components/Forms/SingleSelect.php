@@ -10,9 +10,10 @@ use Illuminate\View\Component;
 class SingleSelect extends Component
 {
     public $array;
-    public $field;
+    public $fields;
     public $name;
     public $value;
+    public $default;
     public $capitalize;
     public $disabled;
 
@@ -21,12 +22,13 @@ class SingleSelect extends Component
      *
      * @return void
      */
-    public function __construct($array, string $field, string $name, int $value=null, bool $capitalize=false, bool $disabled=false)
+    public function __construct($array, array $fields, string $name, int $value=null, string $default=null, bool $capitalize=false, bool $disabled=false)
     {
         $this->array = $array;
-        $this->field = $field;
+        $this->fields = $fields;
         $this->name = $name;
         $this->value = $value;
+        $this->default = $default;
         $this->capitalize = $capitalize;
         $this->disabled = $disabled;
     }

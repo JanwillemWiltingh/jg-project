@@ -6,16 +6,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <form method="GET" action="{{ route('admin.compare.index') }}">
-
-                        <div class="form-group">
-                            <label for="users">Gebruikers</label>
-                            <select name="user" class="form-control" id="users">
-                                <option value="0">Alle Gebruikers</option>
-                                @foreach($all_users as $user)
-                                    <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ ucfirst($user['lastname']) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" name="user" default="Alle Gebruikers" capitalize="true"></x-forms.single-select>
 
                         <div class="form-group">
                             @foreach (['month' => 'Maand', 'weeks' => 'Weeks'] as $id => $format)
@@ -36,7 +27,7 @@
 
                         <div class="form-group" id="week-group" @if($input_field != 'weeks') style="display: none;" @endif>
                             <label for="weeks">Week</label>
-                            <input name="weeks" id="weeks" type="weeks" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
+                            <input name="weeks" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Selecteer</button>

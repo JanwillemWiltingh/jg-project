@@ -7,5 +7,6 @@ return [
     'email' => 'E-mail',
     'password' => 'Wachtwoord',
     'password_confirmation' => 'Bevestig Wachtwoord',
-    'roles' => 'Rollen'
+    'roles' => 'Rollen',
+    'user' => 'Gebruiker'
 ];

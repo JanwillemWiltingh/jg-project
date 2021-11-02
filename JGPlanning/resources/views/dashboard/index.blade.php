@@ -154,7 +154,7 @@
                                     <i class="far fa-clock fa-4x font-weight-lighter"></i>
                                 </div>
                                 <div class="media-body pl-3">
-                                    <h4>Uren voor vandaag</h4>
+                                    <h4>Vandaag</h4>
                                     @if($user->getRoosterFromToday()['start_time'] != '00:00')
                                         <span>{{ $now->format('d F Y') }}</span>
                                     @else
@@ -178,11 +178,11 @@
                                     <i class="far fa-clock fa-4x"></i>
                                 </div>
                                 <div class="media-body pl-3">
-                                    <h4>Rooster voor {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>
+                                    <h4>{{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>
                                     @if($user->getNextRooster()['weekdays'] == 0)
                                         <span>Geen nieuwe rooster</span>
                                     @else
-                                        <span>{{ $now->format('d F Y') }}</span>
+                                        <span>{{ $now->addDay(1)->format('d F Y') }}</span>
                                     @endif
                                 </div>
                                 <div class="align-self-center">

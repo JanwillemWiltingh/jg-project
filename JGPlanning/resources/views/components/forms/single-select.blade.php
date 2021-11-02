@@ -7,6 +7,9 @@
             name="{{ $name }}"
             id="{{ $name }}"
             @if($disabled) disabled @endif>
+        @if($default != null)
+        <option value="0">{{ $default }}</option>
+        @endif
         @foreach($array as $data)
             <option value="{{$data['id']}}"
                     @if(old($name) == $data['id'])
@@ -14,11 +17,13 @@
                     @elseif($data['id'] == $value)
                         selected
                 @endif>
-                @if($capitalize)
-                    {{ ucfirst($data[$field]) }}
-                @else
-                    {{ $data[$field] }}
-                @endif
+                @foreach($fields as $field)
+                    @if($capitalize)
+                        {{ ucfirst($data[$field]) }}
+                    @else
+                        {{ $data[$field] }}
+                    @endif
+                @endforeach
             </option>
         @endforeach
     </select>
