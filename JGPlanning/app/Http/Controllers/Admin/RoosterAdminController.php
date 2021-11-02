@@ -38,9 +38,10 @@ class RoosterAdminController extends Controller
 //  Functie voor admins om naar gebruikers hun rooster te kijken.
     public function user_rooster(CalendarService $calendarService, $user, $week)
     {
+        $disabled = DisabledDays::all()->where('user_id', $user);
         $user_info = User::find($user);
 
-        $weekDays     = Availability::WEEK_DAYS;
+        $weekDays  = Availability::WEEK_DAYS;
 
         $array1 = [];
         $disabled_array = [];
@@ -49,6 +50,8 @@ class RoosterAdminController extends Controller
             ->where('start_week', '<=', $week)
             ->where('end_week', '>=', $week)
             ->sortBy('weekday');
+
+        $disabled = DisabledDays::all();
 
         $disabled_count = count($disabled_days);
 
@@ -87,7 +90,8 @@ class RoosterAdminController extends Controller
             'user',
             'user_info',
             'weekstring',
-            'disabled_array'
+            'disabled_array',
+            'disabled'
         ));
     }
 
@@ -97,7 +101,6 @@ class RoosterAdminController extends Controller
         $validated = $request->validate([
             'data' => ['required', 'array']
         ]);
-
 
 
         for ($i = 1; $i < 6; $i++)
@@ -208,5 +211,28 @@ class RoosterAdminController extends Controller
             ->delete();
 
         return back()->with(['message' => ['message' => 'De aangegeven weken zijn verwijderd', 'type' => 'success']]);
+    }
+
+    public function manage_disable_days(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => ['required'],
+        ]);
+
+        DisabledDays::all()
+            ->where('id', $validate['id'])
+            ->first()
+            ->delete();
+    }
+    public function manage_delete_days(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => ['required'],
+        ]);
+
+        Rooster::all()
+            ->where('id', $validate['id'])
+            ->first()
+            ->delete();
     }
 }

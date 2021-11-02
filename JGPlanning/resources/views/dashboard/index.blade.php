@@ -13,26 +13,17 @@
 
     <div class="row">
         <div class="col-12">
-            <h1>Welkom {{$user['firstname']}}!</h1>
+            <div class="dashboard-welkom">
+                <h1>Welkom </h1>
+                <a>{{$user['firstname']}}!</a>
+            </div>
         </div>
     </div>
-
-    <style>
-        .far {
-            color: white;
-        }
-        .dashboard-hours,
-        .dashboard-title-hours
-        {
-            color: white;
-            font-weight: lighter;
-        }
-    </style>
 
     <div class="row">
         <div class="col-4">
             <div class="card">
-                <div class="card-body" style="background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(85,143,204,1) 0%, rgba(0,212,255,1) 100%)">
+                <div class="card-body gradient-dashboard">
                     <div class="media align-items-stretch" >
                         <div class="align-self-center">
                             <i class="far fa-clock fa-4x"></i>
@@ -66,7 +57,7 @@
 
         <div class="col-4">
             <div class="card">
-                <div class="card-body" style="background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(85,143,204,1) 0%, rgba(0,212,255,1) 100%)">
+                <div class="card-body gradient-dashboard">
                     <div class="media align-items-stretch">
                         <div class="align-self-center">
                             <i class="far fa-clock fa-4x font-weight-lighter"></i>
@@ -100,7 +91,7 @@
 
         <div class="col-4">
             <div class="card">
-                <div class="card-body" style="background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(85,143,204,1) 0%, rgba(0,212,255,1) 100%)">
+                <div class="card-body gradient-dashboard">
                     <div class="media align-items-stretch">
                         <div class="align-self-center">
                             <i class="far fa-clock fa-4x font-weight-lighter"></i>
@@ -136,7 +127,7 @@
     <div class="row">
         <div class="col-6">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body ">
                     <form action="{{ route('dashboard.clock') }}" method="post">
                         @csrf
                         <div class="row">
@@ -150,9 +141,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 @if($start)
-                                    <button type="submit" class="btn btn-dark float-right">Clock Out</button>
+                                    <button type="submit" class="btn btn-dark float-right" style="background: #CB6827 !important; border-color:  #CB6827 !important;">Clock Out</button>
                                 @else
-                                    <button type="submit" class="btn btn-dark float-right" @if(!$allowed) DISABLED @endif>Clock In</button>
+                                    <button type="submit" class="btn btn-dark float-right jg-color-2 border-0" @if(!$allowed) DISABLED @endif>Clock In</button>
                                 @endif
                             </div>
                         </div>
@@ -163,9 +154,9 @@
 
         <div class="col-6">
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
+                <div class="col-12" style="margin-bottom: -31px !important">
+                    <div class="card" style="height: 72% !important;">
+                        <div class="card-body gradient-dashboard">
                             <div class="media align-items-stretch">
                                 <div class="align-self-center">
                                     <i class="far fa-clock fa-4x font-weight-lighter"></i>
@@ -188,19 +179,17 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card" style="height: 72% !important;">
+                        <div class="card-body gradient-dashboard">
                             <div class="media align-items-stretch">
                                 <div class="align-self-center">
                                     <i class="far fa-clock fa-4x"></i>
                                 </div>
-{{--                                @dd($user->getNextRooster())--}}
                                 <div class="media-body pl-3">
-                                    <h4>Volgende rooster</h4>
+                                    <h4>Rooster voor {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>
                                     @if($user->getNextRooster()['weekdays'] == 0)
                                         <span>Geen nieuwe rooster</span>
                                     @else
-                                        <h4>Uren voor {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>
                                         <span>{{ $now->format('d F Y') }}</span>
                                     @endif
                                 </div>

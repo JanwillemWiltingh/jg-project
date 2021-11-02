@@ -1,49 +1,99 @@
-@if(request('admin'))
-    <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
+@if(\Illuminate\Support\Facades\Auth::user()->role->name == "admin" || \Illuminate\Support\Facades\Auth::user()->role->name == "maintainer")
+    <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content" >
                 <div class="modal-header">
-                    <h5 class="modal-title">Weken uitzetten</h5>
+                    <h5 class="modal-title">Uitgezette weken beheren</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{route('admin.rooster.disable_days', request('user'))}}">
-                        @csrf
-                        <label style="width: 100%">
-                            <p>Kies een dag:</p>
-                            <select class="form-control" name="weekday">
-                                @for($i = 1; $i < count($weekDays); $i++)
-                                    <option value="{{$i}}">{{$weekDays[$i]}}</option>
-                                @endfor
-                            </select>
-                        </label>
+                    <div class="row"  style="resize: both !important;">
+                        <form method="post" action="{{route('admin.rooster.disable_days', request('user'))}}">
+                            @csrf
+                            <label style="width: 100%">
+                                <p>Kies een dag:</p>
+                                <select class="form-control" name="weekday">
+                                    @for($i = 1; $i < count($weekDays); $i++)
+                                        <option value="{{$i}}">{{$weekDays[$i]}}</option>
+                                    @endfor
+                                </select>
+                            </label>
 
-                        <label style="width: 49%">
-                            <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week" id="start_week">
-                        </label>
+                            <label style="width: 49%">
+                                <p>Kies een begin week:</p>
+                                <input class="form-control" type="week" name="start_week" id="start_week">
+                            </label>
 
-                        <label style="width: 49%">
-                            <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week" id="end_week">
-                        </label>
-                        <input type="submit" class="btn btn-success float-right">
-                    </form>
-                    <div class="row">
-{{--                        @for($i = 0; $i < count($weekDays); $i++)--}}
-{{--                            <div class="col-md-2">--}}
-{{--                                {{$weekDays[$i + 1]}}--}}
-{{--                            </div>--}}
-{{--                        @endfor--}}
-{{--                        <br>--}}
-{{--                        @for($i = 0; $i < count($weekDays); $i++)--}}
-{{--                            <div class="col-md-2">--}}
-{{--                                <div class="alert alert-success alert-dismissible fade show" role="alert">--}}
-{{--                                    {{$i}}--}}
-{{--                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">--}}
-{{--                                    </button>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        @endfor--}}
+                            <label style="width: 49%">
+                                <p>Kies een eind week:</p>
+                                <input class="form-control" type="week" name="end_week" id="end_week">
+                            </label>
+                            <input type="submit" class="btn btn-success float-right">
+                        </form>
+                    </div>
+                    <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">
+                        <option>Uitgezette dagen</option>
+                        <option>Dagen</option>
+                    </select>
+                     Beheren
+                    <hr>
+                    <div id="DaysDiv" style="display: none">
+                        <div class="row" style="overflow: hidden" style=" resize: both !important; position: inherit">
+                            @for($i = 0; $i < count($weekDays); $i++)
+                                <div class="col-md-2">
+                                    {{$weekDays[$i + 1]}}
+                                    <div class="border-bottom"></div>
+                                    <br>
+                                </div>
+                            @endfor
+                            @for($i = 1; $i < count($weekDays); $i++)
+                                 @if(isset($availability->where('weekdays', $i)->first()->start_week))
+                                    <div class="col-md-2" style="overflow-y: scroll;">
+                                        <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
+                                        @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                Week {{$av->start_week}} - {{$av->end_week}}
+                                                <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}">
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="col-md-2">
+                                    </div>
+                                @endif
+                            @endfor
+                        </div>
+                    </div>
+                    <div id="disabledDaysDiv">
+                        <div class="row" style="overflow: hidden">
+                            @for($i = 0; $i < count($weekDays); $i++)
+                                <div class="col-md-2">
+                                    {{$weekDays[$i + 1]}}
+                                    <div class="border-bottom"></div>
+                                    <br>
+                                </div>
+                            @endfor
+                            <br>
+                            @for($i = 1; $i < count($weekDays); $i++)
+                                @if(isset($disabled->where('weekday', $i)->first()->start_week))
+                                    <div class="col-md-2 " style="height: 150px;overflow:auto;">
+                                        <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
+                                        @foreach($disabled->where('weekday', $i)->sortBy('start_week') as $av)
+                                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                Week {{$av->start_week}} - {{$av->end_week}}
+                                                <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="col-md-2">
+                                    </div>
+                                @endif
+                            @endfor
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,11 +221,8 @@
                             <p>Kies een eind week:</p>
                             <input class="form-control" type="week" name="end_week">
                         </label>
-                        <label class="toggle-box">
-                            <input type="checkbox" name="from_home">
-                            <span class="toggle-box-slider"></span>
-                        </label>
-                        <label>
+                            <input class="checkbox" type="checkbox" name="from_home" id="switch-box">
+                        <label for="switch-box">
                             <p>Van thuis</p>
                         </label>
                     </div>
