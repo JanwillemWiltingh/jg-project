@@ -80,7 +80,6 @@
                                         @for($i = 0; $i < count($days); $i++)
                                             @if(is_array($days[$i]))
                                                 <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['start_time'] != "") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
-
                                                     @if($days[$i]['start_time'] != "")
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>

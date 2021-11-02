@@ -5228,8 +5228,8 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
  */
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-window.Popper = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/index.js"); // window.dataTables = require('datatables.net').default;
-
+window.Popper = __webpack_require__(/*! @popperjs/core */ "./node_modules/@popperjs/core/lib/index.js");
+window.JQeuryUI = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'jquery-ui'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -5331,6 +5331,68 @@ $(document).ready(function () {
   $('#week').on('change', function () {
     window.location.href = this.value.substring(6);
   });
+  $('#manageDropdown').on('change', function () {
+    if (this.value == "Uitgezette dagen") {
+      $('#DaysDiv').hide();
+      $('#disabledDaysDiv').show();
+    } else {
+      $('#DaysDiv').show();
+      $('#disabledDaysDiv').hide();
+    }
+  });
+
+  var _loop = function _loop(i) {
+    var _loop3 = function _loop3(a) {
+      $('#remove_disable_days' + a + i).on('click', function () {
+        var id = $('#id_disable' + a + i).val();
+        $.ajax({
+          type: "POST",
+          data: {
+            id: id
+          },
+          url: "/admin/rooster/manage_disable",
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+      });
+    };
+
+    for (var a = 1; a <= $('#count_disable' + i).val(); a++) {
+      _loop3(a);
+    }
+  };
+
+  for (var i = 1; i <= 7; i++) {
+    _loop(i);
+  }
+
+  var _loop2 = function _loop2(_i) {
+    var _loop4 = function _loop4(a) {
+      $('#remove_days' + a + _i).on('click', function () {
+        var id = $('#id' + a + _i).val();
+        console.log(id);
+        $.ajax({
+          type: "POST",
+          data: {
+            id: id
+          },
+          url: "/admin/rooster/manage_day_disable",
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+      });
+    };
+
+    for (var a = 1; a <= $('#count_disable' + _i).val(); a++) {
+      _loop4(a);
+    }
+  };
+
+  for (var _i = 1; _i <= 7; _i++) {
+    _loop2(_i);
+  }
 });
 
 /***/ }),
