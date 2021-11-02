@@ -6,15 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use App\Models\User;
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use DateInterval;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ClockController extends Controller
 {
@@ -63,8 +61,8 @@ class ClockController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param User $user
+     * @param Clock $clock
+     * @return Application|Factory|View
      */
     public function edit(Clock $clock){
         $user_session = Auth::user();
@@ -80,7 +78,14 @@ class ClockController extends Controller
         $total_difference_in_hours = $total_difference_in_seconds / 3600;
         return view('admin/clock-in/edit')->with(['user_session' => $user_session, 'clock' => $clock, 'total_difference' => $total_difference_in_hours]);
     }
-    public function update(Clock $clock, Request $request ){
+
+    /**
+     * @param Clock $clock
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function update(Clock $clock, Request $request ): RedirectResponse
+    {
         $validated = $request->validate([
             'start_time' => ['required'],
             'end_time' => ['required'],

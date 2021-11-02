@@ -23,6 +23,10 @@ The above copyright notice and this permission notice shall be included in all c
         <link rel="stylesheet" href="{{asset('/css/app.css')}}" type="text/css">
 
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+
+        <!-- Sweet alert: Has to be above everything I think -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
         <!--     Fonts and icons     -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
@@ -90,7 +94,7 @@ The above copyright notice and this permission notice shall be included in all c
 
                         @can('admin-beschikbaarheid')
                             <li class="nav-item active hover-navbar">
-                                <a class="nav-link nav-color" href="" style="margin-top: 180px;">
+                                <a class="nav-link nav-color" style="margin-top: 180px;">
                                     <i class="fa fa-calendar"></i>
                                     <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -20px; margin-right: -5px"></i>
                                     <p>Beschikbaarheid beheren</p>
@@ -194,7 +198,22 @@ The above copyright notice and this permission notice shall be included in all c
                     </div>
                 </div>
                 <div class="container">
+                    <x-alert></x-alert>
+
                     @yield('content')
+
+                    <!-- Sweet Alert voor later -->
+                    @if(!session()->has('first_time_session'))
+                        <script>
+                            swal({
+                                title: "Pas Op!",
+                                text: "U gebruikt firefox, sommige functionaliteit zoals datum kieze werken nu niet!",
+                                icon: "warning",
+                            });
+                        </script>
+                        @php session()->put('first_time_session', true) @endphp
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -206,5 +225,7 @@ The above copyright notice and this permission notice shall be included in all c
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
         <script type="text/javascript" src="{{asset('/js/app.js')}}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
     </body>
 </html>
