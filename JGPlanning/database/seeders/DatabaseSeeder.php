@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             UsersSeeder::class,
             RoosterSeeder::class,
+            ClockSeeder::class,
         ]);
     }
 }
