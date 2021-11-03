@@ -145,7 +145,7 @@ class User extends Authenticatable
      * @param $month
      * @return float|int|mixed
      */
-    public function workedInAMonthInSeconds($month) {
+    public function workedInAMonthInSeconds($month): int {
         $clocks = $this->clocks()->whereMonth('date', '=',$month)->get();
         $time = 0;
 
@@ -169,7 +169,7 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return int
      */
-    public function WorkedInAMonthInHours(int $month, int $decimal_number=1): int {
+    public function WorkedInAMonthInHours(int $month, int $decimal_number=1): float {
         $time = $this->workedInAMonthInSeconds($month);
         return number_format($time / 3600, $decimal_number);
     }
@@ -219,7 +219,7 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return int
      */
-    public function workedInAWeekInHours(int $week, int $decimal_number=1): int {
+    public function workedInAWeekInHours(int $week, int $decimal_number=1): float {
         $time = $this->workedInAWeekInSeconds($week);
         return number_format($time / 3600, $decimal_number);
     }
@@ -233,6 +233,34 @@ class User extends Authenticatable
      */
     public function workedInAWeekForHumans($week): string {
         $time = $this->workedInAWeekInSeconds($week);
+        return CarbonInterval::seconds($time)->cascade()->forHumans();
+    }
+
+    public function workedInADayInSeconds(int $year, int $month, int $day): int {
+        $date = Carbon::parse($year . '-' . $month . '-' . $day);
+        $clocks = $this->clocks()->where('date', $date)->get();
+        $time = 0;
+
+        if ($clocks->count() > 0) {
+
+            foreach ($clocks as $clock) {
+                if ($clock['end_time'] == null) {
+                    $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                } else {
+                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                }
+            }
+        }
+        return $time;
+    }
+
+    public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
+        $time = $this->plannedWorkADayInSeconds($year, $month, $day);
+        return number_format($time / 3600, $decimal_number);
+    }
+
+    public function workedInADayForHumans(int $year, int $month, int $day): string {
+        $time = $this->plannedWorkADayInSeconds($year, $month, $day);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
@@ -302,7 +330,7 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return int
      */
-    public function plannedWorkAMonthInHours(int $year, int $month, int $decimal_number=1): int {
+    public function plannedWorkAMonthInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->plannedWorkAMonthInSeconds($year, $month);
         return number_format($time / 3600, $decimal_number);
     }
@@ -357,7 +385,7 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return int
      */
-    public function plannedWorkAWeekInHours(int $year, int $week, int $decimal_number=1): int {
+    public function plannedWorkAWeekInHours(int $year, int $week, int $decimal_number=1): float {
         $time = $this->plannedWorkAWeekInSeconds($year, $week);
         return number_format($time / 3600, $decimal_number);
     }
@@ -372,6 +400,27 @@ class User extends Authenticatable
      */
     public function plannedWorkAWeekForHumans(int $year, int $week): string {
         $time = $this->plannedWorkAWeekInSeconds($year, $week);
+        return CarbonInterval::seconds($time)->cascade()->forHumans();
+    }
+
+    public function plannedWorkADayInSeconds(int $year, int $week, int $day): int {
+        $roosters = $this->roosters()->where('weekdays', $day)->get();
+        $time = 0;
+        foreach($roosters as $rooster) {
+            if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
+                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time'])) - 1800;
+            }
+        }
+        return $time;
+    }
+
+    public function plannedWorkADayInHours(int $year, int $week, int $day, int $decimal_number=1): float {
+        $time = $this->plannedWorkADayInSeconds($year, $week, $day);
+        return number_format($time / 3600, $decimal_number);
+    }
+
+    public function plannedWorkADayForHumans(int $year, int $week, int $day): string {
+        $time = $this->plannedWorkADayInSeconds($year, $week, $day);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
@@ -394,7 +443,7 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return int
      */
-    public function compareWeekWorkedInHours(int $year, int $week, int $decimal_number=0): int {
+    public function compareWeekWorkedInHours(int $year, int $week, int $decimal_number=0): float {
         $time = $this->compareWeekWorkedInSeconds($year, $week);
         return number_format($time / 3600, $decimal_number);
     }
@@ -431,7 +480,7 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return int
      */
-    public function compareMonthWorkedInHours(int $year, int $month, int $decimal_number=1): int {
+    public function compareMonthWorkedInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->compareMonthWorkedInSeconds($year, $month);
         return number_format($time / 3600, $decimal_number);
     }
