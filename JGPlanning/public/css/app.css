@@ -20030,3 +20030,36 @@ Copyright (c) 2015 Daniel Eden
     background: #1A6686 !important;
 }
 
+/*Login*/
+
+.crud-user-form {
+    position: relative;
+    left: 25%;
+    width: 50%;
+}
+.crud-user-form-title {
+    font-size: 35px;
+}
+
+.crud-table thead {
+    border-collapse:separate !important;
+    border-radius:5px 5px 0 0 !important;
+    -moz-border-radius:5px 5px 0 0 !important;
+    box-shadow: 0 0 5px 0 lightgrey;
+    border-bottom: none !important;
+}
+
+table.dataTable td.focus {
+    outline: 1px solid #ac1212;
+    outline-offset: -3px;
+    background-color: #f8e6e6 !important;
+}
+
+/*.notFound {*/
+/*    display: none;*/
+/*}*/
+
+.crud-table tbody{
+    box-shadow: 0 0 5px 0 lightgrey;
+}
+

@@ -101,8 +101,16 @@ class RoosterController extends Controller
 
         if ($validated['begin_week'])
         {
-            $start_week = substr($validated['start_week'], 6);
+            if (substr($validated['begin_week'], 6) < 10)
+            {
+                $start_week = substr($validated['begin_week'], 7);
+            }
+            else
+            {
+                $start_week = substr($validated['begin_week'], 6);
+            }
         }
+
 
 //        Checked of de week die is ingevuld niet eerder is dan de huidige week.
         if (!$end_week > $start_week)
@@ -148,7 +156,8 @@ class RoosterController extends Controller
             'comment' => $validated['comment'],
             'weekdays' => $validated['weekday'],
             'start_week' => $start_week,
-            'end_week' => $end_week
+            'end_week' => $end_week,
+            'year' => Carbon::now()->format('Y')
         ]);
 
         return back()->with(['message' => ['message' => 'Succesvol dag ingevuld', 'type' => 'success']]);
@@ -222,7 +231,8 @@ class RoosterController extends Controller
                 'from_home' => $from_home,
                 'comment' => $validated['comment'],
                 'start_week' => $start_week,
-                'end_week' => $end_week
+                'end_week' => $end_week,
+                'year' => Carbon::now()->format('Y')
             ]);
 
         return back();

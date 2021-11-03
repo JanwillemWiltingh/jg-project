@@ -6,33 +6,91 @@
                     <h5 class="modal-title">Uitgezette weken beheren</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row"  style="resize: both !important;">
+                    <p style="font-size: 25px; margin-bottom: 0; display: inline">Weken</p>
+                    <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="weekDropdown">
+                        <option value="Uitzetten">Uitzetten</option>
+                        <option value="Toevoegen">Toevoegen</option>
+                    </select>
+                    <div class="border-bottom"></div>
+                    <br>
+
+                    <div class="row" id="addDisable">
                         <form method="post" action="{{route('admin.rooster.disable_days', request('user'))}}">
+                                @csrf
+                                <label style="width: 100%">
+                                    <p>Kies een dag:</p>
+                                    <select class="form-control" name="weekday">
+                                        @for($i = 1; $i < count($weekDays); $i++)
+                                            <option value="{{$i}}">{{$weekDays[$i]}}</option>
+                                        @endfor
+                                    </select>
+                                </label>
+
+                                <label style="width:  49.8%">
+                                    <p>Kies een begin week:</p>
+                                    <input class="form-control" type="week" name="start_week" id="start_week">
+                                </label>
+
+                                <label style="width: 49.8%">
+                                    <p>Kies een eind week:</p>
+                                    <input class="form-control" type="week" name="end_week" id="end_week">
+                                </label>
+                                <input type="submit" class="btn btn-success float-right">
+                            </form>
+                    </div>
+
+                    <div class="row"  style="display: none" id="addWeeks">
+                        <form method="post" action="{{route('rooster.availability', request('week'))}}">
                             @csrf
+
+                            <input type="hidden" name="user_id" value="{{request('user')}}">
+
                             <label style="width: 100%">
                                 <p>Kies een dag:</p>
                                 <select class="form-control" name="weekday">
-                                    @for($i = 1; $i < count($weekDays); $i++)
+                                    @for($i = 1; $i <= count($weekDays); $i++)
                                         <option value="{{$i}}">{{$weekDays[$i]}}</option>
                                     @endfor
                                 </select>
                             </label>
-
-                            <label style="width:  49.8%">
-                                <p>Kies een begin week:</p>
-                                <input class="form-control" type="week" name="start_week" id="start_week">
+                            <label style="width: 49.8%">
+                                <p>Start time:</p>
+                                <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
                             </label>
 
                             <label style="width: 49.8%">
-                                <p>Kies een eind week:</p>
-                                <input class="form-control" type="week" name="end_week" id="end_week">
+                                <p>End Time:</p>
+                                <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                             </label>
-                            <input type="submit" class="btn btn-success float-right">
+
+                            <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
+                            <label style="width: 100%">
+                                <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment"></textarea>
+                            </label>
+
+                            <label style="width: 49.8%">
+                                <p>Begin week:</p>
+                                <input type="week" class="form-control" name="begin_week">
+                            </label>
+
+                            <label style="width: 49.8%">
+                                <p>Eind week:</p>
+                                <input type="week" class="form-control" name="week">
+                            </label>
+
+                            <input type="checkbox" id="switch" class="toggle-box " name="from_home" />
+                            <label for="switch" class="toggle-label float-right" ></label>
+
+                            <p class="float-right" style="margin-right: 15px">Van huis</p>
+                            <br>
+                            <br>
+                            <button type="submit" class="btn btn-success float-right">Submit</button>
                         </form>
                     </div>
+
                     <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">
-                        <option>Uitgezette dagen</option>
-                        <option>Dagen</option>
+                        <option>Uitgezette weken</option>
+                        <option>Weken</option>
                     </select>
                      Beheren
                     <hr>
@@ -45,13 +103,13 @@
                                     <br>
                                 </div>
                             @endfor
-                            @for($i = 1; $i < count($weekDays); $i++)
+                            @for($i = 1; $i <= count($weekDays); $i++)
                                  @if(isset($availability->where('weekdays', $i)->first()->start_week))
                                     <div class="col-md-2 scrollbar-manage" style="overflow-y: scroll;">
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
                                         @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
-                                                Week {{$av->start_week}} - {{$av->end_week}}
+                                                Week <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->start_week])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->end_week])}}">{{$av->end_week}}</a>
                                                 <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="Admin">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
@@ -76,7 +134,7 @@
                                 </div>
                             @endfor
                             <br>
-                            @for($i = 1; $i < count($weekDays); $i++)
+                            @for($i = 1; $i <= count($weekDays); $i++)
                                 @if(isset($disabled->where('weekday', $i)->first()->start_week))
                                     <div class="col-md-2 scrollbar-manage" style="height: 150px;overflow:auto;">
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
