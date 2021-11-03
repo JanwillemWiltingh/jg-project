@@ -25,7 +25,7 @@
                             <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
                         </div>
                         <div class="align-self-center">
-                            <h1 class="dashboard-hours">{{ number_format($user->workedInAMonth($now->month)[1] / 3600, 1) }}</h1>
+                            <h1 class="dashboard-hours">{{ $user->WorkedInAMonthInHours($now->month) }}</h1>
                         </div>
                     </div>
 
@@ -40,7 +40,7 @@
                             <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
                         </div>
                         <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ number_format($user->plannedWorkAMonth($now->year, $now->month)[1] /3600, 1) }}</h1>
+                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkAMonthInHours($now->year, $now->month) }}</h1>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                             <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
                         </div>
                         <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ number_format($user->workedInAWeek($now->weekOfYear)[1] / 3600, 1) }}</h1>
+                            <h1 class="dashboard-title-hours">{{ $user->workedInAWeekInHours($now->weekOfYear) }}</h1>
                         </div>
                     </div>
 
@@ -74,7 +74,7 @@
                             <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
                         </div>
                         <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ number_format($user->plannedWorkAWeek($now->year, $now->weekOfYear)[1] /3600, 1) }}</h1>
+                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkAWeekInHours($now->year, $now->weekOfYear) }}</h1>
                         </div>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
                             <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
                         </div>
                         <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ number_format($user->workedInADay($now->year, $now->month, $now->day)[1] / 3600, 1) }}</h1>
+                            <h1 class="dashboard-title-hours">{{ $user->workedInADayInHours($now->year, $now->month, $now->day)  }}</h1>
                         </div>
                     </div>
 
@@ -108,7 +108,7 @@
                             <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
                         </div>
                         <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ number_format($user->plannedWorkADay($now->year, $now->weekOfYear, $now->dayOfWeek)[1] / 3600, 1) }}</h1>
+                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek) }}</h1>
                         </div>
                     </div>
                 </div>
