@@ -185,7 +185,7 @@ class User extends Authenticatable
         return ['-', 0];
     }
 
-    public function workedInADay($year, $month, $day) {
+    public function workedInADay($year, $month, $day): array {
         $date = Carbon::parse($year.'-'.$month.'-'.$day);
         $clocks = $this->clocks()->where('date', $date)->get();
 
