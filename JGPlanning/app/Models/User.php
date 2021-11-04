@@ -102,27 +102,31 @@ class User extends Authenticatable
     }
 
     public function getNextRooster() {
-//        Get the rooster of today
+//        Get the rooster and week number of today
         $current_rooster = $this->getRoosterFromToday();
+        $now_week_number = Carbon::now()->weekOfYear;
 
-        $now = Carbon::now();
-        $now_week_number = $now->weekOfYear;
+//        Make an empty collection to add all roosters to
         $collection = collect();
 
         if($current_rooster != null) {
+//            Get all the rooster from the user
             $roosters = Rooster::all()->where('user_id', $this['id']);
 
+//            Loop through all the roosters and only get the roosters with an ID higher then the current rooster
             foreach($roosters as $rooster) {
                 if($rooster['id'] > $current_rooster['id']) {
                     $collection->push($rooster);
                 }
             }
 
+//            if any rooster has been added return the first one
             if($collection->count() > 0) {
                 return $collection->first();
             }
         } else {
             $roosters = $this->roosters()->where('user_id', $this['id'])->where('start_week', '>=', $now_week_number)->get();
+
             if($roosters->count() > 0) {
                 return $roosters->first();
             }
