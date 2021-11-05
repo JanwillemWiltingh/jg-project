@@ -240,6 +240,14 @@ class User extends Authenticatable
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
+    /**
+     * Returns the worked time in seconds from a given day
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @return int
+     */
     public function workedInADayInSeconds(int $year, int $month, int $day): int {
         $date = Carbon::parse($year . '-' . $month . '-' . $day);
         $clocks = $this->clocks()->where('date', $date)->get();
@@ -258,11 +266,29 @@ class User extends Authenticatable
         return $time;
     }
 
+    /**
+     * Returns the worked time in hours from a given day
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param int $decimal_number
+     * @return float
+     */
     public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
         $time = $this->plannedWorkADayInSeconds($year, $month, $day);
         return number_format($time / 3600, $decimal_number);
     }
 
+    /**
+     * Returns the worked time formatted for humans by carbon from a given day
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @return string
+     * @throws Exception
+     */
     public function workedInADayForHumans(int $year, int $month, int $day): string {
         $time = $this->plannedWorkADayInSeconds($year, $month, $day);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
@@ -407,6 +433,14 @@ class User extends Authenticatable
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
+    /**
+     * Returns the planned time in seconds from a given day
+     *
+     * @param int $year
+     * @param int $week
+     * @param int $day
+     * @return int
+     */
     public function plannedWorkADayInSeconds(int $year, int $week, int $day): int {
         $roosters = $this->roosters()->where('weekdays', $day)->get();
         $time = 0;
@@ -418,11 +452,29 @@ class User extends Authenticatable
         return $time;
     }
 
+    /**
+     * Returns the planned time in hours from a given day
+     *
+     * @param int $year
+     * @param int $week
+     * @param int $day
+     * @param int $decimal_number
+     * @return float
+     */
     public function plannedWorkADayInHours(int $year, int $week, int $day, int $decimal_number=1): float {
         $time = $this->plannedWorkADayInSeconds($year, $week, $day);
         return number_format($time / 3600, $decimal_number);
     }
 
+    /**
+     * Returns the planned time formatted for humans by carbon for a given day
+     *
+     * @param int $year
+     * @param int $week
+     * @param int $day
+     * @return string
+     * @throws Exception
+     */
     public function plannedWorkADayForHumans(int $year, int $week, int $day): string {
         $time = $this->plannedWorkADayInSeconds($year, $week, $day);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
