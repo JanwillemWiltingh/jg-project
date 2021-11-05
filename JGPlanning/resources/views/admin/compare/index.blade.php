@@ -49,6 +49,7 @@
                             <th scope="col">Tijd Ingepland</th>
                             <th scope="col"></th>
                             <th scope="col">Verschil</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -104,6 +105,17 @@
 
                                     </td>
                                 @endif
+                                <td>
+                                    @if($input_field == 'weeks')
+                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $weeks]) }}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $month]) }}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

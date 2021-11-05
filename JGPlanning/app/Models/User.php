@@ -249,12 +249,11 @@ class User extends Authenticatable
      * @return int
      */
     public function workedInADayInSeconds(int $year, int $month, int $day): int {
-        $date = Carbon::parse($year . '-' . $month . '-' . $day);
+        $date = Carbon::parse($year.'-'.$month.'-'.$day);
         $clocks = $this->clocks()->where('date', $date)->get();
         $time = 0;
 
         if ($clocks->count() > 0) {
-
             foreach ($clocks as $clock) {
                 if ($clock['end_time'] == null) {
                     $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
@@ -263,6 +262,7 @@ class User extends Authenticatable
                 }
             }
         }
+
         return $time;
     }
 
@@ -276,7 +276,7 @@ class User extends Authenticatable
      * @return float
      */
     public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
-        $time = $this->plannedWorkADayInSeconds($year, $month, $day);
+        $time = $this->workedInADayInSeconds($year, $month, $day);
         return number_format($time / 3600, $decimal_number);
     }
 
@@ -290,7 +290,7 @@ class User extends Authenticatable
      * @throws Exception
      */
     public function workedInADayForHumans(int $year, int $month, int $day): string {
-        $time = $this->plannedWorkADayInSeconds($year, $month, $day);
+        $time = $this->workedInADayInSeconds($year, $month, $day);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
@@ -442,13 +442,18 @@ class User extends Authenticatable
      * @return int
      */
     public function plannedWorkADayInSeconds(int $year, int $week, int $day): int {
-        $roosters = $this->roosters()->where('weekdays', $day)->get();
+        $new_date = new Carbon();
+        $date = $new_date->setISODate($year, $week, $day);
+
+        $roosters = $this->roosters()->where('weekdays', $date->dayOfWeek)->get();
         $time = 0;
         foreach($roosters as $rooster) {
             if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
-                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time'])) - 1800;
+//                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time'])) - 1800;
+                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time']));
             }
         }
+
         return $time;
     }
 
