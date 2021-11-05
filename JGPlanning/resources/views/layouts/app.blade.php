@@ -12,6 +12,9 @@ The above copyright notice and this permission notice shall be included in all c
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        @php
+            $browser = new \App\Helpers\BrowserDetection()
+        @endphp
         <title>JG planning</title>
 
         <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -34,8 +37,10 @@ The above copyright notice and this permission notice shall be included in all c
 
     </head>
     <body>
-        <div class="wrapper ">
-            <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+
+    <div class="wrapper @if($browser->isMobile()) nav-container @endif">
+            <div class="sidebar @if($browser->isMobile()) nav-bar-open @endif"
+                 data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
                 <!--
                   Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -120,16 +125,20 @@ The above copyright notice and this permission notice shall be included in all c
                     </ul>
                 </div>
             </div>
+
             <div class="main-panel">
                 <!-- Navbar -->
                 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                     <div class="container-fluid">
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="navbar-toggler-icon icon-bar"></span>
-                            <span class="navbar-toggler-icon icon-bar"></span>
-                            <span class="navbar-toggler-icon icon-bar"></span>
-                        </button>
+
+                    @if($browser->isMobile())
+                        <header>
+                            <div class="toggle-btn fadeInDown">
+                                <span></span>
+                            </div>
+                        </header>
+                    @endif
+
                         <div class="collapse navbar-collapse justify-content-end">
 {{--                            <form class="navbar-form">--}}
 {{--                                <div class="input-group no-border">--}}
@@ -197,7 +206,7 @@ The above copyright notice and this permission notice shall be included in all c
                         </div>
                     </div>
                 </div>
-                <div class="container">
+                <div class="container" style="width: 100%">
                     <x-alert></x-alert>
 
                     @yield('content')
@@ -217,6 +226,7 @@ The above copyright notice and this permission notice shall be included in all c
                     @endif
 
                 </div>
+
             </div>
         </div>
         {{--JS--}}
