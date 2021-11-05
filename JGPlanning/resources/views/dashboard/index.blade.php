@@ -21,6 +21,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         @if(!$browser->isMobile())
             <div class=" col-4">
@@ -155,61 +156,67 @@
                 </div>
             </div>
         </div>
-        @if(!$browser->isMobile())
-                <div class=" @if(!$browser->isMobile()) col-6 @endif">
-                    <div class="row">
-                        <div class="col-12" style="margin-bottom: -31px !important">
-                            <div class="card" style="height: 72% !important;">
-                                <div class="card-body gradient-dashboard">
-                                    <div class="media align-items-stretch">
-                                        <div class="align-self-center">
-                                            <i class="far fa-clock fa-4x font-weight-lighter"></i>
-                                        </div>
-                                        <div class="media-body pl-3">
-                                            <h4>Vandaag</h4>
-                                            @if($user->getRoosterFromToday()['start_time'] != '00:00')
-                                                <span>{{ $now->format('d F Y') }}</span>
-                                            @else
-                                                <span>Geen rooster voor vandaag</span>
-                                            @endif
-                                        </div>
-                                        <div class="align-self-center">
-                                            <h1>{{ Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') }}</h1>
-                                        </div>
-                                    </div>
+
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12" style="margin-bottom: -31px !important">
+                    <div class="card" style="height: 72% !important;">
+                        <div class="card-body gradient-dashboard">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="far fa-clock fa-4x font-weight-lighter"></i>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card" style="height: 72% !important;">
-                            <div class="card-body gradient-dashboard">
-                                <div class="media align-items-stretch">
-                                    <div class="align-self-center">
-                                        <i class="far fa-clock fa-4x"></i>
-                                    </div>
-                                    <div class="media-body pl-3">
-                                        <h4>{{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }}</h4>
-                                        @if($user->getNextRooster()['weekdays'] == 0)
-                                            <span>Geen nieuwe rooster</span>
+                                <div class="media-body pl-3">
+                                    <h4>Vandaag</h4>
+                                    @if($user->getRoosterFromToday() != null)
+                                        <span>{{ $now->format('d F Y') }}</span>
+                                    @else
+                                        <span>Geen rooster voor vandaag</span>
+                                    @endif
+                                </div>
+                                <div class="align-self-center">
+                                    <h1>
+                                        @if($user->getRoosterFromToday() != null)
+                                            {{ Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') }}
                                         @else
-                                            <span>{{ $now->addDay(1)->format('d F Y') }}</span>
+                                            00:00 - 00:00
                                         @endif
-                                    </div>
-                                    <div class="align-self-center">
-                                        @if($user->getNextRooster()['weekdays'] == 0)
-                                            <h1>{{ $user->getNextRooster()['start_time'] }} - {{ $user->getNextRooster()['end_time'] }}</h1>
-                                        @else
-                                            <h1>{{ Carbon\Carbon::parse($user->getNextRooster()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getNextRooster()['end_time'])->format('H:i') }}</h1>
-                                        @endif
-                                    </div>
+                                    </h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card" style="height: 72% !important;">
+                        <div class="card-body gradient-dashboard">
+                            <div class="media align-items-stretch">
+                                <div class="align-self-center">
+                                    <i class="far fa-clock fa-4x"></i>
+                                </div>
+                                <div class="media-body pl-3">
+                                    <h4>@if($user->getNextRooster() == null) @else {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }} @endif</h4>
+
+                                    @if($user->getNextRooster() == null)
+                                        <span>Geen nieuwe rooster</span>
+                                    @else
+                                        <span>{{ $now->addDay(1)->format('d F Y') }}</span>
+                                    @endif
+                                </div>
+                                <div class="align-self-center">
+                                    @if($user->getNextRooster() == null)
+                                        <h1>00:00 - 00:00</h1>
+                                    @else
+                                        <h1>{{ Carbon\Carbon::parse($user->getNextRooster()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getNextRooster()['end_time'])->format('H:i') }}</h1>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 <a style="color: white; cursor: pointer" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>

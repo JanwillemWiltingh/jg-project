@@ -79,6 +79,9 @@ class User extends Authenticatable
         return explode(' ', $first_clock['time'])[1];
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getRoosterFromToday() {
 //        Take the week and day numbers from today
         $week_number = Carbon::now()->weekOfYear;
@@ -94,41 +97,38 @@ class User extends Authenticatable
             }
         }
 
-//        return this when no rooster could be found that fits
-        return ['start_time' => '00:00', 'end_time' => '00:00'];
+//        return null when there is no rooster from today
+        return null;
     }
 
     public function getNextRooster() {
 //        Get the rooster of today
-        $current_rooster = Auth::user()->getRoosterFromToday();
+        $current_rooster = $this->getRoosterFromToday();
 
-        try {
-            $count = count($current_rooster);
-        } catch (Exception $exception) {
-            //        Als er een rooster voor morgen is vraag alle roosters op van deze gebruiker
-            $roosters = $this->roosters()->get();
-            if ($roosters->count() > 0) {
-//                Foreach loop to get the next rooster
-                $i = false;
-                foreach($roosters as $rooster) {
-                    if($i == true) {
-                        return $rooster;
-                        break;
-                    }
+        $now = Carbon::now();
+        $now_week_number = $now->weekOfYear;
+        $collection = collect();
 
-                    if($rooster['id'] == $current_rooster['id']) {
-                        $i = true;
-                    }
+        if($current_rooster != null) {
+            $roosters = Rooster::all()->where('user_id', $this['id']);
+
+            foreach($roosters as $rooster) {
+                if($rooster['id'] > $current_rooster['id']) {
+                    $collection->push($rooster);
                 }
-                $next = $roosters->where('id', $current_rooster['id'] + 1)->first();
+            }
 
-                if($next != null) {
-                    return $next;
-                }
+            if($collection->count() > 0) {
+                return $collection->first();
+            }
+        } else {
+            $roosters = $this->roosters()->where('user_id', $this['id'])->where('start_week', '>=', $now_week_number)->get();
+            if($roosters->count() > 0) {
+                return $roosters->first();
             }
         }
 
-        return ['weekdays' => 0, 'start_time' => '00:00', 'end_time' => '00:00'];
+        return null;
     }
 
     public function isCurrentUser(): string {
