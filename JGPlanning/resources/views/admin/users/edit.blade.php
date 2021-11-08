@@ -21,6 +21,7 @@
                 <x-forms.input type="email" name="email" value="{{ $user['email'] }}"></x-forms.input>
             </div>
         </div>
+        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
         <div class="row">
             <div class="col-3">
                 <x-forms.input type="password" name="password"></x-forms.input>
@@ -30,7 +31,6 @@
                 <x-forms.input type="password" name="password_confirmation"></x-forms.input>
             </div>
         </div>
-        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
             <hr>
             <label class="black-label-text" style="font-size: 20px;">Welke rol krijgt de gebruiker?</label>
             <div class="row">

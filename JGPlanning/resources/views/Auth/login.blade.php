@@ -32,7 +32,7 @@
 
                 <input type="submit" class="login-button" value="Log In">
                 <div id="formFooter" style="text-align: center; margin: 15px;">
-                    <a class="underlineHover" href="#">Forgot Password?</a>
+                    <a class="underlineHover" href="{{route('password.request')}}">Forgot Password?</a>
                 </div>
                 @error('status')
                 <label class="error-label"><strong>{{$errors->first('status')}}</strong></label>
