@@ -47,20 +47,12 @@ Route::name('profile.')->prefix('profiel/')->group(function (){
     Route::get('/update/{user}', [ProfileController::class, 'update'])->name('update');
 });
 
-//beschikbaarheid
-Route::name('beschikbaarheid.')->prefix('beschikbaarheid/')->group(function (){
-    Route::get('/', [RoosterController::class, 'index'])->name('index');
-});
-
-//rooster
 Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::get('/{week}', [RoosterController::class, 'index'])->name('index');
+    Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
+    Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
+    Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 });
-
-//TODO: nog onder rooster/* brengen maar ik ben er nog te bang voor aangezien ik nog bezig ben met inplannen voor de toekomst.
-Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
-Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
-Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
 
 //admin
 Route::name('admin.')->prefix('admin/')->group(function (){
@@ -89,6 +81,9 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::post('/{user}/{week}/available_days', [RoosterAdminController::class, 'push_days'])->name('push_days');
         Route::post('/{user}/disable_days', [RoosterAdminController::class, 'disable_days'])->name('disable_days');
         Route::post('/{user}/{week}/edit_disable_days', [RoosterAdminController::class, 'edit_disable_days'])->name('edit_disable_days');
+        Route::get('/{user}/{week}/{weekday}', [RoosterAdminController::class, 'delete_disable_days'])->name('delete_disable_days');
+        Route::post('/manage_disable', [RoosterAdminController::class, 'manage_disable_days'])->name('manage_disable_days');
+        Route::post('/manage_day_disable', [RoosterAdminController::class, 'manage_delete_days'])->name('manage_delete_days');
     });
 
 //admin compare table

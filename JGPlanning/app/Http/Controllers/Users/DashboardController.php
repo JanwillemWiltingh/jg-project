@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
-use App\Models\User;
-use App\Services\CheckIfIsInWeek;
-use App\Services\GetWeekdayDate;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -83,21 +80,5 @@ class DashboardController extends Controller
         }
 
         return redirect()->back();
-    }
-
-    /**
-     * Check if the current time is within acceptable working hours
-     * @return bool
-     */
-    public function isWorkHours(): bool
-    {
-        $current_time = Carbon::now()->addHours(2);
-        $start_time = Carbon::createFromTime(9, 0,0);
-        $end_time = Carbon::createFromTime(21, 0,0);
-
-        if($current_time->gt($start_time) and $current_time->lt($end_time)) {
-            return True;
-        }
-        return False;
     }
 }

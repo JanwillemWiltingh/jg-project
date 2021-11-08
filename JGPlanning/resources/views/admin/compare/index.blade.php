@@ -6,16 +6,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <form method="GET" action="{{ route('admin.compare.index') }}">
-
-                        <div class="form-group">
-                            <label for="users">Gebruikers</label>
-                            <select name="user" class="form-control" id="users">
-                                <option value="0">Alle Gebruikers</option>
-                                @foreach($all_users as $user)
-                                    <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ ucfirst($user['lastname']) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" name="user" default="Alle Gebruikers" capitalize="true"></x-forms.single-select>
 
                         <div class="form-group">
                             @foreach (['month' => 'Maand', 'weeks' => 'Weeks'] as $id => $format)
@@ -36,7 +27,7 @@
 
                         <div class="form-group" id="week-group" @if($input_field != 'weeks') style="display: none;" @endif>
                             <label for="weeks">Week</label>
-                            <input name="weeks" id="weeks" type="weeks" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
+                            <input name="weeks" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Selecteer</button>
@@ -68,47 +59,47 @@
                                     {{ $user['firstname'] }} {{ $user['middlename'] }} {{ $user['lastname'] }}
                                 </td>
                                 <td>
-                                    @if($input_field == 'week')
-                                        {{ $user->workedInAWeek(str_replace('W', '',explode('-', $weeks)[1]))[0] }}
+                                    @if($input_field == 'weeks')
+                                        {{ $user->workedInAWeekForHumans(str_replace('W', '',explode('-', $weeks)[1])) }}
                                     @else
-                                        {{ $user->workedInAMonth(explode('-', $month)[1])[0] }}
+                                        {{ $user->workedInAMonthForHumans(explode('-', $month)[1]) }}
                                     @endif
                                 </td>
                                 <td class="thick-table-border">
                                     @if($input_field == 'weeks')
-                                        {{ number_format($user->workedInAWeek(str_replace('W', '',explode('-', $weeks)[1]))[1] / 3600, 1) }} uur
+                                        {{ $user->workedInAWeekInHours(str_replace('W', '',explode('-', $weeks)[1])) }} uur
                                     @else
-                                        {{ number_format($user->workedInAMonth(explode('-', $month)[1])[1] / 3600, 1) }} uur
+                                        {{ $user->WorkedInAMonthInHours(explode('-', $month)[1]) }} uur
                                     @endif
                                 </td>
                                 <td>
                                     @if($input_field == 'weeks')
-                                        {{ $user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $weeks)[1]))[0] }}
+                                        {{ $user->plannedWorkAWeekForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}
                                     @else
-                                        {{ $user->plannedWorkAMonth(2021, explode('-', $month)[1])[0] }}
+                                        {{ $user->plannedWorkAMonthForHumans(2021, explode('-', $month)[1]) }}
                                     @endif
                                 </td>
                                 <td>
                                     @if($input_field == 'weeks')
-                                        {{ number_format($user->plannedWorkAWeek(2021, str_replace('W', '',explode('-', $weeks)[1]))[1] / 3600, 1) }} uur
+                                        {{ $user->plannedWorkAWeekInHours(2021, str_replace('W', '',explode('-', $weeks)[1])) }} uur
                                     @else
-                                        {{ number_format($user->plannedWorkAMonth(2021, explode('-', $month)[1])[1] / 3600, 1) }} uur
+                                        {{ $user->plannedWorkAMonthInHours(2021, explode('-', $month)[1]) }} uur
                                     @endif
                                 </td>
                                 @if($input_field == 'weeks')
-                                    <td @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $weeks)[1]))[1] < 0) class="table-danger" @else class="table-success" @endif>
-                                        @if($user->compareWeekWorked(2021, str_replace('W', '',explode('-', $weeks)[1]))[1] == 0)
+                                    <td @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) < 0) class="table-danger" @else class="table-success" @endif>
+                                        @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) == 0)
                                             0 seconde
                                         @else
-                                            {{ $user->compareWeekWorked(2021, str_replace('W', '',explode('-', $weeks)[1]))[0] }}
+                                            {{ $user->compareWeekWorkedForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}
                                         @endif
                                     </td>
                                 @else
-                                    <td @if($user->compareMonthWorked(2021, explode('-', $month)[1])[1] < 0) class="table-danger" @else class="table-success" @endif>
-                                        @if($user->compareMonthWorked(2021, explode('-', $month)[1])[1] == 0)
+                                    <td @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) < 0) class="table-danger" @else class="table-success" @endif>
+                                        @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) == 0)
                                             0 seconde
                                         @else
-                                            {{ $user->compareMonthWorked(2021, explode('-', $month)[1])[0] }}
+                                            {{ $user->compareMonthWorkedForHumans(2021, explode('-', $month)[1]) }}
                                         @endif
 
                                     </td>

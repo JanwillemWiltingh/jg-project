@@ -21,4 +21,11 @@ class TimeService
 
         return $timeRange;
     }
+
+    public function roundTime($time, $round_to)
+    {
+        $start_round = $round_to*60;
+        $start_rounded = round(strtotime($time) / $start_round) * $start_round;
+        return date("H:i:s", $start_rounded);
+    }
 }

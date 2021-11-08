@@ -13824,7 +13824,7 @@ select.form-control {
 
 textarea {
   height: auto !important;
-  resize: none;
+  /*resize: none;*/
   line-height: 1.428571 !important;
 }
 
@@ -19687,6 +19687,7 @@ Copyright (c) 2015 Daniel Eden
     display: none !important;
   }
 }
+
 .login-page {
     display: flex;
     align-items: center;
@@ -19744,6 +19745,18 @@ Copyright (c) 2015 Daniel Eden
 
 .modal-backdrop { opacity: 0 !important; }
 
+.jg-color-1 {background: #1A6686 !important;}
+.jg-color-2 {background: #CB6827 !important;}
+.jg-color-3 {background: #1C88A4 !important;}
+
+.jg-color-1-text {color: #1A6686 !important;}
+.jg-color-2-text {color: #CB6827 !important;}
+.jg-color-3-text {color: #1C88A4 !important;}
+
+.jg-color-gradient-1 {background: linear-gradient(90deg, #1A6686 0%, #CB6827 100%) !important;}
+.jg-color-gradient-2 {background: linear-gradient(90deg, #CB6827 0%, #1C88A4 100%) !important;}
+.jg-color-gradient-3 {background: linear-gradient(90deg, #1A6686 0%, #1C88A4 100%) !important;}
+.jg-color-gradient-4 {background: linear-gradient(90deg, #CB6827 0%, #1A6686 100%) !important;}
 
 .test {
     font-size: 64371px;
@@ -19768,7 +19781,7 @@ Copyright (c) 2015 Daniel Eden
 
 .nav-color {
     width: 89%;
-    background: linear-gradient(90deg, rgba(41,41,224,1) 0%, rgba(0,212,255,1) 100%);
+    background: linear-gradient(90deg, #1A6686 0%, #1C88A4 100%) !important;
     position: absolute;
     left: 0;
     transition: all 0.2s;
@@ -19956,6 +19969,53 @@ Copyright (c) 2015 Daniel Eden
 
 .thick-table-border {
     border-right: 2px solid black;
+}
+
+.gradient-dashboard {
+    border-radius: 5px;
+    background: linear-gradient(90deg, #1A6686 0%, #1C88A4 100%);
+    color: white;
+    font-weight: lighter !important;
+}
+
+.dashboard-welkom a
+{
+    display: inline;
+    position: absolute;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 45px;
+    font-weight: bolder;
+    font-style: italic;
+    bottom: 10px;
+}
+
+.dashboard-welkom a::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-bottom: 6px solid #CB6827 !important;
+    height: 3px;
+    top:  55px;
+    left: 0;
+}
+.dashboard-welkom p
+{
+    display: inline;
+    color: white;
+    margin-right: -15px;
+}
+
+.dashboard-welkom h1
+{
+    display: inline;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: lighter;
+    font-size: 70px;
+    margin-right: 2px;
 }
 
 

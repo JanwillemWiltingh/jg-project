@@ -1,13 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    @if(session()->get('message'))
-        <div class="alert alert-{{ session()->get('message')['type'] }} alert-dismissible fade show" role="alert">
-            {{ session()->get('message')['message'] }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            </button>
-        </div>
-    @endif
     <h1>Bewerk mijn Profiel</h1>
     <form method="get" action="{{route('profile.update', $user['id'])}}">
         <div class="row">
