@@ -108,7 +108,7 @@
                             <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
                         </div>
                         <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek) }}</h1>
+                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->day) }}</h1>
                         </div>
                     </div>
                 </div>
