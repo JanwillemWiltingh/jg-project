@@ -3,7 +3,8 @@ $(document).ready(function () {
     // Menu Button
     $('.toggle-btn').on('click', 	function(){
         $(this).toggleClass('onclick');
-        $('.nav-bar').toggleClass('visible');
+        $('.nav-bar-open').toggleClass('visible');
+        $('.toggle-btn').toggleClass('visible');
         // $('.nav-container').css('background': 'red');
     });
 

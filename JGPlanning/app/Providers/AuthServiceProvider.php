@@ -55,6 +55,13 @@ class AuthServiceProvider extends ServiceProvider
             return False;
         });
 
+        Gate:: define('admin-logout', function (User $user){
+            if($user['role_id'] == Role::getRoleID('admin') || $user['role_id'] == Role::getRoleID('maintainer')) {
+                return True;
+            }
+            return False;
+        });
+
         Gate:: define('employee-clocker', function (User $user){
             if($user['role_id'] == Role::getRoleID('employee')) {
                 return True;

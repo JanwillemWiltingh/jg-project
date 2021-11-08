@@ -130,7 +130,7 @@
         </div>
     @endif
     <div class="row">
-        <div class="@if(!$browser->isMobile()) col-6 @endif" style="@if($browser->_platform != "iOS") @if($browser->_platform != "Android") width: 100%; @endif @endif">
+        <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="card">
                 <div class="card-body ">
                     <form action="{{ route('dashboard.clock') }}" method="post">
@@ -157,6 +157,7 @@
             </div>
         </div>
 
+        @if(!$browser->isMobile())
         <div class="col-6">
             <div class="row">
                 <div class="col-12" style="margin-bottom: -31px !important">
@@ -218,6 +219,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 <a style="color: white; cursor: pointer" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
 @endsection

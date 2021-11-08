@@ -21,6 +21,9 @@ The above copyright notice and this permission notice shall be included in all c
 
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <script type="text/javascript" src="{{asset('/js/app.js')}}"></script>
 
         {{--Css--}}
         <link rel="stylesheet" href="{{asset('/css/app.css')}}" type="text/css">
@@ -37,9 +40,8 @@ The above copyright notice and this permission notice shall be included in all c
 
     </head>
     <body>
-
     <div class="wrapper @if($browser->isMobile()) nav-container @endif">
-            <div class="sidebar @if($browser->isMobile()) nav-bar-open @endif"
+            <div class="sidebar @if($browser->isMobile())nav-bar-open @endif"
                  data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
                 <!--
                   Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
@@ -49,7 +51,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="logo"><a class="simple-text logo-normal" href="{{route('dashboard.home')}}" style="text-decoration: none;">
                         <img style="margin-top: -20px; margin-bottom: -20px;" src="{{asset('storage/img/JG planning logo.png')}}" alt="JG planning">
                     </a></div>
-                <div class="sidebar-wrapper">
+                <div class="sidebar-wrapper" style="@if($browser->isMobile()) height: 80% @endif">
                     <ul class="nav">
                         <li class="nav-item active {{ (request()->is('/')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('dashboard.home')}}" >
@@ -122,6 +124,23 @@ The above copyright notice and this permission notice shall be included in all c
                                 </li>
                             </div>
                         @endcan
+
+                        @can('admin-logout')
+                            @if($browser->isMobile())
+                                <li class="nav-item active hover-navbar">
+                                    <a class="nav-link nav-color" data-bs-toggle="modal" data-bs-target="#dropDownMenu" data-backdrop="false" style="position: absolute; bottom: 50px;">
+                                        <i class="fa fa-user"></i>
+                                        <p>{{\Illuminate\Support\Facades\Auth::user()['firstname']}}</p>
+                                    </a>
+                                </li>
+{{--                                <li class="nav-item" style="font-size: 20px">--}}
+{{--                                    <a id="dropdown_button" >--}}
+{{--                                        {{\Illuminate\Support\Facades\Auth::user()['firstname']}} <i class="fa fa-user"></i>--}}
+{{--                                        <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
+                            @endif
+                        @endcan
                     </ul>
                 </div>
             </div>
@@ -140,24 +159,15 @@ The above copyright notice and this permission notice shall be included in all c
                     @endif
 
                         <div class="collapse navbar-collapse justify-content-end">
-{{--                            <form class="navbar-form">--}}
-{{--                                <div class="input-group no-border">--}}
-{{--                                    <input type="text" value="" class="form-control" placeholder="Search...">--}}
-{{--                                    <button type="submit" class="btn btn-white btn-round btn-just-icon">--}}
-{{--                                        <i class="material-icons">search</i>--}}
-{{--                                        <div class="ripple-container"></div>--}}
-{{--                                    </button>--}}
-{{--                                </div>--}}
-{{--                            </form>--}}
                             <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="javascript:;">
-                                        <i class="material-icons">dashboard</i>
-                                        <p class="d-lg-none d-md-block">
-                                            Stats
-                                        </p>
-                                    </a>
-                                </li>
+{{--                                <li class="nav-item">--}}
+{{--                                    <a class="nav-link" href="javascript:;">--}}
+{{--                                        <i class="material-icons">dashboard</i>--}}
+{{--                                        <p class="d-lg-none d-md-block">--}}
+{{--                                            Stats--}}
+{{--                                        </p>--}}
+{{--                                    </a>--}}
+{{--                                </li>--}}
                                 <!--            <li class="nav-item dropdown">
                                               <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="material-icons">notifications</i>
@@ -174,12 +184,14 @@ The above copyright notice and this permission notice shall be included in all c
                                                 <a class="dropdown-item" href="#">Another One</a>
                                               </div>
                                             </li>-->
-                                <li class="nav-item dropdown">
-                                    <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#dropDownMenu" data-backdrop="false">
-                                        {{\Illuminate\Support\Facades\Auth::user()['firstname']}} <i class="fa fa-user"></i>
-                                        <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>
-                                    </button>
-                                </li>
+                                @if(!$browser->isMobile())
+                                    <li class="nav-item dropdown">
+                                        <button class="dropdown_button" style="margin: 15px; font-size: 20px;" id="dropdown_button" data-bs-toggle="modal" data-bs-target="#dropDownMenu" data-backdrop="false">
+                                            {{\Illuminate\Support\Facades\Auth::user()['firstname']}} <i class="fa fa-user"></i>
+                                            <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>
+                                        </button>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -188,25 +200,53 @@ The above copyright notice and this permission notice shall be included in all c
                 <br>
 
                 <br>
-                <!-- Modal -->
-                <div class="modal fade" id="dropDownMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
-                        <div class="modal-content">
-                            <div class="modal-body">
 
-                                <a href="{{route('profile.index')}}">Profiel</a>
-                                <hr>
-                                <a href="{{route('help.index')}}">Help</a> <br>
-                                <hr>
-                                <form action="{{ route('auth.logout') }}" method="POST">
-                                    @csrf
-                                    <button class="linklike-button">Logout</button>
-                                </form>
+                <!-- Modal -->
+                @if(!$browser->isMobile())
+                    <div class="modal fade" id="dropDownMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document" style="width: 100px; left: 45%; top: 5%">
+                            <div class="modal-content">
+                                <div class="modal-body">
+
+                                    <a href="{{route('profile.index')}}">Profiel</a>
+                                    <hr>
+                                    <a href="{{route('help.index')}}">Help</a> <br>
+                                    <hr>
+                                    <form action="{{ route('auth.logout') }}" method="POST">
+                                        @csrf
+                                        <button class="linklike-button">Logout</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="container" style="width: 100%">
+                @else
+                    <div class="modal fade" id="dropDownMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog mobile-user-modal" role="document">
+                            <div class="modal-content jg-color-gradient-3">
+                                <div class="modal-body">
+
+                                    <a href="{{route('profile.index')}}">
+                                        <i class="fa fa-user"></i>
+                                        Profiel
+                                    </a>  <br>
+                                    <hr>
+                                    <a href="{{route('help.index')}}">
+                                        <i class="fa fa-book-open"></i>
+                                        Help
+                                    </a> <br>
+                                    <hr>
+                                    <form action="{{ route('auth.logout') }}" method="POST">
+
+                                        @csrf
+                                        <button class="linklike-button"><i class="fa fa-sign-out-alt"></i> Logout</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                <div class="container" style="width: 100%; @if(!$browser->isMobile()) height: 80% !important; @endif">
                     <x-alert></x-alert>
 
                     @yield('content')
@@ -230,12 +270,10 @@ The above copyright notice and this permission notice shall be included in all c
             </div>
         </div>
         {{--JS--}}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
         <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
-        <script type="text/javascript" src="{{asset('/js/app.js')}}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 

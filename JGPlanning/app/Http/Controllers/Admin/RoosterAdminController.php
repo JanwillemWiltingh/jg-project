@@ -160,7 +160,8 @@ class RoosterAdminController extends Controller
             'user_id' => $user,
             'weekday' => $validated['weekday'],
             'start_week' => $start_week,
-            'end_week' => $end_week
+            'end_week' => $end_week,
+            'by_admin' => true
         ]);
 
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);

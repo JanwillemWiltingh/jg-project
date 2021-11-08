@@ -19,6 +19,7 @@
 .jg-color-gradient-4 {background: linear-gradient(90deg, #CB6827 0%, #1A6686 100%) !important;}
 
 .toggle-btn {
+    margin-left: 0;
     width: 30px;
     height: 50px;
     padding: 10px 0;
@@ -27,6 +28,7 @@
     position: relative;
     display: inline-block;
     cursor: pointer;
+    transition: margin-left .3s ease-in-out;
 }
 
 .toggle-btn span, .toggle-btn span:before, .toggle-btn span:after {
@@ -65,8 +67,13 @@
     transform: translateY(-10px) rotate(-45deg);
 }
 
+.toggle-btn.visible {
+    margin-left: 250px;
+}
+
 .nav-container {
-    width: 100%;
+    margin-left: -250px;
+    width: 160%;
     height: 100vh;
     pointer-event: none;
 }
@@ -76,6 +83,7 @@
     height: 100vh;
     margin-left: -300px;
     transition: margin .3s ease-in-out;
+
 }
 .nav-bar-open.visible{
     margin-left: 0;
@@ -333,46 +341,6 @@
     margin-right: 2px;
 }
 
-
-.dashboard-welkom-mobile a
-{
-    display: inline;
-    position: absolute;
-    background: -webkit-linear-gradient(#1A6686, #1C88A4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 25px;
-    font-weight: bolder;
-    font-style: italic;
-    bottom: 10px;
-}
-
-.dashboard-welkom-mobile a::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    border-bottom: 3px solid #CB6827 !important;
-    height: 3px;
-    top:  30px;
-    left: 0;
-}
-.dashboard-welkom-mobile p
-{
-    display: inline;
-    color: white;
-    margin-right: -15px;
-}
-
-.dashboard-welkom-mobile h1
-{
-    display: inline;
-    background: -webkit-linear-gradient(#1A6686, #1C88A4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: lighter;
-    font-size: 50px;
-    margin-right: 2px;
-}
 /* width */
 .scrollbar-manage::-webkit-scrollbar {
     width: 5px;
@@ -418,12 +386,70 @@ table.dataTable td.focus {
     outline-offset: -3px;
     background-color: #f8e6e6 !important;
 }
-
-/*.notFound {*/
-/*    display: none;*/
-/*}*/
-
 .crud-table tbody{
     box-shadow: 0 0 5px 0 lightgrey;
 }
 
+/* Mobile */
+
+
+.dashboard-welkom-mobile a
+{
+    display: inline;
+    position: absolute;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 25px;
+    font-weight: bolder;
+    font-style: italic;
+    bottom: 10px;
+}
+
+.dashboard-welkom-mobile a::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-bottom: 3px solid #CB6827 !important;
+    height: 3px;
+    top:  30px;
+    left: 0;
+}
+.dashboard-welkom-mobile p
+{
+    display: inline;
+    color: white;
+    margin-right: -15px;
+}
+
+.dashboard-welkom-mobile h1
+{
+    display: inline;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: lighter;
+    font-size: 50px;
+    margin-right: 2px;
+}
+
+.mobile-user-modal {
+    -webkit-box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    -moz-box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    -o-box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    width: 232px !important;
+    left: 3%;
+    bottom: -420px;
+}
+
+.mobile-user-modal hr{
+    background: white !important;
+}
+
+.mobile-user-modal button,
+.mobile-user-modal a:visited,
+.mobile-user-modal a:active,
+.mobile-user-modal a {
+    color: white !important;
+}

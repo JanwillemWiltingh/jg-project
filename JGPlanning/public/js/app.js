@@ -5291,7 +5291,8 @@ $(document).ready(function () {
   // Menu Button
   $('.toggle-btn').on('click', function () {
     $(this).toggleClass('onclick');
-    $('.nav-bar').toggleClass('visible'); // $('.nav-container').css('background': 'red');
+    $('.nav-bar-open').toggleClass('visible');
+    $('.toggle-btn').toggleClass('visible'); // $('.nav-container').css('background': 'red');
   });
   $("body").on("click", "#delete_day", function () {
     if ($('#delete_day_div').css('display') === 'none') {
