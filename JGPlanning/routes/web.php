@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use App\Http\Controllers\{LoginController};
+use App\Http\Controllers\{Auth\ForgotPasswordController, LoginController};
 use App\Http\Controllers\Users\{DashboardController, HelpController, RoosterController, ProfileController};
 use App\Http\Controllers\Admin\{UserController,ClockController, RoosterAdminController, CompareController};
 use Illuminate\Support\Facades\Route;
@@ -92,11 +92,26 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/show/{user}/{type}/{time}', [CompareController::class, 'show'])->name('show');
     });
 });
+Route::name('help.')->prefix('help/')->group(function (){
+    Route::get('/', [HelpController::class, 'help'])->name('index');
+});
 
-//password reset
-Route::get('/forgot-password', function () {
-    return view('Auth.forgot_password');
-})->middleware('guest')->name('password.request');
+//Route::name('forgot.')->prefix('forgot-password/')->middleware('guest')->group(function () {
+//    Route::get('/', [ForgotPasswordController::class, 'index'])->name('index');
+//});
+
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+
+
+
+
+
+
+
 
 //Route::post('/forgot-password', function (Request $request) {
 //    $request->validate(['email' => 'required|email']);

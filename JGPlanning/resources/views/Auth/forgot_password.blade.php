@@ -19,7 +19,7 @@
                             <p>Je kan je Wachtwoord hier herstellen</p>
                             <div class="panel-body">
 
-                                <form id="register-form" role="form" autocomplete="off" class="form" method="get" action="{{route('password.request')}}">
+                                <form id="register-form" role="form" autocomplete="off" class="form" method="get" action="{{route('forget.password.post')}}">
 
                                     <div class="form-group">
                                         <div class="input-group">
@@ -38,7 +38,9 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{route('login')}}"><button class="btn btn-primary" style="margin-left: 40%;">Terug</button></a>
             </div>
         </div>
     </div>
 @endsection
+
