@@ -55,7 +55,8 @@ class ProfileController extends Controller
             'middlename' => ['nullable'],
             'lastname' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
-            'password' => ['nullable', 'confirmed'],
+            'current_password' => ['nullable'],
+            'password' => ['nullable', 'confirmed', 'max:10', 'different:current_password'],
         ]);
 
         if(empty($validated['password'])){
@@ -66,13 +67,17 @@ class ProfileController extends Controller
                 'email' => $validated['email'],
             ]);
         }else{
-            $user->update([
-                'firstname' => $validated['firstname'],
-                'middlename' => $validated['middlename'],
-                'lastname' => $validated['lastname'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-            ]);
+            if(Hash::check($request->current_password, $user['password'])){
+                $user->update([
+                    'firstname' => $validated['firstname'],
+                    'middlename' => $validated['middlename'],
+                    'lastname' => $validated['lastname'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                ]);
+            }else{
+                return redirect()->back()->with(['message' => ['message' => 'Oud Wachtwoord komt niet overeen', 'type' => 'danger']]);
+            }
         }
         return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
