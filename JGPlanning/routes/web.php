@@ -89,6 +89,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
 //admin compare table
     Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [CompareController::class, 'index'])->name('index');
+        Route::get('/show/{user}/{type}/{time}', [CompareController::class, 'show'])->name('show');
     });
 });
 

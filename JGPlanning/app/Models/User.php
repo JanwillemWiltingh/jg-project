@@ -103,27 +103,31 @@ class User extends Authenticatable
     }
 
     public function getNextRooster() {
-//        Get the rooster of today
+//        Get the rooster and week number of today
         $current_rooster = $this->getRoosterFromToday();
+        $now_week_number = Carbon::now()->weekOfYear;
 
-        $now = Carbon::now();
-        $now_week_number = $now->weekOfYear;
+//        Make an empty collection to add all roosters to
         $collection = collect();
 
         if($current_rooster != null) {
+//            Get all the rooster from the user
             $roosters = Rooster::all()->where('user_id', $this['id']);
 
+//            Loop through all the roosters and only get the roosters with an ID higher then the current rooster
             foreach($roosters as $rooster) {
                 if($rooster['id'] > $current_rooster['id']) {
                     $collection->push($rooster);
                 }
             }
 
+//            if any rooster has been added return the first one
             if($collection->count() > 0) {
                 return $collection->first();
             }
         } else {
             $roosters = $this->roosters()->where('user_id', $this['id'])->where('start_week', '>=', $now_week_number)->get();
+
             if($roosters->count() > 0) {
                 return $roosters->first();
             }
@@ -237,13 +241,20 @@ class User extends Authenticatable
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
+    /**
+     * Returns the worked time in seconds from a given day
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @return int
+     */
     public function workedInADayInSeconds(int $year, int $month, int $day): int {
-        $date = Carbon::parse($year . '-' . $month . '-' . $day);
+        $date = Carbon::parse($year.'-'.$month.'-'.$day);
         $clocks = $this->clocks()->where('date', $date)->get();
         $time = 0;
 
         if ($clocks->count() > 0) {
-
             foreach ($clocks as $clock) {
                 if ($clock['end_time'] == null) {
                     $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
@@ -252,16 +263,35 @@ class User extends Authenticatable
                 }
             }
         }
+
         return $time;
     }
 
+    /**
+     * Returns the worked time in hours from a given day
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param int $decimal_number
+     * @return float
+     */
     public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
-        $time = $this->plannedWorkADayInSeconds($year, $month, $day);
+        $time = $this->workedInADayInSeconds($year, $month, $day);
         return number_format($time / 3600, $decimal_number);
     }
 
+    /**
+     * Returns the worked time formatted for humans by carbon from a given day
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @return string
+     * @throws Exception
+     */
     public function workedInADayForHumans(int $year, int $month, int $day): string {
-        $time = $this->plannedWorkADayInSeconds($year, $month, $day);
+        $time = $this->workedInADayInSeconds($year, $month, $day);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
@@ -404,22 +434,53 @@ class User extends Authenticatable
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
+    /**
+     * Returns the planned time in seconds from a given day
+     *
+     * @param int $year
+     * @param int $week
+     * @param int $day
+     * @return int
+     */
     public function plannedWorkADayInSeconds(int $year, int $week, int $day): int {
-        $roosters = $this->roosters()->where('weekdays', $day)->get();
+        $new_date = new Carbon();
+        $date = $new_date->setISODate($year, $week, $day);
+
+        $roosters = $this->roosters()->where('weekdays', $date->dayOfWeek)->get();
         $time = 0;
         foreach($roosters as $rooster) {
             if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
-                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time'])) - 1800;
+//                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time'])) - 1800;
+                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time']));
             }
         }
+
         return $time;
     }
 
+    /**
+     * Returns the planned time in hours from a given day
+     *
+     * @param int $year
+     * @param int $week
+     * @param int $day
+     * @param int $decimal_number
+     * @return float
+     */
     public function plannedWorkADayInHours(int $year, int $week, int $day, int $decimal_number=1): float {
         $time = $this->plannedWorkADayInSeconds($year, $week, $day);
         return number_format($time / 3600, $decimal_number);
     }
 
+    /**
+     * Returns the planned time formatted for humans by carbon for a given day
+     *
+     * @param int $year
+     * @param int $week
+     * @param int $day
+     * @return string
+     * @throws Exception
+     */
     public function plannedWorkADayForHumans(int $year, int $week, int $day): string {
         $time = $this->plannedWorkADayInSeconds($year, $week, $day);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
