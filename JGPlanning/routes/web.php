@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\{LoginController};
 use App\Http\Controllers\Users\{DashboardController, HelpController, RoosterController, ProfileController};
 use App\Http\Controllers\Admin\{UserController,ClockController, RoosterAdminController, CompareController};
+use App\Http\Controllers\Users;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +53,12 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
     Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
     Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
+});
+
+Route::name('user.')->prefix('gebruiker/')->group(function (){
+    Route::name('clock.')->prefix('clock/')->group(function (){
+        Route::get('/', [Users\ClockController::class, 'index'])->name('index');
+    });
 });
 
 //admin

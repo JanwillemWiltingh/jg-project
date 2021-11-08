@@ -53,9 +53,16 @@ The above copyright notice and this permission notice shall be included in all c
                             </a>
                         </li>
 {{--                    Users--}}
+                        <li class="nav-item active {{ (request()->is('gebruiker/clock') ?? request()->is('gebruiker/clock/*')) ? 'nav-color-active' : '' }}">
+                            <a class="nav-link nav-color" href="{{route('user.clock.index')}}" style="margin-top: 60px;">
+                                <i class="fa fa-clock"></i>
+                                <p>Klok</p>
+                            </a>
+                        </li>
+
                         @can('employee-rooster')
                             <li class="nav-item active hover-navbar">
-                                <a class="nav-link nav-color " style="margin-top: 60px;">
+                                <a class="nav-link nav-color " style="margin-top: 120px;">
                                     <i class="fa fa-calendar" style="color: white"></i>
                                     <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -15px; margin-right: 6px"></i>
                                     <p style="color: white">Tijden</p>
@@ -64,7 +71,7 @@ The above copyright notice and this permission notice shall be included in all c
 
                             <div class="@if(!request()->is('rooster')) hover-navbar-content @endif">
                                 <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px ;width: 90%">
-                                    <a class="nav-link nav-color" href="{{route('rooster.index', \Carbon\Carbon::now()->week)}}" style="margin-top: 120px;">
+                                    <a class="nav-link nav-color" href="{{route('rooster.index', \Carbon\Carbon::now()->week)}}" style="margin-top: 180px;">
                                         <i class="fa fa-calendar" style="color: white"></i>
                                         <p style="color: white">Rooster</p>
                                     </a>
