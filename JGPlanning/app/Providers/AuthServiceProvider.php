@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('admin-clocker', function (User $user){
             return !($user['role_id'] == Role::getRoleID('employee'));
         });
-        
+
         Gate::define('admin-users', function (User $user){
             return !($user['role_id'] == Role::getRoleID('employee'));
         });

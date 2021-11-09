@@ -35,7 +35,7 @@
                                         <input name="weeks" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
                                     </div>
                                 </div>
-                                
+
                                 <button type="submit" class="btn btn-primary">Selecteer</button>
                             </form>
                         </div>
