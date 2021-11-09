@@ -7,7 +7,7 @@
                 <div class="col-md-12">
                     <form method="GET" action="{{ route('user.clock.index') }}">
                         <div class="form-group">
-                            @foreach (['month' => 'Maand', 'weeks' => 'Weken', 'days' => 'Dag'] as $id => $format)
+                            @foreach (['month' => 'Maand', 'weeks' => 'Week', 'days' => 'Dag'] as $id => $format)
                                 <div class="form-check">
                                     <input type="radio" name="date-format" id="{{ $id }}" value="{{ $id }}"
                                            @if($id == $input)
@@ -42,38 +42,44 @@
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Datum</th>
                                 <th scope="col">Dag</th>
                                 <th scope="col">Start</th>
                                 <th scope="col">Eind</th>
                                 <th scope="col">Tijd gewerkt</th>
+                                <th scope="col">Tijd met pauze</th>
                             </tr>
                         </thead>
                         <tbody>
-                        @if($input == 'day')
-                            @foreach($user->clocks()->get() as $clock)
+                            @if($entries->count() > 0)
+                                @foreach($entries as $entry)
+                                    <tr @if($loop->index % 2 == 0) class="table-light" @endif>
+                                        <th scope="row">{{ $loop->index + 1 }}</th>
+                                        <td>{{ $entry['date'] }}</td>
+                                        <td>{{ App\Models\Availability::WEEK_DAYS[$entry['day']] }}</td>
+                                        <td>{{ $entry['start_time'] }}</td>
+                                        <td>{{ $entry['end_time'] }}</td>
+                                        <td style="width: 10%">{{ number_format($entry['time'] / 3600, 1) }}</td>
+                                        <td style="width: 10%">{{ number_format($entry['time'] / 3600, 1) - .5 }}</td>
+                                    <tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
+                                    <td colspan="7">
+                                        @if($input == 'days')
+                                            Je hebt vandaag nog niet ingeklokt
+                                        @elseif($input == 'weeks')
+                                            Je hebt deze week nog niet ingeklokt
+                                        @else
+                                            Je hebt deze maand nog niet ingeklokt
+                                        @endif
+                                    </td>
                                 </tr>
-                            @endforeach
-                        @else
-                            @foreach($entries as $entry)
-                                <tr>
-                                    <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                            @endforeach
-                        @endif
+                            @endif
                         </tbody>
                     </table>
                 </div>

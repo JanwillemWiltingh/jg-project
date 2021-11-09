@@ -34,6 +34,7 @@ class ClockController extends Controller
             ]);
 
             $month = $validated['month'];
+            $weeks = $validated['weeks'];
 
             $request->session()->flash('month', $validated['month']);
             $request->session()->flash('weeks', $validated['weeks']);
@@ -48,29 +49,88 @@ class ClockController extends Controller
 
         if($input_field == 'month') {
             $year_month = explode('-', $month)[0].'-'.explode('-', $month)[1].'-';
+
             $start = explode('-', $month)[0].'-'.explode('-', $month)[1].'-01';
             $last_day_of_month = Carbon::parse($start)->daysInMonth;
             $end = explode('-', $month)[0].'-'.explode('-', $month)[1].'-'.$last_day_of_month;
 
             $clocks = $clocks->where('date', '>=', $start)->where('date', '<=', $end);
 
-            for ($i=1; $i < $last_day_of_month; $i++) {
-                $clock = $clocks->where('date', Carbon::parse($year_month.$i)->format('Y-m-d'));
+            if($clocks->count() > 0) {
+                for($i=1; $i<$last_day_of_month; $i++) {
+                    $clocks_of_day = $clocks->where('date', Carbon::parse($year_month.$i)->format('Y-m-d'));
 
-                if($clock->count() != 0) {
-                    $first = $clock[0]['start_time'];
-                    $last = $clock[array_key_last($clock->toArray())]['end_time'];
+                    if($clocks_of_day->count() > 0) {
+                        $first = $clocks_of_day->first();
+                        $last = $clocks_of_day->last();
 
-                    $entries->push([
-                        'date' => Carbon::parse($year_month.$i)->format('Y-m-d'),
-                        'start' => $start,
-                        'end' => $end
-                    ]);
+                        $time = 0;
+                        foreach($clocks_of_day as $clock) {
+                            $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                        }
+
+                        $entries->push([
+                            'date' => Carbon::parse($year_month.$i)->format('Y-m-d'),
+                            'day' => Carbon::parse($year_month.$i)->dayOfWeek,
+                            'start_time' => $first['start_time'],
+                            'end_time' => $last['end_time'],
+                            'time' => $time,
+                        ]);
+                    }
                 }
             }
-        } elseif ($input_field == 'week') {
+        } elseif ($input_field == 'weeks') {
+            $week_number = str_replace('W', '',explode('-', $weeks)[1]);
+            $year = explode('-', $weeks)[0];
 
+            $start = Carbon::now()->setISODate($year, $week_number)->format('Y-m-d');
+            $end = Carbon::now()->setISODate($year, $week_number, 7)->format('Y-m-d');
+
+            $clocks = $clocks->where('date', '>=', $start)->where('date', '<=', $end);
+
+            if($clocks->count() > 0) {
+                for ($i=1; $i < 6; $i++) {
+                    $clocks_of_day = $clocks->where('date', Carbon::now()->setISODate($year, $week_number, $i)->format('Y-m-d'));
+
+                    if($clocks_of_day->count() > 0) {
+                        $first = $clocks_of_day->first();
+                        $last = $clocks_of_day->last();
+
+                        $time = 0;
+                        foreach($clocks_of_day as $clock) {
+                            $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                        }
+
+                        $entries->push([
+                            'date' => Carbon::now()->setISODate($year, $week_number, $i)->format('Y-m-d'),
+                            'day' => Carbon::now()->setISODate($year, $week_number, $i)->dayOfWeek,
+                            'start_time' => Carbon::parse($first['start_time'])->format('h:i'),
+                            'end_time' => Carbon::parse($last['end_time'])->format('h:i'),
+                            'time' => $time,
+                        ]);
+                    }
+                }
+            }
         } else {
+            $clocks = $clocks->where('date', $day);
+
+            if($clocks->count() > 0) {
+                $first = $clocks->first();
+                $last = $clocks->last();
+
+                $time = 0;
+                foreach($clocks as $clock) {
+                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                }
+
+                $entries->push([
+                    'date' => $day,
+                    'day' => Carbon::now()->parse($day)->dayOfWeek,
+                    'start_time' => $first['start_time'],
+                    'end_time' => $last['end_time'],
+                    'time' => $time,
+                ]);
+            }
 
         }
 
