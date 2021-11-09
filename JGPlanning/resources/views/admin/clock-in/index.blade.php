@@ -4,31 +4,37 @@
 
 {{--    <div class="container">--}}
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="row">
                     <div class="col-md-12">
-                        <form method="GET" action="{{ route('admin.clock.index') }}">
-                            <div class="form-group">
-                                <label for="users">Gebruikers</label>
-                                <select name="user" class="form-control" id="users">
-                                    <option value="0">Alle Gebruikers</option>
-                                    @foreach($users as $user)
-                                        <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ucfirst($user['lastname'])}}</option>
-                                    @endforeach
-                                </select>
 
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Selectie Opties</h4>
+                                <form method="GET" action="{{ route('admin.clock.index') }}">
+                                    <div class="form-group">
+                                        <label for="users">Gebruikers</label>
+                                        <select name="user" class="form-control" id="users">
+                                            <option value="0">Alle Gebruikers</option>
+                                            @foreach($users as $user)
+                                                <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ucfirst($user['lastname'])}}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="date">Datum</label>
+                                        <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now }}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Selecteer</button>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label for="date">Datum</label>
-                                <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now }}">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Selecteer</button>
-                        </form>
+                        </div>
 
                     </div>
                 </div>
             </div>
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <table id="table" class="table table-striped table-hover">
                     <thead>
                     <tr>
