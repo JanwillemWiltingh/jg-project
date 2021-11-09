@@ -53,12 +53,14 @@ The above copyright notice and this permission notice shall be included in all c
                             </a>
                         </li>
 {{--                    Users--}}
-                        <li class="nav-item active {{ (request()->is('gebruiker/clock') ?? request()->is('gebruiker/clock/*')) ? 'nav-color-active' : '' }}">
-                            <a class="nav-link nav-color" href="{{route('user.clock.index')}}" style="margin-top: 60px;">
-                                <i class="fa fa-clock"></i>
-                                <p>Klok</p>
-                            </a>
-                        </li>
+                        @can('employee-clock')
+                            <li class="nav-item active {{ (request()->is('gebruiker/clock') ?? request()->is('gebruiker/clock/*')) ? 'nav-color-active' : '' }}">
+                                <a class="nav-link nav-color" href="{{route('user.clock.index')}}" style="margin-top: 60px;">
+                                    <i class="fa fa-clock"></i>
+                                    <p>Klok</p>
+                                </a>
+                            </li>
+                        @endcan
 
                         @can('employee-rooster')
                             <li class="nav-item active hover-navbar">
