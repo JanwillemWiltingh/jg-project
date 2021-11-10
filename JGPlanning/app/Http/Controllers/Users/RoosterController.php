@@ -40,9 +40,9 @@ class RoosterController extends Controller
             ->sortBy('weekday');
         $disabled = DisabledDays::all()->where('user_id', $user);
 
-        foreach ($disabled_days as $dd)
+        foreach ($disabled_days as $dis)
         {
-            array_push($array1, $dd->weekday);
+            array_push($array1, $dis->weekday);
         }
 
         foreach ($weekDays as $index => $day)
@@ -76,6 +76,7 @@ class RoosterController extends Controller
             'user_info',
             'weekstring',
             'disabled_array',
+            'disabled_days',
             'disabled'
         ));
     }
@@ -330,6 +331,12 @@ class RoosterController extends Controller
 
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
     }
+
+    public function delete_disable($weekday, $week)
+    {
+        dd($weekday, $week, Auth::id());
+    }
+
     public function manage_disable_days(Request $request)
     {
         $validate = $request->validate([

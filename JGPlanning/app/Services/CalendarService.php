@@ -16,7 +16,6 @@ class CalendarService
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
         $lessons   = Rooster::all()->where('user_id', $userID);
-//        $lessons   = Rooster::where('user_id', $userID)->first();
         $user = User::find($userID);
 
 
@@ -27,8 +26,6 @@ class CalendarService
             ->where('start_week', '<=', $week_number)
             ->where('end_week', '>=', $week_number)
             ->sortBy('weekday');
-
-        $disabled_count = count($disabled_days);
 
         foreach ($disabled_days as $dd)
         {
@@ -77,20 +74,34 @@ class CalendarService
                     $start = substr($lesson->start_time, "0", "5");
                     $end = substr($lesson->end_time, "0", "5");
                 }
-
                 if ($disabled_array)
                 {
                     if ($disabled_array[$index])
                     {
                         if($timeText == "08:00 - 08:30")
                         {
-                            array_push($calendarData[$timeText], [
-                                'rowspan'      => 20,
-                                'from_home'    => "",
-                                'comment'      => "Disabled",
-                                'start_time'   => "",
-                                'end_time'     => "",
-                            ]);
+                            if ($disabled_days->where('weekday', $index)->first()->by_admin)
+                            {
+                                array_push($calendarData[$timeText], [
+                                    'rowspan'      => 20,
+                                    'from_home'    => "",
+                                    'comment'      => "Disabled",
+                                    'start_time'   => "",
+                                    'end_time'     => "",
+                                    'by_admin'     => $disabled_days->where('weekday', $index)->first()->by_admin,
+                                ]);
+                            }
+                            else
+                            {
+                                array_push($calendarData[$timeText], [
+                                    'rowspan'      => 20,
+                                    'from_home'    => "",
+                                    'comment'      => "Disabled",
+                                    'start_time'   => "",
+                                    'end_time'     => "",
+                                    'by_admin'     => 0,
+                                ]);
+                            }
                         }
                         else
                         {

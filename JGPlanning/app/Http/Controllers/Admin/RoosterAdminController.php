@@ -194,7 +194,8 @@ class RoosterAdminController extends Controller
 
         $checkDisabled->update([
                 'start_week' => $start_week,
-                'end_week' => $end_week
+                'end_week' => $end_week,
+                'by_admin' => true
             ]);
 
         return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
