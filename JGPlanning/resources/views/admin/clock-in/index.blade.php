@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-
-{{--    <div class="container">--}}
         <div class="row">
             <div class="col-md-3">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="margin-top: -32px !important;">
 
                         <div class="card">
                             <div class="card-body">
@@ -35,7 +33,7 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <table id="table" class="table table-striped table-hover">
+                <table id="table" class="table table-striped table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -76,5 +74,4 @@
                 </div>
             </div>
         </div>
-{{--    </div>--}}
 @endsection

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\CollectionPagination;
 
 class ClockController extends Controller
 {
@@ -22,7 +25,6 @@ class ClockController extends Controller
         $day = Carbon::now()->format('Y-m-d');
 
         $user = Auth::user();
-
         $input_field = 'month';
 
         if($request->all() != []) {
@@ -72,8 +74,8 @@ class ClockController extends Controller
                         $entries->push([
                             'date' => Carbon::parse($year_month.$i)->format('Y-m-d'),
                             'day' => Carbon::parse($year_month.$i)->dayOfWeek,
-                            'start_time' => $first['start_time'],
-                            'end_time' => $last['end_time'],
+                            'start_time' => Carbon::parse($first['start_time'])->format('H:i'),
+                            'end_time' => Carbon::parse($last['end_time'])->format('H:i'),
                             'time' => $time,
                         ]);
                     }
@@ -126,21 +128,37 @@ class ClockController extends Controller
                 $entries->push([
                     'date' => $day,
                     'day' => Carbon::now()->parse($day)->dayOfWeek,
-                    'start_time' => $first['start_time'],
-                    'end_time' => $last['end_time'],
+                    'start_time' => Carbon::parse($first['start_time'])->format('H:i'),
+                    'end_time' => Carbon::parse($last['end_time'])->format('H:i'),
                     'time' => $time,
                 ]);
             }
 
         }
-
+//        dd(request()->path());
         return view('users.clock.index')->with([
             'user' => $user,
             'month' => $month,
             'weeks' => $weeks,
             'day' => $day,
             'input' => $input_field,
-            'entries' => $entries
+            'entries' => (new CollectionPagination)->paginate($entries, 10, request('page'), ['path' => 'clock'])
         ]);
+    }
+
+    /**
+     * @param $items
+     * @param int $perPage
+     * @param null $page
+     * @param array $options
+     * @return LengthAwarePaginator
+     */
+    public function paginate($items, int $perPage = 15, $page = null, array $options = []): LengthAwarePaginator
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

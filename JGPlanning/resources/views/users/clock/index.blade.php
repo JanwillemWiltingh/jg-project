@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" style="margin-top: -32px !important;">
 
                     <div class="card">
                         <div class="card-body">
@@ -48,7 +48,7 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-hover">
+                    <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -56,8 +56,8 @@
                                 <th scope="col">Dag</th>
                                 <th scope="col">Start</th>
                                 <th scope="col">Eind</th>
-                                <th scope="col">Tijd gewerkt</th>
-                                <th scope="col">Tijd met pauze</th>
+                                <th scope="col" width="145">Tijd gewerkt</th>
+                                <th scope="col" width="145">Tijd met pauze</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,8 +69,8 @@
                                         <td>{{ App\Models\Availability::WEEK_DAYS[$entry['day']] }}</td>
                                         <td>{{ $entry['start_time'] }}</td>
                                         <td>{{ $entry['end_time'] }}</td>
-                                        <td style="width: 10%">{{ number_format($entry['time'] / 3600, 1) }}</td>
-                                        <td style="width: 10%">{{ number_format($entry['time'] / 3600, 1) - .5 }}</td>
+                                        <td>{{ number_format($entry['time'] / 3600, 1) - .5 }}</td>
+                                        <td>{{ number_format($entry['time'] / 3600, 1) }}</td>
                                     <tr>
                                 @endforeach
                             @else
@@ -90,6 +90,7 @@
                     </table>
                 </div>
             </div>
+            {{ $entries->appends(['date-format' => $input, 'month' => $month, 'weeks' => $weeks, 'day' => $day])->links() }}
         </div>
     </div>
 @endsection
