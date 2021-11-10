@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-use App\Helpers\Navbar;
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -29,11 +27,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
-
-        View::composer('*', function($view) {
-            $user = Auth::user();
-            $navbar = Navbar::getNavItems($user);
-            $view->with('nav_items', $navbar);
-        });
     }
 }
