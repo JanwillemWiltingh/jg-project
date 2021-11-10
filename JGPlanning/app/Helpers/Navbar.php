@@ -8,48 +8,53 @@ class Navbar
 {
     public const NAV_ITEMS = [
         'dashboard' => [
-            'type' => 'item',
-            'tab-item' => false,
-            'tabs' => [],
             'active_url' => ['/'],
             'href' => 'dashboard.home',
-            'icon' => ['type' => 'material', 'name' => 'dashboard'],
+            'icon' => ['type' => 'material-icons', 'name' => 'dashboard'],
             'name' => 'Dashboard',
             'can' => null,
             'users' => ['employee', 'admin', 'maintainer'],
         ],
         'employee-clock' => [
-            'type' => 'item',
-            'tab-item' => false,
-            'tabs' => [],
             'active_url' => ['gebruiker/clock', 'gebruiker/clock/*'],
             'href' => 'user.clock.index',
-            'icon' => ['type' => 'fa', 'name' => 'clock'],
+            'icon' => ['type' => 'fa', 'name' => 'fa-clock'],
             'name' => 'Klok',
             'can' => 'employee-clock',
             'users' => ['employee'],
         ],
-        'employee-rooster-tab' => [
-            'type' => 'tab',
-            'tab-item' => false,
-            'tabs' => ['employee-rooster'],
-            'active_url' => [],
-            'href' => null,
-            'icon' => ['type' => 'fa', 'name' => 'clock'],
-            'name' => 'Tijden',
+        'employee-rooster' => [
+            'active_url' => ['rooster', 'rooster/*'],
+            'href' => 'rooster.index',
+            'icon' => ['type' => 'fa', 'name' => 'fa-calendar'],
+            'name' => 'Rooster',
             'can' => 'employee-rooster',
             'users' => ['employee'],
         ],
-        'employee-rooster' => [
-            'type' => 'item',
-            'tab-item' => true,
-            'tabs' => [],
+
+        'admin-clocker' => [
+            'active_url' => ['admin/clock', 'admin/clock/*'],
+            'href' => 'admin.clock.index',
+            'icon' => ['type' => 'fa', 'name' => 'fa-clock'],
+            'name' => 'Klok',
+            'can' => 'admin-clock',
+            'users' => ['admin', 'maintainer'],
+        ],
+        'admin-beschikbaarheid-1' => [
             'active_url' => ['rooster', 'rooster/*'],
-            'href' => 'rooster.index',
-            'icon' => ['type' => 'fa', 'name' => 'calender'],
+            'href' => 'admin.rooster.index',
+            'icon' => ['type' => 'fa', 'name' => 'fa-calendar'],
             'name' => 'Rooster',
-            'can' => null,
-            'users' => ['employee'],
+            'can' => 'admin-beschikbaarheid',
+            'users' => ['admin', 'maintainer'],
+        ],
+        'admin-beschikbaarheid-2' => [
+            'active_url' => ['admin/vergelijken', 'admin/vergelijken/*'],
+            'href' => 'admin.compare.index',
+            'icon' => ['type' => 'fa', 'name' => 'fa-calendar'],
+            'name' => 'Vergelijken',
+            'can' => 'admin-beschikbaarheid',
+            'users' => ['admin', 'maintainer'],
         ],
     ];
 
@@ -65,6 +70,7 @@ class Navbar
         }
 
         return $items;
+        return collect();
     }
 }
 

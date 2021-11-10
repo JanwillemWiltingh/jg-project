@@ -104,8 +104,8 @@ class ClockController extends Controller
                         $entries->push([
                             'date' => Carbon::now()->setISODate($year, $week_number, $i)->format('Y-m-d'),
                             'day' => Carbon::now()->setISODate($year, $week_number, $i)->dayOfWeek,
-                            'start_time' => Carbon::parse($first['start_time'])->format('h:i'),
-                            'end_time' => Carbon::parse($last['end_time'])->format('h:i'),
+                            'start_time' => Carbon::parse($first['start_time'])->format('H:i'),
+                            'end_time' => Carbon::parse($last['end_time'])->format('H:i'),
                             'time' => $time,
                         ]);
                     }

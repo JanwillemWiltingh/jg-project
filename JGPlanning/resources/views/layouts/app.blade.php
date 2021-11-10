@@ -47,14 +47,21 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="sidebar-wrapper">
                     <ul class="nav">
                         @foreach($nav_items as $item)
-                            @if($item['type'] == 'item')
-                                <li class="nav-item active {{ (request()->is('/')) ? 'nav-color-active' : '' }}">
-                                    <a class="nav-link nav-color" href="{{route('dashboard.home')}}" style="margin-top: {{ $loop->index * 60 }}px;">
-                                        <i class="material-icons">dashboard</i>
-                                        <p>{{ $item['name'] }}</p>
-                                    </a>
-                                </li>
-                            @endif
+                            <li class="nav-item active
+                                @if(count($item['active_url']) == 1)
+                                    {{ (request()->is($item['active_url'][0])) ? 'nav-color-active' : '' }}
+                                @else
+                                {{ (request()->is($item['active_url'][0]) ?? request()->is($item['active_url'][1])) ? 'nav-color-active' : '' }}
+                                @endif">
+                                <a class="nav-link nav-color" href="{{route($item['href'])}}" style="margin-top: {{ $loop->index * 60 }}px;">
+                                    @if($item['icon']['type'] == 'material-icons')
+                                        <i class="material-icons">{{ $item['icon']['name'] }}</i>
+                                    @elseif($item['icon']['type'] == 'fa')
+                                        <i class="fa {{ $item['icon']['name'] }}"></i>
+                                    @endif
+                                    <p>{{ $item['name'] }}</p>
+                                </a>
+                            </li>
                         @endforeach
                     </ul>
 
@@ -87,7 +94,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 {{--                            <div class="@if(!request()->is('rooster')) hover-navbar-content @endif">--}}
 {{--                                <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px ;width: 90%">--}}
-{{--                                    <a class="nav-link nav-color" href="{{route('rooster.index', \Carbon\Carbon::now()->week)}}" style="margin-top: 180px;">--}}
+{{--                                    <a class="nav-link nav-color" href="{{route('rooster.index')}}" style="margin-top: 180px;">--}}
 {{--                                        <i class="fa fa-calendar" style="color: white"></i>--}}
 {{--                                        <p style="color: white">Rooster</p>--}}
 {{--                                    </a>--}}
