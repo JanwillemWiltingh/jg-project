@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\CollectionPagination;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Carbon\Carbon;
@@ -52,7 +53,7 @@ class CompareController extends Controller
         }
 
         return view('admin.compare.index')->with([
-            'users' => $users,
+            'users' => (new CollectionPagination)->paginate($users, 10, request('page'), ['path' => 'vergelijken']),
             'all_users' => $all_users,
             'month' => $month,
             'weeks' => $weeks,

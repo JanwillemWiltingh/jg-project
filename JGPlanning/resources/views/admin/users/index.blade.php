@@ -7,7 +7,7 @@
 {{--            <a class="btn btn-primary table-label-create" href="{{route('admin.users.create')}}">Create a new User</a>--}}
 {{--        </strong>--}}
 {{--    </h5>--}}
-    <table class="table table-hover">
+    <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
         <thead>
             <tr>
                 <th scope="col"><strong>#</strong></th>

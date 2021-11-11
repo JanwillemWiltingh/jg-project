@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" style="margin-top: -32px !important;">
 
                     <div class="card">
                         <div class="card-body">
@@ -47,7 +47,7 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table">
+                    <table class="table" style="box-shadow: 0 0 5px 0 lightgrey;">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -130,6 +130,7 @@
                     </table>
                 </div>
             </div>
+            {{$users->links()}}
         </div>
     </div>
 @endsection
