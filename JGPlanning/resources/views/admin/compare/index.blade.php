@@ -24,6 +24,15 @@
                                     @endforeach
                                 </div>
 
+                                <div style="display: inline-block">
+                                    <label for="switch" style="display: block">UwU^2</label>
+                                </div>
+
+                                <div style="display: inline-block">
+                                    <input type="checkbox" id="switch" class="toggle-box" name="from_home" />
+                                    <label for="switch" class="toggle-label" style="display: block"></label>
+                                </div>
+
                                 <div>
                                     <div class="form-group" id="month-group" @if($input_field != 'month') style="display: none;" @endif>
                                         <label for="month">Maand</label>
@@ -53,9 +62,9 @@
                             <th scope="col">#</th>
                             <th scope="col">Naam</th>
                             <th scope="col">Tijd Gewerkt</th>
-                            <th scope="col"></th>
+{{--                            <th scope="col"></th>--}}
                             <th scope="col">Tijd Ingepland</th>
-                            <th scope="col"></th>
+{{--                            <th scope="col"></th>--}}
                             <th scope="col">Verschil</th>
                             <th scope="col"></th>
                         </tr>
@@ -64,28 +73,23 @@
                         @foreach($users as $user)
                             <tr>
                                 <th scope="row">{{ $loop->index }}</th>
-                                <td class="thick-table-border">
+{{--                                <td class="thick-table-border">--}}
+                                <td>
                                     {{ $user['firstname'] }} {{ $user['middlename'] }} {{ $user['lastname'] }}
                                 </td>
+{{--                                <td>--}}
+{{--                                    @if($input_field == 'weeks')--}}
+{{--                                        {{ $user->workedInAWeekForHumans(str_replace('W', '',explode('-', $weeks)[1])) }}--}}
+{{--                                    @else--}}
+{{--                                        {{ $user->workedInAMonthForHumans(explode('-', $month)[1]) }}--}}
+{{--                                    @endif--}}
+{{--                                </td>--}}
+{{--                                <td class="thick-table-border">--}}
                                 <td>
-                                    @if($input_field == 'weeks')
-                                        {{ $user->workedInAWeekForHumans(str_replace('W', '',explode('-', $weeks)[1])) }}
-                                    @else
-                                        {{ $user->workedInAMonthForHumans(explode('-', $month)[1]) }}
-                                    @endif
-                                </td>
-                                <td class="thick-table-border">
                                     @if($input_field == 'weeks')
                                         {{ $user->workedInAWeekInHours(str_replace('W', '',explode('-', $weeks)[1])) }} uur
                                     @else
                                         {{ $user->WorkedInAMonthInHours(explode('-', $month)[1]) }} uur
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($input_field == 'weeks')
-                                        {{ $user->plannedWorkAWeekForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}
-                                    @else
-                                        {{ $user->plannedWorkAMonthForHumans(2021, explode('-', $month)[1]) }}
                                     @endif
                                 </td>
                                 <td>
@@ -95,24 +99,35 @@
                                         {{ $user->plannedWorkAMonthInHours(2021, explode('-', $month)[1]) }} uur
                                     @endif
                                 </td>
-                                @if($input_field == 'weeks')
-                                    <td @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) < 0) class="table-danger" @else class="table-success" @endif>
-                                        @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) == 0)
-                                            0 seconde
-                                        @else
-                                            {{ $user->compareWeekWorkedForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}
-                                        @endif
-                                    </td>
-                                @else
-                                    <td @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) < 0) class="table-danger" @else class="table-success" @endif>
-                                        @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) == 0)
-                                            0 seconde
-                                        @else
-                                            {{ $user->compareMonthWorkedForHumans(2021, explode('-', $month)[1]) }}
-                                        @endif
+                                <td @if($input_field == 'weeks')
+                                        @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) < 0) class="table-danger" @else class="table-success" @endif
+                                    @else
+                                        @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) < 0) class="table-danger" @else class="table-success" @endif
+                                    @endif>
+                                    @if($input_field == 'weeks')
+                                        {{ $user->plannedWorkAWeekInHours(2021, str_replace('W', '',explode('-', $weeks)[1])) }} uur
+                                    @else
+                                        {{ $user->plannedWorkAMonthInHours(2021, explode('-', $month)[1]) }} uur
+                                    @endif
+                                </td>
+{{--                                @if($input_field == 'weeks')--}}
+{{--                                    <td @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) < 0) class="table-danger" @else class="table-success" @endif>--}}
+{{--                                        @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) == 0)--}}
+{{--                                            0 seconde--}}
+{{--                                        @else--}}
+{{--                                            {{ $user->compareWeekWorkedForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
+{{--                                @else--}}
+{{--                                    <td @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) < 0) class="table-danger" @else class="table-success" @endif>--}}
+{{--                                        @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) == 0)--}}
+{{--                                            0 seconde--}}
+{{--                                        @else--}}
+{{--                                            {{ $user->compareMonthWorkedForHumans(2021, explode('-', $month)[1]) }}--}}
+{{--                                        @endif--}}
 
-                                    </td>
-                                @endif
+{{--                                    </td>--}}
+{{--                                @endif--}}
                                 <td>
                                     @if($input_field == 'weeks')
                                         <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $weeks]) }}">

@@ -55,12 +55,28 @@ class DashboardController extends Controller
                 }
             }
 
+            $now = Carbon::now()->addHours(1);
+            $hours = $now->format('H');
+            $minutes = $now->format('i');
+            $rounded_minutes = round($minutes / 15) * 15;
+
+            if(true) {
+                if($rounded_minutes == 60) {
+                    $time = (intval($hours) + 1).':00';
+                } else {
+                    $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
+                }
+
+            } else {
+                $time = $now->format('H:i');
+            }
+
 
             if($clocks->count() == 0) {
                 Clock::create([
                     'comment' => $validated['comment'],
                     'user_id' => $user['id'],
-                    'start_time' => Carbon::now()->addHours(2)->toTimeString(),
+                    'start_time' => $time,
                     'end_time' => null,
                     'date' => Carbon::now()->toDateString()
                 ]);
@@ -69,12 +85,12 @@ class DashboardController extends Controller
                     Clock::create([
                         'comment' => $validated['comment'],
                         'user_id' => $user['id'],
-                        'start_time' => Carbon::now()->addHours(2)->toTimeString(),
+                        'start_time' => $time,
                         'end_time' => null,
                         'date' => Carbon::now()->toDateString()
                     ]);
                 } else {
-                    $clocks->last()->update(['end_time' => Carbon::now()->addHours(2)->toTimeString()]);
+                    $clocks->last()->update(['end_time' => $time]);
                 }
             }
         }
