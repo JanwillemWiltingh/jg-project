@@ -134,7 +134,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="a">Add Availability</h5>
                 </div>
-                <form method="post" action="{{route('availability', request('week'))}}">
+                <form method="post" action="{{route('rooster.availability', request('week'))}}">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="weekday" id="weekday">
@@ -190,7 +190,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="{{route('edit_availability', request('week'))}}">
+                <form method="post" action="{{route('rooster.edit_availability', request('week'))}}">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="weekday" id="weekday_edit">
