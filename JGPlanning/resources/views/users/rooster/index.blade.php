@@ -93,7 +93,7 @@
                                                     @if(!$days[$i]['comment'] == "")
                                                         @if($days[$i]['comment'] == "Disabled")
                                                             @if($days[$i]['by_admin'] == 0)
-                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none;" onclick="modalData({{$i}})"><i class="fa fa-pencil-alt"></i></a>
+                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none;" onclick="modalData({{$days[$i]['disabled_id']}})"><i class="fa fa-pencil-alt"></i></a>
                                                                 <a href="{{route('rooster.delete_disable', ['week' => request('week'), 'weekday' => $i + 1])}}" style="font-weight: lighter; text-decoration: none;"><i class="fa fa-trash"></i></a>
                                                                 <p style="color: black">{{$days[$i]['comment']}}</p>
                                                             @else

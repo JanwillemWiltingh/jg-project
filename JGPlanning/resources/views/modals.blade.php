@@ -346,6 +346,33 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editDisableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Weken bewerken</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{route('rooster.edit_disable_days', request('week'))}}">
+                        @csrf
+                        <input type="hidden" id="weekday_edit" name="id">
+
+                        <label style="width: 49%">
+                            <p>Kies een begin week:</p>
+                            <input class="form-control" type="week" name="start_week" id="start_week">
+                        </label>
+
+                        <label style="width: 49%">
+                            <p>Kies een eind week:</p>
+                            <input class="form-control" type="week" name="end_week" id="end_week">
+                        </label>
+                        <input type="submit" class="btn btn-success float-right">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="availabilityModalAdd" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

@@ -334,7 +334,15 @@ class RoosterController extends Controller
 
     public function delete_disable($weekday, $week)
     {
-        dd($weekday, $week, Auth::id());
+        DisabledDays::all()
+            ->where('id', Auth::id())
+            ->where('weekday', $weekday)
+            ->where('start_week', '<=', $week)
+            ->where('end_week', '>=', $week)
+            ->first()
+            ->delete();
+
+        return back();
     }
 
     public function manage_disable_days(Request $request)
@@ -358,5 +366,34 @@ class RoosterController extends Controller
             ->where('id', $validate['id'])
             ->first()
             ->delete();
+    }
+
+    public function edit_disable_days(Request $request, $week)
+    {
+        $validated = $request->validate([
+            'id' => ['required'],
+            'start_week' => ['required'],
+            'end_week' => ['required']
+        ]);
+
+        $start_week = substr($validated['start_week'], '6');
+        $end_week = substr($validated['end_week'], '6');
+
+        $checkDisabled = DisabledDays::all()
+            ->where('id', $validated['id'])
+            ->first();
+
+        if ($start_week > $end_week)
+        {
+            return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
+        }
+
+        $checkDisabled->update([
+            'start_week' => $start_week,
+            'end_week' => $end_week,
+            'by_admin' => false
+        ]);
+
+        return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
     }
 }

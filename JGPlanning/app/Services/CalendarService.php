@@ -26,6 +26,7 @@ class CalendarService
             ->where('start_week', '<=', $week_number)
             ->where('end_week', '>=', $week_number)
             ->sortBy('weekday');
+//        dd($disabled_days->where('weekday', 2)->first()->id);
 
         foreach ($disabled_days as $dd)
         {
@@ -80,7 +81,7 @@ class CalendarService
                     {
                         if($timeText == "08:00 - 08:30")
                         {
-                            if ($disabled_days->where('weekday', $index)->first()->by_admin)
+                            if ($disabled_days->where('weekday', $index)->first())
                             {
                                 array_push($calendarData[$timeText], [
                                     'rowspan'      => 20,
@@ -89,6 +90,7 @@ class CalendarService
                                     'start_time'   => "",
                                     'end_time'     => "",
                                     'by_admin'     => $disabled_days->where('weekday', $index)->first()->by_admin,
+                                    'disabled_id'  => $disabled_days->where('weekday', $index)->first()->id,
                                 ]);
                             }
                             else
@@ -100,6 +102,7 @@ class CalendarService
                                     'start_time'   => "",
                                     'end_time'     => "",
                                     'by_admin'     => 0,
+                                    'disabled_id'  => ""
                                 ]);
                             }
                         }
@@ -131,7 +134,7 @@ class CalendarService
                 }
             }
         }
-//        dd($calendarData);
+//        dd($calendarData['08:00 - 08:30']);
         return $calendarData;
     }
 }
