@@ -54,7 +54,7 @@
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
                                 <td>{{ $clock->timeWorkedToday(false)}}</td>
-                                <td>{{ $clock['comment'] }}</td>
+                                <td>{!! $clock['comment'] !!}</td>
                                 @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && !empty($clock['end_time']))
                                     <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen"></i></a></td>
                                 @else
