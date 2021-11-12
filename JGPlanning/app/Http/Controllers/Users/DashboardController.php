@@ -60,7 +60,7 @@ class DashboardController extends Controller
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;
 
-            if(true) {
+            if(Carbon::parse('09:00')->isFuture() or Carbon::parse('17:00')->isPast()) {
                 if($rounded_minutes == 60) {
                     $time = (intval($hours) + 1).':00';
                 } else {
