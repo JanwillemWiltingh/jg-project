@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Mockery\Exception\InvalidOrderException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -36,6 +39,13 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (Throwable $e) {
+            if($e instanceof MethodNotAllowedHttpException) {
+//                error_log('Error: '.$e->getMessage());
+                return redirect()->back()->with(['message' => ['message' => 'Er is iets verkeerd gegaan', 'type' => 'danger']]);
+            }
         });
     }
 }

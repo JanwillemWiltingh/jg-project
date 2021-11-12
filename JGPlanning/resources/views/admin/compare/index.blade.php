@@ -56,7 +56,7 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table" style="box-shadow: 0 0 5px 0 lightgrey;">
+                    <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -71,7 +71,7 @@
                         </thead>
                         <tbody>
                         @foreach($users as $user)
-                            <tr>
+                            <tr @if($loop->index % 2 == 0) class="table-light" @endif>
                                 <th scope="row">{{ $loop->index }}</th>
 {{--                                <td class="thick-table-border">--}}
                                 <td>
