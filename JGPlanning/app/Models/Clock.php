@@ -72,4 +72,8 @@ class Clock extends Model
         }
         return '-';
     }
+
+    public function timeWorkedInHours(int $year, int $month, int $day, int $decimal_number=0) {
+        return $this->user()->first()->workedInADayInHours($year, $month, $day, $decimal_number);
+    }
 }
