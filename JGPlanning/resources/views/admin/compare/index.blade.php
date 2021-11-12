@@ -24,17 +24,26 @@
                                     @endforeach
                                 </div>
 
-                                <div>
-                                    <div class="form-group" id="month-group" @if($input_field != 'month') style="display: none;" @endif>
-                                        <label for="month">Maand</label>
-                                        <input name="month" id="month" type="month" class="form-control" value="{{ old('month') ?? session('month') ?? $month }}">
-                                    </div>
 
-                                    <div class="form-group" id="week-group" @if($input_field != 'weeks') style="display: none;" @endif>
-                                        <label for="weeks">Week</label>
-                                        <input name="weeks" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
-                                    </div>
-                                </div>
+
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                        <div style="display: inline-block">
+                            <label for="switch">Week</label>
+                        </div>
+
+                        <div class="form-group" id="month-group" @if($input_field != 'month') style="display: none;" @endif>
+                            <label for="month">Maand</label>
+                            <input name="month" id="month" type="month" class="form-control" value="{{ old('month') ?? session('month') ?? $month }}">
+                        </div>
+
+
+                        <div class="form-group" id="week-group" @if($input_field != 'weeks') style="display: none;" @endif>
+                            <label for="weeks">Week</label>
+                            <input name="weeks" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
+                        </div>
 
                                 <button type="submit" class="btn btn-primary">Selecteer</button>
                             </form>

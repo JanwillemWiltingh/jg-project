@@ -11,13 +11,12 @@
         <thead>
             <tr>
                 <th scope="col"><strong>#</strong></th>
-                <th scope="col"><strong>Voornaam</strong></th>
+                <th scope="col"><strong>@sortablelink('firstname', 'Voornaam')</strong></th>
                 <th scope="col"><strong>Tussenvoegsel</strong></th>
-                <th scope="col"><strong>Achternaam</strong></th>
-                <th scope="col"><strong>E-mail</strong></th>
-                <th scope="col"><strong>Rol ID</strong></th>
-                <th scope="col"><strong>Rol</strong></th>
-                <th scope="col"><strong>Actief?</strong></th>
+                <th scope="col"><strong>@sortablelink('lastname', 'Achternaam')</strong></th>
+                <th scope="col"><strong>@sortablelink('email', 'E-mail')</strong></th>
+                <th scope="col"><strong>@sortablelink('role_id', 'Rol')</strong></th>
+                <th scope="col"><strong>@sortablelink('deleted_at', 'Actief?')</strong></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -46,7 +45,6 @@
                 </td>
 
                 <td>{{$user['email']}}</td>
-                <td>{{$user['role_id']}}</td>
 
                 {{--Big letter maintainer--}}
                 <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{ucfirst($user->role()->get()->first()->name)}}</strong> @else {{ucfirst($user->role()->get()->first()->name)}} @endif</td>
@@ -120,5 +118,9 @@
         @endforeach
         </tbody>
     </table>
-    {{ $users->links() }}
+    {!! $users->appends(Request::except('page'))->render() !!}
+
+    <p>
+        Laat {{$users->count()}} van de {{ $users->total() }} gebruiker(s) zien.
+    </p>
 @endsection

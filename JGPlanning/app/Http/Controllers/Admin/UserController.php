@@ -23,7 +23,6 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(15);
+        $users = User::sortable()->paginate(5);
         $user_session = Auth::user();
 
         return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);
