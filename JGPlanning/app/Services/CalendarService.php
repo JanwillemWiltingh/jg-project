@@ -10,14 +10,16 @@ use function PHPUnit\Framework\isNull;
 
 class CalendarService
 {
-    public function generateCalendarData($weekDays, $userID, $week_number)
+    public function generateCalendarData($weekDays, $userID, $week_number, $year)
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
-        $lessons   = Rooster::all()->where('user_id', $userID);
+        $lessons   = Rooster::all()
+            ->where('user_id', $userID)
+            ->where('start_year', '<=', $year)
+            ->where('end_year', '>=', $year);
         $user = User::find($userID);
-
 
         $array1 = [];
         $disabled_array = [];
@@ -26,7 +28,6 @@ class CalendarService
             ->where('start_week', '<=', $week_number)
             ->where('end_week', '>=', $week_number)
             ->sortBy('weekday');
-//        dd($disabled_days->where('weekday', 2)->first()->id);
 
         foreach ($disabled_days as $dd)
         {
@@ -134,7 +135,7 @@ class CalendarService
                 }
             }
         }
-//        dd($calendarData['08:00 - 08:30']);
+//        dd($calendarData);
         return $calendarData;
     }
 }

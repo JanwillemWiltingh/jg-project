@@ -61,7 +61,7 @@ $(document).ready(function () {
     });
 
     $('#week').on('change', function () {
-        window.location.href = this.value.substring(6);
+        window.location.href = "/rooster/" + this.value.substring(6) + '/' + this.value.slice(0, -4);
     });
 
     $('#manageDropdown').on('change', function () {

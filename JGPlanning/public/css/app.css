@@ -19384,6 +19384,44 @@ Copyright (c) 2015 Daniel Eden
     margin-right: 2px;
 }
 
+/*Rooster*/
+.dashboard-welkom-rooster a
+{
+    display: inline;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 45px;
+    font-weight: bolder;
+    font-style: italic;
+}
+
+.dashboard-welkom-rooster a::after {
+    content: "";
+    position: absolute;
+    width: 10%;
+    border-bottom: 3px solid #CB6827 !important;
+    height: 1px;
+    left: 45%;
+}
+.dashboard-welkom-rooster p
+{
+    display: inline;
+    color: white;
+    margin-right: -15px;
+}
+
+.dashboard-welkom-rooster h1
+{
+    display: inline;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: lighter;
+    font-size: 70px;
+    margin-right: 2px;
+}
+
 /* width */
 .scrollbar-manage::-webkit-scrollbar {
     width: 5px;

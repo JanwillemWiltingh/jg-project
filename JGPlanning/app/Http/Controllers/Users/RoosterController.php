@@ -23,13 +23,25 @@ class RoosterController extends Controller
     }
 
 //  Functie om het rooster te laten zien
-    public function index(CalendarService $calendarService, $week)
+    public function index(CalendarService $calendarService, $week, $year)
     {
+        if ($week > 52)
+        {
+            $targetYear = $year + 1;
+            return redirect('/rooster/1/' . $targetYear);
+        }
+        else if($week < 1)
+        {
+            $targetYear = $year - 1;
+            return redirect('/rooster/52/' . $targetYear);
+        }
+
         $user = Auth::id();
 
         $weekDays     = Availability::WEEK_DAYS;
 
         $availability = Rooster::where('user_id', $user)->get();
+
 
         $array1 = [];
         $disabled_array = [];
@@ -58,14 +70,15 @@ class RoosterController extends Controller
         }
 
         $current_week = Carbon::now()
-            ->setISODate(date('Y'), $week);
+            ->setISODate($year, $week);
 
         $start_of_week = $current_week->startOfWeek()->format('d-M');
         $end_of_week = $current_week->endOfWeek()->format('d-M');
 
         $weekstring = $start_of_week . " - ". $end_of_week;
 
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week, $year);
+        dd($calendarData);
         $user_info = User::find($user);
 
         return view('users.rooster.index', compact(

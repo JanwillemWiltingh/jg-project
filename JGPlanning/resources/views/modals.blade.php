@@ -295,7 +295,7 @@
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
                                         @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
-                                                Week <a href="{{route('rooster.index', $av->start_week)}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', $av->end_week)}}">{{$av->end_week}}</a>
+                                                Week <a href="{{route('rooster.index',  ['week' => $av->start_week, 'year' => $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index',  ['week' => $av->start_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a>
                                                 <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
@@ -326,7 +326,7 @@
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
                                         @foreach($disabled->where('weekday', $i)->sortBy('start_week') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">
-                                                Week <a href="{{route('rooster.index', $av->start_week)}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', $av->end_week)}}">{{$av->end_week}}</a>
+                                                Week <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' => request('year')])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => request('year')])}}">{{$av->end_week}}</a>
                                                 <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
@@ -353,7 +353,7 @@
                     <h5 class="modal-title">Weken bewerken</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{route('rooster.edit_disable_days', request('week'))}}">
+                    <form method="post" action="{{route('rooster.edit_disable_days', request('week') )}}">
                         @csrf
                         <input type="hidden" id="weekday_edit" name="id">
 
