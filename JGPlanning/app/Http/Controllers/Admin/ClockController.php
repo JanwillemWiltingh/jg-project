@@ -75,7 +75,7 @@ class ClockController extends Controller
         $end_time = $clock['end_time'];
         $start_time = Carbon::parse($start_time);
         if(empty($end_time)){
-            $end_time = Carbon::now()->addHours(2);
+            $end_time = Carbon::now()->addHours(Clock::ADD_HOURS);
         }else{
             $end_time = Carbon::parse($end_time);
         }

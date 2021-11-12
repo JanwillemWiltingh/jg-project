@@ -55,7 +55,7 @@ class DashboardController extends Controller
                 }
             }
 
-            $now = Carbon::now()->addHours(1);
+            $now = Carbon::now()->addHours(Clock::ADD_HOURS);
             $hours = $now->format('H');
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;

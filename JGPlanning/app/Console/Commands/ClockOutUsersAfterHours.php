@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Clock;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -46,7 +47,7 @@ class ClockOutUsersAfterHours extends Command
 
             if($last_clock != null) {
                 if($last_clock['end_time'] == null) {
-                    $time = Carbon::now()->addHours(1)->format('H:i');
+                    $time = Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i');
 
                     if($last_clock['comment'] != null) {
                         $last_clock->update([

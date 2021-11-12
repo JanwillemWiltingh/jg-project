@@ -27,6 +27,8 @@ class Clock extends Model
 
     public $timestamps = false;
 
+    public const ADD_HOURS = 1;
+
     /**
      * Function for checking if the ip the user is on is correct
      *
