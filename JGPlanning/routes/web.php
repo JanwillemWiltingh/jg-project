@@ -1,8 +1,14 @@
 <?php
 
-use App\Http\Controllers\{LoginController};
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use App\Http\Controllers\{Auth\ForgotPasswordController, Auth\ResetPasswordController, LoginController};
 use App\Http\Controllers\Users\{DashboardController, HelpController, RoosterController, ProfileController};
 use App\Http\Controllers\Admin\{UserController,ClockController, RoosterAdminController, CompareController};
+use App\Http\Controllers\Users;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,23 +21,27 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 
+//auth login
 Route::name('auth.')->prefix('auth/')->group(function (){
     Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // TODO: When not logged in this throws an exception instead of a redirect
 });
 
+//dashboard
 Route::name('dashboard.')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('home');
-    Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
+    Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock'); // TODO: When not logged in this throws an exception instead of a redirect
 });
 
+//help
 Route::name('help.')->prefix('help/')->group(function (){
     Route::get('/', [HelpController::class, 'help'])->name('index');
 });
 
+//profiel
 Route::name('profile.')->prefix('profiel/')->group(function (){
     Route::get('/', [ProfileController::class, 'profile'])->name('index');
     Route::get('/edit/{user}', [ProfileController::class, 'edit'])->name('edit');
@@ -50,6 +60,13 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::post('/{week}/edit_disable_days', [RoosterController::class, 'edit_disable_days'])->name('edit_disable_days');
 });
 
+Route::name('user.')->prefix('gebruiker/')->group(function (){
+    Route::name('clock.')->prefix('clock/')->group(function (){
+        Route::get('/', [Users\ClockController::class, 'index'])->name('index');
+    });
+});
+
+//admin
 Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
         Route::get('/', [ClockController::class, 'index'])->name('index');
@@ -58,6 +75,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/update/{clock}', [ClockController::class, 'update'])->name('update');
     });
 
+//admin users table
     Route::name('users.')->prefix('users/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [UserController::class,'index'])->name('index');
         Route::get('/show/{user}', [UserController::class,'show'])->name('show');
@@ -68,6 +86,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
+//admin rooster table
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [RoosterAdminController::class, 'index_rooster'])->name('index');
         Route::get('/{user}/{week}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
@@ -75,12 +94,32 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::post('/{user}/disable_days', [RoosterAdminController::class, 'disable_days'])->name('disable_days');
         Route::post('/{user}/{week}/edit_disable_days', [RoosterAdminController::class, 'edit_disable_days'])->name('edit_disable_days');
         Route::get('/{user}/{week}/{weekday}', [RoosterAdminController::class, 'delete_disable_days'])->name('delete_disable_days');
-        Route::post('/manage_disable', [RoosterAdminController::class, 'manage_disable_days'])->name('manage_disable_days');
-        Route::post('/manage_day_disable', [RoosterAdminController::class, 'manage_delete_days'])->name('manage_delete_days');
+        Route::post('/manage_disable', [RoosterAdminController::class, 'manage_disable_days'])->name('manage_disable_days');// TODO: When not logged in this throws an exception instead of a redirect
+        Route::post('/manage_day_disable', [RoosterAdminController::class, 'manage_delete_days'])->name('manage_delete_days');// TODO: When not logged in this throws an exception instead of a redirect
     });
 
+//admin compare table
     Route::name('compare.')->prefix('vergelijken/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [CompareController::class, 'index'])->name('index');
+        Route::get('/show/{user}/{type}/{time}', [CompareController::class, 'show'])->name('show');
     });
 });
+Route::name('help.')->prefix('help/')->group(function (){
+    Route::get('/', [HelpController::class, 'help'])->name('index');
+});
 
+//Route::name('forgot.')->prefix('forgot-password/')->middleware('guest')->group(function () {
+//    Route::get('/', [ForgotPasswordController::class, 'index'])->name('index');
+//});
+
+//Route::get('forget-password', 'ForgotPasswordController@getEmail');
+//Route::post('forget-password', 'ForgotPasswordController@postEmail');
+//
+//
+//Route::get('reset-password/{token}', 'ResetPasswordController@getPassword');
+//Route::post('reset-password', 'ResetPasswordController@updatePassword');
+
+Route::get('forget-password', [ForgotPasswordController::class, 'getEmail'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'postEmail'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'getPassword'])->name('reset.password.get');
+Route::post('reset-password', [ResetPasswordController::class, 'updatePassword'])->name('reset.password.post');

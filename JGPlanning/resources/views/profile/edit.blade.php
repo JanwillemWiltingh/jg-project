@@ -37,8 +37,8 @@
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
-                    <label class="black-label-text" for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') ?? $user['email'] }}" aria-describedby="email" placeholder="Email">
+                    <label class="black-label-text" for="email">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') ?? $user['email'] }}" aria-describedby="email" placeholder="E-mail">
 
                     @if($errors->has('email'))
                         <div class="error">{{ $errors->first('email') }}</div>
@@ -49,8 +49,8 @@
         <div class="row">
             <div class="col-3">
                 <div class="form-group">
-                    <label class="black-label-text" for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" aria-describedby="password" placeholder="Password">
+                    <label class="black-label-text" for="password">Nieuw Wachtwoord</label>
+                    <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" aria-describedby="password" placeholder="Nieuw Wachtwoord">
 
                     @if($errors->has('password'))
                         <div class="error">{{ $errors->first('password') }}</div>
@@ -60,16 +60,27 @@
 
             <div class="col-3">
                 <div class="form-group">
-                    <label class="black-label-text" for="password_confirmation">Confirm Password</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" value="{{ old('password_confirmation') }}" aria-describedby="password_confirmation" placeholder="Confirm Password">
+                    <label class="black-label-text" for="password_confirmation">Bevestig Nieuw Wachtwoord</label>
+                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" value="{{ old('password_confirmation') }}" aria-describedby="password_confirmation" placeholder="Voer wachtwoord opnieuw in">
 
                     @if($errors->has('password_confirmation'))
                         <div class="error">{{ $errors->first('password_confirmation') }}</div>
                     @endif
                 </div>
             </div>
+
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="black-label-text" for="current_password">Huidig Wachtwoord</label>
+                    <input type="password" class="form-control" id="current_password" name="current_password" value="{{ old('current_password') }}" aria-describedby="current_password" placeholder="Voer je huidige wachtwoord in">
+
+                    @if($errors->has('current_password'))
+                        <div class="error">{{ $errors->first('current_password') }}</div>
+                    @endif
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary" value="Save">Save</button>
+        <button type="submit" class="btn btn-primary" value="Save">Opslaan</button>
     </form>
 @endsection
 

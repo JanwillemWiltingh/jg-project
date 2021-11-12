@@ -239,6 +239,9 @@
     text-decoration: none;
     color: #ff0000;
 }
+.form-gap {
+    padding-top: 70px;
+}
 .table-label-red:hover{
     text-decoration: none;
     transition: 0.2s;

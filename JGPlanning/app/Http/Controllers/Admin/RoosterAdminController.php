@@ -13,17 +13,21 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RoosterAdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
-     * Display a listing of the resource.
+     * Functie om gebruikers hun roosters te zien.
      *
      * @return Application|Factory|View
      */
-
-//  Functie om gebruikers hun roosters te zien.
     public function index_rooster()
     {
         $users = User::all();
@@ -33,7 +37,14 @@ class RoosterAdminController extends Controller
         ));
     }
 
-//  Functie voor admins om naar gebruikers hun rooster te kijken.
+    /**
+     * Functie voor admins om naar gebruikers hun rooster te kijken.
+     *
+     * @param CalendarService $calendarService
+     * @param $user
+     * @param $week
+     * @return Application|Factory|View
+     */
     public function user_rooster(CalendarService $calendarService, $user, $week)
     {
         $disabled = DisabledDays::all()->where('user_id', $user);
@@ -93,8 +104,14 @@ class RoosterAdminController extends Controller
         ));
     }
 
-//  Functie om de array met de disabled dagen te sturen naar de database.
-    public function push_days($user, Request $request)
+    /**
+     * Functie om de array met de disabled dagen te sturen naar de database.
+     *
+     * @param $user
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function push_days($user, Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'data' => ['required', 'array']
@@ -127,8 +144,14 @@ class RoosterAdminController extends Controller
         return redirect()->back();
     }
 
-//  functie om uitgezette datums aan te makken.
-    public function disable_days(Request $request, $user)
+    /**
+     * functie om uitgezette datums aan te makken.
+     *
+     * @param Request $request
+     * @param $user
+     * @return RedirectResponse
+     */
+    public function disable_days(Request $request, $user): RedirectResponse
     {
         $validated = $request->validate([
             'weekday' => ['required'],
@@ -167,8 +190,15 @@ class RoosterAdminController extends Controller
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
     }
 
-//  functie om uitgezette datums te bewerken
-    public function edit_disable_days (Request $request, $user, $week)
+    /**
+     * functie om uitgezette datums te bewerken
+     *
+     * @param Request $request
+     * @param $user
+     * @param $week
+     * @return RedirectResponse
+     */
+    public function edit_disable_days (Request $request, $user, $week): RedirectResponse
     {
         $validated = $request->validate([
             'weekday' => ['required'],
@@ -200,7 +230,14 @@ class RoosterAdminController extends Controller
 
         return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
     }
-    public function delete_disable_days($user, $week, $weekday)
+
+    /**
+     * @param $user
+     * @param $week
+     * @param $weekday
+     * @return RedirectResponse
+     */
+    public function delete_disable_days($user, $week, $weekday): RedirectResponse
     {
         DisabledDays::all()
             ->where('user_id', $user)
@@ -213,6 +250,9 @@ class RoosterAdminController extends Controller
         return back()->with(['message' => ['message' => 'De aangegeven weken zijn verwijderd', 'type' => 'success']]);
     }
 
+    /**
+     * @param Request $request
+     */
     public function manage_disable_days(Request $request)
     {
         $validate = $request->validate([
@@ -224,6 +264,10 @@ class RoosterAdminController extends Controller
             ->first()
             ->delete();
     }
+
+    /**
+     * @param Request $request
+     */
     public function manage_delete_days(Request $request)
     {
         $validate = $request->validate([

@@ -60,9 +60,18 @@ The above copyright notice and this permission notice shall be included in all c
                             </a>
                         </li>
 {{--                    Users--}}
+                        @can('employee-clock')
+                            <li class="nav-item active {{ (request()->is('gebruiker/clock') ?? request()->is('gebruiker/clock/*')) ? 'nav-color-active' : '' }}">
+                                <a class="nav-link nav-color" href="{{route('user.clock.index')}}" style="margin-top: 60px;">
+                                    <i class="fa fa-clock"></i>
+                                    <p>Klok</p>
+                                </a>
+                            </li>
+                        @endcan
+
                         @can('employee-rooster')
                             <li class="nav-item active hover-navbar">
-                                <a class="nav-link nav-color " style="margin-top: 60px;">
+                                <a class="nav-link nav-color" style="margin-top: 120px;">
                                     <i class="fa fa-calendar" style="color: white"></i>
                                     <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -15px; margin-right: 6px"></i>
                                     <p style="color: white">Tijden</p>

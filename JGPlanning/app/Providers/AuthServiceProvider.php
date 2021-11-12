@@ -28,33 +28,24 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate:: define('admin-clocker', function (User $user){
-            if($user['role_id'] == Role::getRoleID('admin') || $user['role_id'] == Role::getRoleID('maintainer')) {
-                return True;
-            }
-            return False;
-        });
-        Gate:: define('admin-users', function (User $user){
-            if($user['role_id'] == Role::getRoleID('admin') || $user['role_id'] == Role::getRoleID('maintainer')) {
-                return True;
-            }
-            return False;
+        Gate::define('admin-clocker', function (User $user){
+            return !($user['role_id'] == Role::getRoleID('employee'));
         });
 
-        Gate:: define('admin-users', function (User $user){
-            if($user['role_id'] == Role::getRoleID('admin') || $user['role_id'] == Role::getRoleID('maintainer')) {
-                return True;
-            }
-            return False;
+        Gate::define('admin-users', function (User $user){
+            return !($user['role_id'] == Role::getRoleID('employee'));
         });
 
-        Gate:: define('admin-beschikbaarheid', function (User $user){
-            if($user['role_id'] == Role::getRoleID('admin') || $user['role_id'] == Role::getRoleID('maintainer')) {
-                return True;
-            }
-            return False;
+        Gate::define('admin-users', function (User $user){
+            return !($user['role_id'] == Role::getRoleID('employee'));
         });
 
+        Gate::define('admin-beschikbaarheid', function (User $user){
+            return !($user['role_id'] == Role::getRoleID('employee'));
+        });
+
+        Gate::define('employee-clocker', function (User $user){
+            return $user['role_id'] == Role::getRoleID('employee');
         Gate:: define('admin-logout', function (User $user){
             if($user['role_id'] == Role::getRoleID('admin') || $user['role_id'] == Role::getRoleID('maintainer')) {
                 return True;
@@ -69,11 +60,12 @@ class AuthServiceProvider extends ServiceProvider
             return False;
         });
 
-        Gate:: define('employee-rooster', function (User $user){
-            if($user['role_id'] == Role::getRoleID('employee')) {
-                return True;
-            }
-            return False;
+        Gate::define('employee-rooster', function (User $user){
+            return $user['role_id'] == Role::getRoleID('employee');
+        });
+
+        Gate::define('employee-clock', function (User $user){
+            return $user['role_id'] == Role::getRoleID('employee');
         });
     }
 }
