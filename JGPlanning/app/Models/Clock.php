@@ -27,6 +27,9 @@ class Clock extends Model
 
     public $timestamps = false;
 
+//    Een constant zodat overal dezelfde tijd wordt toegevoegt
+    public const ADD_HOURS = 1;
+
     /**
      * Function for checking if the ip the user is on is correct
      *
@@ -68,5 +71,9 @@ class Clock extends Model
             return CarbonInterval::seconds($time)->cascade()->forHumans();
         }
         return '-';
+    }
+
+    public function timeWorkedInHours(int $year, int $month, int $day, int $decimal_number=0) {
+        return $this->user()->first()->workedInADayInHours($year, $month, $day, $decimal_number);
     }
 }

@@ -165,7 +165,7 @@ class User extends Authenticatable
         if($clocks->count() > 0) {
             foreach($clocks as $clock) {
                 if($clock['end_time'] == null){
-                    $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                    $time = $time + Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
                 } else {
                     $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
                 }
@@ -214,7 +214,7 @@ class User extends Authenticatable
             foreach($clocks as $clock) {
                 if(Carbon::parse($clock['date'])->weekOfYear == $week) {
                     if($clock['end_time'] == null){
-                        $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                        $time = $time + Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
                     } else {
                         $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
                     }
@@ -265,7 +265,7 @@ class User extends Authenticatable
         if ($clocks->count() > 0) {
             foreach ($clocks as $clock) {
                 if ($clock['end_time'] == null) {
-                    $time = $time + Carbon::parse(Carbon::now()->addHours(2)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                    $time = $time + Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
                 } else {
                     $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
                 }

@@ -5,9 +5,15 @@ $(document).ready(function () {
     if(a === 'month') {
         $('#month-group').show();
         $('#week-group').hide();
-    } else {
+        $('#day-group').hide();
+    } else if(a === 'weeks') {
         $('#month-group').hide();
         $('#week-group').show();
+        $('#day-group').hide();
+    } else {
+        $('#month-group').hide();
+        $('#week-group').hide();
+        $('#day-group').show();
     }
 
 
@@ -18,9 +24,15 @@ $(document).ready(function () {
         if(a === 'month') {
             $('#month-group').show();
             $('#week-group').hide();
-        } else {
+            $('#day-group').hide();
+        } else if(a === 'weeks') {
             $('#month-group').hide();
             $('#week-group').show();
+            $('#day-group').hide();
+        } else {
+            $('#month-group').hide();
+            $('#week-group').hide();
+            $('#day-group').show();
         }
     })
 });
