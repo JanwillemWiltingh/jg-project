@@ -17,8 +17,11 @@ class CalendarService
 
         $lessons   = Rooster::all()
             ->where('user_id', $userID)
-            ->where('start_year', '<=', $year)
-            ->where('end_year', '>=', $year);
+//            ->where('start_week', '<=', $week_number)
+//            ->where('end_week', '>=', $week_number)
+//            ->where('start_year', '<=', $year)
+//            ->where('end_year', '>=', $year)
+        ;
         $user = User::find($userID);
 
         $array1 = [];
@@ -29,9 +32,9 @@ class CalendarService
             ->where('end_week', '>=', $week_number)
             ->sortBy('weekday');
 
-        foreach ($disabled_days as $dd)
+        foreach ($disabled_days as $did)
         {
-            array_push($array1, $dd->weekday);
+            array_push($array1, $did->weekday);
         }
 
         for ($i = 0; $i < 7; $i++)
@@ -59,12 +62,20 @@ class CalendarService
 
                 if (isEmpty($lessons))
                 {
-                    $lesson = $lessons
+                    $lesson_check = $lessons
                         ->where('weekdays', $index)
                         ->where('start_time', $time_start)
                         ->where('start_week', '<=', $week_number)
                         ->where('end_week', '>=', $week_number)
                         ->first();
+                    if ($lesson_check)
+                    {
+                        $lesson = null;
+                    }
+                    else
+                    {
+                        $lesson = null;
+                    }
                 }
                 else
                 {
