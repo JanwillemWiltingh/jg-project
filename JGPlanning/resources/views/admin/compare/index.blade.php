@@ -24,15 +24,6 @@
                                     @endforeach
                                 </div>
 
-                                <div style="display: inline-block">
-                                    <label for="switch" style="display: block">UwU^2</label>
-                                </div>
-
-                                <div style="display: inline-block">
-                                    <input type="checkbox" id="switch" class="toggle-box" name="from_home" />
-                                    <label for="switch" class="toggle-label" style="display: block"></label>
-                                </div>
-
                                 <div>
                                     <div class="form-group" id="month-group" @if($input_field != 'month') style="display: none;" @endif>
                                         <label for="month">Maand</label>
