@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\{Auth\ForgotPasswordController, Auth\ResetPasswordController, LoginController};
 use App\Http\Controllers\Users\{DashboardController, HelpController, RoosterController, ProfileController};
 use App\Http\Controllers\Admin\{UserController,ClockController, RoosterAdminController, CompareController};
+use App\Http\Controllers\Users;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,13 +27,13 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 //auth login
 Route::name('auth.')->prefix('auth/')->group(function (){
     Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); // TODO: When not logged in this throws an exception instead of a redirect
 });
 
 //dashboard
 Route::name('dashboard.')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('home');
-    Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock');
+    Route::post('/clocker', [DashboardController::class, 'clock'])->name('clock'); // TODO: When not logged in this throws an exception instead of a redirect
 });
 
 //help
@@ -52,6 +53,12 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
     Route::post('/availability-edit/{week}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
     Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');
+});
+
+Route::name('user.')->prefix('gebruiker/')->group(function (){
+    Route::name('clock.')->prefix('clock/')->group(function (){
+        Route::get('/', [Users\ClockController::class, 'index'])->name('index');
+    });
 });
 
 //admin
@@ -82,8 +89,8 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::post('/{user}/disable_days', [RoosterAdminController::class, 'disable_days'])->name('disable_days');
         Route::post('/{user}/{week}/edit_disable_days', [RoosterAdminController::class, 'edit_disable_days'])->name('edit_disable_days');
         Route::get('/{user}/{week}/{weekday}', [RoosterAdminController::class, 'delete_disable_days'])->name('delete_disable_days');
-        Route::post('/manage_disable', [RoosterAdminController::class, 'manage_disable_days'])->name('manage_disable_days');
-        Route::post('/manage_day_disable', [RoosterAdminController::class, 'manage_delete_days'])->name('manage_delete_days');
+        Route::post('/manage_disable', [RoosterAdminController::class, 'manage_disable_days'])->name('manage_disable_days');// TODO: When not logged in this throws an exception instead of a redirect
+        Route::post('/manage_day_disable', [RoosterAdminController::class, 'manage_delete_days'])->name('manage_delete_days');// TODO: When not logged in this throws an exception instead of a redirect
     });
 
 //admin compare table

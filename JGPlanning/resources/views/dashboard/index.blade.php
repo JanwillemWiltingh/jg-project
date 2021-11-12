@@ -2,7 +2,6 @@
 
 @section('content')
 {{--    Cards should imitate this: https://codepen.io/lesliesamafful/pen/oNXgmBG?editors=1010   --}}
-
     <div class="row">
         <div class="col-12">
             <div class="dashboard-welkom">

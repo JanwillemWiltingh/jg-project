@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <table class="table">
+            <table class="table" style="box-shadow: 0 0 5px 0 lightgrey;">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
