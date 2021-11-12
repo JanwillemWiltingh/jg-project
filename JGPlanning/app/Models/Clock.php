@@ -27,6 +27,7 @@ class Clock extends Model
 
     public $timestamps = false;
 
+//    Een constant zodat overal dezelfde tijd wordt toegevoegt
     public const ADD_HOURS = 1;
 
     /**
