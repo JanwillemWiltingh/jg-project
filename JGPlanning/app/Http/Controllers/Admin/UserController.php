@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::sortable()->paginate(5);
         $user_session = Auth::user();
 
         return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);

@@ -16,11 +16,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use phpDocumentor\Reflection\Types\False_;
+use Kyslik\ColumnSortable\Sortable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-
+    use HasApiTokens, HasFactory, Notifiable, Sortable;
     /**
      * The attributes that are mass assignable.
      *
@@ -35,6 +35,13 @@ class User extends Authenticatable
         'role_id',
         'deleted_at',
     ];
+    public $sortable = [
+        'firstname',
+        'lastname',
+        'email',
+        'role_id',
+        'deleted_at',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,6 +53,7 @@ class User extends Authenticatable
     ];
 
     public $timestamps = true;
+
 
 
     public function role(): HasOne {

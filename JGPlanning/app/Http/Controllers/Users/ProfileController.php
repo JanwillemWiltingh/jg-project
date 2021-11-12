@@ -32,12 +32,15 @@ class ProfileController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param User $user
-     * @return Application|Factory|View
+     * @return Application|Factory|View|RedirectResponse
      */
     public function edit(User $user)
     {
         $roles = Role::all();
-
+        $user_session = Auth::user();
+        if ($user['email'] != $user_session['email']){
+            return redirect()->back()->with(['message' => ['message' => 'Error', 'type' => 'danger']]);
+        }
         return view('profile.edit')->with(['user' => $user, 'roles' => $roles]);
     }
 
