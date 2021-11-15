@@ -100,7 +100,9 @@ class CompareController extends Controller
 
             foreach($collection as $day) {
                 $parsed = Carbon::parse($day);
-                $days->push($parsed);
+                if($user->plannedWorkADayInSeconds($parsed->format('Y'), $parsed->weekOfYear, $parsed->format('d')) > 0 or $user->workedInADayInSeconds($parsed->format('Y'), $parsed->format('m'), $parsed->format('d')) > 0) {
+                    $days->push($parsed);
+                }
             }
         }
 

@@ -25,19 +25,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($days as $day)
-                        @if($user->plannedWorkADayInSeconds($day->format('Y'), $day->weekOfYear, $day->format('d')) > 0 or $user->workedInADayInSeconds($day->format('Y'), $day->format('m'), $day->format('d')) > 0)
-                            <tr>
-                                <th scope="row">{{ $loop->index + 1 }}</th>
-                                <td>{{ $day->format('Y-m-d') }}</td>
-                                <td>{{ App\Models\Availability::WEEK_DAYS[$day->dayOfWeek] }}</td>
-                                <td>{{ $user->plannedWorkADayInHours($day->format('Y'), $day->weekOfYear, $day->format('d')) }}</td>
-                                <td>{{ $user->plannedWorkADayInHours($day->format('Y'), $day->weekOfYear, $day->format('d')) - .5 }}</td>
-                                <td>{{ $user->workedInADayInHours($day->format('Y'), $day->format('m'), $day->format('d')) }}</td>
-                                <td>{{ $user->workedInADayInHours($day->format('Y'), $day->format('m'), $day->format('d')) - .5 }}</td>
-                            </tr>
+                    <tr>
+                        @if($days->count() > 0)
+                            @foreach($days as $day)
+                                @if($user->plannedWorkADayInSeconds($day->format('Y'), $day->weekOfYear, $day->format('d')) > 0 or $user->workedInADayInSeconds($day->format('Y'), $day->format('m'), $day->format('d')) > 0)
+                                        <th scope="row">{{ $loop->index + 1 }}</th>
+                                        <td>{{ $day->format('Y-m-d') }}</td>
+                                        <td>{{ App\Models\Availability::WEEK_DAYS[$day->dayOfWeek] }}</td>
+                                        <td>{{ $user->plannedWorkADayInHours($day->format('Y'), $day->weekOfYear, $day->format('d')) }}</td>
+                                        <td>{{ $user->plannedWorkADayInHours($day->format('Y'), $day->weekOfYear, $day->format('d')) - .5 }}</td>
+                                        <td>{{ $user->workedInADayInHours($day->format('Y'), $day->format('m'), $day->format('d')) }}</td>
+                                        <td>{{ $user->workedInADayInHours($day->format('Y'), $day->format('m'), $day->format('d')) - .5 }}</td>
+                                @endif
+                            @endforeach
+                        @else
+                            <td colspan="7">{{ $user['firstname'] }} heeft nog niet gewerkt en is nog niet ingepland geweest</td>
                         @endif
-                    @endforeach
+                    </tr>
                 </tbody>
             </table>
         </div>
