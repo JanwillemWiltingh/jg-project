@@ -50,7 +50,6 @@
                 </td>
 
                 <td>{{$user['email']}}</td>
-                <td>{{$user['role_id']}}</td>
 
                 {{--Big letter maintainer--}}
                 <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{ucfirst($user->role()->get()->first()->name)}}</strong> @else {{ucfirst($user->role()->get()->first()->name)}} @endif</td>
@@ -124,6 +123,9 @@
         @endforeach
         </tbody>
     </table>
-</div>
-    {{ $users->links() }}
+    {!! $users->appends(Request::except('page'))->render() !!}
+
+    <p>
+        Laat {{$users->count()}} van de {{ $users->total() }} gebruiker(s) zien.
+    </p>
 @endsection

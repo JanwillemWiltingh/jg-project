@@ -27,7 +27,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'firstname' => 'Robert',
             'lastname' => 'Polman',
-            'email' => 'robert@gmail.com',
+            'email' => 'robertpolman1217@gmail.com',
             'password' => Hash::make('123'),
             'role_id' => Role::getRoleID('maintainer'),
         ]);
@@ -46,6 +46,54 @@ class UsersSeeder extends Seeder
             'email' => 'barend@gmail.com',
             'password' => Hash::make('welkom'),
             'role_id' => Role::getRoleID('admin'),
+        ]);
+
+        DB::table('users')->insert([
+            'firstname' => 'Hugo',
+            'lastname' => 'De Goot',
+            'email' => 'hugo@jgwebmarketing.nl',
+            'password' => Hash::make('Hugo123@'),
+            'role_id' => Role::getRoleID('employee'),
+        ]);
+
+        DB::table('users')->insert([
+            'firstname' => 'Gobi',
+            'lastname' => 'Achternaam',
+            'email' => 'gobi@jgwebmarketing.com',
+            'password' => Hash::make('Gobi123@'),
+            'role_id' => Role::getRoleID('admin'),
+        ]);
+
+        DB::table('users')->insert([
+            'firstname' => 'Sander',
+            'lastname' => 'Gehring',
+            'email' => 'sander@jgwebmarketing.com',
+            'password' => Hash::make('Sander123@'),
+            'role_id' => Role::getRoleID('admin'),
+        ]);
+
+        DB::table('users')->insert([
+            'firstname' => 'Cas',
+            'lastname' => 'Achternaam',
+            'email' => 'cas@jgwebmarketing.com',
+            'password' => Hash::make('Cas123@'),
+            'role_id' => Role::getRoleID('employee'),
+        ]);
+
+        DB::table('users')->insert([
+            'firstname' => 'Brian',
+            'lastname' => 'Achternaam',
+            'email' => 'brian@jgwebmarketing.com',
+            'password' => Hash::make('Brian123@'),
+            'role_id' => Role::getRoleID('employee'),
+        ]);
+
+        DB::table('users')->insert([
+            'firstname' => 'Nick',
+            'lastname' => 'Achternaam',
+            'email' => 'nick@jgwebmarketing.com',
+            'password' => Hash::make('Nick123@'),
+            'role_id' => Role::getRoleID('employee'),
         ]);
     }
 }
