@@ -5404,22 +5404,7 @@ $(document).ready(function () {
 
   for (var _i = 1; _i <= 7; _i++) {
     _loop2(_i);
-  } // function switch_time() {
-  //     const checkbox_state = $('#time-switch').is(':checked');
-  //
-  //     if(checkbox_state) {
-  //         $('#switch-label').text('Precies');
-  //
-  //         $('.precies').show();
-  //         $('.uren').hide();
-  //     } else {
-  //         $('#switch-label').text('Uren');
-  //
-  //         $('.precies').hide();
-  //         $('.uren').show();
-  //     }
-  // }
-  //    Compare table switch button UwU
+  } //    Compare table switch button UwU
 
 
   var checkbox_state = $('#time-switch').is(':checked');
@@ -5447,7 +5432,6 @@ $(document).ready(function () {
       $('.uren').show();
     }
   });
-  console.log(checkbox_state);
 });
 
 /***/ }),

@@ -106,21 +106,6 @@ $(document).ready(function () {
             });
         }
     }
-    // function switch_time() {
-    //     const checkbox_state = $('#time-switch').is(':checked');
-    //
-    //     if(checkbox_state) {
-    //         $('#switch-label').text('Precies');
-    //
-    //         $('.precies').show();
-    //         $('.uren').hide();
-    //     } else {
-    //         $('#switch-label').text('Uren');
-    //
-    //         $('.precies').hide();
-    //         $('.uren').show();
-    //     }
-    // }
 
 //    Compare table switch button UwU
     const checkbox_state = $('#time-switch').is(':checked');
@@ -152,6 +137,4 @@ $(document).ready(function () {
             $('.uren').show();
         }
     });
-
-    console.log(checkbox_state);
 });

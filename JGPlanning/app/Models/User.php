@@ -328,6 +328,9 @@ class User extends Authenticatable
             $first_week = $first_day_of_month->weekOfYear;
             $last_week = $last_day_of_month->weekOfYear;
 
+            $start_date = $year.'.'.$first_week;
+            $end_date = $year.'.'.$last_week;
+
 //        Make a new collection
             $collection = collect();
 
@@ -335,11 +338,14 @@ class User extends Authenticatable
             foreach ($roosters as $rooster) {
                 $in_range = false;
 
-                if($rooster['year'].'.'.$rooster['start_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['start_week'] <= $year.'.'.$last_week) {
+                $rooster_start_date = $rooster['year'].'.'.$rooster['start_week'];
+                $rooster_end_date = $rooster['year'].'.'.$rooster['end_week'];
+
+                if($rooster_start_date <= $start_date && $start_date <= $rooster_end_date) {
                     $in_range = true;
                 }
 
-                if($rooster['year'].'.'.$rooster['end_week'] >= $year.'.'.$first_week && $rooster['year'].'.'.$rooster['end_week'] <= $year.'.'.$last_week) {
+                if($rooster_start_date <= $end_date && $end_date <= $rooster_end_date) {
                     $in_range = true;
                 }
 
@@ -354,7 +360,7 @@ class User extends Authenticatable
                 $day_of_week = $date->dayOfWeek;
                 $current_rooster = $collection->where('start_week', '<=', $week_number)->where('end_week', '>=', $week_number)->where('weekdays', $day_of_week)->first();
                 if($current_rooster != null) {
-                    $time += Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time'])) - 1800;
+                    $time += Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
                 }
             }
         }
@@ -367,7 +373,7 @@ class User extends Authenticatable
      * @param int $year
      * @param int $month
      * @param int $decimal_number
-     * @return int
+     * @return float
      */
     public function plannedWorkAMonthInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->plannedWorkAMonthInSeconds($year, $month);
