@@ -63,7 +63,6 @@ class UserController extends Controller
             'middlename' => ['nullable'],
             'lastname' => ['required'],
             'email' => ['required','unique:users,email'],
-            'password' => ['required', 'confirmed'],
             'roles' =>['required'],
         ]);
 
@@ -77,7 +76,7 @@ class UserController extends Controller
             'middlename' => ($validated['middlename']),
             'lastname' => ucfirst($validated['lastname']),
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make('welkom1203@'),
             'role_id' => $validated['roles'],
         ]);
 
@@ -150,7 +149,6 @@ class UserController extends Controller
             'middlename' => ['nullable'],
             'lastname' => ['required'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
-            'password' => ['nullable', 'confirmed'],
             'roles' =>['required'],
         ]);
 
@@ -165,24 +163,13 @@ class UserController extends Controller
             $validated['roles'] = Role::getRoleID('employee');
         }
 
-        if(empty($validated['password'])){
-            $user->update([
-                'firstname' => ucfirst($validated['firstname']),
-                'middlename' => $validated['middlename'],
-                'lastname' => ucfirst($validated['lastname']),
-                'email' => $validated['email'],
-                'role_id' => $validated['roles'],
-            ]);
-        }else{
-            $user->update([
-                'firstname' => ucfirst($validated['firstname']),
-                'middlename' => $validated['middlename'],
-                'lastname' => ucfirst($validated['lastname']),
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'role_id' => $validated['roles'],
-            ]);
-        }
+        $user->update([
+            'firstname' => ucfirst($validated['firstname']),
+            'middlename' => $validated['middlename'],
+            'lastname' => ucfirst($validated['lastname']),
+            'email' => $validated['email'],
+            'role_id' => $validated['roles'],
+        ]);
         return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
 
@@ -196,7 +183,10 @@ class UserController extends Controller
     public function destroy(User $user): RedirectResponse
     {
         $user_session = Auth::user();
-        $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
+//        $maintainer_count = User::all()->where('role_id', '=', Role::getRoleID('maintainer', ))->count();
+        $maintainer_count = User::all()
+                    ->where('role_id', '=', Role::getRoleID('maintainer'))
+                    ->where('deleted_at', '=', null)->count();
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1  && $user['role_id'] == $user_session['role_id']){
             return redirect()->back()->with(['message'=> ['message' => 'Error', 'type' => 'danger']]);
