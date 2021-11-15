@@ -15,13 +15,9 @@ class CalendarService
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
+        $lesson = null;
         $lessons   = Rooster::all()
-            ->where('user_id', $userID)
-//            ->where('start_week', '<=', $week_number)
-//            ->where('end_week', '>=', $week_number)
-//            ->where('start_year', '<=', $year)
-//            ->where('end_year', '>=', $year)
-        ;
+            ->where('user_id', $userID);
         $user = User::find($userID);
 
         $array1 = [];
@@ -62,24 +58,14 @@ class CalendarService
 
                 if (isEmpty($lessons))
                 {
-                    $lesson_check = $lessons
+                    $lesson = $lessons
                         ->where('weekdays', $index)
                         ->where('start_time', $time_start)
                         ->where('start_week', '<=', $week_number)
                         ->where('end_week', '>=', $week_number)
+                        ->where('start_year', '<=', $year)
+                        ->where('end_year', '>=', $year)
                         ->first();
-                    if ($lesson_check)
-                    {
-                        $lesson = null;
-                    }
-                    else
-                    {
-                        $lesson = null;
-                    }
-                }
-                else
-                {
-                    $lesson = null;
                 }
 
                 if($lesson)
