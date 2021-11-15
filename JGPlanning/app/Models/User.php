@@ -567,4 +567,20 @@ class User extends Authenticatable
         $time = $this->compareMonthWorkedInSeconds($year, $month);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
+
+    public function fieldColorForWeek($year, $weeks): string {
+        if($this->compareWeekWorkedInSeconds($year, str_replace('W', '',explode('-', $weeks)[1])) < 0)
+            return "table-danger";
+        else{
+            return "table-success";
+        }
+    }
+
+    public function fieldColorForMonth($year, $month): string {
+        if($this->compareMonthWorkedInSeconds($year, explode('-', $month)[1]) < 0)
+            return "table-danger precies";
+        else {
+            return "table-success precies";
+        }
+    }
 }
