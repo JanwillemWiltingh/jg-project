@@ -112,7 +112,7 @@ class User extends Authenticatable
 
     public function getNextRooster() {
 //        Get the rooster and week number of today
-        $current_rooster = $this->getRoosterFromToday();
+        $current_rooster = self::getRoosterFromToday();
         $now_week_number = Carbon::now()->weekOfYear;
 
 //        Make an empty collection to add all roosters to
