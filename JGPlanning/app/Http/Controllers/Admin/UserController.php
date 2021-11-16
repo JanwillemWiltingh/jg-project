@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use DateTime;
 class UserController extends Controller
@@ -56,7 +57,7 @@ class UserController extends Controller
      * @return RedirectResponse
      * @throws Exception
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
             'firstname' => ['required'],
@@ -79,6 +80,10 @@ class UserController extends Controller
             'password' => Hash::make('welkom1203@'),
             'role_id' => $validated['roles'],
         ]);
+        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Nieuwe Gebruiker JG Planning');
+        });
 
         for ($i = 1; $i < 6; $i++)
         {
