@@ -49,7 +49,7 @@
                     @if($clocks->count() != 0)
                         @foreach($clocks as $clock)
                             <tr @if($loop->index % 2 == 0) class="table-light" @endif>
-                                <th scope="row">{{ $loop->index }}</th>
+                                <th scope="row">{{ $loop->index + 1 }}</th>
                                 <td>{{ $clock->user()->get()->first()['firstname'] }} {{ $clock->user()->get()->first()['middlename'] }} {{ $clock->user()->get()->first()['lastname'] }}</td>
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
