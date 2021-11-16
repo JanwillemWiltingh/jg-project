@@ -31,15 +31,9 @@
                 <td>
                     {{$user['firstname']}}
                 </td>
-                @if(empty($user['middlename']))
-                    <td>
-                        <i>NULL</i>
-                    </td>
-                @else
-                    <td>
-                        {{$user['middlename']}}
-                    </td>
-                @endif
+                <td>
+                    {{ $user['middlename'] ?? '' }}
+                </td>
                 <td>
                     {{$user['lastname']}}
                 </td>
