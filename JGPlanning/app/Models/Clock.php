@@ -75,13 +75,38 @@ class Clock extends Model
         return '-';
     }
 
-    public function timeWorkedInHours(string $date, int $decimal_number=0) {
-        //  Parse the daye to $year, $month and $day
-        $year = Carbon::parse($date)->format('Y');
-        $month = Carbon::parse($date)->format('m');
-        $day = Carbon::parse($date)->format('d');
+    /**
+     * Calculates the time worked between a given start and end time in seconds
+     *
+     * @param $start_time
+     * @param $end_time
+     * @return float|int
+     */
+    public function timeWorkedInSeconds(string $start_time, $end_time)
+    {
+        if($end_time == null) {
+            $end_time = Carbon::now()->addHours(self::ADD_HOURS)->toTimeString();
+        }
 
-        return $this->user()->first()->workedInADayInHours($year, $month, $day, $decimal_number);
+        return Carbon::parse($end_time)->diffInSeconds($start_time);
+    }
+
+    /**
+     * Calculates the time worked between a given start and end time in hours
+     *
+     * @param string $start_time
+     * @param $end_time
+     * @param int $decimal
+     * @return string
+     */
+    public function timeWorkedInHours(string $start_time, $end_time, int $decimal=1): string
+    {
+        if($end_time == null) {
+            $end_time = Carbon::now()->addHours(self::ADD_HOURS)->toTimeString();
+        }
+
+        $time = Carbon::parse($end_time)->diffInSeconds($start_time);
+        return number_format($time / 3600, $decimal);
     }
 
     public function getUserData(string $field) {

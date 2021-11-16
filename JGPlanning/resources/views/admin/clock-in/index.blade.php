@@ -66,7 +66,7 @@
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
 
                                 <!-- Time between Start and End time -->
-                                <td>{{ $clock->timeWorkedInHours($clock['date']) }} uur</td>
+                                <td>{{ $clock->timeWorkedInHours($clock['start_time'], $clock['end_time'], 2) }} uur</td>
 
                                 <!-- Comment given with Start time -->
                                 <td>{!! $clock['comment'] !!}</td>
