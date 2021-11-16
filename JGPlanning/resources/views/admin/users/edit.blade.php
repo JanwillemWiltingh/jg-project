@@ -22,15 +22,6 @@
             </div>
         </div>
         @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-        <div class="row">
-            <div class="col-3">
-                <x-forms.input type="password" name="password"></x-forms.input>
-            </div>
-
-            <div class="col-3">
-                <x-forms.input type="password" name="password_confirmation"></x-forms.input>
-            </div>
-        </div>
             <hr>
             <label class="black-label-text" style="font-size: 20px;">Welke rol krijgt de gebruiker?</label>
             <div class="row">

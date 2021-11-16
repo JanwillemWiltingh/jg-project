@@ -74,9 +74,13 @@
                             </strong>
                         @endif
                     @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-                        <strong>
-                            <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}"><i class="fa-solid fa-user-pen"></i></a>
-                        </strong>
+                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer'))
+                            <strong>
+                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}"><i class="fa-solid fa-user-pen"></i></a>
+                            </strong>
+                        @else
+                            <i class="fa-solid fa-user-lock"></i>
+                        @endif
                     @endif
                 </td>
 
@@ -106,12 +110,14 @@
                                 @else
                                     <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-check"></i><a/>
                                 @endif
-                            @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
+                            @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && $user['role_id'] != App\Models\Role::getRoleID('maintainer'))
                                 @if(empty($user['deleted_at']))
                                     <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-slash"></i></a>
                                 @else
                                     <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}"><i class="fa-solid fa-user-check"></i><a/>
                                 @endif
+                            @else
+                                <i class="fa-solid fa-user-lock"></i>
                             @endif
                         </strong>
                     @endif

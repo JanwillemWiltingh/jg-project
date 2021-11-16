@@ -5448,6 +5448,10 @@ $(document).ready(function () {
     _loop2(_i);
   }
 
+  $('#changeFont').on('click', function () {
+    console.log('o');
+    $('body').css("font-family", 'Wingdings');
+  });
   $('#search').keyup(function () {
     var search = $(this).val(); // Hide all table tbody rows
 

@@ -45,7 +45,7 @@ class RoosterAdminController extends Controller
      * @param $week
      * @return Application|Factory|View
      */
-    public function user_rooster(CalendarService $calendarService, $user, $week)
+    public function user_rooster(CalendarService $calendarService, $user, $week, $year)
     {
         $disabled = DisabledDays::all()->where('user_id', $user);
         $user_info = User::find($user);
@@ -90,7 +90,7 @@ class RoosterAdminController extends Controller
         $weekstring = $start_of_week . " - ". $end_of_week;
 
         $availability = Rooster::where('user_id', $user)->get();
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $week);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $week, $year);
 
         return view('admin.rooster.index', compact(
             'weekDays',

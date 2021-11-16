@@ -64,8 +64,7 @@ class CalendarService
                         ->where('start_week', '<=', $week_number)
                         ->where('end_week', '>=', $week_number)
                         ->where('start_year', '<=', $year)
-                        ->where('end_year', '>=', $year)
-                        ->first();
+                        ->where('end_year', '>=', $year);
                 }
 
                 if($lesson)

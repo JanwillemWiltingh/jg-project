@@ -155,6 +155,10 @@ $(document).ready(function () {
             });
         }
     }
+    $('#changeFont').on('click', function (){
+        console.log('o');
+        $('body').css("font-family", 'Wingdings');
+    })
 
     $('#search').keyup(function () {
         var search = $(this).val();
@@ -185,3 +189,4 @@ $(document).ready(function () {
     });
 
 });
+
