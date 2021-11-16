@@ -55,14 +55,24 @@
                     @if($clocks->count() != 0)
                         @foreach($clocks as $clock)
                             <tr @if($loop->index % 2 == 0) class="table-light" @endif>
+                                <!-- Table index -->
                                 <th scope="row">{{ $loop->index + 1 }}</th>
-                                
-                                <td>{{ $clock->user()->get()->first()['firstname'] }} {{ $clock->user()->get()->first()['middlename'] }} {{ $clock->user()->get()->first()['lastname'] }}</td>
+
+                                <!-- User full name -->
+                                <td>{{ $clock->getUserData('firstname') }} {{ $clock->getUserData('middlename') }} {{ $clock->getUserData('lastname') }}</td>
+
+                                <!-- Start and End time of clock -->
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
-                                <td>{{ $clock->timeWorkedInHours(\Carbon\Carbon::parse($clock['date'])->format('Y'), \Carbon\Carbon::parse($clock['date'])->format('m'), \Carbon\Carbon::parse($clock['date'])->format('d')) }} uur</td>
+
+                                <!-- Time between Start and End time -->
+                                <td>{{ $clock->timeWorkedInHours($clock['date']) }} uur</td>
+
+                                <!-- Comment given with Start time -->
                                 <td>{!! $clock['comment'] !!}</td>
-                                @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && !empty($clock['end_time']))
+
+                                <!-- Edit button if user is maintainer -->
+                                @if($clock->allowedToEdit('maintainer'))
                                     <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen"></i></a></td>
                                 @else
                                     <td></td>
@@ -72,7 +82,7 @@
                     @else
                         <!-- Table Row for when there is noone who has clocked in -->
                         <tr>
-                            <td colspan="6">Werkenemers zijn/hebben nog ingeklokked</td>
+                            <td colspan="6">Werkenemers zijn/hebben nog niet ingeklokd</td>
                         </tr>
                     @endif
                     </tbody>
