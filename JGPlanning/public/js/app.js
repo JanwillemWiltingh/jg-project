@@ -5321,9 +5321,9 @@ $(document).ready(function () {
     var id = $('#userIdDisableDays').val();
     var ArrayAvailableDays = [];
 
-    for (var i = 1; i < 7; i++) {
-      if ($('#disableDays' + i + ":checked").val()) {
-        ArrayAvailableDays.push($('#disableDays' + i).val());
+    for (var _i = 1; _i < 7; _i++) {
+      if ($('#disableDays' + _i + ":checked").val()) {
+        ArrayAvailableDays.push($('#disableDays' + _i).val());
       } else {
         ArrayAvailableDays.push("");
       }
@@ -5368,12 +5368,12 @@ $(document).ready(function () {
     }
   });
 
-  var _loop = function _loop(i) {
+  var _loop = function _loop(_i2) {
     var _loop3 = function _loop3(a) {
-      $('#remove_disable_days' + a + i).on('click', function () {
-        var id = $('#id_disable' + a + i).val();
+      $('#remove_disable_days' + a + _i2).on('click', function () {
+        var id = $('#id_disable' + a + _i2).val();
 
-        if ($('#role' + a + i).val() === "User") {
+        if ($('#role' + a + _i2).val() === "User") {
           $.ajax({
             type: "POST",
             data: {
@@ -5399,21 +5399,21 @@ $(document).ready(function () {
       });
     };
 
-    for (var a = 1; a <= $('#count_disable' + i).val(); a++) {
+    for (var a = 1; a <= $('#count_disable' + _i2).val(); a++) {
       _loop3(a);
     }
   };
 
-  for (var i = 1; i <= 7; i++) {
-    _loop(i);
+  for (var _i2 = 1; _i2 <= 7; _i2++) {
+    _loop(_i2);
   }
 
-  var _loop2 = function _loop2(_i) {
+  var _loop2 = function _loop2(_i3) {
     var _loop4 = function _loop4(a) {
-      $('#remove_days' + a + _i).on('click', function () {
-        var id = $('#id' + a + _i).val();
+      $('#remove_days' + a + _i3).on('click', function () {
+        var id = $('#id' + a + _i3).val();
 
-        if ($('#role' + a + _i).val() === "User") {
+        if ($('#role' + a + _i3).val() === "User") {
           $.ajax({
             type: "POST",
             data: {
@@ -5439,13 +5439,13 @@ $(document).ready(function () {
       });
     };
 
-    for (var a = 1; a <= $('#count_disable' + _i).val(); a++) {
+    for (var a = 1; a <= $('#count_disable' + _i3).val(); a++) {
       _loop4(a);
     }
   };
 
-  for (var _i = 1; _i <= 7; _i++) {
-    _loop2(_i);
+  for (var _i3 = 1; _i3 <= 7; _i3++) {
+    _loop2(_i3);
   } //    Compare table switch button UwU
 
 
@@ -5501,6 +5501,20 @@ $(document).ready(function () {
     }
 
     console.log(search);
+  }); //  Easter Egg
+
+  var i = 0,
+      timeOut = 0;
+  $('#easter_egg_title').on('mousedown touchstart', function (e) {
+    $(document).prop('title', 'UwU'); // $(this).addClass('active');
+
+    timeOut = setInterval(function () {// console.log(i++);
+    }, 100);
+  }).bind('mouseup mouseleave touchend', function () {
+    $(document).prop('title', 'JG Planning'); // $(this).removeClass('active');
+
+    i = 0;
+    clearInterval(timeOut);
   });
 });
 

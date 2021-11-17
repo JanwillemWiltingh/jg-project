@@ -220,4 +220,20 @@ $(document).ready(function () {
         console.log(search);
     });
 
+    //  Easter Egg
+    var i = 0, timeOut = 0;
+    $('#easter_egg_title').on('mousedown touchstart', function(e) {
+        $(document).prop('title', 'UwU');
+
+        // $(this).addClass('active');
+        timeOut = setInterval(function(){
+            // console.log(i++);
+        }, 100);
+    }).bind('mouseup mouseleave touchend', function() {
+        $(document).prop('title', 'JG Planning');
+
+        // $(this).removeClass('active');
+        i = 0;
+        clearInterval(timeOut);
+    });
 });
