@@ -220,10 +220,10 @@ $(document).ready(function () {
         console.log(search);
     });
 
-    //  Easter Egg
+    //  Easter Egg UwU
     var i = 0, timeOut = 0;
     $('#easter_egg_title').on('mousedown touchstart', function(e) {
-        $(document).prop('title', 'UwU');
+        $(document).prop('title', 'OwO, What\'s this?');
 
         // $(this).addClass('active');
         timeOut = setInterval(function(){
