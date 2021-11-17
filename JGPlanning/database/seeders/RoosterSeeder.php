@@ -34,7 +34,8 @@ class RoosterSeeder extends Seeder
                     'start_week' => $array[0],
                     'end_week' => $array[1],
                     'disabled' => 0,
-                    'year' => 2021
+                    'start_year' => 2021,
+                    'end_year' => 2021,
                 ]);
             }
         }
@@ -50,7 +51,8 @@ class RoosterSeeder extends Seeder
                     'start_week' => $array[0],
                     'end_week' => $array[1],
                     'disabled' => 0,
-                    'year' => 2021
+                    'start_year' => 2021,
+                    'end_year' => 2021,
                 ]);
             }
         }
