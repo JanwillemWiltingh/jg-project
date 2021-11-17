@@ -55,6 +55,7 @@ class DashboardController extends Controller
                 }
             }
 
+            //  Round the current time to quarters
             $now = Carbon::now()->addHours(Clock::ADD_HOURS);
             $hours = $now->format('H');
             $minutes = $now->format('i');
@@ -66,12 +67,10 @@ class DashboardController extends Controller
                 } else {
                     $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
                 }
-
             } else {
                 $time = $now->format('H:i');
             }
-
-
+            
             if($clocks->count() == 0) {
                 Clock::create([
                     'comment' => $validated['comment'],
