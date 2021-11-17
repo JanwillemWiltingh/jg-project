@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CompareController extends Controller
 {
@@ -26,38 +27,42 @@ class CompareController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::all();
-        $all_users = User::all();
+        //  Validate the form data when $request is not empty
+        $validated = $request->validate([
+            'month' => [Rule::requiredIf($request->all() != [])],
+            'weeks' => [Rule::requiredIf($request->all() != [])],
+            'user' => [Rule::requiredIf($request->all() != [])],
+            'date-format' => [Rule::requiredIf($request->all() != [])],
+        ]);
+
+        //  Get current week and month
         $month = Carbon::now()->year.'-'.Carbon::now()->month;
         $weeks = Carbon::now()->year.'-W'.Carbon::now()->week;
 
-        $input_field = 'month';
-        if($request->all() != []) {
-            $validated = $request->validate([
-                'month' => ['required'],
-                'weeks' => ['required'],
-                'user' => ['required'],
-                'date-format' => ['required'],
-            ]);
+        //  Set the input type
+        $input_field = $validated['date-format'] ?? 'month';
 
-            $request->session()->flash('month', $validated['month']);
-            $request->session()->flash('weeks', $validated['weeks']);
-            $request->session()->flash('user', $validated['user']);
-            $request->session()->flash('date-format', $validated['date-format']);
-
-            if($validated['user'] != 0) {
-                $users = User::where('id', $validated['user'])->get();
-            }
-
-            $input_field = $validated['date-format'];
+        //  Flash all the $validated data back to the session
+        foreach($validated as $index => $value) {
+            $request->session()->flash($index, $value);
         }
 
+        //  Get all the users or one user when $validated['user'] is not 0
+        $user = $validated['user'] ?? 0;
+        $users = User::all()->when(($validated['user'] ?? 0) != 0, function ($query, $user) {
+            return $query->where('id', $user);
+        });
+
+        //  Paginate the users
+        $users = (new CollectionPagination)->paginate($users, 10, request('page'), ['path' => 'vergelijken']);
+
+        //  Return data
         return view('admin.compare.index')->with([
-            'users' => (new CollectionPagination)->paginate($users, 10, request('page'), ['path' => 'vergelijken']),
-            'all_users' => $all_users,
+            'users' => $users,
+            'all_users' => User::all(),
             'month' => $month,
             'weeks' => $weeks,
-            'input_field' => $input_field
+            'input_field' => $input_field,
         ]);
     }
 
