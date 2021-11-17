@@ -1,16 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Maak een nieuwe Gebruiker aan <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step"></i></a></h1>
-    <form method="get" action="{{ route('admin.users.store') }}">
-        <div class="row">
-            <div class="col-3">
-                <x-forms.input type="text" name="firstname"></x-forms.input>
-            </div>
+<div class="crud-user-form fadeInDown">
+    <text class="crud-user-form-title">Maak een nieuwe Gebruiker aan </text>
+    <div class="card">
+        <div class="card-body">
+            <form method="get" action="{{ route('admin.users.store') }}">
+                <div class="row">
+{{--                    <div class="col-3">--}}
+                        <x-forms.input type="text" name="firstname"></x-forms.input>
+{{--                    </div>--}}
+                </div>
 
-            <div class="col-3">
-                <x-forms.input type="text" name="middlename"></x-forms.input>
-            </div>
+                <div class="row">
+{{--                    <div class="col-3">--}}
+                        <x-forms.input type="text" name="middlename"></x-forms.input>
+{{--                    </div>--}}
+                </div>
 
             <div class="col-3">
                 <x-forms.input type="text" name="lastname"></x-forms.input>

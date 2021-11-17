@@ -9,6 +9,7 @@ class Rooster extends Model
 {
     protected $table = 'Rooster';
 
+
     protected $fillable = [
         'user_id',
         'start_time',

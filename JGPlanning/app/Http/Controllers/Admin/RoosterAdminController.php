@@ -8,6 +8,7 @@ use App\Models\DisabledDays;
 use App\Models\Rooster;
 use App\Models\User;
 use App\Services\CalendarService;
+use App\Services\TimeService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -44,7 +45,7 @@ class RoosterAdminController extends Controller
      * @param $week
      * @return Application|Factory|View
      */
-    public function user_rooster(CalendarService $calendarService, $user, $week)
+    public function user_rooster(CalendarService $calendarService, $user, $week, $year)
     {
         $disabled = DisabledDays::all()->where('user_id', $user);
         $user_info = User::find($user);
@@ -89,7 +90,7 @@ class RoosterAdminController extends Controller
         $weekstring = $start_of_week . " - ". $end_of_week;
 
         $availability = Rooster::where('user_id', $user)->get();
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $week);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $week, $year);
 
         return view('admin.rooster.index', compact(
             'weekDays',
@@ -173,7 +174,7 @@ class RoosterAdminController extends Controller
             }
         }
 
-        if ($start_week < $end_week)
+        if ($start_week > $end_week)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
         }
@@ -182,7 +183,8 @@ class RoosterAdminController extends Controller
             'user_id' => $user,
             'weekday' => $validated['weekday'],
             'start_week' => $start_week,
-            'end_week' => $end_week
+            'end_week' => $end_week,
+            'by_admin' => true
         ]);
 
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
@@ -222,7 +224,8 @@ class RoosterAdminController extends Controller
 
         $checkDisabled->update([
                 'start_week' => $start_week,
-                'end_week' => $end_week
+                'end_week' => $end_week,
+                'by_admin' => true
             ]);
 
         return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
@@ -276,4 +279,5 @@ class RoosterAdminController extends Controller
             ->first()
             ->delete();
     }
+
 }
