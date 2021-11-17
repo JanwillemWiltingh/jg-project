@@ -137,7 +137,7 @@
                                         @endif
                                     </td>
                                     <td class="{{ $user->fieldColorForWeek(2021, $weeks) }} uren" style="width: 22.5%">
-                                        {{ abs($user->compareWeekWorkedInHours(2021, str_replace('W', '',explode('-', $weeks)[1]))) }} uren
+                                        {{ abs($user->compareWeekWorkedInHours(2021, str_replace('W', '',explode('-', $weeks)[1]))) }} uur
                                     </td>
                                 @else
                                     <td class="{{ $user->fieldColorForMonth(2021, $month) }} precies" style="width: 22.5%">
@@ -148,7 +148,7 @@
                                         @endif
                                     </td>
                                     <td class="{{ $user->fieldColorForMonth(2021, $month) }} uren" style="width: 22.5%">
-                                        {{ abs($user->compareMonthWorkedInHours(2021, explode('-', $month)[1])) }} uren
+                                        {{ abs($user->compareMonthWorkedInHours(2021, explode('-', $month)[1])) }} uur
                                     </td>
                                 @endif
 

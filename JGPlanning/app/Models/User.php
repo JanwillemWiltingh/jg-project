@@ -21,6 +21,7 @@ use Kyslik\ColumnSortable\Sortable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Sortable;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -230,7 +231,7 @@ class User extends Authenticatable
      *
      * @param int $week
      * @param int $decimal_number
-     * @return int
+     * @return float
      */
     public function workedInAWeekInHours(int $week, int $decimal_number=1): float {
         $time = $this->workedInAWeekInSeconds($week);
@@ -338,8 +339,8 @@ class User extends Authenticatable
             foreach ($roosters as $rooster) {
                 $in_range = false;
 
-                $rooster_start_date = $rooster['year'].'.'.$rooster['start_week'];
-                $rooster_end_date = $rooster['year'].'.'.$rooster['end_week'];
+                $rooster_start_date = $rooster['start_year'].'.'.$rooster['start_week'];
+                $rooster_end_date = $rooster['start_year'].'.'.$rooster['end_week'];
 
                 if($rooster_start_date <= $start_date && $start_date <= $rooster_end_date) {
                     $in_range = true;
@@ -401,7 +402,7 @@ class User extends Authenticatable
      * @return int
      */
     public function plannedWorkAWeekInSeconds(int $year, int $week): int {
-        $roosters = $this->roosters()->get();
+        $roosters = $this->roosters()->where('start_year', '>=', $year)->where('end_year', '<=', $year)->get();
         $time = 0;
 
         if($roosters->count() > 0) {
