@@ -35,11 +35,28 @@
                                 </div>
                             @endif
                                 <div style="text-align: center !important; font-size: 25px">
-                                    <a style="float: right; font-size: 25px" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') + 1])}}"><i class="fa fa-arrow-right" ></i></a>
-                                    {{$weekstring}}
-                                    <a style="float: left; font-size: 25px;" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') - 1] )}}"><i class="fa fa-arrow-left" ></i></a>
+                                    <a style="float: right; font-size: 25px" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') + 1, 'year' => request('year')])}}"><i class="fa fa-arrow-right" ></i></a>
+                                    <a style="float: left; font-size: 25px;" href="{{route('admin.rooster.user_rooster', ['user' => request('user'), 'week' => request('week') - 1, 'year' => request('year')])}}"><i class="fa fa-arrow-left" ></i></a>
                                 </div>
-                                <p style="text-align: center;">
+                                <div class="dashboard-welkom-rooster" style="text-align: center !important">
+                                    <h1 style="font-size: 25px">
+                                        {{$weekstring}}
+                                    </h1>
+                                    <br>
+                                    <a style="font-size: 20px">
+                                        {{request('year')}}
+                                    </a>
+                                </div>
+                                <p style="
+                                       text-align: center;
+                                       background: -webkit-linear-gradient(#1A6686, #1C88A4);
+                                       -webkit-background-clip: text;
+                                       -webkit-text-fill-color: transparent;
+                                       font-size: 45px;
+                                       font-weight: bolder;
+                                       font-style: italic;
+                                       margin-top: -40px;
+                                    ">
                                     <a style="font-size: 15px; margin-top: -10px" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">Dagen uitzetten</a>
                                 </p>
                             <table class="card-body table table-bordered">

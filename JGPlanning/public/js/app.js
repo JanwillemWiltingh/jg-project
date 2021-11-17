@@ -5300,6 +5300,12 @@ $(document).ready(function () {
 /***/ (() => {
 
 $(document).ready(function () {
+  // Menu Button
+  $('.toggle-btn').on('click', function () {
+    $(this).toggleClass('onclick');
+    $('.nav-bar-open').toggleClass('visible');
+    $('.toggle-btn').toggleClass('visible'); // $('.nav-container').css('background': 'red');
+  });
   $("body").on("click", "#delete_day", function () {
     if ($('#delete_day_div').css('display') === 'none') {
       $('#arrow').addClass('fa-caret-up');
@@ -5341,7 +5347,7 @@ $(document).ready(function () {
     }, 100);
   });
   $('#week').on('change', function () {
-    window.location.href = this.value.substring(6);
+    window.location.href = "/rooster/" + this.value.substring(6) + '/' + this.value.slice(0, -4);
   });
   $('#manageDropdown').on('change', function () {
     if (this.value == "Uitgezette dagen") {
@@ -5352,21 +5358,44 @@ $(document).ready(function () {
       $('#disabledDaysDiv').hide();
     }
   });
+  $('#weekDropdown').on('change', function () {
+    if (this.value == "Uitzetten") {
+      $('#addWeeks').hide();
+      $('#addDisable').show();
+    } else {
+      $('#addWeeks').show();
+      $('#addDisable').hide();
+    }
+  });
 
   var _loop = function _loop(i) {
     var _loop3 = function _loop3(a) {
       $('#remove_disable_days' + a + i).on('click', function () {
         var id = $('#id_disable' + a + i).val();
-        $.ajax({
-          type: "POST",
-          data: {
-            id: id
-          },
-          url: "/admin/rooster/manage_disable",
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-        });
+
+        if ($('#role' + a + i).val() === "User") {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/rooster/manage_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        } else {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/admin/rooster/manage_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        }
       });
     };
 
@@ -5383,17 +5412,30 @@ $(document).ready(function () {
     var _loop4 = function _loop4(a) {
       $('#remove_days' + a + _i).on('click', function () {
         var id = $('#id' + a + _i).val();
-        console.log(id);
-        $.ajax({
-          type: "POST",
-          data: {
-            id: id
-          },
-          url: "/admin/rooster/manage_day_disable",
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-        });
+
+        if ($('#role' + a + _i).val() === "User") {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/rooster/manage_day_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        } else {
+          $.ajax({
+            type: "POST",
+            data: {
+              id: id
+            },
+            url: "/admin/rooster/manage_day_disable",
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        }
       });
     };
 
@@ -5409,6 +5451,30 @@ $(document).ready(function () {
   $('#changeFont').on('click', function () {
     console.log('o');
     $('body').css("font-family", 'Wingdings');
+  });
+  $('#search').keyup(function () {
+    var search = $(this).val(); // Hide all table tbody rows
+
+    $('table tbody tr').hide(); // Case-insensitive searching (Note - remove the below script for Case sensitive search )
+
+    $.expr[":"].contains = $.expr.createPseudo(function (arg) {
+      return function (elem) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+      };
+    }); // Count total search result
+
+    var len = $('table tbody tr:not(.notfound) td:nth-child(2):contains("' + search + '")').length;
+
+    if (len > 0) {
+      // Searching text in columns and show match row
+      $('table tbody tr:not(.notfound) td:contains("' + search + '")').each(function () {
+        $(this).closest('tr').show();
+      });
+    } else {
+      $('.notfound').show();
+    }
+
+    console.log(search);
   });
 });
 
@@ -34522,7 +34588,7 @@ process.umask = function() { return 0; };
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","C:\\\\Users\\\\rober\\\\Documents\\\\GitHub\\\\jg-webmarketing\\\\JGPlanning"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"C:\\\\Users\\\\rober\\\\Documents\\\\GitHub\\\\jg-webmarketing\\\\JGPlanning","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","D:\\\\Laravel Project\\\\JGPlanning"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"D:\\\\Laravel Project\\\\JGPlanning","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 

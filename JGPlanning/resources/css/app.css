@@ -18,10 +18,77 @@
 .jg-color-gradient-3 {background: linear-gradient(90deg, #1A6686 0%, #1C88A4 100%) !important;}
 .jg-color-gradient-4 {background: linear-gradient(90deg, #CB6827 0%, #1A6686 100%) !important;}
 
-.test {
-    font-size: 64371px;
-    color: red;
+.toggle-btn {
+    margin-left: 0;
+    width: 30px;
+    height: 50px;
+    padding: 10px 0;
+    top: 0;
+    left: 0;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: margin-left .3s ease-in-out;
 }
+
+.toggle-btn span, .toggle-btn span:before, .toggle-btn span:after {
+    background: linear-gradient(90deg, #1A6686 0%, #1C88A4 100%) !important;
+    width: 30px;
+    height: 2px;
+    background: white;
+    position: absolute;
+    transition: width .3s ease-in-out, transform .3s ease-in-out, background .3s ease-in-out;
+}
+
+.toggle-btn span {
+    top: 50%;
+}
+.toggle-btn span:before
+{
+    content: '';
+    top: -10px;
+}
+
+.toggle-btn span:after
+{
+    content: '';
+    top: 10px;
+}
+
+.toggle-btn.onclick span {
+    background: none !important;
+}
+
+.toggle-btn.onclick span:before {
+    transform: translateY(10px) rotate(45deg);
+}
+
+.toggle-btn.onclick span:after {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+.toggle-btn.visible {
+    margin-left: 250px;
+}
+
+.nav-container {
+    margin-left: -250px;
+    width: 160%;
+    height: 100vh;
+    pointer-event: none;
+}
+
+.nav-bar-open {
+    max-width: 300px;
+    height: 100vh;
+    margin-left: -300px;
+    transition: margin .3s ease-in-out;
+
+}
+.nav-bar-open.visible{
+    margin-left: 0;
+}
+
 
 .dropdown_button {
     background: none;
@@ -331,6 +398,157 @@ input:checked + .slider:before {
     font-weight: lighter;
     font-size: 70px;
     margin-right: 2px;
+}
+
+/*Rooster*/
+.dashboard-welkom-rooster a
+{
+    display: inline;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 45px;
+    font-weight: bolder;
+    font-style: italic;
+}
+
+.dashboard-welkom-rooster a::after {
+    content: "";
+    position: absolute;
+    width: 10%;
+    border-bottom: 3px solid #CB6827 !important;
+    height: 1px;
+    left: 45%;
+}
+.dashboard-welkom-rooster p
+{
+    display: inline;
+    color: white;
+    margin-right: -15px;
+}
+
+.dashboard-welkom-rooster h1
+{
+    display: inline;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: lighter;
+    font-size: 70px;
+    margin-right: 2px;
+}
+
+/* width */
+.scrollbar-manage::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.scrollbar-manage::-webkit-scrollbar-track {
+    background: none !important;
+}
+
+/* Handle */
+.scrollbar-manage::-webkit-scrollbar-thumb {
+    border-radius: 25px;
+    background: #1C88A4 !important;
+}
+
+/* Handle on hover */
+.scrollbar-manage::-webkit-scrollbar-thumb:hover {
+    background: #1A6686 !important;
+}
+
+/*Login*/
+
+.crud-user-form {
+    position: relative;
+    left: 25%;
+    width: 50%;
+}
+.crud-user-form-title {
+    font-size: 35px;
+}
+
+.crud-table thead {
+    border-collapse:separate !important;
+    border-radius:5px 5px 0 0 !important;
+    -moz-border-radius:5px 5px 0 0 !important;
+    box-shadow: 0 0 5px 0 lightgrey;
+    border-bottom: none !important;
+}
+
+table.dataTable td.focus {
+    outline: 1px solid #ac1212;
+    outline-offset: -3px;
+    background-color: #f8e6e6 !important;
+}
+.crud-table tbody{
+    box-shadow: 0 0 5px 0 lightgrey;
+}
+
+/* Mobile */
+
+
+.dashboard-welkom-mobile a
+{
+    display: inline;
+    position: absolute;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 25px;
+    font-weight: bolder;
+    font-style: italic;
+    bottom: 10px;
+}
+
+.dashboard-welkom-mobile a::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-bottom: 3px solid #CB6827 !important;
+    height: 3px;
+    top:  30px;
+    left: 0;
+}
+.dashboard-welkom-mobile p
+{
+    display: inline;
+    color: white;
+    margin-right: -15px;
+}
+
+.dashboard-welkom-mobile h1
+{
+    display: inline;
+    background: -webkit-linear-gradient(#1A6686, #1C88A4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: lighter;
+    font-size: 50px;
+    margin-right: 2px;
+}
+
+.mobile-user-modal {
+    -webkit-box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    -moz-box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    -o-box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+    width: 232px !important;
+    left: 3%;
+    bottom: -420px;
+}
+
+.mobile-user-modal hr{
+    background: white !important;
+}
+
+.mobile-user-modal button,
+.mobile-user-modal a:visited,
+.mobile-user-modal a:active,
+.mobile-user-modal a {
+    color: white !important;
 }
 .week-label-div div{
     display: inline-block;
