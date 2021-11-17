@@ -31,7 +31,7 @@
         {{--Loop each user to show in a table--}}
         @foreach($users as $user)
             <tr class="{{ $user->isCurrentUser() }}">
-                <th scope="row">{{ $loop->index }}</th>
+                <th scope="row">{{ $loop->index + 1 }}</th>
                 {{--Check the email from the current user and the email in the database to show who is selected(logged in)--}}
                 <td>
                     {{$user['firstname']}}

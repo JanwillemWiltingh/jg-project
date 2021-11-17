@@ -70,7 +70,7 @@ class DashboardController extends Controller
             } else {
                 $time = $now->format('H:i');
             }
-            
+
             if($clocks->count() == 0) {
                 Clock::create([
                     'comment' => $validated['comment'],
