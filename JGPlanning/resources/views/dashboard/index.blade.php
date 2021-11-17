@@ -2,9 +2,20 @@
 
 @section('content')
 {{--    Cards should imitate this: https://codepen.io/lesliesamafful/pen/oNXgmBG?editors=1010   --}}
-    <div class="row">
+
+@php
+    $browser = new \App\Helpers\BrowserDetection()
+@endphp
+
+    <div class="row" >
         <div class="col-12">
-            <div class="dashboard-welkom">
+            <div class="
+        @if($browser->isMobile())
+                dashboard-welkom-mobile
+        @else
+                dashboard-welkom
+        @endif
+                ">
                 <h1>Welkom </h1>
                 <a>{{$user['firstname']}}!</a>
             </div>
@@ -12,111 +23,114 @@
     </div>
 
     <div class="row">
-        <div class="col-4">
-            <div class="card">
-                <div class="card-body gradient-dashboard">
-                    <div class="media align-items-stretch" >
-                        <div class="align-self-center">
-                            <i class="far fa-clock fa-4x"></i>
+        @if(!$browser->isMobile())
+            <div class=" col-4">
+                <div class="card">
+                    <div class="card-body gradient-dashboard">
+                        <div class="media align-items-stretch" >
+                            <div class="align-self-center">
+                                <i class="far fa-clock fa-4x"></i>
+                            </div>
+                            <div class="media-body pl-3">
+                                <h4 class="dashboard-title-hours">Uren gewerkt</h4>
+                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
+                            </div>
+                            <div class="align-self-center">
+                                <h1 class="dashboard-hours">{{ $user->WorkedInAMonthInHours($now->month) }}</h1>
+                            </div>
                         </div>
-                        <div class="media-body pl-3">
-                            <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                            <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
-                        </div>
-                        <div class="align-self-center">
-                            <h1 class="dashboard-hours">{{ $user->WorkedInAMonthInHours($now->month) }}</h1>
+
+                        <hr>
+
+                        <div class="media align-items-stretch">
+                            <div class="align-self-center">
+                                <i class="far fa-calendar fa-4x"></i>
+                            </div>
+                            <div class="media-body pl-3">
+                                <h4 class="dashboard-title-hours">Rooster uren</h4>
+                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
+                            </div>
+                            <div class="align-self-center">
+                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAMonthInHours($now->year, $now->month) }}</h1>
+                            </div>
                         </div>
                     </div>
-
-                    <hr>
-
-                    <div class="media align-items-stretch">
-                        <div class="align-self-center">
-                            <i class="far fa-calendar fa-4x"></i>
+                </div>
+            </div>
+        @endif
+        @if(!$browser->isMobile())
+            <div class="  col-4 ">
+                <div class="card">
+                    <div class="card-body gradient-dashboard">
+                        <div class="media align-items-stretch">
+                            <div class="align-self-center">
+                                <i class="far fa-clock fa-4x font-weight-lighter"></i>
+                            </div>
+                            <div class="media-body pl-3">
+                                <h4 class="dashboard-title-hours">Uren gewerkt</h4>
+                                <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
+                            </div>
+                            <div class="align-self-center">
+                                <h1 class="dashboard-title-hours">{{ $user->workedInAWeekInHours($now->weekOfYear) }}</h1>
+                            </div>
                         </div>
-                        <div class="media-body pl-3">
-                            <h4 class="dashboard-title-hours">Rooster uren</h4>
-                            <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
+
+                        <hr>
+
+                        <div class="media align-items-stretch">
+                            <div class="align-self-center">
+                                <i class="far fa-calendar fa-4x"></i>
+                            </div>
+                            <div class="media-body pl-3">
+                                <h4 class="dashboard-title-hours">Rooster uren</h4>
+                                <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
+                            </div>
+                            <div class="align-self-center">
+                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAWeekInHours($now->year, $now->weekOfYear) }}</h1>
+                            </div>
                         </div>
-                        <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkAMonthInHours($now->year, $now->month) }}</h1>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if(!$browser->isMobile())
+            <div class="  col-4 ">
+                <div class="card">
+                    <div class="card-body gradient-dashboard">
+                        <div class="media align-items-stretch">
+                            <div class="align-self-center">
+                                <i class="far fa-clock fa-4x font-weight-lighter"></i>
+                            </div>
+                            <div class="media-body pl-3">
+                                <h4 class="dashboard-title-hours">Uren gewerkt</h4>
+                                <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
+                            </div>
+                            <div class="align-self-center">
+                                <h1 class="dashboard-title-hours">{{ $user->workedInADayInHours($now->year, $now->month, $now->day)  }}</h1>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="media align-items-stretch">
+                            <div class="align-self-center">
+                                <i class="far fa-calendar fa-4x"></i>
+                            </div>
+                            <div class="media-body pl-3">
+                                <h4 class="dashboard-title-hours">Rooster uren</h4>
+                                <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
+                            </div>
+                            <div class="align-self-center">
+                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek) }}</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-4">
-            <div class="card">
-                <div class="card-body gradient-dashboard">
-                    <div class="media align-items-stretch">
-                        <div class="align-self-center">
-                            <i class="far fa-clock fa-4x font-weight-lighter"></i>
-                        </div>
-                        <div class="media-body pl-3">
-                            <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                            <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
-                        </div>
-                        <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ $user->workedInAWeekInHours($now->weekOfYear) }}</h1>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="media align-items-stretch">
-                        <div class="align-self-center">
-                            <i class="far fa-calendar fa-4x"></i>
-                        </div>
-                        <div class="media-body pl-3">
-                            <h4 class="dashboard-title-hours">Rooster uren</h4>
-                            <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
-                        </div>
-                        <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkAWeekInHours($now->year, $now->weekOfYear) }}</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-4">
-            <div class="card">
-                <div class="card-body gradient-dashboard">
-                    <div class="media align-items-stretch">
-                        <div class="align-self-center">
-                            <i class="far fa-clock fa-4x font-weight-lighter"></i>
-                        </div>
-                        <div class="media-body pl-3">
-                            <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                            <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
-                        </div>
-                        <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ $user->workedInADayInHours($now->year, $now->month, $now->day)  }}</h1>
-                        </div>
-                    </div>
-
-                    <hr>
-
-                    <div class="media align-items-stretch">
-                        <div class="align-self-center">
-                            <i class="far fa-calendar fa-4x"></i>
-                        </div>
-                        <div class="media-body pl-3">
-                            <h4 class="dashboard-title-hours">Rooster uren</h4>
-                            <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
-                        </div>
-                        <div class="align-self-center">
-                            <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->day) }}</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    @endif
     <div class="row">
-        <div class="col-6">
+        <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="card">
                 <div class="card-body ">
                     <form action="{{ route('dashboard.clock') }}" method="post">
@@ -143,6 +157,7 @@
             </div>
         </div>
 
+        @if(!$browser->isMobile())
         <div class="col-6">
             <div class="row">
                 <div class="col-12" style="margin-bottom: -31px !important">
@@ -204,6 +219,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 <a style="color: white; cursor: pointer" id="changeFont" target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
 @endsection

@@ -1,26 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="fadeInDown crud-table">
+
     <h1>Alle Gebruikers <strong><a href="{{route('admin.users.create')}}"><i class="fa-solid fa-user-plus"></i></a></strong></h1>
-{{--    <h5>--}}
-{{--        <strong>--}}
-{{--            <a class="btn btn-primary table-label-create" href="{{route('admin.users.create')}}">Create a new User</a>--}}
-{{--        </strong>--}}
-{{--    </h5>--}}
-    <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
+    <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 25%">
+    <br>
+    {{--    <h5>--}}
+    {{--        <strong>--}}
+    {{--            <a class="btn btn-primary table-label-create" href="{{route('admin.users.create')}}">Create a new User</a>--}}
+    {{--        </strong>--}}
+    {{--    </h5>--}}
+    <table class="table table-hover" id="user_crud">
         <thead>
-            <tr>
-                <th scope="col"><strong>#</strong></th>
-                <th scope="col"><strong>@sortablelink('firstname', 'Voornaam')</strong></th>
-                <th scope="col"><strong>Tussenvoegsel</strong></th>
-                <th scope="col"><strong>@sortablelink('lastname', 'Achternaam')</strong></th>
-                <th scope="col"><strong>@sortablelink('email', 'E-mail')</strong></th>
-                <th scope="col"><strong>@sortablelink('role_id', 'Rol')</strong></th>
-                <th scope="col"><strong>@sortablelink('deleted_at', 'Actief?')</strong></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
+        <tr>
+            <th scope="col"><strong>#</strong></th>
+            <th scope="col"><strong>Voornaam</strong></th>
+            <th scope="col"><strong>Tussenvoegsel</strong></th>
+            <th scope="col"><strong>Achternaam</strong></th>
+            <th scope="col"><strong>E-mail</strong></th>
+            <th scope="col"><strong>Rol ID</strong></th>
+            <th scope="col"><strong>Rol</strong></th>
+            <th scope="col"><strong>Actief?</strong></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
         </thead>
         <tbody>
         {{--Loop each user to show in a table--}}

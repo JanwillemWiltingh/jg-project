@@ -1,4 +1,13 @@
 $(document).ready(function () {
+
+    // Menu Button
+    $('.toggle-btn').on('click', 	function(){
+        $(this).toggleClass('onclick');
+        $('.nav-bar-open').toggleClass('visible');
+        $('.toggle-btn').toggleClass('visible');
+        // $('.nav-container').css('background': 'red');
+    });
+
     $("body").on("click", "#delete_day", function () {
         if ($('#delete_day_div').css('display') === 'none') {
             $('#arrow').addClass('fa-caret-up');
@@ -52,7 +61,7 @@ $(document).ready(function () {
     });
 
     $('#week').on('change', function () {
-        window.location.href = this.value.substring(6);
+        window.location.href = "/rooster/" + this.value.substring(6) + '/' + this.value.slice(0, -4);
     });
 
     $('#manageDropdown').on('change', function () {
@@ -68,20 +77,48 @@ $(document).ready(function () {
         }
     });
 
+    $('#weekDropdown').on('change', function () {
+        if (this.value == "Uitzetten")
+        {
+            $('#addWeeks').hide();
+            $('#addDisable').show();
+        }
+        else
+        {
+            $('#addWeeks').show();
+            $('#addDisable').hide();
+        }
+    });
+
     for (let i = 1; i <= 7; i++)
     {
         for (let a = 1; a <= $('#count_disable'+ i).val(); a++)
         {
             $('#remove_disable_days'+ a + i).on('click', function (){
                 let id = $('#id_disable' + a + i).val();
-                $.ajax({
-                    type: "POST",
-                    data: {id: id},
-                    url : "/admin/rooster/manage_disable",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                })
+
+                if ($('#role' + a + i).val() === "User")
+                {
+                    $.ajax({
+                        type: "POST",
+                        data: {id: id},
+                        url: "/rooster/manage_disable",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    })
+                }
+                else
+                {
+                    $.ajax({
+                        type: "POST",
+                        data: {id: id},
+                        url: "/admin/rooster/manage_disable",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    })
+                }
             });
         }
     }
@@ -93,16 +130,28 @@ $(document).ready(function () {
             $('#remove_days'+ a + i).on('click', function (){
                 let id = $('#id' + a + i).val();
 
-                console.log(id);
-
-                $.ajax({
-                    type: "POST",
-                    data: {id:id},
-                    url : "/admin/rooster/manage_day_disable",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                })
+                if ($('#role' + a + i).val() === "User")
+                {
+                    $.ajax({
+                        type: "POST",
+                        data: {id:id},
+                        url : "/rooster/manage_day_disable",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    })
+                }
+                else
+                {
+                    $.ajax({
+                        type: "POST",
+                        data: {id:id},
+                        url : "/admin/rooster/manage_day_disable",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                    })
+                }
             });
         }
     }
@@ -142,4 +191,33 @@ $(document).ready(function () {
         console.log('o');
         $('body').css("font-family", 'Wingdings');
     })
+
+    $('#search').keyup(function () {
+        var search = $(this).val();
+
+        // Hide all table tbody rows
+        $('table tbody tr').hide();
+
+        // Case-insensitive searching (Note - remove the below script for Case sensitive search )
+        $.expr[":"].contains = $.expr.createPseudo(function(arg) {
+            return function( elem ) {
+                return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+            };
+        });
+
+        // Count total search result
+        var len = $('table tbody tr:not(.notfound) td:nth-child(2):contains("'+search+'")').length;
+
+        if(len > 0){
+            // Searching text in columns and show match row
+            $('table tbody tr:not(.notfound) td:contains("'+search+'")').each(function(){
+                $(this).closest('tr').show();
+            });
+        }else{
+            $('.notfound').show();
+        }
+
+        console.log(search);
+    });
+
 });

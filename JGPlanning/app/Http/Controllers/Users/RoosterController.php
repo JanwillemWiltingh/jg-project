@@ -23,15 +23,26 @@ class RoosterController extends Controller
     }
 
 //  Functie om het rooster te laten zien
-    public function index(CalendarService $calendarService, $week)
+    public function index(CalendarService $calendarService, $week, $year)
     {
+        if ($week > 52)
+        {
+            $targetYear = $year + 1;
+            return redirect('/rooster/1/' . $targetYear);
+        }
+        else if($week < 1)
+        {
+            $targetYear = $year - 1;
+            return redirect('/rooster/52/' . $targetYear);
+        }
+
         $user = Auth::id();
 
         $weekDays     = Availability::WEEK_DAYS;
 
         $availability = Rooster::where('user_id', $user)->get();
 
-//        dd($availability);
+
         $array1 = [];
         $disabled_array = [];
         $disabled_days = DisabledDays::all()
@@ -39,11 +50,11 @@ class RoosterController extends Controller
             ->where('start_week', '<=', $week)
             ->where('end_week', '>=', $week)
             ->sortBy('weekday');
+        $disabled = DisabledDays::all()->where('user_id', $user);
 
-
-        foreach ($disabled_days as $dd)
+        foreach ($disabled_days as $dis)
         {
-            array_push($array1, $dd->weekday);
+            array_push($array1, $dis->weekday);
         }
 
         foreach ($weekDays as $index => $day)
@@ -59,14 +70,15 @@ class RoosterController extends Controller
         }
 
         $current_week = Carbon::now()
-            ->setISODate(date('Y'), $week);
+            ->setISODate($year, $week);
 
         $start_of_week = $current_week->startOfWeek()->format('d-M');
         $end_of_week = $current_week->endOfWeek()->format('d-M');
 
         $weekstring = $start_of_week . " - ". $end_of_week;
 
-        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week);
+        $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week, $year);
+        dd($calendarData);
         $user_info = User::find($user);
 
         return view('users.rooster.index', compact(
@@ -76,7 +88,9 @@ class RoosterController extends Controller
             'calendarData',
             'user_info',
             'weekstring',
-            'disabled_array'
+            'disabled_array',
+            'disabled_days',
+            'disabled'
         ));
     }
 
@@ -89,6 +103,7 @@ class RoosterController extends Controller
             'weekday' => ['required'],
             'user_id' => ['required'],
             'comment' => [],
+            'begin_week' => [],
             'week' => ['required'],
         ]);
 
@@ -97,6 +112,19 @@ class RoosterController extends Controller
         $end_time  = $time->roundTime($validated['end_time'], 30);
 
         $end_week = substr($validated['week'], 6);
+
+        if ($validated['begin_week'])
+        {
+            if (substr($validated['begin_week'], 6) < 10)
+            {
+                $start_week = substr($validated['begin_week'], 7);
+            }
+            else
+            {
+                $start_week = substr($validated['begin_week'], 6);
+            }
+        }
+
 
 //        Checked of de week die is ingevuld niet eerder is dan de huidige week.
         if (!$end_week > $start_week)
@@ -133,6 +161,7 @@ class RoosterController extends Controller
         }
 
 //        creërt een record in de database voor de dag
+
         Rooster::create([
             'user_id' => $validated['user_id'],
             'start_time' => $start_time,
@@ -141,7 +170,8 @@ class RoosterController extends Controller
             'comment' => $validated['comment'],
             'weekdays' => $validated['weekday'],
             'start_week' => $start_week,
-            'end_week' => $end_week
+            'end_week' => $end_week,
+            'year' => Carbon::now()->format('Y')
         ]);
 
         return back()->with(['message' => ['message' => 'Succesvol dag ingevuld', 'type' => 'success']]);
@@ -215,7 +245,8 @@ class RoosterController extends Controller
                 'from_home' => $from_home,
                 'comment' => $validated['comment'],
                 'start_week' => $start_week,
-                'end_week' => $end_week
+                'end_week' => $end_week,
+                'year' => Carbon::now()->format('Y')
             ]);
 
         return back();
@@ -273,5 +304,109 @@ class RoosterController extends Controller
         ]);
 
         return redirect()->back();
+    }
+//  functie om uitgezette datums aan te makken.
+    public function disable_days(Request $request)
+    {
+        $user = Auth::id();
+        $validated = $request->validate([
+            'weekday' => ['required'],
+            'start_week' => ['required'],
+            'end_week' => ['required']
+        ]);
+
+        $start_week = substr($validated['start_week'], '6');
+        $end_week = substr($validated['end_week'], '6');
+
+        $checkDisabled = DisabledDays::all()
+            ->where('user_id', $user)
+            ->where('weekday', $validated['weekday']);
+
+        foreach ($checkDisabled as $cd)
+        {
+            if (in_array($cd->start_week, range($start_week,$end_week)) || in_array($cd->end_week, range($start_week,$end_week)))
+            {
+                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+            }
+        }
+
+        if ($start_week > $end_week)
+        {
+            return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
+        }
+
+        DisabledDays::create([
+            'user_id' => $user,
+            'weekday' => $validated['weekday'],
+            'start_week' => $start_week,
+            'end_week' => $end_week
+        ]);
+
+        return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
+    }
+
+    public function delete_disable($weekday, $week)
+    {
+        DisabledDays::all()
+            ->where('id', Auth::id())
+            ->where('weekday', $weekday)
+            ->where('start_week', '<=', $week)
+            ->where('end_week', '>=', $week)
+            ->first()
+            ->delete();
+
+        return back();
+    }
+
+    public function manage_disable_days(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => ['required'],
+        ]);
+
+        DisabledDays::all()
+            ->where('id', $validate['id'])
+            ->first()
+            ->delete();
+    }
+    public function manage_delete_days(Request $request)
+    {
+        $validate = $request->validate([
+            'id' => ['required'],
+        ]);
+
+        Rooster::all()
+            ->where('id', $validate['id'])
+            ->first()
+            ->delete();
+    }
+
+    public function edit_disable_days(Request $request, $week)
+    {
+        $validated = $request->validate([
+            'id' => ['required'],
+            'start_week' => ['required'],
+            'end_week' => ['required']
+        ]);
+
+        $start_week = substr($validated['start_week'], '6');
+        $end_week = substr($validated['end_week'], '6');
+
+        $checkDisabled = DisabledDays::all()
+            ->where('id', $validated['id'])
+            ->first();
+
+        if ($start_week > $end_week)
+        {
+            return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
+        }
+
+        $checkDisabled->update([
+            'start_week' => $start_week,
+            'end_week' => $end_week,
+            'by_admin' => false
+        ]);
+
+        return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
     }
 }

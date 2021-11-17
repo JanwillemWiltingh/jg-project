@@ -10,15 +10,15 @@ use function PHPUnit\Framework\isNull;
 
 class CalendarService
 {
-    public function generateCalendarData($weekDays, $userID, $week_number)
+    public function generateCalendarData($weekDays, $userID, $week_number, $year)
     {
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
-        $lessons   = Rooster::all()->where('user_id', $userID);
-//        $lessons   = Rooster::where('user_id', $userID)->first();
+        $lesson = null;
+        $lessons   = Rooster::all()
+            ->where('user_id', $userID);
         $user = User::find($userID);
-
 
         $array1 = [];
         $disabled_array = [];
@@ -28,11 +28,9 @@ class CalendarService
             ->where('end_week', '>=', $week_number)
             ->sortBy('weekday');
 
-        $disabled_count = count($disabled_days);
-
-        foreach ($disabled_days as $dd)
+        foreach ($disabled_days as $did)
         {
-            array_push($array1, $dd->weekday);
+            array_push($array1, $did->weekday);
         }
 
         for ($i = 0; $i < 7; $i++)
@@ -65,11 +63,8 @@ class CalendarService
                         ->where('start_time', $time_start)
                         ->where('start_week', '<=', $week_number)
                         ->where('end_week', '>=', $week_number)
-                        ->first();
-                }
-                else
-                {
-                    $lesson = null;
+                        ->where('start_year', '<=', $year)
+                        ->where('end_year', '>=', $year);
                 }
 
                 if($lesson)
@@ -77,20 +72,36 @@ class CalendarService
                     $start = substr($lesson->start_time, "0", "5");
                     $end = substr($lesson->end_time, "0", "5");
                 }
-
                 if ($disabled_array)
                 {
                     if ($disabled_array[$index])
                     {
                         if($timeText == "08:00 - 08:30")
                         {
-                            array_push($calendarData[$timeText], [
-                                'rowspan'      => 20,
-                                'from_home'    => "",
-                                'comment'      => "Disabled",
-                                'start_time'   => "",
-                                'end_time'     => "",
-                            ]);
+                            if ($disabled_days->where('weekday', $index)->first())
+                            {
+                                array_push($calendarData[$timeText], [
+                                    'rowspan'      => 20,
+                                    'from_home'    => "",
+                                    'comment'      => "Disabled",
+                                    'start_time'   => "",
+                                    'end_time'     => "",
+                                    'by_admin'     => $disabled_days->where('weekday', $index)->first()->by_admin,
+                                    'disabled_id'  => $disabled_days->where('weekday', $index)->first()->id,
+                                ]);
+                            }
+                            else
+                            {
+                                array_push($calendarData[$timeText], [
+                                    'rowspan'      => 20,
+                                    'from_home'    => "",
+                                    'comment'      => "Disabled",
+                                    'start_time'   => "",
+                                    'end_time'     => "",
+                                    'by_admin'     => 0,
+                                    'disabled_id'  => ""
+                                ]);
+                            }
                         }
                         else
                         {
