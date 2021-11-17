@@ -5212,6 +5212,8 @@ __webpack_require__(/*! ./components/userview */ "./resources/js/components/user
 
 __webpack_require__(/*! ./components/switch-input-fieds */ "./resources/js/components/switch-input-fieds.js");
 
+__webpack_require__(/*! ./components/edit_clock */ "./resources/js/components/edit_clock.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -5244,6 +5246,41 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/edit_clock.js":
+/*!***********************************************!*\
+  !*** ./resources/js/components/edit_clock.js ***!
+  \***********************************************/
+/***/ (() => {
+
+$(document).ready(function () {
+  //  Check if
+  if ($('#total_hours').val()) {
+    calculate();
+    $('#start_time').on('change', function () {
+      calculate();
+      $('#end_time').attr({
+        'min': $('#start_time').val()
+      });
+    });
+    $('#end_time').on('change', function () {
+      calculate();
+      $('#start_time').attr({
+        'max': $('#end_time').val()
+      });
+    });
+  }
+});
+
+function calculate() {
+  var start_time = $("#start_time").val();
+  var end_time = $("#end_time").val();
+  var hours = (parseInt(end_time.split(':')[0]) - parseInt(start_time.split(':')[0])) * 60;
+  hours = (hours + (parseInt(end_time.split(':')[1]) - parseInt(start_time.split(':')[1]))) / 60;
+  $('#total_hours').val(hours.toFixed(1));
+}
 
 /***/ }),
 

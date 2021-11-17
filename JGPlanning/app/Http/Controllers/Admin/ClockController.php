@@ -79,9 +79,12 @@ class ClockController extends Controller
      */
     public function edit(Clock $clock){
         $user_session = Auth::user();
+
         $start_time = $clock['start_time'];
         $end_time = $clock['end_time'];
+
         $start_time = Carbon::parse($start_time);
+        
         if(empty($end_time)){
             $end_time = Carbon::now()->addHours(Clock::ADD_HOURS);
         }else{
