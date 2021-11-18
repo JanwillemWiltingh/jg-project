@@ -147,7 +147,7 @@ class User extends Authenticatable
 
     public function isCurrentUser(): string {
         if($this['id'] == Auth::id()) {
-            return 'table-light';
+            return 'table-secondary';
         }
 
         return '';
