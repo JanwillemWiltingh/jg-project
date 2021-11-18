@@ -83,15 +83,19 @@ class UserController extends Controller
         for ($i = 1; $i < 6; $i++)
         {
             Rooster::create([
-                'user_id' => $newUser->id,
                 'start_time' => '08:30:00',
                 'end_time' => '17:00:00',
                 'comment' => "",
                 'from_home' => 0,
                 'weekdays' => $i,
                 'created_at' => date('Y-m-d h:i:s'),
-                'updated_at' => date('Y-m-d h:i:s'),
-                'year' => date('Y'),
+                'updated_at' => null,
+                'user_id' => $newUser->id,
+                'start_week' => '1',
+                'end_week' => '52',
+                'disabled' => false,
+                'start_year' => date('Y'),
+                'end_year' => date('Y'),
             ]);
         }
 
