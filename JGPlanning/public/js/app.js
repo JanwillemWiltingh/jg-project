@@ -5258,18 +5258,43 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 $(document).ready(function () {
   //  Check if
   if ($('#total_hours').val()) {
-    calculate();
-    $('#start_time').on('change', function () {
-      calculate();
-      $('#end_time').attr({
-        'min': $('#start_time').val()
-      });
-    });
-    $('#end_time').on('change', function () {
-      calculate();
-      $('#start_time').attr({
-        'max': $('#end_time').val()
-      });
+    calculate(); //  Variable for the old end and start time
+
+    var old_start_time = '';
+    var old_end_time = ''; //  Actions for start_time input
+
+    $('#start_time').on('focusin', function () {
+      //  When selecting the input field save the old value
+      old_start_time = $(this).val();
+    }).on('change', function () {
+      var end_time = parseInt($('#end_time').val().split(':')[0]);
+      var start_time = parseInt($('#start_time').val().split(':')[0]);
+
+      if (start_time >= end_time) {
+        $('#start_time').val(old_start_time);
+      } else {
+        calculate();
+        $('#end_time').attr({
+          'min': $('#start_time').val()
+        });
+      }
+    }); //  Actions for end_time input
+
+    $('#end_time').on('focusin', function () {
+      //  When selecting the input field save the old value
+      old_end_time = $(this).val();
+    }).on('change', function () {
+      var start_time = parseInt($('#start_time').val().split(':')[0]);
+      var end_time = parseInt($('#end_time').val().split(':')[0]);
+
+      if (start_time >= end_time) {
+        $('#end_time').val(old_end_time);
+      } else {
+        calculate();
+        $('#start_time').attr({
+          'max': $('#end_time').val()
+        });
+      }
     });
   }
 });
