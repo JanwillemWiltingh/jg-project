@@ -111,6 +111,8 @@ class CompareController extends Controller
             }
         }
 
+        $days = (new CollectionPagination)->paginate($days, 10, request('page'), ['path' => '']);
+
         return view('admin.compare.show')->with([
             'user' => $user,
             'type' => $type,

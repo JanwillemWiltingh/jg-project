@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <table class="table" style="box-shadow: 0 0 5px 0 lightgrey;">
+            <table class="table table-hover table-striped" style="box-shadow: 0 0 5px 0 lightgrey;">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -46,6 +46,11 @@
                     @endif
                 </tbody>
             </table>
+
+            <!-- Pagination tabs -->
+            <div class="d-flex justify-content-center">
+                {{$days->links()}}
+            </div>
         </div>
     </div>
 @endsection
