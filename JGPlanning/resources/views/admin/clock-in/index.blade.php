@@ -10,6 +10,8 @@
                             <div class="card-body">
                                 <h4 class="card-title">Selectie Opties</h4>
                                 <form method="GET" action="{{ route('admin.clock.index') }}">
+
+                                    <!-- Single User selector -->
                                     <div class="form-group">
                                         <label for="users">Gebruikers</label>
                                         <select name="user" class="form-control" id="users">
@@ -20,6 +22,8 @@
                                         </select>
 
                                     </div>
+
+                                    <!-- Date Picker -->
                                     <div class="form-group">
                                         <label for="date">Datum</label>
                                         <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now }}">
@@ -32,6 +36,8 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Table -->
             <div class="col-md-9">
                 <table id="table" class="table table-striped table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                     <thead>
@@ -49,13 +55,24 @@
                     @if($clocks->count() != 0)
                         @foreach($clocks as $clock)
                             <tr @if($loop->index % 2 == 0) class="table-light" @endif>
-                                <th scope="row">{{ $loop->index }}</th>
-                                <td>{{ $clock->user()->get()->first()['firstname'] }} {{ $clock->user()->get()->first()['middlename'] }} {{ $clock->user()->get()->first()['lastname'] }}</td>
+                                <!-- Table index -->
+                                <th scope="row">{{ $loop->index + 1 }}</th>
+
+                                <!-- User full name -->
+                                <td>{{ $clock->getUserData('firstname') }} {{ $clock->getUserData('middlename') }} {{ $clock->getUserData('lastname') }}</td>
+
+                                <!-- Start and End time of clock -->
                                 <td>{{ $clock->reformatTime('start_time') }}</td>
                                 <td>{{ $clock->reformatTime('end_time') }}</td>
-                                <td>{{ $clock->timeWorkedInHours(\Carbon\Carbon::parse($clock['date'])->format('Y'), \Carbon\Carbon::parse($clock['date'])->format('m'), \Carbon\Carbon::parse($clock['date'])->format('d')) }} uur</td>
+
+                                <!-- Time between Start and End time -->
+                                <td>{{ $clock->timeWorkedInHours($clock['start_time'], $clock['end_time'], 2) }} uur</td>
+
+                                <!-- Comment given with Start time -->
                                 <td>{!! $clock['comment'] !!}</td>
-                                @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && !empty($clock['end_time']))
+
+                                <!-- Edit button if user is maintainer -->
+                                @if($clock->allowedToEdit('maintainer'))
                                     <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen"></i></a></td>
                                 @else
                                     <td></td>
@@ -63,12 +80,15 @@
                             </tr>
                         @endforeach
                     @else
+                        <!-- Table Row for when there is noone who has clocked in -->
                         <tr>
-                            <td colspan="6">Werkenemers zijn/hebben nog ingeklokked</td>
+                            <td colspan="6">Werkenemers zijn/hebben nog niet ingeklokd</td>
                         </tr>
                     @endif
                     </tbody>
                 </table>
+
+                <!-- Pagination tabs -->
                 <div class="d-flex justify-content-center">
                     {{$clocks->links()}}
                 </div>

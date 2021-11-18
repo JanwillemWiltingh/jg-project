@@ -14,14 +14,16 @@ class Rooster extends Model
         'user_id',
         'start_time',
         'end_time',
-        'from_home',
         'comment',
-        'date',
+        'from_home',
         'weekdays',
+        'created_at',
+        'updated_at',
         'start_week',
         'end_week',
-        'rooster',
-        'year',
+        'disabled',
+        'start_year',
+        'end_year'
     ];
 
     use HasFactory;

@@ -9,13 +9,14 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\CollectionPagination;
 
 class ClockController extends Controller
 {
+    //  Checks if user is logged in
     public function __construct()
     {
         $this->middleware('auth');
@@ -29,29 +30,36 @@ class ClockController extends Controller
      */
     public function index(Request $request)
     {
-       $clocks = Clock::where('date', Carbon::now()->toDateString())->paginate(15);
+        //  Get current date and all users
        $now = Carbon::now()->toDateString();
        $users = User::all();
-       $user_session = Auth::user();
+
+        //  Get all clocks and paginate
+        $clocks = Clock::where('date', $now)->paginate(15);
+
         if($request->all() != []) {
+            //  Validate the data from the input fields
             $validated = $request->validate([
-                'date' => ['required'],
-                'user' => ['required']
+                'date' => ['required', 'date'],
+                'user' => ['required', 'int']
             ]);
 
+            //  When successfully validated flash this data back to the session
             $request->session()->flash('date', $validated['date']);
             $request->session()->flash('user', $validated['user']);
 
-            if($validated['user'] != 0) {
-                $clocks = Clock::where('date', $validated['date'])
-                    ->where('user_id', $validated['user'])
-                    ->paginate(15);
-            } else {
-                $clocks = Clock::where('date', $validated['date'])
-                    ->paginate(15);
-            }
+            //  Put the validated user in a variable or the When function breaks
+            $user = $validated['user'];
+
+            //  Get a new collection
+            $clocks = Clock::all()->where('date', $validated['date'])->when($validated['user'] != 0, function ($query, $user) {
+                return $query->where('user_id', $user);
+            });
+
+            //  Paginate the collection
+            $clocks = (new CollectionPagination)->paginate($clocks, 10, request('page'), ['path' => 'clock']);
         }
-        return view('admin.clock-in.index')->with(['clocks' => $clocks, 'now' => $now, 'users' => $users, 'user_session' => $user_session]);
+        return view('admin.clock-in.index')->with(['clocks' => $clocks, 'now' => $now, 'users' => $users]);
     }
 
     /**
@@ -71,9 +79,12 @@ class ClockController extends Controller
      */
     public function edit(Clock $clock){
         $user_session = Auth::user();
+
         $start_time = $clock['start_time'];
         $end_time = $clock['end_time'];
+
         $start_time = Carbon::parse($start_time);
+        
         if(empty($end_time)){
             $end_time = Carbon::now()->addHours(Clock::ADD_HOURS);
         }else{

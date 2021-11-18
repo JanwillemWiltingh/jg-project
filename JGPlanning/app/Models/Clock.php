@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Collection;
 
 class Clock extends Model
@@ -73,7 +75,53 @@ class Clock extends Model
         return '-';
     }
 
-    public function timeWorkedInHours(int $year, int $month, int $day, int $decimal_number=0) {
-        return $this->user()->first()->workedInADayInHours($year, $month, $day, $decimal_number);
+    /**
+     * Calculates the time worked between a given start and end time in seconds
+     *
+     * @param $start_time
+     * @param $end_time
+     * @return float|int
+     */
+    public function timeWorkedInSeconds(string $start_time, $end_time)
+    {
+        if($end_time == null) {
+            $end_time = Carbon::now()->addHours(self::ADD_HOURS)->toTimeString();
+        }
+
+        return Carbon::parse($end_time)->diffInSeconds($start_time);
+    }
+
+    /**
+     * Calculates the time worked between a given start and end time in hours
+     *
+     * @param string $start_time
+     * @param $end_time
+     * @param int $decimal
+     * @return string
+     */
+    public function timeWorkedInHours(string $start_time, $end_time, int $decimal=1): string
+    {
+        if($end_time == null) {
+            $end_time = Carbon::now()->addHours(self::ADD_HOURS)->toTimeString();
+        }
+
+        $time = Carbon::parse($end_time)->diffInSeconds($start_time);
+        return number_format($time / 3600, $decimal);
+    }
+
+    public function getUserData(string $field) {
+        $user = $this->user()->first();
+        return $user[$field];
+    }
+
+    /**
+     * @param string $role
+     * @return bool
+     * @throws Exception
+     */
+    public function allowedToEdit(string $role): bool
+    {
+        $user = Auth::user();
+        return $user['role_id'] == Role::getRoleID($role) && !empty($this['end_time']);
     }
 }
