@@ -163,11 +163,6 @@ class UserController extends Controller
             return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
         }
 
-        //  When the admin edit's a user set the role to 2
-        if($auth_user['role_id'] == Role::getRoleID('admin')){
-            $validated['roles'] = Role::getRoleID('employee');
-        }
-
         $user->update([
             'firstname' => ucfirst($validated['firstname']),
             'middlename' => $validated['middlename'],
