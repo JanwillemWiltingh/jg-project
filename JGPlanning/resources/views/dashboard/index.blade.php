@@ -162,7 +162,7 @@
             <div class="row">
                 <div class="col-12" style="margin-bottom: -31px !important">
                     <div class="card" style="height: 72% !important;">
-                        <div class="card-body gradient-dashboard">
+                        <div class="card-body gradient-dashboard" id="easter_egg_title">
                             <div class="media align-items-stretch">
                                 <div class="align-self-center">
                                     <i class="far fa-clock fa-4x font-weight-lighter"></i>

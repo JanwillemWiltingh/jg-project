@@ -5212,6 +5212,8 @@ __webpack_require__(/*! ./components/userview */ "./resources/js/components/user
 
 __webpack_require__(/*! ./components/switch-input-fieds */ "./resources/js/components/switch-input-fieds.js");
 
+__webpack_require__(/*! ./components/edit_clock */ "./resources/js/components/edit_clock.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -5244,6 +5246,60 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/edit_clock.js":
+/*!***********************************************!*\
+  !*** ./resources/js/components/edit_clock.js ***!
+  \***********************************************/
+/***/ (() => {
+
+$(document).ready(function () {
+  //  Check if
+  if ($('#total_hours').val()) {
+    calculate(); //  Variable for the old end and start time
+
+    var old_start_time = '';
+    var old_end_time = ''; //  Actions for start_time input
+
+    $('#start_time').on('focusin', function () {
+      //  When selecting the input field save the old value
+      old_start_time = $(this).val();
+    }).on('change', function () {
+      change('start_time', 'end_time', old_start_time);
+    }); //  Actions for end_time input
+
+    $('#end_time').on('focusin', function () {
+      //  When selecting the input field save the old value
+      old_end_time = $(this).val();
+    }).on('change', function () {
+      change('end_time', 'start_time', old_end_time);
+    });
+  }
+});
+
+function calculate() {
+  var start_time = $("#start_time").val();
+  var end_time = $("#end_time").val();
+  var hours = (parseInt(end_time.split(':')[0]) - parseInt(start_time.split(':')[0])) * 60;
+  hours = (hours + (parseInt(end_time.split(':')[1]) - parseInt(start_time.split(':')[1]))) / 60;
+  $('#total_hours').val(hours.toFixed(1));
+}
+
+function change(main_field, second_field, old_value) {
+  var start_time = parseInt($('#start_time').val().split(':')[0]);
+  var end_time = parseInt($('#end_time').val().split(':')[0]);
+
+  if (start_time >= end_time) {
+    $('#' + main_field).val(old_value);
+  } else {
+    calculate();
+    $('#' + second_field).attr({
+      'min': $('#' + main_field).val()
+    });
+  }
+}
 
 /***/ }),
 
@@ -5321,9 +5377,9 @@ $(document).ready(function () {
     var id = $('#userIdDisableDays').val();
     var ArrayAvailableDays = [];
 
-    for (var i = 1; i < 7; i++) {
-      if ($('#disableDays' + i + ":checked").val()) {
-        ArrayAvailableDays.push($('#disableDays' + i).val());
+    for (var _i = 1; _i < 7; _i++) {
+      if ($('#disableDays' + _i + ":checked").val()) {
+        ArrayAvailableDays.push($('#disableDays' + _i).val());
       } else {
         ArrayAvailableDays.push("");
       }
@@ -5368,12 +5424,12 @@ $(document).ready(function () {
     }
   });
 
-  var _loop = function _loop(i) {
+  var _loop = function _loop(_i2) {
     var _loop3 = function _loop3(a) {
-      $('#remove_disable_days' + a + i).on('click', function () {
-        var id = $('#id_disable' + a + i).val();
+      $('#remove_disable_days' + a + _i2).on('click', function () {
+        var id = $('#id_disable' + a + _i2).val();
 
-        if ($('#role' + a + i).val() === "User") {
+        if ($('#role' + a + _i2).val() === "User") {
           $.ajax({
             type: "POST",
             data: {
@@ -5399,21 +5455,21 @@ $(document).ready(function () {
       });
     };
 
-    for (var a = 1; a <= $('#count_disable' + i).val(); a++) {
+    for (var a = 1; a <= $('#count_disable' + _i2).val(); a++) {
       _loop3(a);
     }
   };
 
-  for (var i = 1; i <= 7; i++) {
-    _loop(i);
+  for (var _i2 = 1; _i2 <= 7; _i2++) {
+    _loop(_i2);
   }
 
-  var _loop2 = function _loop2(_i) {
+  var _loop2 = function _loop2(_i3) {
     var _loop4 = function _loop4(a) {
-      $('#remove_days' + a + _i).on('click', function () {
-        var id = $('#id' + a + _i).val();
+      $('#remove_days' + a + _i3).on('click', function () {
+        var id = $('#id' + a + _i3).val();
 
-        if ($('#role' + a + _i).val() === "User") {
+        if ($('#role' + a + _i3).val() === "User") {
           $.ajax({
             type: "POST",
             data: {
@@ -5439,15 +5495,41 @@ $(document).ready(function () {
       });
     };
 
-    for (var a = 1; a <= $('#count_disable' + _i).val(); a++) {
+    for (var a = 1; a <= $('#count_disable' + _i3).val(); a++) {
       _loop4(a);
     }
   };
 
-  for (var _i = 1; _i <= 7; _i++) {
-    _loop2(_i);
+  for (var _i3 = 1; _i3 <= 7; _i3++) {
+    _loop2(_i3);
+  } //    Compare table switch button UwU
+
+
+  var checkbox_state = $('#time-switch').is(':checked');
+
+  if (checkbox_state) {
+    $('#switch-label').text('Precies');
+    $('.precies').show();
+    $('.uren').hide();
+  } else {
+    $('#switch-label').text('Uren');
+    $('.precies').hide();
+    $('.uren').show();
   }
 
+  $('#time-switch').on('change', function () {
+    var checkbox_state = $('#time-switch').is(':checked');
+
+    if (checkbox_state) {
+      $('#switch-label').text('Precies');
+      $('.precies').show();
+      $('.uren').hide();
+    } else {
+      $('#switch-label').text('Uren');
+      $('.precies').hide();
+      $('.uren').show();
+    }
+  });
   $('#changeFont').on('click', function () {
     console.log('o');
     $('body').css("font-family", 'Wingdings');
@@ -5475,6 +5557,20 @@ $(document).ready(function () {
     }
 
     console.log(search);
+  }); //  Easter Egg UwU
+
+  var i = 0,
+      timeOut = 0;
+  $('#easter_egg_title').on('mousedown touchstart', function (e) {
+    $(document).prop('title', 'OwO, What\'s this?'); // $(this).addClass('active');
+
+    timeOut = setInterval(function () {// console.log(i++);
+    }, 100);
+  }).bind('mouseup mouseleave touchend', function () {
+    $(document).prop('title', 'JG Planning'); // $(this).removeClass('active');
+
+    i = 0;
+    clearInterval(timeOut);
   });
 });
 
@@ -34588,7 +34684,7 @@ process.umask = function() { return 0; };
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","D:\\\\Laravel Project\\\\JGPlanning"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"D:\\\\Laravel Project\\\\JGPlanning","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","D:\\\\Stage\\\\JG Webmarketing\\\\PlanningSite\\\\JGPlanning"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"D:\\\\Stage\\\\JG Webmarketing\\\\PlanningSite\\\\JGPlanning","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 

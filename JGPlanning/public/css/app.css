@@ -19232,7 +19232,7 @@ Copyright (c) 2015 Daniel Eden
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #CB6827;
     transition: .4s;
 }
 
@@ -19247,11 +19247,11 @@ Copyright (c) 2015 Daniel Eden
     transition: .4s;
 }
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #1C88A4;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #1C88A4;
 }
 
 input:checked + .slider:before {
