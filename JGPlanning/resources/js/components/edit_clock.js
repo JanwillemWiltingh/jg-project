@@ -12,17 +12,7 @@ $(document).ready(function () {
             //  When selecting the input field save the old value
             old_start_time = $(this).val();
         }).on('change', function () {
-            let end_time = parseInt($('#end_time').val().split(':')[0]);
-            let start_time = parseInt($('#start_time').val().split(':')[0])
-
-            if(start_time >= end_time) {
-                $('#start_time').val(old_start_time);
-            } else {
-                calculate();
-                $('#end_time').attr({
-                    'min' : $('#start_time').val()
-                });
-            }
+            change('start_time', 'end_time', old_start_time);
         });
 
         //  Actions for end_time input
@@ -30,17 +20,7 @@ $(document).ready(function () {
             //  When selecting the input field save the old value
             old_end_time = $(this).val();
         }).on('change', function (){
-            let start_time = parseInt($('#start_time').val().split(':')[0])
-            let end_time = parseInt($('#end_time').val().split(':')[0])
-
-            if(start_time >= end_time) {
-                $('#end_time').val(old_end_time);
-            } else {
-                calculate();
-                $('#start_time').attr({
-                    'max' : $('#end_time').val()
-                });
-            }
+            change('end_time', 'start_time', old_end_time);
         });
     }
 
@@ -54,4 +34,19 @@ function calculate() {
     hours = (hours + (parseInt(end_time.split(':')[1]) - parseInt(start_time.split(':')[1]))) / 60;
 
     $('#total_hours').val(hours.toFixed(1))
+}
+
+function change(main_field, second_field, old_value) {
+    let start_time = parseInt($('#start_time').val().split(':')[0])
+    let end_time = parseInt($('#end_time').val().split(':')[0]);
+
+    if(start_time >= end_time) {
+        $('#' + main_field).val(old_value);
+    } else {
+        calculate();
+        $('#' + second_field).attr({
+            'min' : $('#' + main_field).val()
+
+        })
+    }
 }
