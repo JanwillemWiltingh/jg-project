@@ -18,14 +18,12 @@ class CalendarService
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
-        $lesson = [];
         $lessons   = Rooster::all()
             ->where('user_id', $userID);
 
         $lesID = null;
         $array1 = [];
         $array2 = [];
-        $lessID_array = [];
 
         $disabled_array = [];
         $disabled_days = DisabledDays::all()
