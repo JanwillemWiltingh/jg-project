@@ -49,8 +49,8 @@ class CompareController extends Controller
 
         //  Get all the users or one user when $validated['user'] is not 0
         $user = $validated['user'] ?? 0;
-        $users = User::all()->when(($validated['user'] ?? 0) != 0, function ($query, $user) {
-            return $query->where('id', $user);
+        $users = User::all()->when($user != 0, function ($query) use ($validated) {
+            return $query->where('id', $validated['user']);
         });
 
         //  Paginate the users
@@ -60,6 +60,7 @@ class CompareController extends Controller
         return view('admin.compare.index')->with([
             'users' => $users,
             'all_users' => User::all(),
+            'user' => $user,
             'month' => $month,
             'weeks' => $weeks,
             'input_field' => $input_field,
@@ -111,6 +112,7 @@ class CompareController extends Controller
             }
         }
 
+        //  Paginate the days collection
         $days = (new CollectionPagination)->paginate($days, 10, request('page'), ['path' => '']);
 
         return view('admin.compare.show')->with([

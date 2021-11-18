@@ -10,7 +10,7 @@
                         <div class="card-body">
                             <h4 class="card-title">Selectie Opties</h4>
                             <form method="GET" action="{{ route('admin.compare.index') }}">
-                                <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" name="user" default="Alle Gebruikers" capitalize="true"></x-forms.single-select>
+                                <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" value="{{ $user }}" name="user" default="Alle Gebruikers" capitalize="true"></x-forms.single-select>
 
                                 <div class="form-group">
                                     @foreach (['month' => 'Maand', 'weeks' => 'Weeks'] as $id => $format)
