@@ -197,6 +197,11 @@ class RoosterController extends Controller
         $start_week = substr($validated['start_week'], 6);
         $end_week = substr($validated['end_week'], 6);
 
+        $start_year = substr($validated['start_week'], -4);
+        $end_year = substr($validated['end_week'], -4);
+
+        dd($start_year, $end_year);
+
         $check_rooster = Rooster::all()
             ->where('user_id', Auth::id())
             ->where('weekdays', $validated['weekday']);
