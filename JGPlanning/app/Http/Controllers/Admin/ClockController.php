@@ -84,7 +84,7 @@ class ClockController extends Controller
         $end_time = $clock['end_time'];
 
         $start_time = Carbon::parse($start_time);
-        
+
         if(empty($end_time)){
             $end_time = Carbon::now()->addHours(Clock::ADD_HOURS);
         }else{
@@ -102,14 +102,10 @@ class ClockController extends Controller
      */
     public function update(Clock $clock, Request $request ): RedirectResponse
     {
-        $validated = $request->validate([
+        $clock->update($request->validate([
             'start_time' => ['required'],
             'end_time' => ['required'],
-        ]);
-        $clock->update([
-           'start_time' => $validated['start_time'],
-           'end_time'   => $validated['end_time'],
-        ]);
+        ]));
         return redirect()->back()->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success']]);
     }
 }
