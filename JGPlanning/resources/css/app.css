@@ -3,6 +3,12 @@
 @import "material-dashboard.css";
 
 @import "login.css";
+
+:root {
+    /* Ik ben lui dus heb deze aangemaakt */
+    --pagination-color: #1C88A4;
+}
+
 .modal-backdrop { opacity: 0 !important; }
 
 .jg-color-1 {background: #1A6686 !important;}
@@ -564,4 +570,24 @@ table.dataTable td.focus {
     user-select: none;
     color: white;
     text-decoration: none;
+}
+
+/* Pagination Color */
+.pagination > li > a,
+.pagination > li > span {
+    color: var(--pagination-color);
+}
+
+.page-item.active .page-link {
+    background-color: var(--pagination-color) !important;
+}
+
+.pagination > .active > a,
+.pagination > .active > a:focus,
+.pagination > .active > a:hover,
+.pagination > .active > span,
+.pagination > .active > span:focus,
+.pagination > .active > span:hover {
+    background-color: var(--pagination-color);
+    border-color: var(--pagination-color);
 }
