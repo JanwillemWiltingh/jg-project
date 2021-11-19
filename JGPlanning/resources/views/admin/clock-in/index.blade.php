@@ -28,7 +28,7 @@
                                         <label for="date">Datum</label>
                                         <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now }}">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Selecteer</button>
+                                    <button type="submit" class="btn btn-primary jg-color-3">Selecteer</button>
                                 </form>
                             </div>
                         </div>
