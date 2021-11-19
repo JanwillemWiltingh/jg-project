@@ -103,12 +103,12 @@ class ClockController extends Controller
     public function update(Clock $clock, Request $request ): RedirectResponse
     {
         $validated = $request->validate([
-            'start_time' => ['required', 'date'],
-            'end_time' => ['required', 'date'],
+            'time_start' => 'date_format:H:s',
+            'time_end' => 'date_format:H:s|after:time_start',
         ]);
         $clock->update([
-           'start_time' => $validated['start_time'],
-           'end_time'   => $validated['end_time'],
+           'start_time' => $validated['time_start'],
+           'end_time'   => $validated['time_end'],
         ]);
         return redirect()->back()->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success']]);
     }
