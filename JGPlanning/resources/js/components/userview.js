@@ -155,6 +155,38 @@ $(document).ready(function () {
             });
         }
     }
+
+//    Compare table switch button UwU
+    const checkbox_state = $('#time-switch').is(':checked');
+
+    if(checkbox_state) {
+        $('#switch-label').text('Precies');
+
+        $('.precies').show();
+        $('.uren').hide();
+    } else {
+        $('#switch-label').text('Uren');
+
+        $('.precies').hide();
+        $('.uren').show();
+    }
+
+    $('#time-switch').on('change', function (){
+        const checkbox_state = $('#time-switch').is(':checked');
+
+        if(checkbox_state) {
+            $('#switch-label').text('Precies');
+
+            $('.precies').show();
+            $('.uren').hide();
+        } else {
+            $('#switch-label').text('Uren');
+
+            $('.precies').hide();
+            $('.uren').show();
+        }
+    });
+
     $('#changeFont').on('click', function (){
         console.log('o');
         $('body').css("font-family", 'Wingdings');
@@ -188,5 +220,20 @@ $(document).ready(function () {
         console.log(search);
     });
 
-});
+    //  Easter Egg UwU
+    var i = 0, timeOut = 0;
+    $('#easter_egg_title').on('mousedown touchstart', function(e) {
+        $(document).prop('title', 'OwO, What\'s this?');
 
+        // $(this).addClass('active');
+        timeOut = setInterval(function(){
+            // console.log(i++);
+        }, 100);
+    }).bind('mouseup mouseleave touchend', function() {
+        $(document).prop('title', 'JG Planning');
+
+        // $(this).removeClass('active');
+        i = 0;
+        clearInterval(timeOut);
+    });
+});

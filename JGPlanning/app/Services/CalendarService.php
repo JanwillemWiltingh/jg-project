@@ -12,15 +12,19 @@ class CalendarService
 {
     public function generateCalendarData($weekDays, $userID, $week_number, $year)
     {
+        $date = Carbon::now();
+
+        $final_date = $date->setISODate($year, $week_number);
         $calendarData = [];
         $timeRange = (new TimeService)->generateTimeRange(config('app.calendar.start'), config('app.calendar.end'));
 
-        $lesson = null;
         $lessons   = Rooster::all()
             ->where('user_id', $userID);
-        $user = User::find($userID);
 
+        $lesID = null;
         $array1 = [];
+        $array2 = [];
+
         $disabled_array = [];
         $disabled_days = DisabledDays::all()
             ->where('user_id', $userID)
@@ -44,6 +48,18 @@ class CalendarService
                 array_push($disabled_array, null);
             }
         }
+
+        for ($i = 0; $i < count($weekDays); $i++)
+        {
+            if ($i == 0) {
+                array_push($array2, $final_date->format('Y-m-d'));
+            }
+            else
+            {
+                array_push($array2, $final_date->addDays(1)->format('Y-m-d'));
+            }
+        }
+
         foreach ($timeRange as $time)
         {
             $timeText = $time['start'] . ' - ' . $time['end'];
@@ -55,18 +71,47 @@ class CalendarService
 
             foreach ($weekDays as $index => $day)
             {
-
                 if (isEmpty($lessons))
                 {
-                    $lesson = $lessons
+                    $test_lesson = $lessons
                         ->where('weekdays', $index)
-                        ->where('start_time', $time_start)
-                        ->where('start_week', '<=', $week_number)
-                        ->where('end_week', '>=', $week_number)
-                        ->where('start_year', '<=', $year)
-                        ->where('end_year', '>=', $year);
-                }
+                        ->where('start_time', $time_start);
+                    $lesID = null;
 
+                    foreach ($test_lesson as $les)
+                    {
+                        if ($index == 1) {
+                            $final_db_date_start = $date
+                                ->setISODate($les->start_year, $les->start_week)
+                                ->format('Y-m-d');
+                            $final_db_date_end = $date
+                                ->setISODate($les->end_year, $les->end_week)
+                                ->format('Y-m-d');
+                        }
+                        else
+                        {
+                            $final_db_date_start = $date
+                                ->setISODate($les->start_year, $les->start_week)
+                                ->addDays(1)
+                                ->format('Y-m-d');
+                            $final_db_date_end = $date
+                                ->setISODate($les->end_year, $les->end_week)
+                                ->addDays(1)
+                                ->format('Y-m-d');
+                        }
+                        if (($array2[$index - 1] >= $final_db_date_start) && ($array2[$index - 1] <= $final_db_date_end))
+                        {
+                            $lesID = $les->id;
+                        }
+                        else
+                        {
+                            $lesID = 0;
+                        }
+                    }
+                    $lesson = $test_lesson
+                        ->where('id', $lesID)
+                        ->first();
+                }
                 if($lesson)
                 {
                     $start = substr($lesson->start_time, "0", "5");
@@ -113,17 +158,20 @@ class CalendarService
                         array_push($calendarData[$timeText], [
                             'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
                             'from_home' => $lesson['from_home'],
-                            'comment' => $lesson['comment'],
+                            'comment' => $lesson['id'],
                             'start_time' => $start,
                             'end_time' => $end,
                         ]);
                     }
-
-                    else if (!$lessons->where('weekdays', $index)->where('start_time', '<', $time['start'])->where('end_time', '>=', $time['end'])->where('start_week', '<=', $week_number)->where('end_week', '>=', $week_number)->count())
+                    else if(!$lessons
+                        ->where('id', $lesID)
+                        ->where('weekdays', $index)
+                        ->where('start_time', '<',$time['start']. ":00")
+                        ->where('end_time', '>=',$time['end']. ":00")
+                        ->first())
                     {
                         array_push($calendarData[$timeText], 1);
                     }
-
                     else
                     {
                         array_push($calendarData[$timeText], 0);
@@ -131,7 +179,9 @@ class CalendarService
                 }
             }
         }
-//        dd($calendarData);
-        return $calendarData;
+//        dd($lessID_array);
+        dd($calendarData);
+//        return $calendarData;
+//        return $array2;
     }
 }
