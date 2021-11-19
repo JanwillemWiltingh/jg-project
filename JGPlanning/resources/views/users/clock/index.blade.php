@@ -37,7 +37,7 @@
                                     <input name="day" id="day" type="date" class="form-control" value="{{ old('days') ?? session('day') ?? $day }}">
                                 </div>
 
-                                <button type="submit" class="btn btn-primary">Selecteer</button>
+                                <button type="submit" class="btn btn-primary jg-color-1">Selecteer</button>
                             </form>
                         </div>
                     </div>
