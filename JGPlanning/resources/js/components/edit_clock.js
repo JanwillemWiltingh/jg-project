@@ -44,9 +44,17 @@ function change(main_field, second_field, old_value) {
         $('#' + main_field).val(old_value);
     } else {
         calculate();
-        $('#' + second_field).attr({
-            'min' : $('#' + main_field).val()
 
-        })
+        if(second_field === 'start_time') {
+            $('#' + second_field).attr({
+                'max' : $('#' + main_field).val()
+
+            });
+        } else {
+            $('#' + second_field).attr({
+                'min' : $('#' + main_field).val()
+
+            });
+        }
     }
 }
