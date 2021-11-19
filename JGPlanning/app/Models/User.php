@@ -166,10 +166,16 @@ class User extends Authenticatable
         if($clocks->count() > 0) {
             foreach($clocks as $clock) {
                 if($clock['end_time'] == null){
-                    $time = $time + Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                    $temporary_time = Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+
                 } else {
-                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                    $temporary_time = Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+
                 }
+                if($temporary_time > 14400) {
+                    $temporary_time -= 1800;
+                }
+                $time += $temporary_time;
             }
         }
 
@@ -181,7 +187,7 @@ class User extends Authenticatable
      *
      * @param int $month
      * @param int $decimal_number
-     * @return int
+     * @return float
      */
     public function WorkedInAMonthInHours(int $month, int $decimal_number=1): float {
         $time = $this->workedInAMonthInSeconds($month);
@@ -215,10 +221,17 @@ class User extends Authenticatable
             foreach($clocks as $clock) {
                 if(Carbon::parse($clock['date'])->weekOfYear == $week) {
                     if($clock['end_time'] == null){
-                        $time = $time + Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                        $temporary_time = Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+
                     } else {
-                        $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                        $temporary_time = Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+
                     }
+
+                    if($temporary_time > 14400) {
+                        $temporary_time -= 1800;
+                    }
+                    $time += $temporary_time;
                 }
             }
         }
@@ -266,10 +279,17 @@ class User extends Authenticatable
         if ($clocks->count() > 0) {
             foreach ($clocks as $clock) {
                 if ($clock['end_time'] == null) {
-                    $time = $time + Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                    $temporary_time = Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
+
                 } else {
-                    $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                    $temporary_time = Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+
                 }
+
+                if($temporary_time > 14400) {
+                    $temporary_time -= 1800;
+                }
+                $time += $temporary_time;
             }
         }
 
@@ -360,8 +380,14 @@ class User extends Authenticatable
                 $week_number = $date->weekOfYear;
                 $day_of_week = $date->dayOfWeek;
                 $current_rooster = $collection->where('start_week', '<=', $week_number)->where('end_week', '>=', $week_number)->where('weekdays', $day_of_week)->first();
+
                 if($current_rooster != null) {
-                    $time += Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
+                    $temporary_time = Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
+
+                    if($temporary_time > 14400) {
+                        $temporary_time -= 1800;
+                    }
+                    $time += $temporary_time;
                 }
             }
         }
@@ -416,7 +442,12 @@ class User extends Authenticatable
             }
 
             foreach($collection as $day) {
-                $time += Carbon::parse($day['end_time'])->diffInSeconds(Carbon::parse($day['start_time'])) - 1800;
+                $temporary_time = Carbon::parse($day['end_time'])->diffInSeconds(Carbon::parse($day['start_time']));
+
+                if($temporary_time > 14400) {
+                    $temporary_time -= 1800;
+                }
+                $time += $temporary_time;
             }
         }
 
@@ -429,7 +460,7 @@ class User extends Authenticatable
      * @param int $year
      * @param int $week
      * @param int $decimal_number
-     * @return int
+     * @return float
      */
     public function plannedWorkAWeekInHours(int $year, int $week, int $decimal_number=1): float {
         $time = $this->plannedWorkAWeekInSeconds($year, $week);
@@ -465,8 +496,11 @@ class User extends Authenticatable
         $time = 0;
         foreach($roosters as $rooster) {
             if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
-//                $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time'])) - 1800;
                 $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time']));
+
+                if($time > 14400) {
+                    $time -= 1800;
+                }
             }
         }
 
@@ -555,7 +589,7 @@ class User extends Authenticatable
      * @param int $year
      * @param int $month
      * @param int $decimal_number
-     * @return int
+     * @return float
      */
     public function compareMonthWorkedInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->compareMonthWorkedInSeconds($year, $month);
@@ -585,9 +619,9 @@ class User extends Authenticatable
 
     public function fieldColorForMonth($year, $month): string {
         if($this->compareMonthWorkedInSeconds($year, explode('-', $month)[1]) < 0)
-            return "table-danger precies";
+            return "table-danger";
         else {
-            return "table-success precies";
+            return "table-success";
         }
     }
 }
