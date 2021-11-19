@@ -63,9 +63,9 @@ class ProfileController extends Controller
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
-            'firstname' => ['required'],
-            'middlename' => ['nullable'],
-            'lastname' => ['required'],
+            'firstname' => ['required', 'string'],
+            'middlename' => ['nullable', 'string'],
+            'lastname' => ['required', 'string'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'roles' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
         ]);
