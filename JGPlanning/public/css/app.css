@@ -19608,9 +19608,10 @@ table.dataTable td.focus {
     text-decoration: none;
 }
 
+/* Pagination Color */
 .pagination > li > a,
 .pagination > li > span {
-    color: var(--pagination-color); /* use your own color here */
+    color: var(--pagination-color);
 }
 
 .page-item.active .page-link {
