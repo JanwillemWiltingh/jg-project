@@ -12,10 +12,7 @@ The above copyright notice and this permission notice shall be included in all c
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        @php
-            $browser = new \App\Helpers\BrowserDetection()
-        @endphp
-        <title>JG planning</title>
+        <title>{{ App\Helpers\TitleChanger::Title() }}</title>
 
         <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -261,7 +258,7 @@ The above copyright notice and this permission notice shall be included in all c
                     @yield('content')
 
                     <!-- Sweet Alert -->
-                    @if(!session()->has('first_time_session'))
+                    @if(!session()->has('first_time_session')) {{-- TODO: Betere manier vinden om dit uit te voeren --}}
                         @if(App\Models\Browser::getBrowserName() == 'Firefox')
                             <script>
                                 swal({

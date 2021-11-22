@@ -101,7 +101,7 @@ class ClockController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function update(Clock $clock, Request $request ): RedirectResponse
+    public function update(Clock $clock, Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'time_start' => ['required'],
