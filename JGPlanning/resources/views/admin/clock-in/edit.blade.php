@@ -45,10 +45,10 @@
             <div class="col-3">
                 <div class="form-group">
                     <label class="black-label-text" for="total_hours">Totaal aantal werkuren</label>
-                    <input type="text" class="form-control" id="total_hours" value="{{round($total_difference, 1)}}" aria-describedby="total_hours" placeholder="Totaal aantal uren" readonly>
+                    <input type="text" class="form-control" id="total_hours" value="{{round(($total_difference - 0.5), 1)}}" aria-describedby="total_hours" placeholder="Totaal aantal uren" readonly>
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary" value="Opslaan">Opslaan</button>
+        <button type="submit" class="btn btn-primary jg-color-3 border-0" value="Opslaan">Opslaan</button>
     </form>
 @endsection

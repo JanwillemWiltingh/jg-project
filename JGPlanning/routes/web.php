@@ -74,6 +74,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/show/{clock}', [ClockController::class, 'show'])->name('show');
         Route::get('/edit/{clock}', [ClockController::class, 'edit'])->name('edit');
         Route::get('/update/{clock}', [ClockController::class, 'update'])->name('update');
+        Route::get('/destroy/{clock}', [ClockController::class, 'destroy'])->name('destroy');
     });
 
 //admin users table
