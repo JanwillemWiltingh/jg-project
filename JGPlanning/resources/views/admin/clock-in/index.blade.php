@@ -73,7 +73,7 @@
 
                                 <!-- Edit button if user is maintainer -->
                                 @if($clock->allowedToEdit('maintainer'))
-                                    <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen"></i></a></td>
+                                    <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
                                 @else
                                     <td></td>
                                 @endif

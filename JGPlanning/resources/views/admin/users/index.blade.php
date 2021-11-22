@@ -3,7 +3,7 @@
 @section('content')
 <div class="fadeInDown crud-table">
 
-    <h1>Alle Gebruikers <strong><a href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen"><i class="fa-solid fa-user-plus"></i></a></strong></h1>
+    <h1>Alle Gebruikers <strong><a href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen"><i class="fa-solid fa-user-plus icon-color"></i></a></strong></h1>
     <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 25%">
     <br>
     {{--    <h5>--}}
@@ -57,13 +57,13 @@
                             <i class="fa-solid fa-user-lock"></i>
                         @else
                             <strong>
-                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen"></i></a>
+                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
                             </strong>
                         @endif
                     @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
                         @if($user['role_id'] != App\Models\Role::getRoleID('maintainer'))
                             <strong>
-                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen"></i></a>
+                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
                             </strong>
                         @else
                             <i class="fa-solid fa-user-lock"></i>
@@ -110,7 +110,7 @@
                     @endif
                 </td>
                 <td>
-                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}" data-toggle="tooltip" title="Bekijken"><i class="fa-solid fa-user-gear"></i></a>
+                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}" data-toggle="tooltip" title="Bekijken"><i class="fa-solid fa-user-gear icon-color"></i></a>
                 </td>
             </tr>
         @endforeach
