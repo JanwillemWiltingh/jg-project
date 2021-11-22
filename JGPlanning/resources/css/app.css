@@ -7,6 +7,9 @@
 :root {
     /* Ik ben lui dus heb deze aangemaakt */
     --pagination-color: #1C88A4;
+    --input-focus-underline: #1C88A4;
+    --icon-color: #1C88A4;
+    --icon-color-hover: #1A6686;
 }
 
 .modal-backdrop { opacity: 0 !important; }
@@ -590,4 +593,18 @@ table.dataTable td.focus {
 .pagination > .active > span:hover {
     background-color: var(--pagination-color);
     border-color: var(--pagination-color);
+}
+
+/* Input Fields underline color */
+.form-control, .is-focused .form-control {
+    background-image: linear-gradient(to top, var(--input-focus-underline) 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
+}
+
+/* Icon color */
+.icon-color {
+    color: var(--icon-color);
+}
+
+.icon-color:hover {
+    color: var(--icon-color-hover)
 }

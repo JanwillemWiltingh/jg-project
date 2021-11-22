@@ -156,11 +156,11 @@
                                 <td style="width: 5px">
                                     @if($input_field == 'weeks')
                                         <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $weeks]) }}">
-                                            <i class="fa fa-eye jg-color-3-text"></i>
+                                            <i class="fa fa-eye icon-color"></i>
                                         </a>
                                     @else
                                         <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $month]) }}">
-                                            <i class="fa fa-eye jg-color-3-text"></i>
+                                            <i class="fa fa-eye icon-color"></i>
                                         </a>
                                     @endif
                                 </td>

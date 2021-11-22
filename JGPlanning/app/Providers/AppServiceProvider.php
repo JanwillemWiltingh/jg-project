@@ -27,5 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+
+        $browser = new \App\Helpers\BrowserDetection();
+        View::share('browser', $browser);
     }
 }
