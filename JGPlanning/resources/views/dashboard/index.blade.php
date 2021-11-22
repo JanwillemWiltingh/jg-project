@@ -2,11 +2,6 @@
 
 @section('content')
 {{--    Cards should imitate this: https://codepen.io/lesliesamafful/pen/oNXgmBG?editors=1010   --}}
-
-@php
-    $browser = new \App\Helpers\BrowserDetection()
-@endphp
-
     <div class="row" >
         <div class="col-12">
             <div class="

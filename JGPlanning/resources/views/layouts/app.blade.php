@@ -258,7 +258,7 @@ The above copyright notice and this permission notice shall be included in all c
                     @yield('content')
 
                     <!-- Sweet Alert -->
-                    @if(!session()->has('first_time_session'))
+                    @if(!session()->has('first_time_session')) {{-- TODO: Betere manier vinden om dit uit te voeren --}}
                         @if(App\Models\Browser::getBrowserName() == 'Firefox')
                             <script>
                                 swal({
