@@ -13,7 +13,6 @@ class CalendarService
 {
     public function generateCalendarData($weekDays, $userID, $week_number, $year)
     {
-        $arr = [];
         $date = Carbon::now();
 
         $final_date = $date->setISODate($year, $week_number);
@@ -23,7 +22,6 @@ class CalendarService
         $lessons   = Rooster::all()
             ->where('user_id', $userID);
 
-        $lesID = null;
         $array1 = [];
         $array2 = [];
 
