@@ -35,7 +35,7 @@
                         <input type="hidden" name="roles" value="2">
                     @endif
 
-                    <button type="submit" class="btn btn-primary jg-color-3 border-0" value="Save">Creëer</button>
+                    <button type="submit" class="btn btn-primary jg-color-3 border-0" value="Save">Bewerk</button>
 
                 </form>
             </div>

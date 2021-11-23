@@ -129,8 +129,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+
         $user_session = Auth::user();
-        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session['role_id'] == Role::getRoleID('admin')){
+        if($user['role_id'] == Role::getRoleID('maintainer')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
         $roles = Role::all();
@@ -144,12 +145,13 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return RedirectResponse
+     * @return Application|Factory|View|RedirectResponse
      * @throws Exception
      */
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(Request $request, User $user)
     {
         $auth_user = Auth::user();
+        $users = User::all();
 
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
@@ -174,7 +176,8 @@ class UserController extends Controller
             'email' => $validated['email'],
             'role_id' => $validated['roles'],
         ]);
-        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
+
+        return redirect()->route('admin.users.index')->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
 
     /**
