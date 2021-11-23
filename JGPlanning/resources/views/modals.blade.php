@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Uitgezette weken beheren</h5>
+                    <h5 class="modal-title">Weken beheren</h5>
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Weken</p>
@@ -96,9 +96,9 @@
                     <hr>
                     <div id="DaysDiv" style="display: none">
                         <div class="row" style="overflow: hidden" style=" resize: both !important; position: inherit">
-                            @for($i = 0; $i < count($weekDays); $i++)
+                            @for($i = 1; $i <= count($weekDays); $i++)
                                 <div class="col-md-2">
-                                    {{$weekDays[$i + 1]}}
+                                    {{$weekDays[$i]}}
                                     <div class="border-bottom"></div>
                                     <br>
                                 </div>
@@ -126,9 +126,9 @@
                     </div>
                     <div id="disabledDaysDiv">
                         <div class="row" style="overflow: hidden">
-                            @for($i = 0; $i < count($weekDays); $i++)
+                            @for($i = 1; $i <= count($weekDays); $i++)
                                 <div class="col-md-2">
-                                    {{$weekDays[$i + 1]}}
+                                    {{$weekDays[$i]}}
                                     <div class="border-bottom"></div>
                                     <br>
                                 </div>
