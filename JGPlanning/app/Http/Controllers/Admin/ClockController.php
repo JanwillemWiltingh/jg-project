@@ -49,13 +49,11 @@ class ClockController extends Controller
             $request->session()->flash('date', $validated['date']);
             $request->session()->flash('user', $validated['user']);
 
-            //  Put the validated user in a variable or the When function breaks
-            $user = $validated['user'];
-
-            //  Get a new collection
-            $clocks = Clock::all()->where('date', $validated['date'])->when($validated['user'] != 0, function ($query, $user) {
-                return $query->where('user_id', $user);
-            });
+            //  Get all the clocks
+            $clocks = Clock::all()->where('date', $validated['date']);
+            if($validated['user'] != 0) {
+                $clocks = $clocks->where('user_id', $validated['user']);
+            }
 
             //  Paginate the collection
             $clocks = (new CollectionPagination)->paginate($clocks, 10, request('page'), ['path' => 'clock']);
