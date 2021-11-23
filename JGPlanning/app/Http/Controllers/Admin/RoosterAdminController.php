@@ -154,7 +154,7 @@ class RoosterAdminController extends Controller
     public function disable_days(Request $request, $user): RedirectResponse
     {
         $validated = $request->validate([
-            'weekday' => ['required'],
+            'weekday' => ['required', 'integer'],
             'start_week' => ['required'],
             'end_week' => ['required']
         ]);
@@ -201,7 +201,7 @@ class RoosterAdminController extends Controller
     public function edit_disable_days (Request $request, $user, $week): RedirectResponse
     {
         $validated = $request->validate([
-            'weekday' => ['required'],
+            'weekday' => ['required', 'integer'],
             'start_week' => ['required'],
             'end_week' => ['required']
         ]);
@@ -256,7 +256,7 @@ class RoosterAdminController extends Controller
     public function manage_disable_days(Request $request)
     {
         $validate = $request->validate([
-            'id' => ['required'],
+            'id' => ['required', 'integer'],
         ]);
 
         DisabledDays::all()
@@ -271,7 +271,7 @@ class RoosterAdminController extends Controller
     public function manage_delete_days(Request $request)
     {
         $validate = $request->validate([
-            'id' => ['required'],
+            'id' => ['required', 'integer'],
         ]);
 
         Rooster::all()

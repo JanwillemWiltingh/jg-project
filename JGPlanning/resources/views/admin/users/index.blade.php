@@ -116,9 +116,4 @@
         @endforeach
         </tbody>
     </table>
-    {!! $users->appends(Request::except('page'))->render() !!}
-
-    <p>
-        Laat {{$users->count()}} van de {{ $users->total() }} gebruiker(s) zien.
-    </p>
 @endsection

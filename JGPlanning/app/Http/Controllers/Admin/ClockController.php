@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CollectionPagination;
+use DateTime;
 
 class ClockController extends Controller
 {
@@ -102,11 +103,25 @@ class ClockController extends Controller
      */
     public function update(Clock $clock, Request $request): RedirectResponse
     {
-        $clock->update($request->validate([
-            'start_time' => ['required'],
-            'end_time' => ['required'],
-        ]));
+        $validated = $request->validate([
+            'time_start' => ['required'],
+            'time_end' => ['required', 'after:time_start']
+        ]);
+        $clock->update([
+           'start_time' => $validated['time_start'],
+           'end_time'   => $validated['time_end'],
+        ]);
         return redirect()->back()->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success']]);
+    }
+    public function destroy(Clock $clock){
+        if(empty($clock['deleted_at'])){
+            $now = new DateTime();
+            $clock->update(['deleted_at' => $now]);
+            return redirect()->route('admin.clock.index')->with(['message'=>['message' => 'Uren succesvol gedeactiveerd!', 'type' => 'success']]);
+        }else{
+            $clock->update(['deleted_at' => NULL]);
+            return redirect()->route('admin.clock.index')->with(['message'=>['message' => 'Uren succesvol geactiveerd!', 'type' => 'success']]);
+        }
     }
 }
 

@@ -69,7 +69,11 @@
                                         <td>{{ App\Models\Availability::WEEK_DAYS[$entry['day']] }}</td>
                                         <td>{{ $entry['start_time'] }}</td>
                                         <td>{{ $entry['end_time'] }}</td>
-                                        <td>{{ number_format($entry['time'] / 3600, 1) - .5 }}</td>
+                                        @if($num = number_format($entry['time'] / 3600, 1) - .5 < 0)
+                                            <td>0.0</td>
+                                        @else
+                                            <td>{{ number_format($entry['time'] / 3600, 1) - .5 }}</td>
+                                        @endif
                                         <td>{{ number_format($entry['time'] / 3600, 1) }}</td>
                                     <tr>
                                 @endforeach

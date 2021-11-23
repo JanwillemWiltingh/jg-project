@@ -59,7 +59,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'firstname' => 'Gobi',
             'lastname' => 'Achternaam',
-            'email' => 'gobi@jgwebmarketing.com',
+            'email' => 'gobi@jgwebmarketing.nl',
             'password' => Hash::make('Gobi123@'),
             'role_id' => Role::getRoleID('admin'),
         ]);
@@ -67,7 +67,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'firstname' => 'Sander',
             'lastname' => 'Gehring',
-            'email' => 'sander@jgwebmarketing.com',
+            'email' => 'sander@jgwebmarketing.nl',
             'password' => Hash::make('Sander123@'),
             'role_id' => Role::getRoleID('admin'),
         ]);
@@ -75,7 +75,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'firstname' => 'Cas',
             'lastname' => 'Achternaam',
-            'email' => 'cas@jgwebmarketing.com',
+            'email' => 'cas@jgwebmarketing.nl',
             'password' => Hash::make('Cas123@'),
             'role_id' => Role::getRoleID('employee'),
         ]);
@@ -83,7 +83,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'firstname' => 'Brian',
             'lastname' => 'Achternaam',
-            'email' => 'brian@jgwebmarketing.com',
+            'email' => 'brian@jgwebmarketing.nl',
             'password' => Hash::make('Brian123@'),
             'role_id' => Role::getRoleID('employee'),
         ]);
@@ -91,7 +91,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
             'firstname' => 'Nick',
             'lastname' => 'Achternaam',
-            'email' => 'nick@jgwebmarketing.com',
+            'email' => 'nick@jgwebmarketing.nl',
             'password' => Hash::make('Nick123@'),
             'role_id' => Role::getRoleID('employee'),
         ]);

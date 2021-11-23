@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use DateTime;
 class UserController extends Controller
@@ -30,7 +31,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::sortable()->paginate(5);
+        $users = User::all();
         $user_session = Auth::user();
 
         return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);
@@ -56,7 +57,7 @@ class UserController extends Controller
      * @return RedirectResponse
      * @throws Exception
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
             'firstname' => ['required'],
@@ -79,6 +80,10 @@ class UserController extends Controller
             'password' => Hash::make('welkom1203@'),
             'role_id' => $validated['roles'],
         ]);
+        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Nieuwe Gebruiker JG Planning');
+        });
 
         for ($i = 1; $i < 6; $i++)
         {
@@ -124,8 +129,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+
         $user_session = Auth::user();
-        if($user['role_id'] == Role::getRoleID('maintainer') || $user['role_id'] == Role::getRoleID('admin') && $user_session['role_id'] == Role::getRoleID('admin')){
+        if($user['role_id'] == Role::getRoleID('maintainer')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
         $roles = Role::all();
@@ -139,19 +145,20 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param User $user
-     * @return RedirectResponse
+     * @return Application|Factory|View|RedirectResponse
      * @throws Exception
      */
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(Request $request, User $user)
     {
         $auth_user = Auth::user();
+        $users = User::all();
 
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
-            'firstname' => ['required'],
-            'middlename' => ['nullable'],
-            'lastname' => ['required'],
+            'firstname' => ['required', 'string'],
+            'middlename' => ['nullable', 'string'],
+            'lastname' => ['required', 'string'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'roles' =>['required'],
         ]);
@@ -162,11 +169,6 @@ class UserController extends Controller
             return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
         }
 
-        //  When the admin edit's a user set the role to 2
-        if($auth_user['role_id'] == Role::getRoleID('admin')){
-            $validated['roles'] = Role::getRoleID('employee');
-        }
-
         $user->update([
             'firstname' => ucfirst($validated['firstname']),
             'middlename' => $validated['middlename'],
@@ -174,7 +176,8 @@ class UserController extends Controller
             'email' => $validated['email'],
             'role_id' => $validated['roles'],
         ]);
-        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
+
+        return redirect()->route('admin.users.index')->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }
 
     /**
