@@ -60,20 +60,20 @@
                                     @if($disabled_array)
                                         <th width="14%" style="border: none; text-align: center;">
                                             {{ $weekDays[$i] }}
-                                            @if($availability)
-                                                @if(!$disabled_array[$i - 1])
-                                                    @if(is_null($availability->where('weekdays', $i)->where('start_week', '<=', request('week'))->where('end_week', '>=', request('week'))->where('start_year', '<=', request('year'))->where('end_year', '>=', request('year'))->first()))
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
-                                                    @else
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
-                                                        <a href="{{route('rooster.delete_rooster', ['user' => $user, 'weekday' =>$i, 'week' => request('week')])}}"><i class="fa fa-trash"></i></a>
-                                                    @endif
-                                                @endif
+{{--                                            @if($availability)--}}
+{{--                                                @if(!$disabled_array[$i - 1])--}}
+                                            @if(is_null($availability->where('weekdays', $i)->where('start_week', '<=', request('week'))->where('end_week', '>=', request('week'))->where('start_year', '<=', request('year'))->where('end_year', '>=', request('year'))->first()))
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
                                             @else
-                                                @if(!$disabled_array[$i - 1])
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>
-                                                @endif
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-pen"></i></a>
+                                                <a href="{{route('rooster.delete_rooster', ['user' => $user, 'weekday' =>$i, 'week' => request('week')])}}"><i class="fa fa-trash"></i></a>
                                             @endif
+{{--                                                @endif--}}
+{{--                                            @else--}}
+{{--                                                @if(!$disabled_array[$i - 1])--}}
+{{--                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalAdd" onclick="modalData({{$i}}, {{\Illuminate\Support\Facades\Auth::user()->id}})"><i class="fa fa-plus"></i></a>--}}
+{{--                                                @endif--}}
+{{--                                            @endif--}}
                                         </th>
                                     @else
                                         <th width="14%" style="border: none; text-align: center; @if(!is_null(json_decode($user_info->unavailable_days)[$i - 1])) background: lightgrey @endif">

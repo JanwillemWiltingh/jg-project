@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\{DisabledDays, Rooster, User};
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
@@ -21,7 +22,6 @@ class CalendarService
         $lessons   = Rooster::all()
             ->where('user_id', $userID);
 
-        $lesID = null;
         $array1 = [];
         $array2 = [];
 
@@ -59,7 +59,6 @@ class CalendarService
                 array_push($array2, $final_date->addDays(1)->format('Y-m-d'));
             }
         }
-
         foreach ($timeRange as $time)
         {
             $timeText = $time['start'] . ' - ' . $time['end'];
@@ -71,47 +70,41 @@ class CalendarService
 
             foreach ($weekDays as $index => $day)
             {
-                if (isEmpty($lessons))
-                {
-                    $test_lesson = $lessons
-                        ->where('weekdays', $index)
-                        ->where('start_time', $time_start);
-                    $lesID = null;
+                $lesID = null;
 
-                    foreach ($test_lesson as $les)
-                    {
-                        if ($index == 1) {
-                            $final_db_date_start = $date
-                                ->setISODate($les->start_year, $les->start_week)
-                                ->format('Y-m-d');
-                            $final_db_date_end = $date
-                                ->setISODate($les->end_year, $les->end_week)
-                                ->format('Y-m-d');
-                        }
-                        else
-                        {
-                            $final_db_date_start = $date
-                                ->setISODate($les->start_year, $les->start_week)
-                                ->addDays(1)
-                                ->format('Y-m-d');
-                            $final_db_date_end = $date
-                                ->setISODate($les->end_year, $les->end_week)
-                                ->addDays(1)
-                                ->format('Y-m-d');
-                        }
-                        if (($array2[$index - 1] >= $final_db_date_start) && ($array2[$index - 1] <= $final_db_date_end))
-                        {
-                            $lesID = $les->id;
-                        }
-                        else
-                        {
-                            $lesID = 0;
-                        }
+                foreach ($lessons->where('weekdays', $index) as $les)
+                {
+                    if ($index == 1) {
+                        $final_db_date_start = $date
+                            ->setISODate($les->start_year, $les->start_week)
+                            ->format('Y-m-d');
+                        $final_db_date_end = $date
+                            ->setISODate($les->end_year, $les->end_week)
+                            ->format('Y-m-d');
                     }
-                    $lesson = $test_lesson
-                        ->where('id', $lesID)
-                        ->first();
+                    else
+                    {
+                        $final_db_date_start = $date
+                            ->setISODate($les->start_year, $les->start_week)
+                            ->addDays(1)
+                            ->format('Y-m-d');
+                        $final_db_date_end = $date
+                            ->setISODate($les->end_year, $les->end_week)
+                            ->addDays(1)
+                            ->format('Y-m-d');
+                    }
+                    if (($array2[$index - 1] >= $final_db_date_start) && ($array2[$index - 1] <= $final_db_date_end))
+                    {
+                        $lesID = $les->id;
+                    }
                 }
+
+                $lesson = $lessons
+                    ->where('id', $lesID)
+                    ->where('weekdays', $index)
+                    ->where('start_time', $time['start']. ":00")
+                    ->first();
+
                 if($lesson)
                 {
                     $start = substr($lesson->start_time, "0", "5");
@@ -119,7 +112,17 @@ class CalendarService
                 }
                 if ($disabled_array)
                 {
-                    if ($disabled_array[$index])
+                    if ($lesson)
+                    {
+                        array_push($calendarData[$timeText], [
+                            'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
+                            'from_home' => $lesson['from_home'],
+                            'comment' => $lesson['comment'],
+                            'start_time' => $start,
+                            'end_time' => $end,
+                        ]);
+                    }
+                    else if ($disabled_array[$index])
                     {
                         if($timeText == "08:00 - 08:30")
                         {
@@ -153,22 +156,7 @@ class CalendarService
                             array_push($calendarData[$timeText], 0);
                         }
                     }
-                    else if ($lesson)
-                    {
-                        array_push($calendarData[$timeText], [
-                            'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
-                            'from_home' => $lesson['from_home'],
-                            'comment' => $lesson['id'],
-                            'start_time' => $start,
-                            'end_time' => $end,
-                        ]);
-                    }
-                    else if(!$lessons
-                        ->where('id', $lesID)
-                        ->where('weekdays', $index)
-                        ->where('start_time', '<',$time['start']. ":00")
-                        ->where('end_time', '>=',$time['end']. ":00")
-                        ->first())
+                    else if (!$lessons->where('id', $lesID)->where('start_time', '<=',$time['start']. ":00")->where('end_time', '>',$time['end']. ":00")->first())
                     {
                         array_push($calendarData[$timeText], 1);
                     }
@@ -179,9 +167,7 @@ class CalendarService
                 }
             }
         }
-//        dd($lessID_array);
-        dd($calendarData);
-//        return $calendarData;
-//        return $array2;
+//        dd($calendarData);
+        return $calendarData;
     }
 }
