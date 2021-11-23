@@ -12,7 +12,10 @@ class DisabledDays extends Model
         'user_id',
         'weekday',
         'start_week',
-        'end_week'
+        'end_week',
+        'start_year',
+        'end_year',
+        'by_admin'
     ];
 
     public $timestamps = false;

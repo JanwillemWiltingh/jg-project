@@ -3,7 +3,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Uitgezette weken beheren</h5>
+                    <h5 class="modal-title">Weken beheren</h5>
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Weken</p>
@@ -96,9 +96,9 @@
                     <hr>
                     <div id="DaysDiv" style="display: none">
                         <div class="row" style="overflow: hidden" style=" resize: both !important; position: inherit">
-                            @for($i = 0; $i < count($weekDays); $i++)
+                            @for($i = 1; $i <= count($weekDays); $i++)
                                 <div class="col-md-2">
-                                    {{$weekDays[$i + 1]}}
+                                    {{$weekDays[$i]}}
                                     <div class="border-bottom"></div>
                                     <br>
                                 </div>
@@ -109,7 +109,7 @@
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
                                         @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
-                                                Week <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->start_week])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->end_week])}}">{{$av->end_week}}</a>
+                                                Week <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->start_week, 'year' => request('year')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->end_week, 'year' => request('year')])}}">{{$av->end_week}}</a>
                                                 <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="Admin">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
@@ -126,9 +126,9 @@
                     </div>
                     <div id="disabledDaysDiv">
                         <div class="row" style="overflow: hidden">
-                            @for($i = 0; $i < count($weekDays); $i++)
+                            @for($i = 1; $i <= count($weekDays); $i++)
                                 <div class="col-md-2">
-                                    {{$weekDays[$i + 1]}}
+                                    {{$weekDays[$i]}}
                                     <div class="border-bottom"></div>
                                     <br>
                                 </div>

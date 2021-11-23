@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Gebruiker Informatie <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step"></i></a></h1>
+    <h1>Gebruiker Informatie <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step icon-color"></i></a></h1>
 {{--  USER ID  --}}
     <div class="row">
         <div class="col-3">
@@ -93,10 +93,10 @@
     </div>
 {{--  if they are maintainer they are allowed to edit anything  --}}
     @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-        <a class="btn btn-primary" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
+        <a class="btn btn-primary jg-color-3 border-0" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
     @endif
 {{--    if they are admin they can only edit employee--}}
     @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && $user['role_id'] == App\Models\Role::getRoleID('employee'))
-        <a class="btn btn-primary" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
+        <a class="btn btn-primary jg-color-3 border-0" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
     @endif
 @endsection

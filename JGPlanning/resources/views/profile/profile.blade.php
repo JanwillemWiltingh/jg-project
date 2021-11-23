@@ -54,6 +54,6 @@
             </div>
         </div>
     </div>
-    <a href="{{route('profile.edit', $user['id'])}}" class="btn btn-primary" value="Bewerk">Bewerk</a>
+    <a href="{{route('profile.edit', $user['id'])}}" class="btn btn-primary jg-color-3 border-0" value="Bewerk">Bewerk</a>
     <a id="changeFont"  href="#" >.</a>
 @endsection

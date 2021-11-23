@@ -2,6 +2,7 @@
 
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -73,6 +74,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/show/{clock}', [ClockController::class, 'show'])->name('show');
         Route::get('/edit/{clock}', [ClockController::class, 'edit'])->name('edit');
         Route::get('/update/{clock}', [ClockController::class, 'update'])->name('update');
+        Route::get('/destroy/{clock}', [ClockController::class, 'destroy'])->name('destroy');
     });
 
 //admin users table
@@ -107,17 +109,6 @@ Route::name('admin.')->prefix('admin/')->group(function (){
 Route::name('help.')->prefix('help/')->group(function (){
     Route::get('/', [HelpController::class, 'help'])->name('index');
 });
-
-//Route::name('forgot.')->prefix('forgot-password/')->middleware('guest')->group(function () {
-//    Route::get('/', [ForgotPasswordController::class, 'index'])->name('index');
-//});
-
-//Route::get('forget-password', 'ForgotPasswordController@getEmail');
-//Route::post('forget-password', 'ForgotPasswordController@postEmail');
-//
-//
-//Route::get('reset-password/{token}', 'ResetPasswordController@getPassword');
-//Route::post('reset-password', 'ResetPasswordController@updatePassword');
 
 Route::get('forget-password', [ForgotPasswordController::class, 'getEmail'])->name('forget.password.get');
 Route::post('forget-password', [ForgotPasswordController::class, 'postEmail'])->name('forget.password.post');

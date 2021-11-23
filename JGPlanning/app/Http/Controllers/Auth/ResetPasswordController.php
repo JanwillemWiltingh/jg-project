@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class ResetPasswordController extends Controller {
 
@@ -35,6 +36,11 @@ class ResetPasswordController extends Controller {
             ->update(['password' => Hash::make($request->password)]);
 
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
+
+        Mail::send('Auth.password_changed', ['user' => $user], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Password has been reset');
+        });
 
         return redirect()->route('login')->with(['message'=>['message' => 'Wachtwoord aangepast', 'type' => 'success']]);
 

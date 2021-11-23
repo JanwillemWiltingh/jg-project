@@ -151,16 +151,42 @@ class RoosterAdminController extends Controller
      * @param $user
      * @return RedirectResponse
      */
-    public function disable_days(Request $request, $user): RedirectResponse
+    public function disable_days(Request $request, $user)
     {
         $validated = $request->validate([
-            'weekday' => ['required'],
+            'weekday' => ['required', 'integer'],
             'start_week' => ['required'],
             'end_week' => ['required']
         ]);
 
+        $date = Carbon::now();
+
         $start_week = substr($validated['start_week'], '6');
         $end_week = substr($validated['end_week'], '6');
+
+        $start_year = substr($validated['start_week'], '0', '-4');
+        $end_year = substr($validated['end_week'], '0', '-4');
+
+        if ($validated['weekday'] == 1)
+        {
+            $final_date_start = $date
+                ->setISODate($start_year, $start_week)
+                ->format('Y-m-d');
+            $final_date_end = $date
+                ->setISODate($end_year, $end_week)
+                ->format('Y-m-d');
+        }
+        else
+        {
+            $final_date_start = $date
+                ->setISODate($start_year, $start_week)
+                ->addDays($validated['weekday'])
+                ->format('Y-m-d');
+            $final_date_end = $date
+                ->setISODate($end_year, $end_week)
+                ->addDays($validated['weekday'])
+                ->format('Y-m-d');
+        }
 
         $checkDisabled = DisabledDays::all()
             ->where('user_id', $user)
@@ -168,15 +194,39 @@ class RoosterAdminController extends Controller
 
         foreach ($checkDisabled as $cd)
         {
-            if (in_array($cd->start_week, range($start_week,$end_week)) || in_array($cd->end_week, range($start_week,$end_week)))
+            if ($cd->weekday == 1)
+            {
+                $final_db_date_start = $date
+                    ->setISODate($cd->start_year, $cd->start_week)
+                    ->format('Y-m-d');
+                $final_db_date_end = $date
+                    ->setISODate($cd->end_year, $cd->end_week)
+                    ->format('Y-m-d');
+            }
+            else
+            {
+                $final_db_date_start = $date
+                    ->setISODate($cd->start_year, $cd->start_week)
+                    ->addDays($cd->weekday)
+                    ->format('Y-m-d');
+                $final_db_date_end = $date
+                    ->setISODate($cd->end_year, $cd->end_week)
+                    ->addDays($cd->weekday)
+                    ->format('Y-m-d');
+            }
+            if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end))
+            {
+                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+            }
+            else if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end))
             {
                 return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
         }
 
-        if ($start_week > $end_week)
+        if ($final_date_start > $final_date_end)
         {
-            return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
+            return back()->with(['message' => ['message' => 'De ingevulde begin tijd is later dan de eind tijd', 'type' => 'danger']]);
         }
 
         DisabledDays::create([
@@ -184,7 +234,9 @@ class RoosterAdminController extends Controller
             'weekday' => $validated['weekday'],
             'start_week' => $start_week,
             'end_week' => $end_week,
-            'by_admin' => true
+            'by_admin' => true,
+            'start_year' => $start_year,
+            'end_year' => $end_year
         ]);
 
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
@@ -201,7 +253,7 @@ class RoosterAdminController extends Controller
     public function edit_disable_days (Request $request, $user, $week): RedirectResponse
     {
         $validated = $request->validate([
-            'weekday' => ['required'],
+            'weekday' => ['required', 'integer'],
             'start_week' => ['required'],
             'end_week' => ['required']
         ]);
@@ -256,7 +308,7 @@ class RoosterAdminController extends Controller
     public function manage_disable_days(Request $request)
     {
         $validate = $request->validate([
-            'id' => ['required'],
+            'id' => ['required', 'integer'],
         ]);
 
         DisabledDays::all()
@@ -271,7 +323,7 @@ class RoosterAdminController extends Controller
     public function manage_delete_days(Request $request)
     {
         $validate = $request->validate([
-            'id' => ['required'],
+            'id' => ['required', 'integer'],
         ]);
 
         Rooster::all()
