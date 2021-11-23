@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="crud-user-form fadeInDown">
-    <text class="crud-user-form-title">Maak een nieuwe Gebruiker aan </text>
+    <text class="crud-user-form-title icon-color">Maak een nieuwe Gebruiker aan </text>
     <div class="card">
         <div class="card-body">
             <form method="get" action="{{ route('admin.users.store') }}">
@@ -35,7 +35,7 @@
             <input type="hidden" name="roles" value="2">
         @endif
 
-        <button type="submit" class="btn btn-primary" value="Save">Creëer</button>
+        <button type="submit" class="btn btn-primary jg-color-3 border-0" value="Save">Creëer</button>
 
             </form>
         </div>

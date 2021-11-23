@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="crud-user-form fadeInDown">
-        <h1>Bewerk Gebruiker <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step"></i></a></h1>
+        <h1>Bewerk Gebruiker <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step icon-color"></i></a></h1>
         <div class="card">
             <div class="card-body">
                 <form method="get" action="{{ route('admin.users.update', $user['id']) }}">
@@ -35,7 +35,7 @@
                         <input type="hidden" name="roles" value="2">
                     @endif
 
-                    <button type="submit" class="btn btn-primary" value="Save">Creëer</button>
+                    <button type="submit" class="btn btn-primary jg-color-3 border-0" value="Save">Creëer</button>
 
                 </form>
             </div>

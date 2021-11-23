@@ -33,7 +33,7 @@
                         </div>
                     @endif
 
-                    <button type="submit" class="btn btn-primary" value="Save">Creëer</button>
+                    <button type="submit" class="btn btn-primary jg-color-3 border-0" value="Save">Opslaan</button>
 
                 </form>
             </div>
