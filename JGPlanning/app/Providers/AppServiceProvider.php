@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\BrowserDetection;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -28,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        $browser = new \App\Helpers\BrowserDetection();
+        $browser = new BrowserDetection();
         View::share('browser', $browser);
     }
 }
