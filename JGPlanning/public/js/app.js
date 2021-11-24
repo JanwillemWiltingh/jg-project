@@ -5564,7 +5564,10 @@ $(document).ready(function () {
     }
 
     console.log(search);
-  }); //  Easter Egg UwU
+  }); // $('#modal_edit').on('click', function (id) {
+  //     console.log(id);
+  // });
+  //  Easter Egg UwU
 
   var i = 0,
       timeOut = 0;
