@@ -240,6 +240,4 @@ $(document).ready(function () {
         i = 0;
         clearInterval(timeOut);
     });
-
-
 });

@@ -520,6 +520,21 @@ class User extends Authenticatable
         return CarbonInterval::seconds($time)->cascade()->forHumans();
     }
 
+    public function compareDayWorkedInSeconds(int $year, int $month, int $day): int {
+        $date = new Carbon($year.'-'.$month.'-'.$day);
+        return $this->workedInADayInSeconds($year, $month, $day) - $this->plannedWorkADayInSeconds($year, $date->weekOfYear, $day);
+    }
+
+    public function compareDayWorkedInHours(int $year, int $month, int $day, int $decimal_number=1): float {
+        $time = $this->compareDayWorkedInSeconds($year, $month, $day);
+        return number_format($time / 3600, $decimal_number);
+    }
+
+    public function compareDayWorkedForHumans(int $year, int $month, int $day): string {
+        $time = $this->compareDayWorkedInSeconds($year, $month, $day);
+        return CarbonInterval::seconds($time)->cascade()->forHumans();
+    }
+
     /**
      * Returns the compared time worked and planned in seconds from a given week
      *
@@ -537,9 +552,9 @@ class User extends Authenticatable
      * @param int $year
      * @param int $week
      * @param int $decimal_number
-     * @return int
+     * @return float
      */
-    public function compareWeekWorkedInHours(int $year, int $week, int $decimal_number=0): float {
+    public function compareWeekWorkedInHours(int $year, int $week, int $decimal_number=1): float {
         $time = $this->compareWeekWorkedInSeconds($year, $week);
         return number_format($time / 3600, $decimal_number);
     }
@@ -592,6 +607,14 @@ class User extends Authenticatable
     public function compareMonthWorkedForHumans(int $year, int $month): string {
         $time = $this->compareMonthWorkedInSeconds($year, $month);
         return CarbonInterval::seconds($time)->cascade()->forHumans();
+    }
+
+    public function fieldColorForDay(int $year, int $month, int $day): string {
+        if($this->compareDayWorkedInSeconds($year, $month, $day)) {
+            return "table-danger";
+        } else {
+            return "table-success";
+        }
     }
 
     public function fieldColorForWeek($year, $weeks): string {

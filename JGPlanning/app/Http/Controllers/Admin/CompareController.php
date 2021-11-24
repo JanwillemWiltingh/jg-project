@@ -31,6 +31,7 @@ class CompareController extends Controller
         $validated = $request->validate([
             'month' => [Rule::requiredIf($request->all() != [])],
             'weeks' => [Rule::requiredIf($request->all() != [])],
+            'day' => [Rule::requiredIf($request->all() != [])],
             'user' => [Rule::requiredIf($request->all() != [])],
             'date-format' => [Rule::requiredIf($request->all() != [])],
         ]);
@@ -38,6 +39,7 @@ class CompareController extends Controller
         //  Get current week and month
         $month = Carbon::now()->year.'-'.Carbon::now()->month;
         $weeks = Carbon::now()->year.'-W'.Carbon::now()->week;
+        $day = Carbon::now()->format('Y-m-d');
 
         //  Set the input type
         $input_field = $validated['date-format'] ?? 'month';
@@ -63,6 +65,7 @@ class CompareController extends Controller
             'user' => $user,
             'month' => $month,
             'weeks' => $weeks,
+            'day' => $day,
             'input_field' => $input_field,
         ]);
     }
@@ -72,7 +75,9 @@ class CompareController extends Controller
         $collection = collect();
         $days = collect();
 
-        if($type == 'weeks') {
+        if($type == 'day') {
+            $days->push(Carbon::parse($time));
+        }elseif ($type == 'weeks') {
             $week_number = str_replace('W', '',explode('-', $time)[1]);
             $new_date = new Carbon();
             $first_day_of_week = $new_date->setISODate(explode('-', $time)[0], $week_number);
