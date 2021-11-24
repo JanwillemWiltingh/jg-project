@@ -1,4 +1,4 @@
-@if(\Illuminate\Support\Facades\Auth::user()->role->name == "admin" || \Illuminate\Support\Facades\Auth::user()->role->name == "maintainer")
+@if(request('admin'))
     <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -15,7 +15,7 @@
                     <br>
 
                     <div class="row" id="addDisable">
-                        <form method="post" action="{{route('admin.rooster.disable_days', request('user'))}}">
+                            <form method="post" action="{{route('admin.rooster.disable_days', request('user'))}}">
                                 @csrf
                                 <label style="width: 100%">
                                     <p>Kies een dag:</p>
@@ -355,16 +355,16 @@
                 <div class="modal-body">
                     <form method="post" action="{{route('rooster.edit_disable_days', request('week') )}}">
                         @csrf
-{{--                        <input type="hidden" id="weekday_edit" name="id">--}}
+                        <input type="hidden" id="rooster_id2" name="id">
 
                         <label style="width: 49%">
                             <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week" id="start_week">
+                            <input class="form-control" type="week" name="start_week" id="start_week_disable_edit">
                         </label>
 
                         <label style="width: 49%">
                             <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week" id="end_week">
+                            <input class="form-control" type="week" name="end_week" id="end_week_disable_edit">
                         </label>
                         <input type="submit" class="btn btn-success float-right">
                     </form>
@@ -449,26 +449,26 @@
 
                         <label style="width: 49%">
                             <p>Start time:</p>
-                            <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
+                            <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                         </label>
                         <label style="width: 49%">
                             <p>End Time:</p>
-                            <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
+                            <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_end" min="08:00" max="18:00">
                         </label>
 
                         <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
                         <label style="width: 100%">
-                            <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment"></textarea>
+                            <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment" id="comment_edit"></textarea>
                         </label>
 
                         <label style="width: 49%">
                             <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week">
+                            <input class="form-control" type="week" name="start_week" id="start_date" >
                         </label>
 
                         <label style="width: 49%">
                             <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week">
+                            <input class="form-control" type="week" name="end_week" id="end_date">
                         </label>
 
                         <input class="checkbox" type="checkbox" name="from_home" id="switch-box">
