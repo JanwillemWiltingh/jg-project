@@ -1,5 +1,4 @@
 @if(request('admin'))
-    fdsdfds
     <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
