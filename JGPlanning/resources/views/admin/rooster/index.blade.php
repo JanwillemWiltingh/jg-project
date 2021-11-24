@@ -77,7 +77,7 @@
                                         </td>
                                         @for($i = 0; $i < count($days); $i++)
                                             @if(is_array($days[$i]))
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['from_home'] != "") background-color: lightblue; @else background-color:#f0f0f0; @endif border-radius: 5px;">
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['start_time'] != "") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
 
                                                     @if($days[$i]['from_home'] != "")
                                                         @if($days[$i]['from_home'] == 1)
@@ -88,7 +88,13 @@
                                                     @endif
 
                                                     @if(!$days[$i]['comment'] == "")
-                                                        {{$days[$i]['comment']}} <br>
+                                                        @if($days[$i]['comment'] == "Disabled")
+                                                            <p style="color: #000000">{{$days[$i]['comment']}}</p>
+                                                        @else
+                                                            "{{$days[$i]['comment']}}"
+                                                        @endif
+                                                    @else
+                                                        Geen opmerking
                                                     @endif
 
                                                     @if($days[$i]['comment'] == "Disabled")
