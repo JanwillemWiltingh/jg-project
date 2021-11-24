@@ -1,4 +1,5 @@
 @if(request('admin'))
+    fdsdfds
     <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -89,8 +90,8 @@
                     </div>
 
                     <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">
-                        <option>Uitgezette weken</option>
-                        <option>Weken</option>
+                        <option value="Uitgezette weken">Uitgezette weken</option>
+                        <option value="Weken">Weken</option>
                     </select>
                      Beheren
                     <hr>
