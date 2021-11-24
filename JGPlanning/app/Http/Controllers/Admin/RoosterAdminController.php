@@ -47,6 +47,16 @@ class RoosterAdminController extends Controller
      */
     public function user_rooster(CalendarService $calendarService, $user, $week, $year)
     {
+        if ($week > 52)
+        {
+            $targetYear = $year + 1;
+            return redirect('/admin/rooster/' .$user. '/1/' . $targetYear);
+        }
+        else if($week < 1)
+        {
+            $targetYear = $year - 1;
+            return redirect('/admin/rooster/' .$user. '/52/' . $targetYear);
+        }
         $disabled = DisabledDays::all()->where('user_id', $user);
         $user_info = User::find($user);
 
@@ -257,9 +267,14 @@ class RoosterAdminController extends Controller
             'start_week' => ['required'],
             'end_week' => ['required']
         ]);
+//        dd($validated);
 
-        $start_week = substr($validated['start_week'], '6');
-        $end_week = substr($validated['end_week'], '6');
+        $start_week = substr($validated['start_week'], 6);
+        $end_week = substr($validated['end_week'], 6);
+//
+//        $start_year = substr($validated['start_week'], -4);
+//        $end_year = substr($validated['end_week'], -4);
+//        dd($start_week, $end_week, $start_year, $end_year);
 
         $checkDisabled = DisabledDays::all()
             ->where('user_id', $user)
