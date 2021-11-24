@@ -5432,7 +5432,7 @@ $(document).ready(function () {
   });
 
   var _loop = function _loop(_i2) {
-    var _loop3 = function _loop3(a) {
+    var _loop5 = function _loop5(a) {
       $('#remove_disable_days' + a + _i2).on('click', function () {
         var id = $('#id_disable' + a + _i2).val();
 
@@ -5463,7 +5463,7 @@ $(document).ready(function () {
     };
 
     for (var a = 1; a <= $('#count_disable' + _i2).val(); a++) {
-      _loop3(a);
+      _loop5(a);
     }
   };
 
@@ -5472,7 +5472,7 @@ $(document).ready(function () {
   }
 
   var _loop2 = function _loop2(_i3) {
-    var _loop4 = function _loop4(a) {
+    var _loop6 = function _loop6(a) {
       $('#remove_days' + a + _i3).on('click', function () {
         var id = $('#id' + a + _i3).val();
 
@@ -5503,7 +5503,7 @@ $(document).ready(function () {
     };
 
     for (var a = 1; a <= $('#count_disable' + _i3).val(); a++) {
-      _loop4(a);
+      _loop6(a);
     }
   };
 
@@ -5564,10 +5564,7 @@ $(document).ready(function () {
     }
 
     console.log(search);
-  }); // $('#modal_edit').on('click', function (id) {
-  //     console.log(id);
-  // });
-  //  Easter Egg UwU
+  }); //  Easter Egg UwU
 
   var i = 0,
       timeOut = 0;
@@ -5582,6 +5579,31 @@ $(document).ready(function () {
     i = 0;
     clearInterval(timeOut);
   });
+
+  var _loop3 = function _loop3(_i4) {
+    $('#edit_rooster_modal' + _i4).on('click', function () {
+      $('[name="start_time"]').val($('#start_time_user_rooster' + _i4).val());
+      $('#time_picker_av_end').val($('#end_time_user_rooster' + _i4).val());
+      $('#start_date').val($('#start_rooster' + _i4).val());
+      $('#end_date').val($('#end_rooster' + _i4).val());
+      $('#comment_edit').val($('#comment' + _i4).val());
+    });
+  };
+
+  for (var _i4 = 0; _i4 < 7; _i4++) {
+    _loop3(_i4);
+  }
+
+  var _loop4 = function _loop4(_i5) {
+    $('#disabled_modal_edit' + _i5).on('click', function () {
+      $('#start_week_disable_edit').val($('#start_date_disable' + _i5).val());
+      $('#end_week_disable_edit').val($('#end_date_disable' + _i5).val());
+    });
+  };
+
+  for (var _i5 = 0; _i5 < 7; _i5++) {
+    _loop4(_i5);
+  }
 });
 
 /***/ }),

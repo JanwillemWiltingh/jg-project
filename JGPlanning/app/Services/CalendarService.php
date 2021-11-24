@@ -25,29 +25,6 @@ class CalendarService
         $array1 = [];
         $array2 = [];
 
-        $disabled_array = [];
-        $disabled_days = DisabledDays::all()
-            ->where('user_id', $userID)
-            ->where('start_week', '<=', $week_number)
-            ->where('end_week', '>=', $week_number)
-            ->sortBy('weekday');
-
-        foreach ($disabled_days as $did)
-        {
-            array_push($array1, $did->weekday);
-        }
-
-        for ($i = 0; $i < 7; $i++)
-        {
-            if (in_array($i, $array1))
-            {
-                array_push($disabled_array, 1);
-            }
-            else
-            {
-                array_push($disabled_array, null);
-            }
-        }
 
         for ($i = 0; $i < count($weekDays); $i++)
         {
@@ -59,6 +36,8 @@ class CalendarService
                 array_push($array2, $final_date->addDays(1)->format('Y-m-d'));
             }
         }
+
+
         foreach ($timeRange as $time)
         {
             $timeText = $time['start'] . ' - ' . $time['end'];
@@ -70,6 +49,41 @@ class CalendarService
 
             foreach ($weekDays as $index => $day)
             {
+                $array1 = [];
+                $disabled_array = [];
+                $disabled_days = DisabledDays::all()
+                    ->where('user_id', $userID)
+                    ->where('weekday', $index);
+
+                $disID = null;
+                foreach ($disabled_days as $dis)
+                {
+                    if ($dis->weekday == 1)
+                    {
+                        $final_dis_date_start = $date
+                            ->setISODate($dis->start_year, $dis->start_week)
+                            ->format('Y-m-d');
+                        $final_dis_date_end = $date
+                            ->setISODate($dis->end_year, $dis->end_week)
+                            ->format('Y-m-d');
+                    }
+                    else
+                    {
+                        $final_dis_date_start = $date
+                            ->setISODate($dis->start_year, $dis->start_week)
+                            ->addDays($dis->weekday)
+                            ->format('Y-m-d');
+                        $final_dis_date_end = $date
+                            ->setISODate($dis->end_year, $dis->end_week)
+                            ->addDays($dis->weekday)
+                            ->format('Y-m-d');
+                    }
+
+                    if (($array2[$index - 1] >= $final_dis_date_start) && ($array2[$index - 1] <= $final_dis_date_end)) {
+                        $disID = $dis->id;
+                    }
+                }
+
                 $lesID = null;
 
                 foreach ($lessons->where('weekdays', $index) as $les)
@@ -110,61 +124,77 @@ class CalendarService
                     $start = substr($lesson->start_time, "0", "5");
                     $end = substr($lesson->end_time, "0", "5");
                 }
-                if ($disabled_array)
+
+                if ($disID)
                 {
-                    if ($lesson)
+                    if($timeText == "08:00 - 08:30")
                     {
-                        array_push($calendarData[$timeText], [
-                            'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
-                            'from_home' => $lesson['from_home'],
-                            'comment' => $lesson['comment'],
-                            'start_time' => $start,
-                            'end_time' => $end,
-                            'id' => $lesson['id']
-                        ]);
-                    }
-                    else if ($disabled_array[$index])
-                    {
-                        if($timeText == "08:00 - 08:30")
+                        if ($disabled_days->where('id', $disID)->first())
                         {
-                            if ($disabled_days->where('weekday', $index)->first())
+                            if (strlen($disabled_days->where('id', $disID)->first()->start_week) == 1)
                             {
-                                array_push($calendarData[$timeText], [
-                                    'rowspan'      => 20,
-                                    'from_home'    => "",
-                                    'comment'      => "Disabled",
-                                    'start_time'   => "",
-                                    'end_time'     => "",
-                                    'by_admin'     => $disabled_days->where('weekday', $index)->first()->by_admin,
-                                    'disabled_id'  => $disabled_days->where('weekday', $index)->first()->id,
-                                ]);
+                                $start_week = "0" . $disabled_days->where('id', $disID)->first()->start_week;
                             }
                             else
                             {
-                                array_push($calendarData[$timeText], [
-                                    'rowspan'      => 20,
-                                    'from_home'    => "",
-                                    'comment'      => "Disabled",
-                                    'start_time'   => "",
-                                    'end_time'     => "",
-                                    'by_admin'     => 0,
-                                    'disabled_id'  => ""
-                                ]);
+                                $start_week = $disabled_days->where('id', $disID)->first()->start_week;
                             }
+
+                            if (strlen($disabled_days->where('id', $disID)->first()->end_week) == 1)
+                            {
+                                $end_week = "0" . $disabled_days->where('id', $disID)->first()->end_week;
+                            }
+                            else
+                            {
+                                $end_week = $disabled_days->where('id', $disID)->first()->end_week;
+                            }
+                            array_push($calendarData[$timeText], [
+                                'rowspan'      => 20,
+                                'from_home'    => "",
+                                'comment'      => "Onbereikbare dag.",
+                                'start_time'   => $disabled_days->where('id', $disID)->first()->start_year."-W".$start_week,
+                                'end_time'     => $disabled_days->where('id', $disID)->first()->end_year."-W".$end_week,
+                                'by_admin'     => $disabled_days->where('id', $disID)->first()->by_admin,
+                                'disabled_id'  => $disID,
+                            ]);
                         }
                         else
                         {
-                            array_push($calendarData[$timeText], 0);
+                            array_push($calendarData[$timeText], [
+                                'rowspan'      => 20,
+                                'from_home'    => "",
+                                'comment'      => "Disabled",
+                                'start_time'   => "",
+                                'end_time'     => "",
+                                'by_admin'     => 0,
+                                'disabled_id'  => ""
+                            ]);
                         }
-                    }
-                    else if (!$lessons->where('id', $lesID)->where('start_time', '<=',$time['start']. ":00")->where('end_time', '>',$time['end']. ":00")->first())
-                    {
-                        array_push($calendarData[$timeText], 1);
                     }
                     else
                     {
                         array_push($calendarData[$timeText], 0);
                     }
+                }
+                else if ($lesson)
+                {
+                    array_push($calendarData[$timeText], [
+                        'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
+                        'from_home' => $lesson['from_home'],
+                        'comment' => $lesson['comment'],
+                        'start_time' => $start,
+                        'end_time' => $end,
+                        'id' => $lesson['id']
+                    ]);
+                }
+
+                else if (!$lessons->where('id', $lesID)->where('start_time', '<=',$time['start']. ":00")->where('end_time', '>=',$time['end']. ":00")->first())
+                {
+                    array_push($calendarData[$timeText], 1);
+                }
+                else
+                {
+                    array_push($calendarData[$timeText], 0);
                 }
             }
         }
