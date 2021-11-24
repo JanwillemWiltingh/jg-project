@@ -120,6 +120,7 @@ class CalendarService
                             'comment' => $lesson['comment'],
                             'start_time' => $start,
                             'end_time' => $end,
+                            'id' => $lesson['id']
                         ]);
                     }
                     else if ($disabled_array[$index])

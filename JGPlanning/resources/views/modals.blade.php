@@ -109,7 +109,7 @@
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
                                         @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
-                                                Week <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->start_week, 'year' => request('year')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->end_week, 'year' => request('year')])}}">{{$av->end_week}}</a>
+                                                Week <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->start_week, 'year' => $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['user'=> request('user'), 'week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a>
                                                 <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="Admin">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
@@ -326,7 +326,7 @@
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
                                         @foreach($disabled->where('weekday', $i)->sortBy('start_week') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">
-                                                Week <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' => request('year')])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => request('year')])}}">{{$av->end_week}}</a>
+                                                Week <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a>
                                                 <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
@@ -355,7 +355,7 @@
                 <div class="modal-body">
                     <form method="post" action="{{route('rooster.edit_disable_days', request('week') )}}">
                         @csrf
-                        <input type="hidden" id="weekday_edit" name="id">
+{{--                        <input type="hidden" id="weekday_edit" name="id">--}}
 
                         <label style="width: 49%">
                             <p>Kies een begin week:</p>
@@ -438,13 +438,15 @@
                 <form method="post" action="{{route('rooster.edit_availability', request('week'))}}">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="weekday" id="weekday_edit">
-                        <input type="hidden" name="is_user" id="is_rooster_edit">
+                        <input type="hidden" name="weekday" id="is_rooster_edit">
+                        <input type="hidden" name="rooster_id" id="rooster_id">
                         @if(request('admin'))
                             <input type="hidden" name="user_id" value="{{request('user')}}">
                         @else
                             <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
                         @endif
+
+
                         <label style="width: 49%">
                             <p>Start time:</p>
                             <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
@@ -453,10 +455,12 @@
                             <p>End Time:</p>
                             <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                         </label>
+
                         <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
                         <label style="width: 100%">
                             <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment"></textarea>
                         </label>
+
                         <label style="width: 49%">
                             <p>Kies een begin week:</p>
                             <input class="form-control" type="week" name="start_week">
@@ -466,13 +470,14 @@
                             <p>Kies een eind week:</p>
                             <input class="form-control" type="week" name="end_week">
                         </label>
-                            <input class="checkbox" type="checkbox" name="from_home" id="switch-box">
+
+                        <input class="checkbox" type="checkbox" name="from_home" id="switch-box">
                         <label for="switch-box">
                             <p>Van thuis</p>
                         </label>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary nav-colo">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>

@@ -220,6 +220,10 @@ $(document).ready(function () {
         console.log(search);
     });
 
+    // $('#modal_edit').on('click', function (id) {
+    //     console.log(id);
+    // });
+
     //  Easter Egg UwU
     var i = 0, timeOut = 0;
     $('#easter_egg_title').on('mousedown touchstart', function(e) {
@@ -236,4 +240,6 @@ $(document).ready(function () {
         i = 0;
         clearInterval(timeOut);
     });
+
+
 });
