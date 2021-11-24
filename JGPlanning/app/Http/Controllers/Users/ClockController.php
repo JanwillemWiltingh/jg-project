@@ -135,7 +135,7 @@ class ClockController extends Controller
             }
 
         }
-//        dd(request()->path());
+
         return view('users.clock.index')->with([
             'user' => $user,
             'month' => $month,
