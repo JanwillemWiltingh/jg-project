@@ -24,7 +24,8 @@ class Clock extends Model
         'end_time',
         'date',
         'comment',
-        'user_id'
+        'user_id',
+        'deleted_at',
     ];
 
     public $timestamps = false;
