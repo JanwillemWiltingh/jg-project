@@ -181,7 +181,7 @@
             {{-- Accordion Contents --}}
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpAccordion">
                 <div class="accordion-body">
-                    Zodra je bent ingeklokt en je werktijd zit erop, klik dan op de knop <strong>'CLOCK OUT'</strong>. Hier kan je niet een aantekening aan meegeven. Kloktijden worden doorgestuurde naar de Administrators.
+                    Zodra je bent ingeklokt en je werktijd zit erop, klik dan op de knop <strong>'CLOCK OUT'</strong>. Hier kan je niet een aantekening aan meegeven. Kloktijden worden doorgestuurd naar de Administrators.
                 </div>
             </div>
         </div>
@@ -197,7 +197,7 @@
                 <div class="accordion-body">
                     Als eerste kan de gebruiker een <strong>overzicht zien van het rooster.</strong><br>
                     Als tweede kan de gebruiker zijn/haar <strong>beschikbaarheid aangeven</strong> met gebruik van het <strong>potloodje</strong> en weer <strong>verwijderen</strong> met de <strong>prullenbak.</strong><br>
-                    <strong>Verdere Informatie:</strong> Nadat u uw beschikbaarheid heeft aangegeven, zal deze te zien zijn voor alle Administrators, die deze tijden kunnen afwijzen of goedkeuren. Als dit process over is zal de uitkomst wat de Administrator heeft gekozen uw echte rooster worden.
+                    <strong>Verdere Informatie:</strong> Nadat u uw beschikbaarheid heeft aangegeven, zal deze te zien zijn voor alle Administrators, die deze tijden kunnen afwijzen of goedkeuren. Als dit process over is zal de uitkomst wat de Administrator heeft gekozen in uw echte rooster worden weergegeven.
                 </div>
             </div>
         </div>
