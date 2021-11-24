@@ -18,20 +18,21 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            img {
+                position: absolute;
+                z-index: 0;
+            }
         </style>
     </head>
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
-            <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex items-center pt-8 sm:justify-start sm:pt-0">
-                    <div class="px-4 text-lg text-gray-500 border-r border-gray-400 tracking-wider">
-                        @yield('code')
-                    </div>
+            <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%">
+            <div class="px-4 text-lg text-gray-500 border-r border-gray-400 tracking-wider" style="z-index: 5; color: black">
+                @yield('code')
+            </div>
 
-                    <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
-                        @yield('message')
-                    </div>
-                </div>
+            <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider" style="z-index: 5; color: black">
+                @yield('message')
             </div>
         </div>
     </body>
