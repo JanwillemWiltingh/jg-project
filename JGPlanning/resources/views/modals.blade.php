@@ -89,8 +89,8 @@
                     </div>
 
                     <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">
-                        <option>Uitgezette weken</option>
-                        <option>Weken</option>
+                        <option value="Uitgezette weken">Uitgezette weken</option>
+                        <option value="Weken">Weken</option>
                     </select>
                      Beheren
                     <hr>
