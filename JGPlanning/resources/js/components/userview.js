@@ -65,7 +65,7 @@ $(document).ready(function () {
     });
 
     $('#manageDropdown').on('change', function () {
-        if (this.value === "Uitgezette weken")
+        if (this.value === "Uitgezette weken" || this.value === "Uitgezette dagen")
         {
             $('#DaysDiv').hide();
             $('#disabledDaysDiv').show();

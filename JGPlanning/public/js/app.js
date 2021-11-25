@@ -5413,7 +5413,7 @@ $(document).ready(function () {
     window.location.href = "/rooster/" + this.value.substring(6) + '/' + this.value.slice(0, -4);
   });
   $('#manageDropdown').on('change', function () {
-    if (this.value === "Uitgezette weken") {
+    if (this.value === "Uitgezette weken" || this.value === "Uitgezette dagen") {
       $('#DaysDiv').hide();
       $('#disabledDaysDiv').show();
     } else {
