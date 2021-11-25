@@ -61,6 +61,7 @@ class DashboardController extends Controller
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;
 
+            //  Before 9:00 and after 17:00 round to quarters
             if(Carbon::parse('09:00')->isFuture() or Carbon::parse('17:00')->isPast()) {
                 if($rounded_minutes == 60) {
                     $time = (intval($hours) + 1).':00';
@@ -72,6 +73,7 @@ class DashboardController extends Controller
             }
 
             if($clocks->count() == 0) {
+                //  When there are no clocks add a new one
                 Clock::create([
                     'comment' => $validated['comment'],
                     'user_id' => $user['id'],
@@ -81,6 +83,7 @@ class DashboardController extends Controller
                 ]);
             } else {
                 if($clocks->last()['end_time'] != null) {
+                    //  If the last clock has an already filled in end time, make a new one
                     Clock::create([
                         'comment' => $validated['comment'],
                         'user_id' => $user['id'],
@@ -89,6 +92,7 @@ class DashboardController extends Controller
                         'date' => Carbon::now()->toDateString()
                     ]);
                 } else {
+                    //  Update the clock end time
                     $clocks->last()->update(['end_time' => $time]);
                 }
             }

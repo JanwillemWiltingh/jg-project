@@ -72,16 +72,20 @@ class CompareController extends Controller
 
     public function show(User $user, $type, $time)
     {
+        //  Make two empty collections
         $collection = collect();
         $days = collect();
 
         if($type == 'day') {
+            //  if type is day parse it and push it to the collection
             $days->push(Carbon::parse($time));
         }elseif ($type == 'weeks') {
+            //  if type is weeks get the week number and make a new date out of it
             $week_number = str_replace('W', '',explode('-', $time)[1]);
             $new_date = new Carbon();
             $first_day_of_week = $new_date->setISODate(explode('-', $time)[0], $week_number);
 
+            //  Loop through the days of the week and add them to the collection
             for ($i=0; $i<6; $i++) {
                 if($i==0) {
                     $collection->push($first_day_of_week->format('Y-m-d'));
@@ -90,6 +94,7 @@ class CompareController extends Controller
                 }
             }
 
+            //  Parse every date in the collection
             foreach($collection as $day) {
                 $parsed = Carbon::parse($day);
                 $days->push($parsed);
@@ -101,6 +106,7 @@ class CompareController extends Controller
             $new_date = new Carbon($year.'-'.$month.'-01');
             $days_of_month = $new_date->daysInMonth;
 
+            //  Loop through the month and add all days to the collection
             for($i=0; $i < $days_of_month; $i++) {
                 if($i==0) {
                     $collection->push($new_date->format('Y-m-d'));
@@ -109,6 +115,7 @@ class CompareController extends Controller
                 }
             }
 
+            //  Loop through all the days in the collection and parse them
             foreach($collection as $day) {
                 $parsed = Carbon::parse($day);
                 if($user->plannedWorkADayInSeconds($parsed->format('Y'), $parsed->weekOfYear, $parsed->format('d')) > 0 or $user->workedInADayInSeconds($parsed->format('Y'), $parsed->format('m'), $parsed->format('d')) > 0) {
