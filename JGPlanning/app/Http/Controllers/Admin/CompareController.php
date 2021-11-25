@@ -76,7 +76,7 @@ class CompareController extends Controller
         $collection = collect();
         $days = collect();
 
-        if($type == 'day') {
+        if($type == 'day') { // TODO: Make these if statements smaller with a function
             //  if type is day parse it and push it to the collection
             $days->push(Carbon::parse($time));
         }elseif ($type == 'weeks') {
@@ -90,7 +90,7 @@ class CompareController extends Controller
                 if($i==0) {
                     $collection->push($first_day_of_week->format('Y-m-d'));
                 } else {
-                    $collection->push($first_day_of_week->addDay(1)->format('Y-m-d'));
+                    $collection->push($first_day_of_week->addDay()->format('Y-m-d'));
                 }
             }
 

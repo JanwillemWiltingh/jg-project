@@ -54,7 +54,7 @@ class ClockController extends Controller
         $clocks = $user->clocks()->get();
         $entries = collect();
 
-        if($input_field == 'month') {
+        if($input_field == 'month') { // TODO: If statements shorter with functions
             //  Get the month from the month input
             $year_month = explode('-', $month)[0].'-'.explode('-', $month)[1].'-';
 
