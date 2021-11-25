@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Models\Clock;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -80,7 +81,12 @@ class ClockController extends Controller
                         //  Loop through the clocks and add the calculated time to the $time variable
                         $time = 0;
                         foreach($clocks_of_day as $clock) {
-                            $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                            if($clock['end_time'] != null) {
+                                $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
+                            } else {
+                                $time = $time + Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('Y-m-d'))->diffInSeconds(Carbon::parse($clock['start_time']));
+                            }
+
                         }
 
                         $end_time = null;

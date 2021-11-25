@@ -60,7 +60,7 @@
                                 <th scope="col" width="145">Tijd met pauze</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody><!-- TODO: Dit verbeteren :p -->
                             @if($entries->count() > 0)
                                 @foreach($entries as $entry)
                                     <tr @if($loop->index % 2 == 0) class="table-light" @endif>
