@@ -8,5 +8,8 @@ return [
     'password' => 'Wachtwoord',
     'password_confirmation' => 'Bevestig Wachtwoord',
     'roles' => 'Rollen',
-    'user' => 'Gebruiker'
+    'user' => 'Gebruiker',
+    'maintainer' => 'Beheerder',
+    'admin' => 'Administrator',
+    'employee' => 'Werknemer',
 ];
