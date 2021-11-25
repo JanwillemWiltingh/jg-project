@@ -61,16 +61,13 @@ class DashboardController extends Controller
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;
 
-            //  Before 9:00 and after 17:00 round to quarters
-            if(Carbon::parse('09:00')->isFuture() or Carbon::parse('17:00')->isPast()) {
-                if($rounded_minutes == 60) {
-                    $time = (intval($hours) + 1).':00';
-                } else {
-                    $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
-                }
+            if($rounded_minutes == 60) {
+                $time = (intval($hours) + 1).':00';
             } else {
-                $time = $now->format('H:i');
+                $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
             }
+
+            $time = $now->format('H:i');
 
             if($clocks->count() == 0) {
                 //  When there are no clocks add a new one

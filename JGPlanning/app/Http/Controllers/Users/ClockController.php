@@ -83,12 +83,16 @@ class ClockController extends Controller
                             $time = $time + Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
                         }
 
+                        $end_time = null;
+                        if($last['end_time'] != null) {
+                            $end_time = Carbon::parse($last['end_time'])->format('H:i');
+                        }
                         //  For every day add an entry to the entries variable
                         $entries->push([
                             'date' => Carbon::parse($year_month.$i)->format('Y-m-d'),
                             'day' => Carbon::parse($year_month.$i)->dayOfWeek,
                             'start_time' => Carbon::parse($first['start_time'])->format('H:i'),
-                            'end_time' => Carbon::parse($last['end_time'])->format('H:i'),
+                            'end_time' => $end_time,
                             'time' => $time,
                         ]);
                     }
