@@ -65,7 +65,7 @@
                                 @foreach($entries as $entry)
                                     <tr @if($loop->index % 2 == 0) class="table-light" @endif>
                                         <th scope="row">{{ $loop->index + 1 }}</th>
-                                        <td>{{ $entry['date'] }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($entry['date'])) }}</td>
                                         <td>{{ App\Models\Availability::WEEK_DAYS[$entry['day']] }}</td>
                                         <td>{{ $entry['start_time'] }}</td>
                                         <td>{{ $entry['end_time'] }}</td>
