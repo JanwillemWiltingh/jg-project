@@ -1,3 +1,6 @@
+@if(str_contains(url()->current(), '/admin/'))
+@endif
+
 @if(request('admin'))
     <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
         <div class="modal-dialog modal-xl" role="document">
@@ -20,7 +23,7 @@
                                 <label style="width: 100%">
                                     <p>Kies een dag:</p>
                                     <select class="form-control" name="weekday">
-                                        @for($i = 1; $i < count($weekDays); $i++)
+                                        @for($i = 1; $i <= count($weekDays); $i++)
                                             <option value="{{$i}}">{{$weekDays[$i]}}</option>
                                         @endfor
                                     </select>
@@ -164,7 +167,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Weken bewerken</h5>
+                    <h5 class="modal-title">Uitgezette Week bewerken</h5>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="{{route('admin.rooster.edit_disable_days', ['user' => request('user'), 'week' => request('week')])}}">
@@ -208,43 +211,54 @@
                             <label style="width: 100%">
                                 <p>Kies een dag:</p>
                                 <select class="form-control" name="weekday">
-                                    @for($i = 1; $i < count($weekDays); $i++)
+                                    @for($i = 1; $i <= count($weekDays); $i++)
                                         <option value="{{$i}}">{{$weekDays[$i]}}</option>
                                     @endfor
                                 </select>
                             </label>
+                            @if(str_contains(url()->current(), '/admin/'))
+                                <input type="hidden" name="user_id" value="{{request('user')}}">
+                            @else
+                                <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
+                            @endif
 
                             <label style="width:  49.8%">
                                 <p>Kies een begin week:</p>
-                                <input class="form-control" type="week" name="start_week" id="start_week">
+                                <input class="form-control" type="week" name="start_week" id="start_week" min="2000-W01" max="2100-W52">
                             </label>
 
                             <label style="width: 49.8%">
                                 <p>Kies een eind week:</p>
-                                <input class="form-control" type="week" name="end_week" id="end_week">
+                                <input class="form-control" type="week" name="end_week" id="end_week" min="2000-W01" max="2100-W52">
                             </label>
-                            <input type="submit" class="btn btn-success float-right">
+                            <input type="submit" class="btn btn-success float-right" value="Toepassen">
                         </form>
                     </div>
 
                     <div class="row"  style="display: none" id="addWeeks">
                         <form method="post" action="{{route('rooster.availability', request('week'))}}">
                             @csrf
-                                <input type="hidden" name="weekday" id="weekday">
-                                <input type="hidden" name="is_rooster" id="is_rooster">
-
-                                @if(request('admin'))
+                                @if(str_contains(url()->current(), '/admin/'))
                                     <input type="hidden" name="user_id" value="{{request('user')}}">
                                 @else
                                     <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
                                 @endif
 
-                                <label style="width: 49%">
+                                <label style="width: 100%">
+                                    <p>Kies een dag:</p>
+                                    <select class="form-control" name="weekday">
+                                        @for($i = 1; $i <= count($weekDays); $i++)
+                                            <option value="{{$i}}">{{$weekDays[$i]}}</option>
+                                        @endfor
+                                    </select>
+                                </label>
+
+                                <label style="width: 49.8%">
                                     <p>Start time:</p>
                                     <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
                                 </label>
 
-                                <label style="width: 49%">
+                                <label style="width: 49.8%">
                                     <p>End Time:</p>
                                     <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                                 </label>
@@ -256,12 +270,12 @@
 
                                 <label style="width: 49.8%">
                                     <p>Begin week:</p>
-                                    <input type="week" class="form-control" name="begin_week">
+                                    <input type="week" class="form-control" name="begin_week"  min="2000-W01" max="2100-W52">
                                 </label>
 
                                 <label style="width: 49.8%">
                                     <p>Eind week:</p>
-                                    <input type="week" class="form-control" name="week">
+                                    <input type="week" class="form-control" name="week"  min="2000-W01" max="2100-W52">
                                 </label>
 
                                 <input type="checkbox" id="switch" class="toggle-box " name="from_home" />
@@ -270,7 +284,7 @@
                                 <p class="float-right" style="margin-right: 15px">Van huis</p>
                             <br>
                             <br>
-                            <button type="submit" class="btn btn-success float-right">Submit</button>
+                            <button type="submit" class="btn btn-success float-right">Toepassen</button>
                         </form>
                     </div>
 
@@ -279,6 +293,10 @@
                         <option value="Dagen">Weken</option>
                     </select>
                     Beheren
+                    <label class="jg-color-1 submit-button-label d-none float-right" id="submit_refresh">
+                        <text class="submit-button" style="padding: 7px 15px !important; border: none !important; " id="submit_refresh_text">Toepassen</text>
+                        <div class="loader" style="opacity: 0; margin-top: -23px !important;" id="loader"></div>
+                    </label>
                     <hr>
                     <div id="DaysDiv" style="display: none">
                         <div class="row" style="overflow: hidden" style=" resize: both !important; position: inherit">
@@ -290,22 +308,42 @@
                                 </div>
                             @endfor
                             @for($i = 1; $i < count($weekDays); $i++)
-                                @if(isset($availability->where('weekdays', $i)->first()->start_week))
-                                    <div class="col-md-2 scrollbar-manage" style="overflow-y: scroll;">
-                                        <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
-                                        @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
-                                            <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
-                                                Week <a href="{{route('rooster.index',  ['week' => $av->start_week, 'year' => $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index',  ['week' => $av->start_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a>
-                                                <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
-                                                <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
-                                                </button>
-                                            </div>
-                                        @endforeach
-                                    </div>
+                                @if(str_contains(url()->current(), '/admin/'))
+                                    @if(isset($availability->where('weekdays', $i)->first()->start_week))
+                                        <div class="col-md-2 scrollbar-manage" style="overflow-y: scroll;">
+                                            <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
+                                            @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
+                                                <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
+                                                    <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}} - {{$av->end_week}}</a>
+                                                    <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
+                                                    <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="col-md-2">
+                                        </div>
+                                    @endif
                                 @else
-                                    <div class="col-md-2">
-                                    </div>
+                                    @if(isset($availability->where('weekdays', $i)->first()->start_week))
+                                        <div class="col-md-2 scrollbar-manage" style="overflow-y: scroll;">
+                                            <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
+                                            @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
+                                                <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
+                                                    <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}} - {{$av->end_week}}</a>
+                                                    <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
+                                                    <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="col-md-2">
+                                        </div>
+                                    @endif
                                 @endif
                             @endfor
                         </div>
@@ -321,12 +359,13 @@
                             @endfor
                             <br>
                             @for($i = 1; $i < count($weekDays); $i++)
-                                @if(isset($disabled->where('weekday', $i)->first()->start_week))
+                                @if(str_contains(url()->current(), '/admin/'))
+                                    @if(isset($disabled->where('user_id', request('user'))->where('weekday', $i)->first()->start_week))
                                     <div class="col-md-2 scrollbar-manage" style="height: 150px;overflow:auto;">
                                         <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
-                                        @foreach($disabled->where('weekday', $i)->sortBy('start_week') as $av)
+                                        @foreach($disabled->where('user_id', request('user'))->where('weekday', $i)->sortBy('start_week') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">
-                                                Week <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a>
+                                                <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}} - {{$av->end_week}}</a>
                                                 <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
@@ -334,9 +373,28 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    @else
+                                        <div class="col-md-2">
+                                        </div>
+                                    @endif
                                 @else
-                                    <div class="col-md-2">
-                                    </div>
+                                    @if(isset($disabled->where('user_id', \Illuminate\Support\Facades\Auth::id())->where('weekday', $i)->first()->start_week))
+                                        <div class="col-md-2 scrollbar-manage" style="height: 150px;overflow:auto;">
+                                            <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
+                                            @foreach($disabled->where('user_id', \Illuminate\Support\Facades\Auth::id())->where('weekday', $i)->sortBy('start_week') as $av)
+                                                <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">
+                                                    <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}} - {{$av->end_week}}</a>
+                                                    <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
+                                                    <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="col-md-2">
+                                        </div>
+                                    @endif
                                 @endif
                             @endfor
                         </div>
@@ -350,7 +408,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Weken bewerken</h5>
+                    <h5 class="modal-title">Uitgezette Week bewerken</h5>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="{{route('rooster.edit_disable_days', request('week') )}}">
@@ -359,14 +417,14 @@
 
                         <label style="width: 49%">
                             <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week" id="start_week_disable_edit">
+                            <input class="form-control" type="week" name="start_week" id="start_week_disable_edit"  min="2000-W01" max="2100-W52">
                         </label>
 
                         <label style="width: 49%">
                             <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week" id="end_week_disable_edit">
+                            <input class="form-control" type="week" name="end_week" id="end_week_disable_edit"  min="2000-W01" max="2100-W52">
                         </label>
-                        <input type="submit" class="btn btn-success float-right">
+                        <input type="submit" class="btn btn-success float-right" value="Toepassen">
                     </form>
                 </div>
             </div>
@@ -408,7 +466,7 @@
 
                         <label>
                             <p>Eind week:</p>
-                            <input type="week" class="form-control" name="week">
+                            <input type="week" class="form-control" name="week"  min="2000-W01" max="2100-W52">
                         </label>
 
                         <input type="checkbox" id="switch" class="toggle-box" name="from_home"/>
@@ -463,12 +521,12 @@
 
                         <label style="width: 49%">
                             <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week" id="start_date" >
+                            <input class="form-control" type="week" name="start_week" id="start_date" min="2000-W01" max="2100-W52">
                         </label>
 
                         <label style="width: 49%">
                             <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week" id="end_date">
+                            <input class="form-control" type="week" name="end_week" id="end_date"  min="2000-W01" max="2100-W52">
                         </label>
 
                         <input class="checkbox" type="checkbox" name="from_home" id="switch-box">

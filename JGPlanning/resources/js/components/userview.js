@@ -20,7 +20,7 @@ $(document).ready(function () {
     $('#admin_availability').dataTable();
 
     $('#admin-availability-dropdown').change(function () {
-        window.location = this.value;
+        window.location = "/admin/rooster/" + this.value+ "/" + $('#request_week').val() + "/" + $('#request_year').val();
     });
 
     $('#disableDays1, #disableDays2, #disableDays3, #disableDays4, #disableDays5, #disableDays6, #disableDays7').on('change', function () {
@@ -106,6 +106,9 @@ $(document).ready(function () {
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
+                        success: function () {
+                            $('#submit_refresh').removeClass('d-none');
+                        }
                     })
                 }
                 else
@@ -117,6 +120,9 @@ $(document).ready(function () {
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
+                        success: function () {
+                            $('#submit_refresh').removeClass('d-none');
+                        }
                     })
                 }
             });
@@ -139,6 +145,9 @@ $(document).ready(function () {
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
+                        success: function () {
+                            $('#submit_refresh').removeClass('d-none');
+                        }
                     })
                 }
                 else
@@ -150,12 +159,18 @@ $(document).ready(function () {
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
+                        success: function () {
+                            $('#submit_refresh').removeClass('d-none');
+                        }
                     })
                 }
             });
+
         }
     }
-
+    // $('#test').on('click', function () {
+    //     $('#submit_refresh').removeClass('d-none');
+    // });
 //    Compare table switch button UwU
     const checkbox_state = $('#time-switch').is(':checked');
 
@@ -240,6 +255,7 @@ $(document).ready(function () {
     for (let i = 0; i < 7; i++)
     {
         $('#edit_rooster_modal' + i).on('click', function () {
+            console.log($('#end_time_user_rooster' + i).val());
             $('[name="start_time"]').val($('#start_time_user_rooster' + i).val());
             $('#time_picker_av_end').val($('#end_time_user_rooster' + i).val());
             $('#start_date').val($('#start_rooster' + i).val());
@@ -251,10 +267,18 @@ $(document).ready(function () {
     for (let i = 0; i < 7; i++)
     {
         $('#disabled_modal_edit' + i).on('click', function () {
-            console.log($('#end_date_disable' + i).val());
             $('#start_week_disable_edit').val($('#start_date_disable' + i).val());
             $('#end_week_disable_edit').val($('#end_date_disable' + i).val());
         });
     }
+
+    $('#submit_refresh').on('click', function () {
+        $('#submit_refresh').css({'width': '33px', 'height' : '34px', 'transition' : 'all 0.5s'});
+        $('#submit_refresh_text').css({'opacity': '0%', 'transition' : 'all 0.5s'});
+        $('#loader').css({'opacity': '100%', 'transition' : 'all 0.5s'});
+        setTimeout(function () {
+            location.reload();
+        }, 100);
+    });
 
 });
