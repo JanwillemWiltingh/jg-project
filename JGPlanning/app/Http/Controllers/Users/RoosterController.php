@@ -175,11 +175,11 @@ class RoosterController extends Controller
             }
             if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end))
             {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
             else if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end))
             {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
         }
 
@@ -299,11 +299,11 @@ class RoosterController extends Controller
             }
             if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end))
             {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
             else if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end))
             {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
         }
 
@@ -473,11 +473,11 @@ class RoosterController extends Controller
             }
             if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end))
             {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
             else if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end))
             {
-                return back()->with(['message' => ['message' => 'de weken die je hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                return back()->with(['message' => ['message' => 'De weken die u heeft hebt ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
         }
 
