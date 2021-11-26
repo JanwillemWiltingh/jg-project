@@ -75,13 +75,11 @@
                                         @for($i = 0; $i < count($days); $i++)
                                             @if(is_array($days[$i]))
                                                 {{-- Hidden value's voor de edit functie--}}
-                                                @if(!$days[$i]['comment'] == "Disabled")
-                                                    <input type="hidden" value="{{$days[$i]['start_time']}}" id="start_time_user_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$days[$i]['end_time']}}" id="end_time_user_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
-                                                @endif
+                                                <input type="hidden" value="{{$days[$i]['start_time']}}" id="start_time_user_rooster{{$i + 1}}">
+                                                <input type="hidden" value="{{$days[$i]['end_time']}}" id="end_time_user_rooster{{$i + 1}}">
+                                                <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
+                                                <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Onbereikbare dag.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
                                                     @if($days[$i]['comment'] != "Onbereikbare dag.")
                                                         @if($days[$i]['from_home'])
@@ -95,7 +93,7 @@
                                                             @if($days[$i]['by_admin'] == 0)
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
-                                                                <input type="hidden" id="end_date_disable{{$i + 1}}" value="@if(strlen(substr($days[$i]['end_time'], 6)) == 1) 0 @endif{{$days[$i]['end_time']}}">
+                                                                <input type="hidden" id="end_date_disable{{$i + 1}}" value="{{$days[$i]['end_time']}}">
                                                                 <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
                                                             @else
                                                                 <p style="color: black">{{$days[$i]['comment']}}</p>
@@ -106,7 +104,7 @@
                                                     @else
                                                         Geen opmerking
                                                     @endif
-                                                    @if(!$days[$i]['comment'] == "Onbereikbare dag.")
+                                                    @if($days[$i]['comment'] != "Onbereikbare dag.")
                                                         <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p> <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
                                                     @endif
                                                 </th>

@@ -5378,7 +5378,7 @@ $(document).ready(function () {
   });
   $('#admin_availability').dataTable();
   $('#admin-availability-dropdown').change(function () {
-    window.location = this.value;
+    window.location = "/admin/rooster/" + this.value + "/" + $('#request_week').val() + "/" + $('#request_year').val();
   });
   $('#disableDays1, #disableDays2, #disableDays3, #disableDays4, #disableDays5, #disableDays6, #disableDays7').on('change', function () {
     var id = $('#userIdDisableDays').val();
@@ -5445,6 +5445,9 @@ $(document).ready(function () {
             url: "/rooster/manage_disable",
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function success() {
+              $('#submit_refresh').removeClass('d-none');
             }
           });
         } else {
@@ -5456,6 +5459,9 @@ $(document).ready(function () {
             url: "/admin/rooster/manage_disable",
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function success() {
+              $('#submit_refresh').removeClass('d-none');
             }
           });
         }
@@ -5485,6 +5491,9 @@ $(document).ready(function () {
             url: "/rooster/manage_day_disable",
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function success() {
+              $('#submit_refresh').removeClass('d-none');
             }
           });
         } else {
@@ -5496,6 +5505,9 @@ $(document).ready(function () {
             url: "/admin/rooster/manage_day_disable",
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function success() {
+              $('#submit_refresh').removeClass('d-none');
             }
           });
         }
@@ -5509,7 +5521,10 @@ $(document).ready(function () {
 
   for (var _i3 = 1; _i3 <= 7; _i3++) {
     _loop2(_i3);
-  } //    Compare table switch button UwU
+  } // $('#test').on('click', function () {
+  //     $('#submit_refresh').removeClass('d-none');
+  // });
+  //    Compare table switch button UwU
 
 
   var checkbox_state = $('#time-switch').is(':checked');
@@ -5582,6 +5597,7 @@ $(document).ready(function () {
 
   var _loop3 = function _loop3(_i4) {
     $('#edit_rooster_modal' + _i4).on('click', function () {
+      console.log($('#end_time_user_rooster' + _i4).val());
       $('[name="start_time"]').val($('#start_time_user_rooster' + _i4).val());
       $('#time_picker_av_end').val($('#end_time_user_rooster' + _i4).val());
       $('#start_date').val($('#start_rooster' + _i4).val());
@@ -5596,7 +5612,6 @@ $(document).ready(function () {
 
   var _loop4 = function _loop4(_i5) {
     $('#disabled_modal_edit' + _i5).on('click', function () {
-      console.log($('#end_date_disable' + _i5).val());
       $('#start_week_disable_edit').val($('#start_date_disable' + _i5).val());
       $('#end_week_disable_edit').val($('#end_date_disable' + _i5).val());
     });
@@ -5605,6 +5620,25 @@ $(document).ready(function () {
   for (var _i5 = 0; _i5 < 7; _i5++) {
     _loop4(_i5);
   }
+
+  $('#submit_refresh').on('click', function () {
+    $('#submit_refresh').css({
+      'width': '33px',
+      'height': '34px',
+      'transition': 'all 0.5s'
+    });
+    $('#submit_refresh_text').css({
+      'opacity': '0%',
+      'transition': 'all 0.5s'
+    });
+    $('#loader').css({
+      'opacity': '100%',
+      'transition': 'all 0.5s'
+    });
+    setTimeout(function () {
+      location.reload();
+    }, 100);
+  });
 });
 
 /***/ }),
