@@ -72,7 +72,7 @@
                                 <!-- Comment given with Start time -->
                                 <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                     {!! $clock['comment'] !!}
-                                </td>
+                                </td><!-- TODO: Add show to seen comments -->
                                 <!-- Edit button if user is maintainer -->
                                 @if($clock->allowedToEdit('maintainer'))
                                     <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen icon-color"></i></a></td>

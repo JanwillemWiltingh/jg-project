@@ -632,4 +632,30 @@ class User extends Authenticatable
             return "table-success";
         }
     }
+
+    public function getStartTime($date): ?string
+    {
+        $clocks = $this->clocks()->get();
+        if($clocks->count() > 0) {
+            $date_clock = $clocks->where('date', $date->format('Y-m-d'));
+            if($date_clock->count() > 0) {
+                $first = $date_clock->first();
+                return Carbon::parse($first['start_time'])->format('H:i');
+            }
+        }
+        return null;
+    }
+
+    public function getEndTime($date): ?string
+    {
+        $clocks = $this->clocks()->get();
+        if($clocks->count() > 0) {
+            $date_clock = $clocks->where('date', $date->format('Y-m-d'));
+            if($date_clock->count() > 0) {
+                $last = $date_clock->last();
+                return Carbon::parse($last['end_time'])->format('H:i');
+            }
+        }
+        return null;
+    }
 }

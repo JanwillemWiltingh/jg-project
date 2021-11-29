@@ -29,6 +29,8 @@ class ClockController extends Controller
         $user = Auth::user();
         $input_field = 'month';
 
+        $clocks = $user->clocks()->get();
+
         if($request->all() != []) {
             //  If the request is not empty validate it
             $validated = $request->validate([
@@ -52,7 +54,33 @@ class ClockController extends Controller
             $input_field = $validated['date-format'];
         }
 
-        $clocks = $user->clocks()->get();
+        $days = collect();
+        if($input_field == 'month') {
+            $days_in_month = Carbon::parse($month.'-1')->daysInMonth;
+
+            for($i=1; $i<($days_in_month+1); $i++) {
+                if($clocks->where('date', $month.'-'.sprintf('%02d', $i))->count() != 0) {
+                    $days->push(Carbon::parse($month.'-'.sprintf('%02d', $i)));
+                }
+            }
+        } elseif($input_field == 'weeks') {
+            $week_number = explode('-W', $weeks)[1];
+            $year = explode('-W', $weeks)[0];
+
+            for($i=0; $i<7; $i++) {
+                $day = Carbon::now()->setISODate($year, $week_number, $i);
+                if($clocks->where('date', $day->format('Y-m-d'))->count() != 0) {
+                    $days->push($day);
+                }
+            }
+        } else {
+            if($clocks->where('date', $day)->count() != 0) {
+                $days->push(Carbon::parse($day));
+            }
+        }
+
+
+
         $entries = collect();
 
         if($input_field == 'month') { // TODO: If statements shorter with functions
@@ -166,6 +194,7 @@ class ClockController extends Controller
                     'start_time' => Carbon::parse($first['start_time'])->format('H:i'),
                     'end_time' => Carbon::parse($last['end_time'])->format('H:i'),
                     'time' => $time,
+                    'user' => $user,
                 ]);
             }
 
@@ -173,6 +202,7 @@ class ClockController extends Controller
 
         return view('users.clock.index')->with([
             'user' => $user,
+            'days' => $days,
             'month' => $month,
             'weeks' => $weeks,
             'day' => $day,
