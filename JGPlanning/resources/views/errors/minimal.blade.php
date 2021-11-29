@@ -32,6 +32,11 @@
     </head>
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
+            <div class="logo" style="margin-bottom: 500px; margin-right: 30px;">
+                <a class="simple-text logo-normal" href="{{route('dashboard.home')}}" style="text-decoration: none;">
+                    <img style="z-index: 6;" src="{{asset('storage/img/JG planning logo.png')}}" alt="JG planning">
+                </a>
+            </div>
             <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%">
             <div class="px-4 text-lg text-gray-500 border-r border-gray-400 tracking-wider" style="z-index: 5; color: black">
                 @yield('code')

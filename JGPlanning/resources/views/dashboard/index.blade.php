@@ -12,7 +12,7 @@
         @endif
                 ">
                 <h1>Welkom </h1>
-                <a>{{$user['firstname']}}!</a>
+                <a>{{$user['firstname']}} <i class="fa-solid fa-rocket"></i></a>
             </div>
         </div>
     </div>
@@ -22,6 +22,8 @@
             <div class=" col-4">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
+                        <h3>Uren voor deze maand</h3>
+                        <hr>
                         <div class="media align-items-stretch" >
                             <div class="align-self-center">
                                 <i class="far fa-clock fa-4x"></i>
@@ -57,6 +59,8 @@
             <div class="  col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
+                        <h3>Uren voor deze week</h3>
+                        <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
                                 <i class="far fa-clock fa-4x font-weight-lighter"></i>
@@ -92,6 +96,8 @@
             <div class="  col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
+                        <h3>Uren voor vandaag</h3>
+                        <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
                                 <i class="far fa-clock fa-4x font-weight-lighter"></i>
@@ -141,9 +147,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 @if($start)
-                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null' }}" type="submit" class="btn btn-dark float-right" style="background: #CB6827 !important; border-color:  #CB6827 !important;">Clock Out</button>
+                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null' }}" type="submit" class="btn btn-dark float-right" style="background: #CB6827 !important; border-color:  #CB6827 !important;">Uitklokken</button>
                                 @else
-                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null'}}" type="submit" class="btn btn-dark float-right jg-color-2 border-0" @if(!$allowed) DISABLED @endif>Clock In</button>
+                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null'}}" type="submit" class="btn btn-dark float-right jg-color-2 border-0" @if(!$allowed) DISABLED @endif>Inklokken</button>
                                 @endif
                             </div>
                         </div>
@@ -174,8 +180,6 @@
                                     <h1>
                                         @if($user->getRoosterFromToday() != null)
                                             {{ Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') }}
-                                        @else
-                                            00:00 - 00:00
                                         @endif
                                     </h1>
                                 </div>
@@ -193,17 +197,18 @@
                                     <i class="far fa-clock fa-4x"></i>
                                 </div>
                                 <div class="media-body pl-3">
+                                    <h4>Aankomend</h4>
                                     <h4>@if($user->getNextRooster() == null) @else {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }} @endif</h4>
 
                                     @if($user->getNextRooster() == null)
-                                        <span>Geen nieuw rooster</span>
+                                        <span>Geen nieuw aankomend rooster</span>
                                     @else
                                         <span>{{ $now->addDay(1)->format('d F Y') }}</span>
                                     @endif
                                 </div>
                                 <div class="align-self-center">
                                     @if($user->getNextRooster() == null)
-                                        <h1>00:00 - 00:00</h1>
+                                        <h1></h1>
                                     @else
                                         <h1>{{ Carbon\Carbon::parse($user->getNextRooster()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getNextRooster()['end_time'])->format('H:i') }}</h1>
                                     @endif

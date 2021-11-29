@@ -6,11 +6,6 @@
     <h1>Alle Gebruikers <strong><a href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen"><i class="fa-solid fa-user-plus icon-color"></i></a></strong></h1>
     <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 25%">
     <br>
-    {{--    <h5>--}}
-    {{--        <strong>--}}
-    {{--            <a class="btn btn-primary table-label-create" href="{{route('admin.users.create')}}">Create a new User</a>--}}
-    {{--        </strong>--}}
-    {{--    </h5>--}}
     <table class="table table-hover" id="user_crud">
         <thead>
         <tr>
@@ -39,7 +34,7 @@
                 <td>{{$user['email']}}</td>
 
                 {{--Big letter maintainer--}}
-                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{ucfirst($user->role()->get()->first()->name)}}</strong> @else {{ucfirst($user->role()->get()->first()->name)}} @endif</td>
+                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>
 
                 {{--Shows if the user is soft-deleted(active) or not--}}
                 <td>

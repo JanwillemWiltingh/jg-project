@@ -156,6 +156,7 @@ class CalendarService
                                 'end_time'     => $disabled_days->where('id', $disID)->first()->end_year."-W".$end_week,
                                 'by_admin'     => $disabled_days->where('id', $disID)->first()->by_admin,
                                 'disabled_id'  => $disID,
+                                'id'           => $lesID,
                             ]);
                         }
                         else
@@ -167,7 +168,8 @@ class CalendarService
                                 'start_time'   => "",
                                 'end_time'     => "",
                                 'by_admin'     => 0,
-                                'disabled_id'  => ""
+                                'disabled_id'  => "",
+                                'id'           => "",
                             ]);
                         }
                     }
