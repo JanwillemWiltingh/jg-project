@@ -26,8 +26,22 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $now = Carbon::now();
+        $enable_time = null;
 
-        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request)]);
+        $clocks = $user->clocks()->get();
+
+        if($clocks->count() > 0) {
+            $clock = $clocks->last();
+            if($clock['end_time'] == null) {
+                $time = Carbon::parse($clock['start_time'])->addMinutes(15)->format('H:i');
+                if(!Carbon::parse($time)->isPast()) {
+                    $enable_time = $time;
+                }
+            }
+        }
+
+
+        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request), 'enable_time' => $enable_time]);
     }
 
     /**

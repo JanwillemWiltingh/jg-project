@@ -141,9 +141,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 @if($start)
-                                    <button type="submit" class="btn btn-dark float-right" style="background: #CB6827 !important; border-color:  #CB6827 !important;">Clock Out</button>
+                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null' }}" type="submit" class="btn btn-dark float-right" style="background: #CB6827 !important; border-color:  #CB6827 !important;">Clock Out</button>
                                 @else
-                                    <button type="submit" class="btn btn-dark float-right jg-color-2 border-0" @if(!$allowed) DISABLED @endif>Clock In</button>
+                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null'}}" type="submit" class="btn btn-dark float-right jg-color-2 border-0" @if(!$allowed) DISABLED @endif>Clock In</button>
                                 @endif
                             </div>
                         </div>
