@@ -7,11 +7,11 @@
                 <label>
                     <p>Kies een gebruiker waarvan je de rooster wilt bewerken</p>
                 </label>
-                <table class="table table-bordered" id="admin_availability">
+                <table class="data-table-custom" style="" id="admin_availability">
                     <thead>
-                    <tr>
-                        <th width="50%">Name</th>
-                    </tr>
+                        <tr>
+                            <th width="50%">Name</th>
+                        </tr>
                     </thead>
                     <tbody>
                     @foreach($users as $user)
