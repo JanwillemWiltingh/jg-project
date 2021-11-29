@@ -74,7 +74,7 @@ class ClockController extends Controller
 
     /**
      * @param Clock $clock
-     * @return Application|Factory|View
+     * @return Application|Factory|View|RedirectResponse
      */
     public function edit(Clock $clock){
         $user_session = Auth::user();
@@ -84,6 +84,9 @@ class ClockController extends Controller
 
         $start_time = Carbon::parse($start_time);
 
+        if(!empty($clock['deleted_at'])){
+            return redirect()->route('admin.clock.index')->with(['message'=> ['message' => 'Kan een kloktijd niet aanpassen als de tijden gedeactiveerd zijn', 'type' => 'danger']]);
+        }
         if(empty($end_time)){
             $end_time = Carbon::now()->addHours(Clock::ADD_HOURS);
         }else{

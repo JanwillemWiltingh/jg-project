@@ -72,10 +72,10 @@
                                 <!-- Comment given with Start time -->
                                 <td>{!! $clock['comment'] !!}</td>
                                 <!-- Edit button if user is maintainer -->
-                                @if($clock->allowedToEdit('maintainer'))
+                                @if($clock->allowedToEdit('maintainer') && empty($clock['deleted_at']))
                                     <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
                                 @else
-                                    <td></td>
+                                    <td><i class="fa-solid fa-user-lock"></i></td>
                                 @endif
 
                                 @if(empty($clock['deleted_at']))

@@ -134,6 +134,9 @@ class UserController extends Controller
         if($user['role_id'] == Role::getRoleID('maintainer')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
+        if(!empty($user['deleted_at'])){
+            return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Kan een gebruiker niet aanpassen als het account gedeactiveerd is', 'type' => 'danger']]);
+        }
         $roles = Role::all();
 
         return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
