@@ -26,8 +26,22 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $now = Carbon::now();
+        $enable_time = null;
 
-        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request)]);
+        $clocks = $user->clocks()->get();
+
+        if($clocks->count() > 0) {
+            $clock = $clocks->last();
+            if($clock['end_time'] == null) {
+                $time = Carbon::parse($clock['start_time'])->addMinutes(15)->format('H:i');
+                if(!Carbon::parse($time)->isPast()) {
+                    $enable_time = $time;
+                }
+            }
+        }
+
+
+        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request), 'enable_time' => $enable_time]);
     }
 
     /**
@@ -61,17 +75,16 @@ class DashboardController extends Controller
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;
 
-            if(Carbon::parse('09:00')->isFuture() or Carbon::parse('17:00')->isPast()) {
-                if($rounded_minutes == 60) {
-                    $time = (intval($hours) + 1).':00';
-                } else {
-                    $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
-                }
+            if($rounded_minutes == 60) {
+                $time = (intval($hours) + 1).':00';
             } else {
-                $time = $now->format('H:i');
+                $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
             }
 
+            $time = $now->format('H:i');
+
             if($clocks->count() == 0) {
+                //  When there are no clocks add a new one
                 Clock::create([
                     'comment' => $validated['comment'],
                     'user_id' => $user['id'],
@@ -81,6 +94,7 @@ class DashboardController extends Controller
                 ]);
             } else {
                 if($clocks->last()['end_time'] != null) {
+                    //  If the last clock has an already filled in end time, make a new one
                     Clock::create([
                         'comment' => $validated['comment'],
                         'user_id' => $user['id'],
@@ -89,6 +103,7 @@ class DashboardController extends Controller
                         'date' => Carbon::now()->toDateString()
                     ]);
                 } else {
+                    //  Update the clock end time
                     $clocks->last()->update(['end_time' => $time]);
                 }
             }

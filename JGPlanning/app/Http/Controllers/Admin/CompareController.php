@@ -31,6 +31,7 @@ class CompareController extends Controller
         $validated = $request->validate([
             'month' => [Rule::requiredIf($request->all() != [])],
             'weeks' => [Rule::requiredIf($request->all() != [])],
+            'day' => [Rule::requiredIf($request->all() != [])],
             'user' => [Rule::requiredIf($request->all() != [])],
             'date-format' => [Rule::requiredIf($request->all() != [])],
         ]);
@@ -38,6 +39,7 @@ class CompareController extends Controller
         //  Get current week and month
         $month = Carbon::now()->year.'-'.Carbon::now()->month;
         $weeks = Carbon::now()->year.'-W'.Carbon::now()->week;
+        $day = Carbon::now()->format('Y-m-d');
 
         //  Set the input type
         $input_field = $validated['date-format'] ?? 'month';
@@ -63,28 +65,36 @@ class CompareController extends Controller
             'user' => $user,
             'month' => $month,
             'weeks' => $weeks,
+            'day' => $day,
             'input_field' => $input_field,
         ]);
     }
 
     public function show(User $user, $type, $time)
     {
+        //  Make two empty collections
         $collection = collect();
         $days = collect();
 
-        if($type == 'weeks') {
+        if($type == 'day') { // TODO: Make these if statements smaller with a function
+            //  if type is day parse it and push it to the collection
+            $days->push(Carbon::parse($time));
+        }elseif ($type == 'weeks') {
+            //  if type is weeks get the week number and make a new date out of it
             $week_number = str_replace('W', '',explode('-', $time)[1]);
             $new_date = new Carbon();
             $first_day_of_week = $new_date->setISODate(explode('-', $time)[0], $week_number);
 
+            //  Loop through the days of the week and add them to the collection
             for ($i=0; $i<6; $i++) {
                 if($i==0) {
                     $collection->push($first_day_of_week->format('Y-m-d'));
                 } else {
-                    $collection->push($first_day_of_week->addDay(1)->format('Y-m-d'));
+                    $collection->push($first_day_of_week->addDay()->format('Y-m-d'));
                 }
             }
 
+            //  Parse every date in the collection
             foreach($collection as $day) {
                 $parsed = Carbon::parse($day);
                 $days->push($parsed);
@@ -96,6 +106,7 @@ class CompareController extends Controller
             $new_date = new Carbon($year.'-'.$month.'-01');
             $days_of_month = $new_date->daysInMonth;
 
+            //  Loop through the month and add all days to the collection
             for($i=0; $i < $days_of_month; $i++) {
                 if($i==0) {
                     $collection->push($new_date->format('Y-m-d'));
@@ -104,6 +115,7 @@ class CompareController extends Controller
                 }
             }
 
+            //  Loop through all the days in the collection and parse them
             foreach($collection as $day) {
                 $parsed = Carbon::parse($day);
                 if($user->plannedWorkADayInSeconds($parsed->format('Y'), $parsed->weekOfYear, $parsed->format('d')) > 0 or $user->workedInADayInSeconds($parsed->format('Y'), $parsed->format('m'), $parsed->format('d')) > 0) {

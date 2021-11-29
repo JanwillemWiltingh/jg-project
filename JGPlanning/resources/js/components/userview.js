@@ -167,12 +167,40 @@ $(document).ready(function () {
                     })
                 }
             });
-
         }
     }
     // $('#test').on('click', function () {
     //     $('#submit_refresh').removeClass('d-none');
     // });
+
+//    Disable Clock in
+    const button = $('#clock_button');
+    const enable_at = button.data('enable_at');
+
+    if(jQuery.type(button.val()) !== 'undefined') {
+        if(jQuery.type(enable_at) !== 'null') {
+            console.log('Je kan niet inklokken tot: ' + enable_at);
+
+            //  Get the current date time and make only time of it (H:i)
+            var dt = new Date();
+            var time = dt.getHours().toString().padStart(2, '0') + ':' + dt.getMinutes().toString().padStart(2, '0');
+
+            console.log('Huidige tijd: ' + time);
+
+            //  Keep checking if the enable time has passed
+            var intervalId = setInterval(function() {
+                if(time < enable_at) {
+                    //  if not passed disable the button
+                    clearInterval(intervalId);
+                    button.prop('disabled', true);
+                }
+            }, 100);
+        }
+    }
+
+
+
+
 //    Compare table switch button UwU
     const checkbox_state = $('#time-switch').is(':checked');
 
