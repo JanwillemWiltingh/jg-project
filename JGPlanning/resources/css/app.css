@@ -648,12 +648,11 @@ table.dataTable td.focus {
     border: none;
     color: white;
     text-decoration: none;
-    margin-left: 10px;
-    margin-right: 10px;
 }
 
 .previous {
     font-size: 0;
+    margin-right: 10px;
 }
 
 .previous:after {
@@ -670,6 +669,7 @@ table.dataTable td.focus {
 
 .next {
     font-size: 0;
+    margin-left: 10px;
 }
 
 .next:after {
@@ -697,23 +697,41 @@ table.dataTable td.focus {
 /*custom datatable*/
 
 .data-table-custom thead{
-    border-collapse: collapse;
+    border-collapse:collapse;
+}
+
+.data-table-custom a {
+    text-decoration: none !important;
 }
 
 .dataTable>thead>tr>th, .dataTable>tbody>tr>th, .dataTable>tfoot>tr>th, .dataTable>thead>tr>td, .dataTable>tbody>tr>td, .dataTable>tfoot>tr>td {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
+    border-radius: 5px 5px 0 0 !important;
 }
+.data-table-custom tbody{
+    box-shadow: 0 0 5px 0 lightgrey;
+    border-radius: 0 0 5px 5px !important;
+}
+
 
 .data-table-custom tr:nth-child(even){background-color: #f2f2f2;}
 
 .data-table-custom tr:hover {background-color: #ddd;}
 
 .data-table-custom th {
-    margin-bottom: 5px;
     box-shadow: 0 0 5px 0 lightgrey;
-    border-radius: 5px !important;
     text-align: left;
     background-color: var(--pagination-color);
     color: white;
+}
+
+/*Datatables inputs*/
+
+.dataTables_length select,
+.dataTables_filter input {
+    background: none;
+    border-radius: 5px;
+    border: none;
+    border-bottom: 2px solid var(--pagination-color);
 }
