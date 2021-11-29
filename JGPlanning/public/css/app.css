@@ -19669,5 +19669,88 @@ table.dataTable td.focus {
 .submit-button-label-small{
     width: 5px !important;
 }
+/*Datatables*/
 
+.dataTables_paginate {
+    margin-top: -20px;
+    float: right;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: var(--pagination-color) !important;
+    padding: 5px 15px;
+    box-shadow: 0 0 15px lightgrey;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.previous {
+    font-size: 0;
+}
+
+.previous:after {
+    content: "<<";
+    font-size: 15px;
+    background: var(--pagination-color) !important;
+    padding: 5px 15px;
+    box-shadow: 0 0 15px lightgrey;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-decoration: none !important;
+}
+
+.next {
+    font-size: 0;
+}
+
+.next:after {
+    content: ">>";
+    font-size: 15px;
+    background: var(--pagination-color) !important;
+    padding: 5px 15px;
+    box-shadow: 0 0 15px lightgrey;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    text-decoration: none !important;
+}
+
+.dataTables_filter {
+    margin-top: -34px;
+    float: right;
+}
+
+.dataTable {
+    width: 100% !important;
+    margin-bottom: 15px;
+}
+
+/*custom datatable*/
+
+.data-table-custom thead{
+    border-collapse: collapse;
+}
+
+.dataTable>thead>tr>th, .dataTable>tbody>tr>th, .dataTable>tfoot>tr>th, .dataTable>thead>tr>td, .dataTable>tbody>tr>td, .dataTable>tfoot>tr>td {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+.data-table-custom tr:nth-child(even){background-color: #f2f2f2;}
+
+.data-table-custom tr:hover {background-color: #ddd;}
+
+.data-table-custom th {
+    margin-bottom: 5px;
+    box-shadow: 0 0 5px 0 lightgrey;
+    border-radius: 5px !important;
+    text-align: left;
+    background-color: var(--pagination-color);
+    color: white;
+}
 
