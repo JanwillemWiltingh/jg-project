@@ -77,20 +77,27 @@ class ClockController extends Controller
      * @return Application|Factory|View
      */
     public function edit(Clock $clock){
+        //  Get the logged in user
         $user_session = Auth::user();
 
+        //  Get the start and end_time
         $start_time = $clock['start_time'];
         $end_time = $clock['end_time'];
 
+        //  Parse the start_time
         $start_time = Carbon::parse($start_time);
 
+        //  if end_time is set parse it else use the current time
         if(empty($end_time)){
             $end_time = Carbon::now()->addHours(Clock::ADD_HOURS);
         }else{
             $end_time = Carbon::parse($end_time);
         }
+
+        //  Calculate the difference for the start and end time
         $total_difference_in_seconds = $end_time->diffInSeconds($start_time);
         $total_difference_in_hours = $total_difference_in_seconds / 3600;
+
         return view('admin/clock-in/edit')->with(['user_session' => $user_session, 'clock' => $clock, 'total_difference' => $total_difference_in_hours]);
     }
 
@@ -101,17 +108,22 @@ class ClockController extends Controller
      */
     public function update(Clock $clock, Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'time_start' => ['required'],
-            'time_end' => ['required', 'after:time_start']
-        ]);
-        $clock->update([
-           'start_time' => $validated['time_start'],
-           'end_time'   => $validated['time_end'],
-        ]);
+        //  Validate the end and start time and update them
+        $clock->update(
+            $request->validate([
+                'start_time' => ['required'],
+                'end_time' => ['required', 'after:start_time']
+            ])
+        );
         return redirect()->back()->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success']]);
     }
-    public function destroy(Clock $clock){
+
+    /**
+     * @param Clock $clock
+     * @return RedirectResponse
+     */
+    public function destroy(Clock $clock): RedirectResponse
+    {
         if(empty($clock['deleted_at'])){
             $now = new DateTime();
             $clock->update(['deleted_at' => $now]);

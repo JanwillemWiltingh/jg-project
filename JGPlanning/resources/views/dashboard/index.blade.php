@@ -20,7 +20,6 @@
     <div class="row">
         @if(!$browser->isMobile())
             <div class=" col-4">
-
                 <div class="card">
                     <div class="card-body gradient-dashboard">
                         <h3>Uren voor deze maand</h3>
@@ -148,9 +147,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 @if($start)
-                                    <button type="submit" class="btn btn-dark float-right" style="background: #CB6827 !important; border-color:  #CB6827 !important;">Uitklokken</button>
+                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null' }}" type="submit" class="btn btn-dark float-right" style="background: #CB6827 !important; border-color:  #CB6827 !important;">Uitklokken</button>
                                 @else
-                                    <button type="submit" class="btn btn-dark float-right jg-color-2 border-0" @if(!$allowed) DISABLED @endif>Inklokken</button>
+                                    <button id="clock_button" data-enable_at="{{ $enable_time ?? 'null'}}" type="submit" class="btn btn-dark float-right jg-color-2 border-0" @if(!$allowed) DISABLED @endif>Inklokken</button>
                                 @endif
                             </div>
                         </div>

@@ -50,50 +50,92 @@
                 <div class="col-md-12">
                     <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                         <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Datum</th>
-                                <th scope="col">Dag</th>
-                                <th scope="col">Start</th>
-                                <th scope="col">Eind</th>
-                                <th scope="col" width="145">Tijd gewerkt</th>
-                                <th scope="col" width="145">Tijd met pauze</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Datum</th>
+                            <th scope="col">Dag</th>
+                            <th scope="col">Start</th>
+                            <th scope="col">Eind</th>
+                            <th scope="col">Totaal</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @if($entries->count() > 0)
-                                @foreach($entries as $entry)
-                                    <tr @if($loop->index % 2 == 0) class="table-light" @endif>
-                                        <th scope="row">{{ $loop->index + 1 }}</th>
-                                        <td>{{ $entry['date'] }}</td>
-                                        <td>{{ App\Models\Availability::WEEK_DAYS[$entry['day']] }}</td>
-                                        <td>{{ $entry['start_time'] }}</td>
-                                        <td>{{ $entry['end_time'] }}</td>
-                                        @if($num = number_format($entry['time'] / 3600, 1) - .5 < 0)
-                                            <td>0.0</td>
-                                        @else
-                                            <td>{{ number_format($entry['time'] / 3600, 1) - .5 }}</td>
-                                        @endif
-                                        <td>{{ number_format($entry['time'] / 3600, 1) }}</td>
-                                    <tr>
-                                @endforeach
-                            @else
+                        @if($days->count() > 0)
+                            @foreach($days as $work_day)
                                 <tr>
-                                    <td colspan="7">
-                                        @if($input == 'days')
-                                            Je hebt vandaag nog niet ingeklokt
-                                        @elseif($input == 'weeks')
-                                            Je hebt deze week nog niet ingeklokt
-                                        @else
-                                            Je hebt deze maand nog niet ingeklokt
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endif
+                                    <th style="width: 1%" scope="row">{{ $loop->iteration }}</th>
+                                    <td style="width: 15%">{{ $work_day->format('Y-m-d') }}</td>
+                                    <td style="width: 15%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
+                                    <td style="width: 5%">{{ $user->getStartTime($work_day) }}</td>
+                                    <td style="width: 5%">{{ $user->getEndTime($work_day) }}</td>
+                                    <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }}</td>
+                                <tr><!-- TODO: Add show to seen comments -->
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="7">
+                                    @if($input == 'days')
+                                        Je hebt vandaag nog niet ingeklokt
+                                    @elseif($input == 'weeks')
+                                        Je hebt deze week nog niet ingeklokt
+                                    @else
+                                        Je hebt deze maand nog niet ingeklokt
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
             </div>
+{{--            <div class="row">--}}
+{{--                <div class="col-md-12">--}}
+{{--                    <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">--}}
+{{--                        <thead>--}}
+{{--                            <tr>--}}
+{{--                                <th scope="col">#</th>--}}
+{{--                                <th scope="col">Datum</th>--}}
+{{--                                <th scope="col">Dag</th>--}}
+{{--                                <th scope="col">Start</th>--}}
+{{--                                <th scope="col">Eind</th>--}}
+{{--                                <th scope="col" width="145">Tijd gewerkt</th>--}}
+{{--                                <th scope="col" width="145">Tijd met pauze</th>--}}
+{{--                            </tr>--}}
+{{--                        </thead>--}}
+{{--                        <tbody><!-- TODO: Dit verbeteren :p -->--}}
+{{--                            @if($entries->count() > 0)--}}
+{{--                                @foreach($entries as $entry)--}}
+{{--                                    <tr @if($loop->index % 2 == 0) class="table-light" @endif>--}}
+{{--                                        <th scope="row">{{ $loop->index + 1 }}</th>--}}
+{{--                                        <td>{{ $entry['date'] }}</td>--}}
+{{--                                        <td>{{ App\Models\Availability::WEEK_DAYS[$entry['day']] }}</td>--}}
+{{--                                        <td>{{ $entry['start_time'] }}</td>--}}
+{{--                                        <td>{{ $entry['end_time'] }}</td>--}}
+{{--                                        @if(number_format($entry['time'] / 3600, 1) - .5 < 0)--}}
+{{--                                            <td>0.0</td>--}}
+{{--                                        @else--}}
+{{--                                            <td>{{ number_format($entry['time'] / 3600, 1) - .5 }}</td>--}}
+{{--                                        @endif--}}
+{{--                                        <td>{{ number_format($entry['time'] / 3600, 1) }}</td>--}}
+{{--                                    <tr>--}}
+{{--                                @endforeach--}}
+{{--                            @else--}}
+{{--                                <tr>--}}
+{{--                                    <td colspan="7">--}}
+{{--                                        @if($input == 'days')--}}
+{{--                                            Je hebt vandaag nog niet ingeklokt--}}
+{{--                                        @elseif($input == 'weeks')--}}
+{{--                                            Je hebt deze week nog niet ingeklokt--}}
+{{--                                        @else--}}
+{{--                                            Je hebt deze maand nog niet ingeklokt--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
+{{--                                </tr>--}}
+{{--                            @endif--}}
+{{--                        </tbody>--}}
+{{--                    </table>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             {{ $entries->appends(['date-format' => $input, 'month' => $month, 'weeks' => $weeks, 'day' => $day])->links() }}
         </div>
     </div>
