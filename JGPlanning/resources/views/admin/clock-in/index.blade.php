@@ -72,12 +72,12 @@
                                 <!-- Comment given with Start time -->
                                 <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                     {!! $clock['comment'] !!}
-                                </td><!-- TODO: Add show to seen comments -->
+                                </td><!-- TODO: Add show to see comments -->
                                 <!-- Edit button if user is maintainer -->
-                                @if($clock->allowedToEdit('maintainer'))
-                                    <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
+                                @if($clock->allowedToEdit('maintainer') && empty($clock['deleted_at']))
+                                    <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}" title="Gebruikers Uren Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
                                 @else
-                                    <td style="width: 0"></td>
+                                    <td style="width: 0"><i class="fa-solid fa-user-lock"></i></td>
                                 @endif
 
                                 @if(empty($clock['deleted_at']))
