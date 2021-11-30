@@ -79,7 +79,7 @@ class CalendarService
                             ->format('Y-m-d');
                     }
 
-                    if (($array2[$index - 1] >= $final_dis_date_start) && ($array2[$index - 1] <= $final_dis_date_end)) {
+                    if (($array2[$index - 1] > $final_dis_date_start) && ($array2[$index - 1] < $final_dis_date_end)) {
                         $disID = $dis->id;
                     }
                 }
@@ -112,7 +112,6 @@ class CalendarService
                         $lesID = $les->id;
                     }
                 }
-
                 $lesson = $lessons
                     ->where('id', $lesID)
                     ->where('weekdays', $index)
@@ -181,7 +180,7 @@ class CalendarService
                 else if ($lesson)
                 {
                     array_push($calendarData[$timeText], [
-                        'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diff($time_start)->format('%H') * 2,
+                        'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diffInMinutes($time_start) /30 ?? '',
                         'from_home' => $lesson['from_home'],
                         'comment' => $lesson['comment'],
                         'start_time' => $start,

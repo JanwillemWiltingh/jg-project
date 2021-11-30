@@ -285,7 +285,7 @@ $(document).ready(function () {
     for (let i = 0; i < 7; i++)
     {
         $('#edit_rooster_modal' + i).on('click', function () {
-            console.log($('#end_time_user_rooster' + i).val());
+            console.log($('#start_rooster' + i).val());
             $('[name="start_time"]').val($('#start_time_user_rooster' + i).val());
             $('#time_picker_av_end').val($('#end_time_user_rooster' + i).val());
             $('#start_date').val($('#start_rooster' + i).val());

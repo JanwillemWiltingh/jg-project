@@ -57,12 +57,12 @@
                                 </select>
                             </label>
                             <label style="width: 49.8%">
-                                <p>Start time:</p>
+                                <p>Begin Tijd:</p>
                                 <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
                             </label>
 
                             <label style="width: 49.8%">
-                                <p>End Time:</p>
+                                <p>Eind Tijd:</p>
                                 <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                             </label>
 
@@ -254,12 +254,12 @@
                                 </label>
 
                                 <label style="width: 49.8%">
-                                    <p>Start time:</p>
+                                    <p>Begin Tijd:</p>
                                     <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
                                 </label>
 
                                 <label style="width: 49.8%">
-                                    <p>End Time:</p>
+                                    <p>Eind Tijd:</p>
                                     <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                                 </label>
 
@@ -315,7 +315,8 @@
                                             @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
                                                 <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
 
-                                                    Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}} - {{$av->end_week}}</a>
+                                                    <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_week}}</a></p>
+                                                    <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}}</a></p>
 
                                                     <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                     <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
@@ -334,10 +335,13 @@
                                             <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
                                             @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
                                                 <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
-                                                    <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}} - {{$av->end_week}}</a>
+
+                                                    <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a></p>
+                                                    <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}}</a></p>
+
                                                     <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                     <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" >
                                                     </button>
                                                 </div>
                                             @endforeach
@@ -452,12 +456,12 @@
                         @endif
 
                         <label style="width: 49%">
-                            <p>Start time:</p>
+                            <p>Begin Tijd:</p>
                             <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
                         </label>
 
                         <label style="width: 49%">
-                            <p>End Time:</p>
+                            <p>Eind Tijd:</p>
                             <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                         </label>
 
@@ -491,11 +495,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="a">Edit Availability</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
-                <form method="post" action="{{route('rooster.edit_availability', request('week'))}}">
+                <form method="post" action="{{route('rooster.edit_availability', ['week' => request('week'), 'year' => request('year')])}}">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="weekday" id="is_rooster_edit">
@@ -506,19 +507,18 @@
                             <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
                         @endif
 
-
                         <label style="width: 49%">
-                            <p>Start time:</p>
+                            <p>Begin Tijd:</p>
                             <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                         </label>
                         <label style="width: 49%">
-                            <p>End Time:</p>
+                            <p>Eind Tijd:</p>
                             <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_end" min="08:00" max="18:00">
                         </label>
 
                         <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
                         <label style="width: 100%">
-                            <textarea rows="5" cols="68" placeholder="Comment (optioneel)" class="form-control" name="comment" id="comment_edit"></textarea>
+                            <textarea rows="5" cols="68" placeholder="Aantekening (optioneel)" class="form-control" name="comment" id="comment_edit"></textarea>
                         </label>
 
                         <label style="width: 49%">
@@ -537,7 +537,7 @@
                         </label>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary jg-color-3" style="border: none">Toepassen</button>
                     </div>
                 </form>
             </div>

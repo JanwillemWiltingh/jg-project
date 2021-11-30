@@ -19676,13 +19676,14 @@ table.dataTable td.focus {
     float: right;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+.dataTables_paginate span a {
     background: var(--pagination-color) !important;
     padding: 5px 15px;
     box-shadow: 0 0 15px lightgrey;
     border-radius: 5px;
     border: none;
     color: white;
+    margin: 5px;
     text-decoration: none;
 }
 

@@ -78,8 +78,18 @@
                                                 <input type="hidden" value="{{$days[$i]['start_time']}}" id="start_time_user_rooster{{$i + 1}}">
                                                 <input type="hidden" value="{{$days[$i]['end_time']}}" id="end_time_user_rooster{{$i + 1}}">
                                                 @if($availability->where('id', $days[$i]['id'])->first())
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @if(strlen($availability->where('id', $days[$i]['id'])->first()->start_week) == 2)
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
+                                                    @else
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W0{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
+                                                    @endif
+
+                                                    @if(strlen($availability->where('id', $days[$i]['id'])->first()->end_week) == 2)
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @else
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W0{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @endif
+
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
                                                 <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Uitgezet door admin.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
