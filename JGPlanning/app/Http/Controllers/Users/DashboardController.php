@@ -31,13 +31,17 @@ class DashboardController extends Controller
         $clocks = $user->clocks()->get();
 
         if($clocks->count() > 0) {
-            $clock = $clocks->last();
-            if($clock['end_time'] == null) {
-                $time = Carbon::parse($clock['start_time'])->addMinutes(15)->format('H:i');
-                if(!Carbon::parse($time)->isPast()) {
-                    $enable_time = $time;
+            $clock_today = $clocks->where('date', Carbon::now()->format('Y-m-d'));
+            if($clock_today->count() > 0) {
+                $clock = $clock_today->last();
+                if($clock['end_time'] == null) {
+                    $time = Carbon::parse($clock['start_time'])->addMinutes(15)->format('H:i');
+                    if(!Carbon::parse($time)->isPast()) {
+                        $enable_time = $time;
+                    }
                 }
             }
+
         }
 
 
