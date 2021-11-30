@@ -44,9 +44,9 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Gebruiker</th>
-                        <th scope="col">Start tijd</th>
-                        <th scope="col">Eind tijd</th>
-                        <th scope="col">Totaal ingeklokt</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">Eind</th>
+                        <th scope="col">Totaal</th>
                         <th scope="col">Aantekening</th>
                         <th></th>
                         <th></th>
@@ -57,33 +57,35 @@
                         @foreach($clocks as $clock)
                             <tr @if($clock['deleted_at']) class="table-danger" @endif>
                                 <!-- Table index -->
-                                <th scope="row">{{ $loop->index + 1 }}</th>
+                                <th style="width: 1%" scope="row">{{ $loop->index + 1 }}</th>
 
                                 <!-- User full name -->
-                                <td>{{ $clock->getUserData('firstname') }} {{ $clock->getUserData('middlename') }} {{ $clock->getUserData('lastname') }}</td>
+                                <td style="width: 20%">{{ $clock->getUserData('firstname') }} {{ $clock->getUserData('middlename') }} {{ $clock->getUserData('lastname') }}</td>
 
                                 <!-- Start and End time of clock -->
-                                <td>{{ $clock->reformatTime('start_time') }}</td>
-                                <td>{{ $clock->reformatTime('end_time') }}</td>
+                                <td style="width: 7%">{{ $clock->reformatTime('start_time') }}</td>
+                                <td style="width: 7%">{{ $clock->reformatTime('end_time') }}</td>
 
                                 <!-- Time between Start and End time -->
-                                <td>{{ $clock->timeWorkedInHours($clock['start_time'], $clock['end_time'], 2) }} uur</td>
+                                <td style="width: 13%">{{ $clock->timeWorkedInHours($clock['start_time'], $clock['end_time'], 2) }} uur</td>
 
                                 <!-- Comment given with Start time -->
-                                <td>{!! $clock['comment'] !!}</td>
+                                <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    {!! $clock['comment'] !!}
+                                </td><!-- TODO: Add show to seen comments -->
                                 <!-- Edit button if user is maintainer -->
-                                @if($clock->allowedToEdit('maintainer') && empty($clock['deleted_at']))
-                                    <td><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
+                                @if($clock->allowedToEdit('maintainer'))
+                                    <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
                                 @else
-                                    <td><i class="fa-solid fa-user-lock"></i></td>
+                                    <td style="width: 0"></td>
                                 @endif
 
                                 @if(empty($clock['deleted_at']))
                                 {{--If NOT deleted--}}
-                                    <td><a class="table-label-red" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruikers Uren Verwijderen"><i class="fa-solid fa-user-slash"></i></a></td>
+                                    <td style="width: 1%;"><a class="table-label-red" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruikers Uren Verwijderen"><i class="fa-solid fa-user-slash"></i></a></td>
                                 @else
                                 {{--If deleted--}}
-                                    <td><a class="table-label-green" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i></a></td>
+                                    <td style="width: 1%;"><a class="table-label-green" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i></a></td>
                                 @endif
                             </tr>
                         @endforeach

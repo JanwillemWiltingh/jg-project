@@ -22,8 +22,6 @@ $(document).ready(function () {
             "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Dutch.json"
         },
     });
-    console.log($('.dataTables_filter input'))
-    $('.dataTables_filter input').css('background', 'none');
 
     $('#admin-availability-dropdown').change(function () {
         window.location = "/admin/rooster/" + this.value+ "/" + $('#request_week').val() + "/" + $('#request_year').val();
@@ -169,12 +167,40 @@ $(document).ready(function () {
                     })
                 }
             });
-
         }
     }
     // $('#test').on('click', function () {
     //     $('#submit_refresh').removeClass('d-none');
     // });
+
+//    Disable Clock in
+    const button = $('#clock_button');
+    const enable_at = button.data('enable_at');
+
+    if(jQuery.type(button.val()) !== 'undefined') {
+        if(jQuery.type(enable_at) !== 'null') {
+            console.log('Je kan niet inklokken tot: ' + enable_at);
+
+            //  Get the current date time and make only time of it (H:i)
+            var dt = new Date();
+            var time = dt.getHours().toString().padStart(2, '0') + ':' + dt.getMinutes().toString().padStart(2, '0');
+
+            console.log('Huidige tijd: ' + time);
+
+            //  Keep checking if the enable time has passed
+            var intervalId = setInterval(function() {
+                if(time < enable_at) {
+                    //  if not passed disable the button
+                    clearInterval(intervalId);
+                    button.prop('disabled', true);
+                }
+            }, 100);
+        }
+    }
+
+
+
+
 //    Compare table switch button UwU
     const checkbox_state = $('#time-switch').is(':checked');
 
@@ -284,5 +310,4 @@ $(document).ready(function () {
             location.reload();
         }, 100);
     });
-
 });

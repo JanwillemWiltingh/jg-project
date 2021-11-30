@@ -10,15 +10,15 @@
                 <table class="data-table-custom" style="" id="admin_availability">
                     <thead>
                         <tr>
-                            <th width="50%">Name</th>
+                            <th width="50%">Naam</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($users as $user)
-                        <tr>
-                            <td><a href="{{route('admin.rooster.user_rooster', ['user' => $user->id, 'week' => \Carbon\Carbon::now()->week, 'year' => date('Y')])}}">{{$user['firstname']}} {{$user['lastname']}} <i class="fa fa-arrow-right" style="text-align: right"></i></a></td>
-                        </tr>
-                    @endforeach
+                        @foreach($users as $user)
+                            <tr>
+                                <td><a href="{{route('admin.rooster.user_rooster', ['user' => $user->id, 'week' => \Carbon\Carbon::now()->week, 'year' => date('Y')])}}">{{$user['firstname']}} {{$user['middlename']}} {{$user['lastname']}} <i class="fa fa-arrow-right" style="text-align: right"></i></a></td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
