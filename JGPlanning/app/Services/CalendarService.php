@@ -151,7 +151,7 @@ class CalendarService
                             array_push($calendarData[$timeText], [
                                 'rowspan'      => 20,
                                 'from_home'    => "",
-                                'comment'      => "Onbereikbare dag.",
+                                'comment'      => "Uitgezet door admin.",
                                 'start_time'   => $disabled_days->where('id', $disID)->first()->start_year."-W".$start_week,
                                 'end_time'     => $disabled_days->where('id', $disID)->first()->end_year."-W".$end_week,
                                 'by_admin'     => $disabled_days->where('id', $disID)->first()->by_admin,
@@ -164,7 +164,7 @@ class CalendarService
                             array_push($calendarData[$timeText], [
                                 'rowspan'      => 20,
                                 'from_home'    => "",
-                                'comment'      => "Disabled",
+                                'comment'      => "Uitgezet door admin",
                                 'start_time'   => "",
                                 'end_time'     => "",
                                 'by_admin'     => 0,

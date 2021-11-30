@@ -5380,8 +5380,6 @@ $(document).ready(function () {
       "url": "//cdn.datatables.net/plug-ins/1.10.18/i18n/Dutch.json"
     }
   });
-  console.log($('.dataTables_filter input'));
-  $('.dataTables_filter input').css('background', 'none');
   $('#admin-availability-dropdown').change(function () {
     window.location = "/admin/rooster/" + this.value + "/" + $('#request_week').val() + "/" + $('#request_year').val();
   });
