@@ -37,7 +37,6 @@ class CalendarService
             }
         }
 
-
         foreach ($timeRange as $time)
         {
             $timeText = $time['start'] . ' - ' . $time['end'];
@@ -86,8 +85,10 @@ class CalendarService
 
                 $lesID = null;
 
+
                 foreach ($lessons->where('weekdays', $index) as $les)
                 {
+
                     if ($index == 1) {
                         $final_db_date_start = $date
                             ->setISODate($les->start_year, $les->start_week)
@@ -100,18 +101,21 @@ class CalendarService
                     {
                         $final_db_date_start = $date
                             ->setISODate($les->start_year, $les->start_week)
-                            ->addDays(1)
+                            ->addDays($les->weekdays)
                             ->format('Y-m-d');
                         $final_db_date_end = $date
                             ->setISODate($les->end_year, $les->end_week)
-                            ->addDays(1)
+                            ->addDays($les->weekdays)
                             ->format('Y-m-d');
                     }
+
                     if (($array2[$index - 1] >= $final_db_date_start) && ($array2[$index - 1] <= $final_db_date_end))
                     {
                         $lesID = $les->id;
                     }
                 }
+
+
                 $lesson = $lessons
                     ->where('id', $lesID)
                     ->where('weekdays', $index)
