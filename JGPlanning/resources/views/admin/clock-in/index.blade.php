@@ -26,7 +26,7 @@
                                     <!-- Date Picker -->
                                     <div class="form-group">
                                         <label for="date">Datum</label>
-                                        <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now }}">
+                                        <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now ?? $clock['date'] }}">
                                     </div>
                                     <button type="submit" class="btn btn-primary jg-color-3 border-0">Selecteer</button>
                                 </form>
@@ -48,6 +48,7 @@
                         <th scope="col">Eind</th>
                         <th scope="col">Totaal</th>
                         <th scope="col">Aantekening</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -87,6 +88,7 @@
                                 {{--If deleted--}}
                                     <td style="width: 1%;"><a class="table-label-green" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i></a></td>
                                 @endif
+                                <td style="width: 1%"><a class="table-label" href="{{route('admin.clock.show', $clock['id'])}}" title="Gebruikers Uren Bekijken"><i class="fa fa-eye icon-color"></i></a></td>
                             </tr>
                         @endforeach
                     @else

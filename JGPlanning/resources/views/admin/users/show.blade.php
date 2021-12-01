@@ -6,7 +6,6 @@
         <div class="card">
             <div class="card-body">
             {{--  USER ID  --}}
-
                     <div class="row">
                         <div class="form-group">
                             <label class="black-label-text" for="id">Gebruiker Id</label>
