@@ -134,6 +134,9 @@ class UserController extends Controller
         if($user['role_id'] == Role::getRoleID('maintainer')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
+        if(!empty($user['deleted_at'])){
+            return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Kan een gebruiker niet aanpassen als het account gedeactiveerd is', 'type' => 'danger']]);
+        }
         $roles = Role::all();
 
         return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
@@ -177,7 +180,7 @@ class UserController extends Controller
             'role_id' => $validated['roles'],
         ]);
 
-        return redirect()->route('admin.users.index')->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
+        return redirect()->route('admin.users.index')->with(['message' => ['message' => 'Gebruiker succesvol bewerkt', 'type' => 'success']]);
     }
 
     /**
@@ -207,10 +210,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Verwijderd!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol verwijderd!', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Hersteld!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol hersteld!', 'type' => 'success']]);
         }
     }
 }

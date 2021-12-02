@@ -47,7 +47,7 @@
 
                 {{-- Check if the user is allowed to edit the user --}}
                 <td>
-                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin'))
+                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))
                         @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
                             <i class="fa-solid fa-user-lock"></i>
                         @else
@@ -56,7 +56,7 @@
                             </strong>
                         @endif
                     @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer'))
+                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
                             <strong>
                                 <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
                             </strong>

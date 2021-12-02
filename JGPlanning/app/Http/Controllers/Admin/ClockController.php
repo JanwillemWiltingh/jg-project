@@ -74,7 +74,7 @@ class ClockController extends Controller
 
     /**
      * @param Clock $clock
-     * @return Application|Factory|View
+     * @return Application|Factory|View|RedirectResponse
      */
     public function edit(Clock $clock){
         //  Get the logged in user
@@ -87,6 +87,9 @@ class ClockController extends Controller
         //  Parse the start_time
         $start_time = Carbon::parse($start_time);
 
+        if(!empty($clock['deleted_at'])){
+            return redirect()->route('admin.clock.index')->with(['message'=> ['message' => 'Kan een kloktijd niet aanpassen als de tijden gedeactiveerd zijn', 'type' => 'danger']]);
+        }
         //  if end_time is set parse it else use the current time
         if(empty($end_time)){
             $end_time = Carbon::now()->addHours(Clock::ADD_HOURS);
@@ -108,14 +111,18 @@ class ClockController extends Controller
      */
     public function update(Clock $clock, Request $request): RedirectResponse
     {
+        $date = $clock['date'];
         //  Validate the end and start time and update them
-        $clock->update(
-            $request->validate([
-                'start_time' => ['required'],
-                'end_time' => ['required', 'after:start_time']
-            ])
-        );
-        return redirect()->back()->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success']]);
+        $valitated = $request->validate([
+            'time_start' => ['required'],
+            'time_end' => ['required', 'after:time_start']
+        ]);
+        $clock->update([
+            'start_time' => $valitated['time_start'],
+            'end_time' => $valitated['time_end'],
+        ]);
+
+        return redirect()->route('admin.clock.index')->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success'], 'date' => $date]);
     }
 
     /**
@@ -127,10 +134,10 @@ class ClockController extends Controller
         if(empty($clock['deleted_at'])){
             $now = new DateTime();
             $clock->update(['deleted_at' => $now]);
-            return redirect()->route('admin.clock.index')->with(['message'=>['message' => 'Uren succesvol gedeactiveerd!', 'type' => 'success']]);
+            return redirect()->back()->with(['message'=>['message' => 'Uren succesvol gedeactiveerd!', 'type' => 'success']]);
         }else{
             $clock->update(['deleted_at' => NULL]);
-            return redirect()->route('admin.clock.index')->with(['message'=>['message' => 'Uren succesvol geactiveerd!', 'type' => 'success']]);
+            return redirect()->back()->with(['message'=>['message' => 'Uren succesvol geactiveerd!', 'type' => 'success']]);
         }
     }
 }

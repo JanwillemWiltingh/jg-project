@@ -39,7 +39,7 @@
                                         id="roles">
                                     @foreach($roles as $role)
                                         <option value="{{$role['id']}}"
-                                                @if(old('roles') == $role['id'])
+                                                @if(old('roles') == $role['id'] || $user['role_id'] == $role['id'])
                                                 selected
                                             @endif>
                                             {{__('general.' .$role['name'])}}
