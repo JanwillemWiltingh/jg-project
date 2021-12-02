@@ -64,7 +64,7 @@
                             @foreach($days as $work_day)
                                 <tr>
                                     <th style="width: 1%" scope="row">{{ $loop->iteration }}</th>
-                                    <td style="width: 15%">{{ $work_day->format('Y-m-d') }}</td>
+                                    <td style="width: 15%">{{ $work_day->format('d-m-Y') }}</td>
                                     <td style="width: 15%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
                                     <td style="width: 5%">{{ $user->getStartTime($work_day) }}</td>
                                     <td style="width: 5%">{{ $user->getEndTime($work_day) }}</td>

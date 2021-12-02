@@ -192,15 +192,15 @@
                                 <!-- Show buttons -->
                                 <td style="width: 5px">
                                     @if($input_field == 'day')
-                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $day]) }}">
+                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $day]) }}" title="Uren bekijken">
                                             <i class="fa fa-eye icon-color"></i>
                                         </a>
                                     @elseif($input_field == 'weeks')
-                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $weeks]) }}">
+                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $weeks]) }}" title="Uren bekijken">
                                             <i class="fa fa-eye icon-color"></i>
                                         </a>
                                     @else
-                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $month]) }}">
+                                        <a href="{{ route('admin.compare.show', ['user' => $user['id'], 'type' => $input_field, 'time' => $month]) }}" title="Uren bekijken">
                                             <i class="fa fa-eye icon-color"></i>
                                         </a>
                                     @endif
