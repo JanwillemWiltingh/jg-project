@@ -372,10 +372,9 @@
                                         @foreach($disabled->where('user_id', request('user'))->where('weekday', $i)->sortBy('start_week')->sortBy('start_year') as $av)
                                             <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">
 
-                                                <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a></p>
-                                                <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}}</a></p>
+                                                <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_week}}</a></p>
+                                                <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}}</a></p>
 
-{{--                                                <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}} - {{$av->end_week}}</a>--}}
                                                 <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                 <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
                                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
@@ -397,12 +396,17 @@
                                                     <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a></p>
                                                     <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}}</a></p>
 
-{{--                                                    <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}} - {{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}} - {{$av->end_week}}</a>--}}
-
                                                     <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
                                                     <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
-                                                    </button>
+                                                    @if(\Illuminate\Support\Facades\Auth::user()->role->name == "admin" || \Illuminate\Support\Facades\Auth::user()->role->name == "maintainer")
+                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
+                                                        </button>
+                                                    @else
+                                                        @if($av->by_admin != true)
+                                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
+                                                            </button>
+                                                        @endif
+                                                    @endif
                                                 </div>
                                             @endforeach
                                         </div>

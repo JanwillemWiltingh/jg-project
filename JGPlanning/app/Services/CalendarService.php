@@ -36,7 +36,6 @@ class CalendarService
                 array_push($array2, $final_date->addDays(1)->format('Y-m-d'));
             }
         }
-
         foreach ($timeRange as $time)
         {
             $timeText = $time['start'] . ' - ' . $time['end'];
@@ -48,66 +47,40 @@ class CalendarService
 
             foreach ($weekDays as $index => $day)
             {
-                $array1 = [];
-                $disabled_array = [];
                 $disabled_days = DisabledDays::all()
                     ->where('user_id', $userID)
                     ->where('weekday', $index);
-
                 $disID = null;
                 foreach ($disabled_days as $dis)
                 {
-                    if ($dis->weekday == 1)
-                    {
-                        $final_dis_date_start = $date
-                            ->setISODate($dis->start_year, $dis->start_week)
-                            ->format('Y-m-d');
-                        $final_dis_date_end = $date
-                            ->setISODate($dis->end_year, $dis->end_week)
-                            ->format('Y-m-d');
-                    }
-                    else
-                    {
-                        $final_dis_date_start = $date
-                            ->setISODate($dis->start_year, $dis->start_week)
-                            ->addDays($dis->weekday)
-                            ->format('Y-m-d');
-                        $final_dis_date_end = $date
-                            ->setISODate($dis->end_year, $dis->end_week)
-                            ->addDays($dis->weekday)
-                            ->format('Y-m-d');
-                    }
 
-                    if (($array2[$index - 1] > $final_dis_date_start) && ($array2[$index - 1] < $final_dis_date_end)) {
+                    $final_dis_date_start = $date
+                        ->setISODate($dis->start_year, $dis->start_week)
+                        ->addDays($dis->weekday - 1)
+                        ->format('Y-m-d');
+                    $final_dis_date_end = $date
+                        ->setISODate($dis->end_year, $dis->end_week)
+                        ->addDays($dis->weekday - 1)
+                        ->format('Y-m-d');
+
+                    if (($array2[$index - 1] >= $final_dis_date_start) && ($array2[$index - 1] <= $final_dis_date_end)) {
                         $disID = $dis->id;
                     }
                 }
+//                echo $disID. "<br>";
 
                 $lesID = null;
 
-
                 foreach ($lessons->where('weekdays', $index) as $les)
                 {
-
-                    if ($index == 1) {
-                        $final_db_date_start = $date
-                            ->setISODate($les->start_year, $les->start_week)
-                            ->format('Y-m-d');
-                        $final_db_date_end = $date
-                            ->setISODate($les->end_year, $les->end_week)
-                            ->format('Y-m-d');
-                    }
-                    else
-                    {
-                        $final_db_date_start = $date
-                            ->setISODate($les->start_year, $les->start_week)
-                            ->addDays($les->weekdays)
-                            ->format('Y-m-d');
-                        $final_db_date_end = $date
-                            ->setISODate($les->end_year, $les->end_week)
-                            ->addDays($les->weekdays)
-                            ->format('Y-m-d');
-                    }
+                    $final_db_date_start = $date
+                        ->setISODate($les->start_year, $les->start_week)
+                        ->addDays($les->weekdays - 1)
+                        ->format('Y-m-d');
+                    $final_db_date_end = $date
+                        ->setISODate($les->end_year, $les->end_week)
+                        ->addDays($les->weekdays - 1)
+                        ->format('Y-m-d');
 
                     if (($array2[$index - 1] >= $final_db_date_start) && ($array2[$index - 1] <= $final_db_date_end))
                     {

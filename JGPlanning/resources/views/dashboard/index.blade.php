@@ -12,12 +12,12 @@
         @endif
                 ">
                 <h1>Welkom </h1>
-                <a>{{$user['firstname']}} <i class="fa-solid fa-rocket"></i></a>
+                <a @if($browser->isMobile()) style="font-size: 22px; top: 13px" @endif>{{$user['firstname']}} @if(!$browser->isMobile())<i class="fa-solid fa-rocket"></i>@endif</a>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div @if($browser->isMobile())style="width: 105% !important;" @else class="row"@endif>
         @if(!$browser->isMobile())
             <div class=" col-4">
                 <div class="card">
@@ -131,7 +131,7 @@
         </div>
     @endif
     <div class="row">
-        <div class="@if(!$browser->isMobile()) col-6 @endif">
+        <div class="@if(!$browser->isMobile()) col-6 @endif" @if($browser->isMobile()) style="width: 32479px !important;" @endif>
             <div class="card">
                 <div class="card-body ">
                     <form action="{{ route('dashboard.clock') }}" method="post">
@@ -158,8 +158,7 @@
             </div>
         </div>
 
-        @if(!$browser->isMobile())
-        <div class="col-6">
+        <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="row">
                 <div class="col-12" style="margin-bottom: -31px !important">
                     <div class="card" style="height: 72% !important;">
@@ -219,7 +218,6 @@
                 </div>
             </div>
         </div>
-        @endif
     </div>
 <a style="color: white; cursor: pointer" id="changeFont" target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
 @endsection

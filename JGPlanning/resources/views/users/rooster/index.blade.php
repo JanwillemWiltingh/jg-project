@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-{{--    @dd($calendarData)--}}
 @include('modals')
 
 <div class="content fadeInDown">
@@ -18,7 +17,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header ">
-                    <div class="card-body">
+                    <div class="card-body" @if(App\Models\Browser::isMobile()) style="width: 120% !important; right: 10%" @endif>
                         @if(session('status'))
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}
@@ -59,12 +58,21 @@
                             </form>
                             <table class="card-body table table-bordered">
                                 <thead>
-                                <th width="14%" style="border: none; text-align: center">Time</th>
-                                @for($i = 1; $i < count($weekDays) + 1; $i++)
-                                    <th width="14%" style="border: none; text-align: center;">
-                                        {{ $weekDays[$i] }}
-                                    </th>
-                                @endfor
+                                @if(!App\Models\Browser::isMobile())
+                                    <th width="14%" style="border: none; text-align: center">Tijd</th>
+                                    @for($i = 1; $i < count($weekDays) + 1; $i++)
+                                        <th width="14%" style="border: none; text-align: center;">
+                                            {{ $weekDays[$i] }}
+                                        </th>
+                                    @endfor
+                                @else
+                                    <th style="border: none; text-align: center; font-size: 12px">Tijd</th>
+                                    @for($i = 1; $i < count(App\Models\Availability::WEEK_DAYS_MOB) + 1; $i++)
+                                        <th style="border: none; text-align: center; font-size: 12px">
+                                            {{ App\Models\Availability::WEEK_DAYS_MOB[$i] }}
+                                        </th>
+                                    @endfor
+                                @endif
                                 </thead>
                                 <tbody>
                                 @foreach($calendarData as $time => $days)
