@@ -27,6 +27,8 @@ The above copyright notice and this permission notice shall be included in all c
 
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
+        <!-- Calender -->
+
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="{{asset('storage/favicon/apple-touch-icon.png')}}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{asset('storage/favicon/favicon-32x32.png')}}">
@@ -282,6 +284,7 @@ The above copyright notice and this permission notice shall be included in all c
             </div>
         </div>
         {{--JS--}}
+
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
 {{--        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>--}}

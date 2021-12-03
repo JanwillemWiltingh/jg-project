@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
+use Acaronlex\LaravelCalendar\Calendar;
 use Carbon\Carbon;
 use DateTime;
 use App\Models\{DisabledDays, Rooster, User};
-use LaravelFullCalendar\Calendar;
 
 class RosterService
 {
-    public function generateRosterData($user_id): Calendar
+    public function generateRosterData($user_id)
     {
         $date = Carbon::now();
         $events = [];
@@ -18,7 +18,6 @@ class RosterService
         if($data->count()){
             foreach ($data as $d)
             {
-
                 $final_date_start = $date
                     ->setISODate($d->start_year, $d->start_week)
                     ->addDays($d->weekday - 1)
@@ -32,13 +31,11 @@ class RosterService
                     'title',
                     true,
                     $final_date_start,
-                    $final_date_end
+                    $final_date_end. '+ 1 day',
+                    null,
                 );
             }
         }
-
-        $roster_data = Calendar::addEvents($events);
-        dd($roster_data);
-        return Calendar::addEvents($events);
+        return (new \Acaronlex\LaravelCalendar\Calendar)->addEvents($events);
     }
 }

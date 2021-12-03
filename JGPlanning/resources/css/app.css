@@ -4,6 +4,8 @@
 
 @import "login.css";
 
+@import "main.css";
+
 :root {
     /* Ik ben lui dus heb deze aangemaakt */
     --pagination-color: #1C88A4;

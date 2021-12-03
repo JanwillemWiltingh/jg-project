@@ -118,7 +118,8 @@ class RoosterController extends Controller
             'weekstring',
             'disabled_array',
             'disabled_days',
-            'disabled'
+            'disabled',
+            'roster'
         ));
     }
 

@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     // Menu Button
     $('.toggle-btn').on('click', 	function(){
         $(this).toggleClass('onclick');
