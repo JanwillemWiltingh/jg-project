@@ -8,7 +8,7 @@
         <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 100%">
     </div>
     <div style="display: inline-block">
-        <a class="btn btn-primary jg-color-3 border-0" href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen">Nieuwe gebruiker toevoegen</a>
+        <a class="btn btn-primary jg-color-3 border-0" href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
     </div>
 
     <br>
