@@ -66,9 +66,9 @@ class DashboardController extends Controller
 
             //  When someone clocks in before or after working hours give an error message and don't clock them in
             if(!$user->isClockedIn()) {
-                if($start_time->isFuture()) {
+                if($start_time->isPast()) {
                     return redirect()->back()->with(['message'=> ['message' => 'Er kan pas vanaf 08:30 ingeklokt worden', 'type' => 'danger']]);
-                } elseif ($end_time->isPast()) {
+                } elseif ($end_time->isFuture()) {
                     return redirect()->back()->with(['message' => ['message' => 'Werktijden zijn voorbij, er kan niet meer ingeklokt worden', 'type' => 'danger']]);
                 }
             }
