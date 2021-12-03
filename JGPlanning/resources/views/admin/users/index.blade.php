@@ -3,8 +3,14 @@
 @section('content')
 <div class="fadeInDown crud-table">
 
-    <h1>Alle Gebruikers <strong><a href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen"><i class="fa-solid fa-user-plus icon-color"></i></a></strong></h1>
-    <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 25%">
+    <h1>Alle Gebruikers</h1>
+    <div style="display: inline-block">
+        <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 100%">
+    </div>
+    <div style="display: inline-block">
+        <a class="btn btn-primary jg-color-3 border-0" href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen">Nieuwe gebruiker toevoegen</a>
+    </div>
+
     <br>
     <table class="table table-hover" id="user_crud">
         <thead>

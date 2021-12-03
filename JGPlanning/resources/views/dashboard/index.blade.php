@@ -30,7 +30,7 @@
                             </div>
                             <div class="media-body pl-3">
                                 <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
+                                <span class="dashboard-title-hours">{{ $now->format('F') }}, {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
                                 <h1 class="dashboard-hours">{{ $user->WorkedInAMonthInHours($now->month) }}</h1>
@@ -70,7 +70,7 @@
                                 <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ $user->workedInAWeekInHours($now->weekOfYear) }}/{{$user->plannedWorkAWeekInHours($now->year, $now->weekOfYear)}}</h1>
+                                <h1 class="dashboard-title-hours">{{ $user->workedInAWeekInHours($now->weekOfYear) }}</h1>
                             </div>
                         </div>
 
@@ -104,7 +104,7 @@
                             </div>
                             <div class="media-body pl-3">
                                 <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                                <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
+                                <span class="dashboard-title-hours">{{ $now->format('j F, Y') }}</span>
                             </div>
                             <div class="align-self-center">
                                 <h1 class="dashboard-title-hours">{{ $user->workedInADayInHours($now->year, $now->month, $now->day)  }}/{{$user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)}}</h1>

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="crud-user-form fadeInDown">
-        <h1>Gebruiker Informatie <a href="{{route('admin.users.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step icon-color"></i></a></h1>
+        <h1>Gebruiker Informatie</h1>
         <div class="card">
             <div class="card-body">
             {{--  USER ID  --}}
@@ -76,6 +76,7 @@
                 @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && $user['role_id'] == App\Models\Role::getRoleID('employee'))
                     <a class="btn btn-primary jg-color-3 border-0" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
                 @endif
+                <button style="float: right" class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('admin.users.index')}}" style="text-decoration: none; color: white;">Ga Terug</a></button>
             </div>
         </div>
     </div>
