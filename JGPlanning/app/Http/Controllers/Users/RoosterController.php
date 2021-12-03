@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Services\RosterService;
 use App\Services\TimeService;
 use App\Models\{User,Rooster,DisabledDays,Availability};
 use App\Services\CalendarService;
@@ -23,7 +24,7 @@ class RoosterController extends Controller
     }
 
 //  Functie om het rooster te laten zien
-    public function index(CalendarService $calendarService, $week, $year)
+    public function index(RosterService $rosterService,CalendarService $calendarService, $week, $year)
     {
         if ($week > 52)
         {
@@ -75,6 +76,7 @@ class RoosterController extends Controller
 
         // weekday Data
         $availability = Rooster::all()->where('user_id', $user);
+        $roster = $rosterService->generateRosterData($user);
 
         $array1 = [];
         $disabled_array = [];

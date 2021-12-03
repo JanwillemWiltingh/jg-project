@@ -6,10 +6,10 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Weken beheren</h5>
+                    <h5 class="modal-title">Beschikbaarheid</h5>
                 </div>
                 <div class="modal-body">
-                    <p style="font-size: 25px; margin-bottom: 0; display: inline">Weken</p>
+                    <p style="font-size: 25px; margin-bottom: 0; display: inline">Dagen</p>
                     <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="weekDropdown">
                         <option value="Uitzetten">Uitzetten</option>
                         <option value="Toevoegen">Toevoegen</option>
@@ -92,8 +92,8 @@
                     </div>
 
                     <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">
-                        <option value="Uitgezette weken">Uitgezette weken</option>
-                        <option value="Weken">Weken</option>
+                        <option value="Uitgezette weken">Uitgezette Dagen</option>
+                        <option value="Weken">Dagen</option>
                     </select>
                      Beheren
                     <hr>
@@ -195,10 +195,10 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Weken beheren</h5>
+                    <h5 class="modal-title">Beschikbaarheid</h5>
                 </div>
                 <div class="modal-body">
-                    <p style="font-size: 25px; margin-bottom: 0; display: inline">Weken</p>
+                    <p style="font-size: 25px; margin-bottom: 0; display: inline">Dagen</p>
                     <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="weekDropdown">
                         <option value="Uitzetten">Uitzetten</option>
                         <option value="Toevoegen">Toevoegen</option>
@@ -289,8 +289,8 @@
                     </div>
 
                     <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">
-                        <option value="Uitgezette dagen">Uitgezette weken</option>
-                        <option value="Dagen">Weken</option>
+                        <option value="Uitgezette dagen">Uitgezette Dagen</option>
+                        <option value="Dagen">Dagen</option>
                     </select>
                     Beheren
                     <label class="jg-color-1 submit-button-label d-none float-right" id="submit_refresh">
@@ -307,28 +307,28 @@
                                     <br>
                                 </div>
                             @endfor
-                            @for($i = 1; $i < count($weekDays); $i++)
-                                @if(str_contains(url()->current(), '/admin/'))
-                                    @if(isset($availability->where('weekdays', $i)->first()->start_week))
-                                        <div class="col-md-2 scrollbar-manage" style="overflow-y: scroll;">
-                                            <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">
-                                            @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)
-                                                <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">
+{{--                            @for($i = 1; $i < count($weekDays); $i++)--}}
+{{--                                @if(str_contains(url()->current(), '/admin/'))--}}
+{{--                                    @if(isset($availability->where('weekdays', $i)->first()->start_week))--}}
+{{--                                        <div class="col-md-2 scrollbar-manage" style="overflow-y: scroll;">--}}
+{{--                                            <input type="hidden" id="count_disable{{$i}}" value=" {{count($availability->where('weekdays', $i))}}">--}}
+{{--                                            @foreach($availability->where('weekdays', $i)->sortBy('start_week') as $av)--}}
+{{--                                                <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3" role="alert">--}}
 
-                                                    <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_week}}</a></p>
-                                                    <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}}</a></p>
+{{--                                                    <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_week}}</a></p>--}}
+{{--                                                    <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}}</a></p>--}}
 
-                                                    <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
-                                                    <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">
-                                                    </button>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @else
-                                        <div class="col-md-2">
-                                        </div>
-                                    @endif
+{{--                                                    <input type="hidden" id="id{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">--}}
+{{--                                                    <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">--}}
+{{--                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_days{{$loop->index + 1}}{{$i}}" style="color: white">--}}
+{{--                                                    </button>--}}
+{{--                                                </div>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    @else--}}
+{{--                                        <div class="col-md-2">--}}
+{{--                                        </div>--}}
+{{--                                    @endif--}}
                                 @else
                                     @if(isset($availability->where('weekdays', $i)->first()->start_week))
                                         <div class="col-md-2 scrollbar-manage" style="overflow-y: scroll;">
