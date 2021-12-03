@@ -76,7 +76,6 @@ class RoosterController extends Controller
 
         // weekday Data
         $availability = Rooster::all()->where('user_id', $user);
-        $roster = $rosterService->generateRosterData($user);
 
         $array1 = [];
         $disabled_array = [];
@@ -106,6 +105,7 @@ class RoosterController extends Controller
 
 
         $weekDays     = Availability::WEEK_DAYS;
+        $roster = $rosterService->generateRosterData($user);
         $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week, $year);
         $user_info = User::find($user);
 
