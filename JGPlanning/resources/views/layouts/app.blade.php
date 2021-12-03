@@ -226,7 +226,7 @@ The above copyright notice and this permission notice shall be included in all c
                                     <hr>
                                     <form action="{{ route('auth.logout') }}" method="POST">
                                         @csrf
-                                        <button class="linklike-button">Logout</button>
+                                        <button class="linklike-button">Uitloggen</button>
                                     </form>
                                 </div>
                             </div>

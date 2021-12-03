@@ -22,26 +22,26 @@
 <x-alert></x-alert>
 <div class="login-page fadeInDown">
     <div class="login-form border shadow">
-            <!-- Icon -->
-            <div class="login-icon">
-                <i class="fa fa-user"></i>
+        <!-- Icon -->
+        <div class="login-icon">
+            <i class="fa fa-user"></i>
+        </div>
+
+        <!-- Login Form -->
+        <form action="{{route('auth.login')}}" method="POST" style="width: 75%">
+            @csrf
+
+            <input type="email" id="login" name="email" placeholder="E-mail" class="form-control" value="{{ old('email') }}">
+
+            <input type="password" id="password" name="password" placeholder="Wachtwoord" class="form-control">
+
+            <input type="submit" class="login-button" value="Inloggen">
+            <div id="formFooter" style="text-align: center; margin: 15px;">
+                <a class="underlineHover" href="{{route('forget.password.get')}}">Wachtwoord Vergeten?</a>
             </div>
-
-            <!-- Login Form -->
-            <form action="{{route('auth.login')}}" method="POST" style="width: 75%">
-                @csrf
-
-                <input type="email" id="login" name="email" placeholder="Email" class="form-control" value="{{ old('email') }}">
-
-                <input type="password" id="password" name="password" placeholder="Password" class="form-control">
-
-                <input type="submit" class="login-button" value="Log In">
-                <div id="formFooter" style="text-align: center; margin: 15px;">
-                    <a class="underlineHover" href="{{route('forget.password.get')}}">Forgot Password?</a>
-                </div>
-                @error('status')
-                <label class="error-label"><strong>{{$errors->first('status')}}</strong></label>
-                @enderror
-            </form>
+            @error('status')
+            <label class="error-label"><strong>{{$errors->first('status')}}</strong></label>
+            @enderror
+        </form>
     </div>
 </div>
