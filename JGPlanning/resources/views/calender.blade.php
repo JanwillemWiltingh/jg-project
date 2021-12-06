@@ -1,4 +1,8 @@
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
+<head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    </script>
+</head>
 <style>
     .fc-button {
         background: none;
@@ -29,9 +33,5 @@
 
 <input value="calendar-{{$roster->script()->id}}" type="hidden" id="id_calender">
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js">
-</script>
-<script src="{{ asset('js/fullcalendar/nl.js') }}"></script>
 {!! $roster->script() !!}
 

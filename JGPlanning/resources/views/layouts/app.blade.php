@@ -28,6 +28,9 @@ The above copyright notice and this permission notice shall be included in all c
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 
         <!-- Calender -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"> </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/lang-all.js"></script>
 
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="{{asset('storage/favicon/apple-touch-icon.png')}}">

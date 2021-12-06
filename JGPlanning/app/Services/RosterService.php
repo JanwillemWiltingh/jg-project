@@ -5,15 +5,19 @@ namespace App\Services;
 use LaravelFullCalendar\Calendar;
 use Carbon\Carbon;
 use DateTime;
-use App\Models\{DisabledDays, Rooster, User};
+use App\Models\{Availability, DisabledDays, Rooster, User};
 
 class RosterService
 {
     public function generateRosterData($user_id)
     {
+        $weekdays = Availability::WEEK_DAYS;
         $date = Carbon::now();
         $events = [];
         $data = Rooster::all()
+            ->sortBy('weekdays')
+            ->where('user_id', $user_id);
+        $disdays = DisabledDays::all()
             ->where('user_id', $user_id);
         if($data->count()){
             foreach ($data as $d)
@@ -30,7 +34,7 @@ class RosterService
                 if ($d->comment)
                 {
                     $events[] = Calendar::event(
-                        $d->comment,
+                        $weekdays[$d->weekdays]. ": " .$d->comment,
                         true,
                         $final_date_start,
                         $final_date_end. '+ 1 day',
@@ -40,7 +44,7 @@ class RosterService
                 else
                 {
                     $events[] = Calendar::event(
-                        'Geen opmerking',
+                        $weekdays[$d->weekdays]. ': Geen opmerking',
                         true,
                         $final_date_start,
                         $final_date_end. '+ 1 day',
@@ -48,7 +52,28 @@ class RosterService
                     );
                 }
             }
+//            foreach ($disdays as $di)
+//            {
+//                $final_date_start = $date
+//                    ->setISODate($di->start_year, $di->start_week)
+//                    ->addDays($di->weekday - 1)
+//                    ->format('Y-m-d');
+//                $final_date_end = $date
+//                    ->setISODate($di->end_year, $di->end_week)
+//                    ->addDays($d->weekday - 1)
+//                    ->format('Y-m-d');
+//
+//
+//                $events[] = Calendar::event(
+//                    ''
+//                    true,
+//                    $final_date_start,
+//                    $final_date_end. '+ 1 day',
+//                    null,
+//                );
+//            }
         }
-        return \Calendar::addEvents($events);
+//        dd(\Calendar::addEvents($events)->setOptions(['lang' => 'nl']));
+        return \Calendar::addEvents($events)->setOptions(['lang' => 'nl']);
     }
 }
