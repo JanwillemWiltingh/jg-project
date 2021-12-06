@@ -19773,5 +19773,10 @@ table.dataTable td.focus {
     border-bottom: 2px solid var(--pagination-color);
 }
 
-
+.mobile-table {
+    table-layout: fixed;
+    width: 100% !important;
+    height: 10% !important;
+    font-size: 10px !important;
+}
 

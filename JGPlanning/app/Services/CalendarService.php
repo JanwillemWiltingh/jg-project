@@ -38,7 +38,7 @@ class CalendarService
         }
         foreach ($timeRange as $time)
         {
-            $timeText = $time['start'] . ' - ' . $time['end'];
+            $timeText = $time['start'];
             $calendarData[$timeText] = [];
 
             $time_start = $time['start']. ':00';
@@ -87,8 +87,6 @@ class CalendarService
                         $lesID = $les->id;
                     }
                 }
-
-
                 $lesson = $lessons
                     ->where('id', $lesID)
                     ->where('weekdays', $index)
@@ -103,7 +101,7 @@ class CalendarService
 
                 if ($disID)
                 {
-                    if($timeText == "08:00 - 08:30")
+                    if($timeText == "08:00")
                     {
                         if ($disabled_days->where('id', $disID)->first())
                         {
@@ -135,19 +133,6 @@ class CalendarService
                                 'id'           => $lesID,
                             ]);
                         }
-                        else
-                        {
-                            array_push($calendarData[$timeText], [
-                                'rowspan'      => 20,
-                                'from_home'    => "",
-                                'comment'      => "Uitgezet door admin",
-                                'start_time'   => "",
-                                'end_time'     => "",
-                                'by_admin'     => 0,
-                                'disabled_id'  => "",
-                                'id'           => "",
-                            ]);
-                        }
                     }
                     else
                     {
@@ -157,7 +142,7 @@ class CalendarService
                 else if ($lesson)
                 {
                     array_push($calendarData[$timeText], [
-                        'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diffInMinutes($time_start) /30 ?? '',
+                        'rowspan' => Carbon::parse(Carbon::createFromFormat('H:i:s', $lesson['end_time'])->format('H:i:s'))->diffInMinutes($time_start) / 30 + 1?? '' ,
                         'from_home' => $lesson['from_home'],
                         'comment' => $lesson['comment'],
                         'start_time' => $start,
@@ -166,7 +151,7 @@ class CalendarService
                     ]);
                 }
 
-                else if (!$lessons->where('id', $lesID)->where('start_time', '<=',$time['start']. ":00")->where('end_time', '>=',$time['end']. ":00")->first())
+                else if (!$lessons->where('id', $lesID)->where('start_time', '<=',$time['start']. ":00")->where('end_time', '>=',Carbon::parse($time['end'])->addMinutes(-30)->format('H:i:s'))->first())
                 {
                     array_push($calendarData[$timeText], 1);
                 }

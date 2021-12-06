@@ -17,15 +17,15 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <select id="dropdown_rooster" class="form-control">
-                    <option>Week</option>
-                    <option>Maand</option>
-                </select>
-                <div class="card-header" id="calender_hide" style="display: none">
-                    <div class="card-body">
-                        @include('calender')
-                    </div>
-                </div>
+{{--                <select id="dropdown_rooster" class="form-control">--}}
+{{--                    <option>Week</option>--}}
+{{--                    <option>Maand</option>--}}
+{{--                </select>--}}
+{{--                <div class="card-header" id="calender_hide" style="display: none">--}}
+{{--                    <div class="card-body">--}}
+{{--                        @include('calender')--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="card-header" id="rooster">
                     <div class="card-body" @if(App\Models\Browser::isMobile()) style="width: 120% !important; right: 10%" @endif>
                         @if(session('status'))
@@ -66,7 +66,7 @@
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">
                                 <input type="week" class="form-control" name="week" id="week" value="{{request('year')}}-W{{request('week')}}">
                             </form>
-                            <table class="card-body table table-bordered">
+                            <table class="table table-bordered  @if(App\Models\Browser::isMobile()) mobile-table @endif">
                                 <thead>
                                 @if(!App\Models\Browser::isMobile())
                                     <th width="14%" style="border: none; text-align: center">Tijd</th>
@@ -76,9 +76,9 @@
                                         </th>
                                     @endfor
                                 @else
-                                    <th style="border: none; text-align: center; font-size: 12px">Tijd</th>
+                                    <th style="border: none; text-align: center; font-size: 12px;">Tijd</th>
                                     @for($i = 1; $i < count(App\Models\Availability::WEEK_DAYS_MOB) + 1; $i++)
-                                        <th style="border: none; text-align: center; font-size: 12px">
+                                        <th style="border: none; text-align: center; font-size: 12px;">
                                             {{ App\Models\Availability::WEEK_DAYS_MOB[$i] }}
                                         </th>
                                     @endfor
@@ -87,7 +87,7 @@
                                 <tbody>
                                 @foreach($calendarData as $time => $days)
                                     <tr>
-                                        <td>
+                                        <td style=" @if(App\Models\Browser::isMobile()) font-size: 10px !important; @endif">
                                             {{ $time }}
                                         </td>
                                         @for($i = 0; $i < count($days); $i++)
@@ -110,7 +110,7 @@
 
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Uitgezet door admin.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Uitgezet door admin.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif  color: white;">
                                                     @if($days[$i]['comment'] != "Uitgezet door admin.")
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>
