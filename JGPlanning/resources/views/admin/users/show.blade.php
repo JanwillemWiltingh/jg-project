@@ -76,11 +76,11 @@
                     </div>
             {{--  if they are maintainer they are allowed to edit anything  --}}
                 @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-                    <a class="btn btn-primary jg-color-3 border-0" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
+                    <a style="float: right" class="btn btn-primary jg-color-3 border-0" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
                 @endif
             {{--    if they are admin they can only edit employee--}}
                 @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && $user['role_id'] == App\Models\Role::getRoleID('employee'))
-                    <a class="btn btn-primary jg-color-3 border-0" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
+                    <a style="float: right" class="btn btn-primary jg-color-3 border-0" href ="{{route('admin.users.edit',$user['id'])}}"> Bewerk deze Gebruiker</a>
                 @endif
                 <button style="float: right" class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('admin.users.index')}}" style="text-decoration: none; color: white;">Ga Terug</a></button>
             </div>
