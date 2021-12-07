@@ -12,12 +12,12 @@
         @endif
                 ">
                 <h1>Welkom </h1>
-                <a style="margin-left: 5px">{{$user['firstname']}} <i class="fa-solid fa-rocket" style="font-size: 35px;"></i></a>
+                <a>{{$user['firstname']}} <i class="fa-solid fa-rocket"></i></a>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <div @if($browser->isMobile())style="width: 105% !important;" @else class="row"@endif>
         @if(!$browser->isMobile())
             <div class=" col-4">
                 <div class="card">

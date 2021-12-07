@@ -52,17 +52,21 @@
                                     </a>
                                 </div>
                                 <p style="
-                                       text-align: center;
-                                       background: -webkit-linear-gradient(#1A6686, #1C88A4);
-                                       -webkit-background-clip: text;
-                                       -webkit-text-fill-color: transparent;
-                                       font-size: 45px;
-                                       font-weight: bolder;
-                                       font-style: italic;
-                                       margin-top: -40px;
+                                        text-align: center;
+                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);
+                                        -webkit-background-clip: text;
+                                        -webkit-text-fill-color: transparent;
+                                        font-size: 45px;
+                                        font-weight: bolder;
+                                        font-style: italic;
+                                        margin-top: -40px;
                                     ">
-                                    <a style="font-size: 15px; margin-top: -10px" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">Dagen uitzetten</a>
+                                    <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">
+                                        <i class="fa fa-pencil-alt"></i>
+                                        Dagen beheren
+                                    </a>
                                 </p>
+
                             <table class="card-body table table-bordered">
                                 <thead >
                                 <th width="14%" style="border: none; text-align: center; border-radius: 15px 15px 0 0 !important;" >Time</th>
