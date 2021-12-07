@@ -210,4 +210,8 @@ class ClockController extends Controller
             'entries' => (new CollectionPagination)->paginate($entries, 10, request('page'), ['path' => 'clock'])
         ]);
     }
+    public function show(Clock $clock)
+    {
+        return view('users.clock.show')->with(['clock' => $clock]);
+    }
 }

@@ -67,7 +67,7 @@ The above copyright notice and this permission notice shall be included in all c
                             <li class="nav-item active {{ (request()->is('gebruiker/clock') ?? request()->is('gebruiker/clock/*')) ? 'nav-color-active' : '' }}">
                                 <a class="nav-link nav-color" href="{{route('user.clock.index')}}" style="margin-top: 60px;">
                                     <i class="fa fa-clock"></i>
-                                    <p>Uw Klok</p>
+                                    <p>Gewerkte uren</p>
                                 </a>
                             </li>
 {{--                        @endcan--}}
@@ -85,7 +85,7 @@ The above copyright notice and this permission notice shall be included in all c
                                 <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  {{--style="position:absolute; left: 22px ;width: 90%"--}}>
                                     <a class="nav-link nav-color" href="{{route('rooster.index', ['week' => \Carbon\Carbon::now()->week, 'year' => \Carbon\Carbon::now('Y')->format('Y')])}}" style="margin-top: 120px;">
                                         <i class="fa fa-calendar" style="color: white"></i>
-                                        <p style="color: white">Uw Rooster</p>
+                                        <p style="color: white">Rooster</p>
                                     </a>
                                 </li>
 {{--                            </div>--}}
@@ -226,7 +226,7 @@ The above copyright notice and this permission notice shall be included in all c
                                     <hr>
                                     <form action="{{ route('auth.logout') }}" method="POST">
                                         @csrf
-                                        <button class="linklike-button">Logout</button>
+                                        <button class="linklike-button">Uitloggen</button>
                                     </form>
                                 </div>
                             </div>
