@@ -504,7 +504,6 @@ table.dataTable td.focus {
 
 /* Mobile */
 
-
 .dashboard-welkom-mobile a
 {
     display: inline;
@@ -741,5 +740,5 @@ table.dataTable td.focus {
     table-layout: fixed;
     width: 100% !important;
     height: 10% !important;
-    font-size: 10px !important;
+    font-size: 8px !important;
 }

@@ -5655,21 +5655,15 @@ $(document).ready(function () {
     setTimeout(function () {
       location.reload();
     }, 100);
-  }); // $(document).ready(function(){
-  //     $($('#id_calender').val()).fullCalendar({
-  //         lang: 'nl',
-  //     });
-  // });
-  // $('#calender_hide').css('display', 'none');
-
-  $('#dropdown_rooster').on('click', function () {
-    if (this.value === "Week") {
-      $('#rooster').css('display', 'block');
-      $('#calender_hide').css('display', 'none');
-    } else if (this.value === "Maand") {
-      $('#rooster').css('display', 'none');
-      $('#calender_hide').css('display', 'block');
-    }
+  });
+  $('#maand').on('click', function () {
+    $('#rooster').hide();
+    $('#calender_hide').show();
+    $('.fc-today-button').trigger('click');
+  });
+  $('#week_rooster').on('click', function () {
+    $('#calender_hide').hide();
+    $('#rooster').show();
   });
 });
 

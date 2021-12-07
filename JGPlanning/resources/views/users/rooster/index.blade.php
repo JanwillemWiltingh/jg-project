@@ -17,15 +17,19 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-{{--                <select id="dropdown_rooster" class="form-control">--}}
-{{--                    <option>Week</option>--}}
-{{--                    <option>Maand</option>--}}
-{{--                </select>--}}
-{{--                <div class="card-header" id="calender_hide" style="display: none">--}}
-{{--                    <div class="card-body">--}}
-{{--                        @include('calender')--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                <div class="card-header" id="calender_hide" style="display: none">
+                    <div class="card-body">
+                        <button class="btn jg-color-1" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            " id="week_rooster">
+                            Week
+                        </button>
+                        @include('calender')
+                    </div>
+                </div>
                 <div class="card-header" id="rooster">
                     <div class="card-body" @if(App\Models\Browser::isMobile()) style="width: 120% !important; right: 10%" @endif>
                         @if(session('status'))
@@ -45,6 +49,7 @@
                                 <a style="font-size: 20px">
                                     {{request('year')}}
                                 </a>
+                                <br>
                             </div>
                             <p style="
                                         text-align: center;
@@ -61,22 +66,29 @@
                                     Dagen beheren
                                 </a>
                             </p>
+                            <button class="btn jg-color-1" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    " id="maand">
+                                Maand
+                            </button>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">
                                 <input type="week" class="form-control" name="week" id="week" value="{{request('year')}}-W{{request('week')}}">
                             </form>
-                            <table class="table table-bordered  @if(App\Models\Browser::isMobile()) mobile-table @endif">
+                            <table class="table table-bordered @if(App\Models\Browser::isMobile()) mobile-table @endif">
                                 <thead>
                                 @if(!App\Models\Browser::isMobile())
-                                    <th width="14%" style="border: none; text-align: center">Tijd</th>
+                                    <th width="3%" style="border: none; text-align: center">Tijd</th>
                                     @for($i = 1; $i < count($weekDays) + 1; $i++)
                                         <th width="14%" style="border: none; text-align: center;">
                                             {{ $weekDays[$i] }}
                                         </th>
                                     @endfor
                                 @else
-                                    <th style="border: none; text-align: center; font-size: 12px;">Tijd</th>
                                     @for($i = 1; $i < count(App\Models\Availability::WEEK_DAYS_MOB) + 1; $i++)
                                         <th style="border: none; text-align: center; font-size: 12px;">
                                             {{ App\Models\Availability::WEEK_DAYS_MOB[$i] }}
@@ -87,9 +99,11 @@
                                 <tbody>
                                 @foreach($calendarData as $time => $days)
                                     <tr>
-                                        <td style=" @if(App\Models\Browser::isMobile()) font-size: 10px !important; @endif">
-                                            {{ $time }}
-                                        </td>
+                                        @if(!App\Models\Browser::isMobile())
+                                            <td style=" @if(App\Models\Browser::isMobile()) font-size: 10px !important; @endif">
+                                                {{ $time }}
+                                            </td>
+                                        @endif
                                         @for($i = 0; $i < count($days); $i++)
                                             @if(is_array($days[$i]))
                                                 {{--Hidden value's voor de edit functie--}}
@@ -124,7 +138,9 @@
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
                                                                 <input type="hidden" id="end_date_disable{{$i + 1}}" value="{{$days[$i]['end_time']}}">
-                                                                <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                                @if(!App\Models\Browser::isMobile())
+                                                                    <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                                @endif
                                                             @else
                                                                 <p style="color: black">{{$days[$i]['comment']}}</p>
                                                             @endif
@@ -135,7 +151,14 @@
                                                         Geen opmerking
                                                     @endif
                                                     @if($days[$i]['comment'] != "Uitgezet door admin.")
-                                                        <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p> <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                        <p style="font-weight: lighter">{{$days[$i]['start_time']}}
+                                                        @if(App\Models\Browser::isMobile()) <br> @endif
+                                                            -
+                                                        @if(App\Models\Browser::isMobile()) <br> @endif
+                                                            {{$days[$i]['end_time']}}</p>
+                                                        @if(!App\Models\Browser::isMobile())
+                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                        @endif
                                                     @endif
                                                 </th>
                                             @elseif ($days[$i] === 1)

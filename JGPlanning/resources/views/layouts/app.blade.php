@@ -139,12 +139,6 @@
                                         <p>{{\Illuminate\Support\Facades\Auth::user()['firstname']}}</p>
                                     </a>
                                 </li>
-{{--                                <li class="nav-item" style="font-size: 20px">--}}
-{{--                                    <a id="dropdown_button" >--}}
-{{--                                        {{\Illuminate\Support\Facades\Auth::user()['firstname']}} <i class="fa fa-user"></i>--}}
-{{--                                        <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>--}}
-{{--                                    </a>--}}
-{{--                                </li>--}}
                             @endif
                         @endcan
                     </ul>
