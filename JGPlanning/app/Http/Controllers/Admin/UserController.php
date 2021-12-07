@@ -170,7 +170,7 @@ class UserController extends Controller
             'lastname' => ['required', 'string'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'roles' =>['required'],
-            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
+            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
 
 
