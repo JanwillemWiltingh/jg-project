@@ -41,10 +41,16 @@
                             <input type="email" class="form-control" id="email" value="@if(empty($user['email']))NULL @else{{$user['email']}} @endif" aria-describedby="email" placeholder="E-mail" disabled>
                         </div>
                     </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="black-label-text" for="email">Telefoonnummer</label>
+                        <input type="email" class="form-control" id="email" value="@if(empty($user['phone_number']))NULL @else{{$user['phone_number']}} @endif" aria-describedby="email" placeholder="E-mail" disabled>
+                    </div>
+                </div>
                     <div class="row">
                         <div class="form-group">
                             <label class="black-label-text" for="created_at">Gebruiker Gecreëerd</label>
-                            <input type="text" class="form-control" id="created_at" value="@if(empty($user['deleted_at'])) - @else{{$user['deleted_at']}} @endif" aria-describedby="created_at" placeholder="Gebruiker Gecreëerd" disabled>
+                            <input type="text" class="form-control" id="created_at" value="@if(empty($user['created_at'])) - @else{{$user['created_at']}} @endif" aria-describedby="created_at" placeholder="Gebruiker Gecreëerd" disabled>
                         </div>
                     </div>
             {{--  USER LAST UPDATED  --}}

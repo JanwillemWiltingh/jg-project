@@ -20,6 +20,7 @@
             <th scope="col"><strong>Tussenvoegsel</strong></th>
             <th scope="col"><strong>Achternaam</strong></th>
             <th scope="col"><strong>E-mail</strong></th>
+            <th scope="col"><strong>Telefoonnummer</strong></th>
             <th scope="col"><strong>Rol</strong></th>
             <th scope="col"><strong>Actief?</strong></th>
             <th scope="col"></th>
@@ -38,6 +39,7 @@
                 <td>{{$user['lastname']}}</td>
 
                 <td>{{$user['email']}}</td>
+                <td>{{$user['phone_number']}}</td>
 
                 {{--Big letter maintainer--}}
                 <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>

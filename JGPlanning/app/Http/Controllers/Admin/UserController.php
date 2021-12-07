@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use DateTime;
+use Psy\Util\Str;
+
 class UserController extends Controller
 {
 
@@ -65,20 +67,24 @@ class UserController extends Controller
             'lastname' => ['required'],
             'email' => ['required','unique:users,email'],
             'roles' =>['required'],
+            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10'],
         ]);
 
         $current_user = Auth::user();
         if($current_user['role_id'] == Role::getRoleID('admin')){
             $validated['roles'] = Role::getRoleID('employee');
         }
+        //create random string of 20 for password
+        $password = \Illuminate\Support\Str::random(20);
 
         $newUser = User::create([
             'firstname' => ucfirst($validated['firstname']),
             'middlename' => ($validated['middlename']),
             'lastname' => ucfirst($validated['lastname']),
             'email' => $validated['email'],
-            'password' => Hash::make('welkom1203@'),
+            'password' => Hash::make($password),
             'role_id' => $validated['roles'],
+            'phone_number' => $validated['phone_number']
         ]);
         Mail::send('Auth.user', ['user' => $user], function($message) use($request){
             $message->to($request->email);
@@ -164,6 +170,7 @@ class UserController extends Controller
             'lastname' => ['required', 'string'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'roles' =>['required'],
+            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
 
 
@@ -178,6 +185,7 @@ class UserController extends Controller
             'lastname' => ucfirst($validated['lastname']),
             'email' => $validated['email'],
             'role_id' => $validated['roles'],
+            'phone_number' => $validated['phone_number']
         ]);
 
         return redirect()->route('admin.users.index')->with(['message' => ['message' => 'Gebruiker succesvol bewerkt', 'type' => 'success']]);
