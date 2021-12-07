@@ -288,25 +288,25 @@
                         </form>
                     </div>
 
-                    <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">
-                        <option value="Uitgezette dagen">Uitgezette Dagen</option>
-                        <option value="Dagen">Dagen</option>
-                    </select>
-                    Beheren
-                    <label class="jg-color-1 submit-button-label d-none float-right" id="submit_refresh">
-                        <text class="submit-button" style="padding: 7px 15px !important; border: none !important; " id="submit_refresh_text">Toepassen</text>
-                        <div class="loader" style="opacity: 0; margin-top: -23px !important;" id="loader"></div>
-                    </label>
-                    <hr>
-                    <div id="DaysDiv" style="display: none">
-                        <div class="row" style="overflow: hidden" style=" resize: both !important; position: inherit">
-                            @for($i = 0; $i < count($weekDays); $i++)
-                                <div class="col-md-2">
-                                    {{$weekDays[$i + 1]}}
-                                    <div class="border-bottom"></div>
-                                    <br>
-                                </div>
-                            @endfor
+{{--                    <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="manageDropdown">--}}
+{{--                        <option value="Uitgezette dagen">Uitgezette Dagen</option>--}}
+{{--                        <option value="Dagen">Dagen</option>--}}
+{{--                    </select>--}}
+{{--                    Beheren--}}
+{{--                    <label class="jg-color-1 submit-button-label d-none float-right" id="submit_refresh">--}}
+{{--                        <text class="submit-button" style="padding: 7px 15px !important; border: none !important; " id="submit_refresh_text">Toepassen</text>--}}
+{{--                        <div class="loader" style="opacity: 0; margin-top: -23px !important;" id="loader"></div>--}}
+{{--                    </label>--}}
+{{--                    <hr>--}}
+{{--                    <div id="DaysDiv" style="display: none">--}}
+{{--                        <div class="row" style="overflow: hidden" style=" resize: both !important; position: inherit">--}}
+{{--                            @for($i = 0; $i < count($weekDays); $i++)--}}
+{{--                                <div class="col-md-2">--}}
+{{--                                    {{$weekDays[$i + 1]}}--}}
+{{--                                    <div class="border-bottom"></div>--}}
+{{--                                    <br>--}}
+{{--                                </div>--}}
+{{--                            @endfor--}}
 {{--                            @for($i = 1; $i < count($weekDays); $i++)--}}
 {{--                                @if(str_contains(url()->current(), '/admin/'))--}}
 {{--                                    @if(isset($availability->where('weekdays', $i)->first()->start_week))--}}
@@ -352,72 +352,72 @@
 {{--                                    @endif--}}
 {{--                                @endif--}}
 {{--                            @endfor--}}
-                        </div>
-                    </div>
-                    <div id="disabledDaysDiv">
-                        <div class="row" style="overflow: hidden">
-                            @for($i = 0; $i < count($weekDays); $i++)
-                                <div class="col-md-2">
-                                    {{$weekDays[$i + 1]}}
-                                    <div class="border-bottom"></div>
-                                    <br>
-                                </div>
-                            @endfor
-                            <br>
-                            @for($i = 1; $i < count($weekDays); $i++)
-                                @if(str_contains(url()->current(), '/admin/'))
-                                    @if(isset($disabled->where('user_id', request('user'))->where('weekday', $i)->first()->start_week))
-                                    <div class="col-md-2 scrollbar-manage" style="height: 150px;overflow:auto;">
-                                        <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
-                                        @foreach($disabled->where('user_id', request('user'))->where('weekday', $i)->sortBy('start_week')->sortBy('start_year') as $av)
-                                            <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div id="disabledDaysDiv">--}}
+{{--                        <div class="row" style="overflow: hidden">--}}
+{{--                            @for($i = 0; $i < count($weekDays); $i++)--}}
+{{--                                <div class="col-md-2">--}}
+{{--                                    {{$weekDays[$i + 1]}}--}}
+{{--                                    <div class="border-bottom"></div>--}}
+{{--                                    <br>--}}
+{{--                                </div>--}}
+{{--                            @endfor--}}
+{{--                            <br>--}}
+{{--                            @for($i = 1; $i < count($weekDays); $i++)--}}
+{{--                                @if(str_contains(url()->current(), '/admin/'))--}}
+{{--                                    @if(isset($disabled->where('user_id', request('user'))->where('weekday', $i)->first()->start_week))--}}
+{{--                                    <div class="col-md-2 scrollbar-manage" style="height: 150px;overflow:auto;">--}}
+{{--                                        <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">--}}
+{{--                                        @foreach($disabled->where('user_id', request('user'))->where('weekday', $i)->sortBy('start_week')->sortBy('start_year') as $av)--}}
+{{--                                            <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">--}}
 
-                                                <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_week}}</a></p>
-                                                <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}}</a></p>
+{{--                                                <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_week}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_week}}</a></p>--}}
+{{--                                                <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('admin.rooster.user_rooster', ['week' => $av->start_week, 'year' =>  $av->start_year, 'user' => request('user')])}}">{{$av->start_year}}</a> - <a href="{{route('admin.rooster.user_rooster', ['week' => $av->end_week, 'year' => $av->end_year, 'user' => request('user')])}}">{{$av->end_year}}</a></p>--}}
 
-                                                <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
-                                                <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
-                                                </button>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    @else
-                                        <div class="col-md-2">
-                                        </div>
-                                    @endif
-                                @else
-                                    @if(isset($disabled->where('user_id', \Illuminate\Support\Facades\Auth::id())->where('weekday', $i)->first()->start_week))
-                                        <div class="col-md-2 scrollbar-manage" style="height: 150px;overflow:auto;">
-                                            <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">
-                                            @foreach($disabled->where('user_id', \Illuminate\Support\Facades\Auth::id())->where('weekday', $i)->sortBy('start_week')->sortBy('start_year') as $av)
-                                                <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">
+{{--                                                <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">--}}
+{{--                                                <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">--}}
+{{--                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">--}}
+{{--                                                </button>--}}
+{{--                                            </div>--}}
+{{--                                        @endforeach--}}
+{{--                                    </div>--}}
+{{--                                    @else--}}
+{{--                                        <div class="col-md-2">--}}
+{{--                                        </div>--}}
+{{--                                    @endif--}}
+{{--                                @else--}}
+{{--                                    @if(isset($disabled->where('user_id', \Illuminate\Support\Facades\Auth::id())->where('weekday', $i)->first()->start_week))--}}
+{{--                                        <div class="col-md-2 scrollbar-manage" style="height: 150px;overflow:auto;">--}}
+{{--                                            <input type="hidden" id="count_disable{{$i}}" value=" {{count($disabled->where('weekday', $i))}}">--}}
+{{--                                            @foreach($disabled->where('user_id', \Illuminate\Support\Facades\Auth::id())->where('weekday', $i)->sortBy('start_week')->sortBy('start_year') as $av)--}}
+{{--                                                <div class="alert alert-success alert-dismissible fade show jg-color-gradient-3 " role="alert">--}}
 
-                                                    <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a></p>
-                                                    <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}}</a></p>
+{{--                                                    <p style="font-size: 15px; margin-bottom: 0">Week: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_week}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_week}}</a></p>--}}
+{{--                                                    <p style="font-size: 12px; margin-bottom: 0">Jaar: <a href="{{route('rooster.index', ['week' => $av->start_week, 'year' =>  $av->start_year])}}">{{$av->start_year}}</a> - <a href="{{route('rooster.index', ['week' => $av->end_week, 'year' => $av->end_year])}}">{{$av->end_year}}</a></p>--}}
 
-                                                    <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">
-                                                    <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">
-                                                    @if(\Illuminate\Support\Facades\Auth::user()->role->name == "admin" || \Illuminate\Support\Facades\Auth::user()->role->name == "maintainer")
-                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
-                                                        </button>
-                                                    @else
-                                                        @if($av->by_admin != true)
-                                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">
-                                                            </button>
-                                                        @endif
-                                                    @endif
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @else
-                                        <div class="col-md-2">
-                                        </div>
-                                    @endif
-                                @endif
-                            @endfor
-                        </div>
-                    </div>
+{{--                                                    <input type="hidden" id="id_disable{{$loop->index + 1}}{{$i}}" value="{{$av->id}}">--}}
+{{--                                                    <input type="hidden" id="role{{$loop->index + 1}}{{$i}}" value="User">--}}
+{{--                                                    @if(\Illuminate\Support\Facades\Auth::user()->role->name == "admin" || \Illuminate\Support\Facades\Auth::user()->role->name == "maintainer")--}}
+{{--                                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">--}}
+{{--                                                        </button>--}}
+{{--                                                    @else--}}
+{{--                                                        @if($av->by_admin != true)--}}
+{{--                                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="remove_disable_days{{$loop->index + 1}}{{$i}}">--}}
+{{--                                                            </button>--}}
+{{--                                                        @endif--}}
+{{--                                                    @endif--}}
+{{--                                                </div>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    @else--}}
+{{--                                        <div class="col-md-2">--}}
+{{--                                        </div>--}}
+{{--                                    @endif--}}
+{{--                                @endif--}}
+{{--                            @endfor--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
             </div>
         </div>

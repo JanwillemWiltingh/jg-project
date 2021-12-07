@@ -12,7 +12,7 @@
         @endif
                 ">
                 <h1>Welkom </h1>
-                <a @if($browser->isMobile()) style="font-size: 22px; top: 13px" @endif>{{$user['firstname']}} @if(!$browser->isMobile())<i class="fa-solid fa-rocket"></i>@endif</a>
+                <a>{{$user['firstname']}} <i class="fa-solid fa-rocket"></i></a>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
             <div class=" col-4">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Uren voor deze maand</h3>
+                        <h3>Uren deze maand</h3>
                         <hr>
                         <div class="media align-items-stretch" >
                             <div class="align-self-center">
@@ -30,36 +30,36 @@
                             </div>
                             <div class="media-body pl-3">
                                 <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
+                                <span class="dashboard-title-hours">{{ $now->format('F') }}, {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
                                 <h1 class="dashboard-hours">{{ $user->WorkedInAMonthInHours($now->month) }}</h1>
                             </div>
                         </div>
 
-                        <hr>
+{{--                        <hr>--}}
 
-                        <div class="media align-items-stretch">
-                            <div class="align-self-center">
-                                <i class="far fa-calendar fa-4x"></i>
-                            </div>
-                            <div class="media-body pl-3">
-                                <h4 class="dashboard-title-hours">Rooster uren</h4>
-                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
-                            </div>
-                            <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAMonthInHours($now->year, $now->month) }}</h1>
-                            </div>
-                        </div>
+{{--                        <div class="media align-items-stretch">--}}
+{{--                            <div class="align-self-center">--}}
+{{--                                <i class="far fa-calendar fa-4x"></i>--}}
+{{--                            </div>--}}
+{{--                            <div class="media-body pl-3">--}}
+{{--                                <h4 class="dashboard-title-hours">Rooster uren</h4>--}}
+{{--                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>--}}
+{{--                            </div>--}}
+{{--                            <div class="align-self-center">--}}
+{{--                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAMonthInHours($now->year, $now->month) }}</h1>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>
         @endif
         @if(!$browser->isMobile())
-            <div class="  col-4 ">
+            <div class="col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Uren voor deze week</h3>
+                        <h3>Uren deze week</h3>
                         <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
@@ -74,20 +74,20 @@
                             </div>
                         </div>
 
-                        <hr>
+{{--                        <hr>--}}
 
-                        <div class="media align-items-stretch">
-                            <div class="align-self-center">
-                                <i class="far fa-calendar fa-4x"></i>
-                            </div>
-                            <div class="media-body pl-3">
-                                <h4 class="dashboard-title-hours">Rooster uren</h4>
-                                <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
-                            </div>
-                            <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAWeekInHours($now->year, $now->weekOfYear) }}</h1>
-                            </div>
-                        </div>
+{{--                        <div class="media align-items-stretch">--}}
+{{--                            <div class="align-self-center">--}}
+{{--                                <i class="far fa-calendar fa-4x"></i>--}}
+{{--                            </div>--}}
+{{--                            <div class="media-body pl-3">--}}
+{{--                                <h4 class="dashboard-title-hours">Rooster uren</h4>--}}
+{{--                                <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>--}}
+{{--                            </div>--}}
+{{--                            <div class="align-self-center">--}}
+{{--                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAWeekInHours($now->year, $now->weekOfYear) }}</h1>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -104,34 +104,34 @@
                             </div>
                             <div class="media-body pl-3">
                                 <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                                <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
+                                <span class="dashboard-title-hours">{{ $now->format('j F, Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ $user->workedInADayInHours($now->year, $now->month, $now->day)  }}</h1>
+                                <h1 class="dashboard-title-hours">{{ $user->workedInADayInHours($now->year, $now->month, $now->day)  }}/{{$user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)}}</h1>
                             </div>
                         </div>
 
-                        <hr>
+{{--                        <hr>--}}
 
-                        <div class="media align-items-stretch">
-                            <div class="align-self-center">
-                                <i class="far fa-calendar fa-4x"></i>
-                            </div>
-                            <div class="media-body pl-3">
-                                <h4 class="dashboard-title-hours">Rooster uren</h4>
-                                <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>
-                            </div>
-                            <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek) }}</h1>
-                            </div>
-                        </div>
+{{--                        <div class="media align-items-stretch">--}}
+{{--                            <div class="align-self-center">--}}
+{{--                                <i class="far fa-calendar fa-4x"></i>--}}
+{{--                            </div>--}}
+{{--                            <div class="media-body pl-3">--}}
+{{--                                <h4 class="dashboard-title-hours">Rooster uren</h4>--}}
+{{--                                <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>--}}
+{{--                            </div>--}}
+{{--                            <div class="align-self-center">--}}
+{{--                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek) }}</h1>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
             </div>
         </div>
     @endif
     <div class="row">
-        <div class="@if(!$browser->isMobile()) col-6 @endif" @if($browser->isMobile()) style="width: 32479px !important;" @endif>
+        <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="card">
                 <div class="card-body ">
                     <form action="{{ route('dashboard.clock') }}" method="post">
@@ -158,7 +158,8 @@
             </div>
         </div>
 
-        <div class="@if(!$browser->isMobile()) col-6 @endif">
+        @if(!$browser->isMobile())
+        <div class="col-6">
             <div class="row">
                 <div class="col-12" style="margin-bottom: -31px !important">
                     <div class="card" style="height: 72% !important;">
@@ -196,8 +197,8 @@
                                     <i class="far fa-clock fa-4x"></i>
                                 </div>
                                 <div class="media-body pl-3">
-                                    <h4>Aankomend</h4>
-                                    <h4>@if($user->getNextRooster() == null) @else {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }} @endif</h4>
+                                    <h4>Volgende werkdag</h4>
+{{--                                    <h4>@if($user->getNextRooster() == null) @else {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }} @endif</h4>--}}
 
                                     @if($user->getNextRooster() == null)
                                         <span>Geen nieuw aankomend rooster</span>
@@ -218,6 +219,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 <a style="color: white; cursor: pointer" id="changeFont" target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
 @endsection

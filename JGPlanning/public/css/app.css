@@ -19430,9 +19430,9 @@ input:checked + .slider:before {
     content: "";
     position: absolute;
     width: 100%;
-    border-bottom: 6px solid #CB6827 !important;
+    border-bottom: 3.5px solid #CB6827 !important;
     height: 3px;
-    top:  55px;
+    top:  56px;
     left: 0;
 }
 .dashboard-welkom p

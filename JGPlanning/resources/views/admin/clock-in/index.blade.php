@@ -42,12 +42,11 @@
                 <table id="table" class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Gebruiker</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">Eind</th>
-                        <th scope="col">Totaal</th>
-                        <th scope="col">Aantekening</th>
+                        <th scope="col">Start tijd</th>
+                        <th scope="col">Eind tijd</th>
+                        <th scope="col">Gewerkte uren</th>
+                        <th scope="col">Opmerkingen</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -58,7 +57,7 @@
                         @foreach($clocks as $clock)
                             <tr @if($clock['deleted_at']) class="table-danger" @endif>
                                 <!-- Table index -->
-                                <th style="width: 1%" scope="row">{{ $loop->index + 1 }}</th>
+{{--                                <th style="width: 1%" scope="row">{{ $loop->index + 1 }}</th>--}}
 
                                 <!-- User full name -->
                                 <td style="width: 20%">{{ $clock->getUserData('firstname') }} {{ $clock->getUserData('middlename') }} {{ $clock->getUserData('lastname') }}</td>
@@ -73,7 +72,7 @@
                                 <!-- Comment given with Start time -->
                                 <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                     {!! $clock['comment'] !!}
-                                </td><!-- TODO: Add show to see comments -->
+                                </td>
                                 <!-- Edit button if user is maintainer -->
                                 @if($clock->allowedToEdit('maintainer') && empty($clock['deleted_at']))
                                     <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}" title="Gebruikers Uren Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a></td>

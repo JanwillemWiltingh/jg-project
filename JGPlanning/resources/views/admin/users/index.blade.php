@@ -3,8 +3,14 @@
 @section('content')
 <div class="fadeInDown crud-table">
 
-    <h1>Alle Gebruikers <strong><a href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen"><i class="fa-solid fa-user-plus icon-color"></i></a></strong></h1>
-    <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 25%">
+    <h1>Alle Gebruikers</h1>
+    <div style="display: inline-block">
+        <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 100%">
+    </div>
+    <div style="display: inline-block">
+        <a class="btn btn-primary jg-color-3 border-0" href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
+    </div>
+
     <br>
     <table class="table table-hover" id="user_crud">
         <thead>
@@ -14,6 +20,7 @@
             <th scope="col"><strong>Tussenvoegsel</strong></th>
             <th scope="col"><strong>Achternaam</strong></th>
             <th scope="col"><strong>E-mail</strong></th>
+            <th scope="col"><strong>Telefoonnummer</strong></th>
             <th scope="col"><strong>Rol</strong></th>
             <th scope="col"><strong>Actief?</strong></th>
             <th scope="col"></th>
@@ -32,6 +39,7 @@
                 <td>{{$user['lastname']}}</td>
 
                 <td>{{$user['email']}}</td>
+                <td>{{$user['phone_number']}}</td>
 
                 {{--Big letter maintainer--}}
                 <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>
