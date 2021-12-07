@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="crud-user-form fadeInDown">
-        <h1>Klok Informatie <a href="{{route('users.clock.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step icon-color"></i></a></h1>
+        <h1>Klok Informatie <a href="{{route('user.clock.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step icon-color"></i></a></h1>
         <div class="card">
             <div class="card-body">
                 {{--  CLOCK ID  --}}

@@ -71,7 +71,7 @@
                                     <td style="width: 5%">{{ $user->getEndTime($work_day) }}</td>
                                     <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }}</td>
                                     <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
-                                    <td style="width: 1%"><a class="table-label" href="" title="Gebruikers uren bekijken"><i class="fa fa-eye icon-color"></i></a></td>
+                                    <td style="width: 1%"><a class="table-label" href="{{route('user.clock.show', $user['id'])}}" title="Gebruikers uren bekijken"><i class="fa fa-eye icon-color"></i></a></td>
 
                                 <tr><!-- TODO: Add show to seen comments -->
                             @endforeach

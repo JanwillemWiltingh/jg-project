@@ -63,6 +63,7 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
 
 Route::name('user.')->prefix('gebruiker/')->group(function (){
     Route::name('clock.')->prefix('clock/')->group(function (){
+        Route::get('/show/{user}', [Users\ClockController::class, 'show'])->name('show');
         Route::get('/', [Users\ClockController::class, 'index'])->name('index');
     });
 });
