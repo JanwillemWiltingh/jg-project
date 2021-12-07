@@ -1,14 +1,3 @@
-<!--
-=========================================================
-Material Dashboard - v2.1.2
-=========================================================
-
-Product Page: https://www.creative-tim.com/product/material-dashboard
-Copyright 2020 Creative Tim (https://www.creative-tim.com)
-Coded by Creative Tim
-
-=========================================================
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -26,6 +15,11 @@ The above copyright notice and this permission notice shall be included in all c
         <link rel="stylesheet" href="{{asset('/css/app.css')}}" type="text/css">
 
         <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+
+        <!-- Calender -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"> </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/lang-all.js"></script>
 
         <!-- Favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="{{asset('storage/favicon/apple-touch-icon.png')}}">
@@ -145,12 +139,6 @@ The above copyright notice and this permission notice shall be included in all c
                                         <p>{{\Illuminate\Support\Facades\Auth::user()['firstname']}}</p>
                                     </a>
                                 </li>
-{{--                                <li class="nav-item" style="font-size: 20px">--}}
-{{--                                    <a id="dropdown_button" >--}}
-{{--                                        {{\Illuminate\Support\Facades\Auth::user()['firstname']}} <i class="fa fa-user"></i>--}}
-{{--                                        <i class="fas fa-caret-down" id="arrow" style="height: 100%"></i>--}}
-{{--                                    </a>--}}
-{{--                                </li>--}}
                             @endif
                         @endcan
                     </ul>
@@ -282,6 +270,7 @@ The above copyright notice and this permission notice shall be included in all c
             </div>
         </div>
         {{--JS--}}
+
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
 {{--        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>--}}

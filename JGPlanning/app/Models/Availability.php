@@ -18,6 +18,14 @@ class Availability extends Model
         '5' => 'Vrijdag',
         '6' => 'Zaterdag',
     ];
+    const WEEK_DAYS_MOB = [
+        '1' => 'Ma',
+        '2' => 'Di',
+        '3' => 'Wo',
+        '4' => 'Do',
+        '5' => 'Vr',
+        '6' => 'Za',
+    ];
 
     use HasFactory;
 

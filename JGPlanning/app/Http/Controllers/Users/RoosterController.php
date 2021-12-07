@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
+use App\Services\RosterService;
 use App\Services\TimeService;
 use App\Models\{User,Rooster,DisabledDays,Availability};
 use App\Services\CalendarService;
@@ -23,7 +24,7 @@ class RoosterController extends Controller
     }
 
 //  Functie om het rooster te laten zien
-    public function index(CalendarService $calendarService, $week, $year)
+    public function index(RosterService $rosterService,CalendarService $calendarService, $week, $year)
     {
         if ($week > 52)
         {
@@ -104,6 +105,7 @@ class RoosterController extends Controller
 
 
         $weekDays     = Availability::WEEK_DAYS;
+        $roster = $rosterService->generateRosterData($user);
         $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week, $year);
         $user_info = User::find($user);
 
@@ -116,7 +118,8 @@ class RoosterController extends Controller
             'weekstring',
             'disabled_array',
             'disabled_days',
-            'disabled'
+            'disabled',
+            'roster'
         ));
     }
 
@@ -245,125 +248,181 @@ class RoosterController extends Controller
     }
 
 //  Functie om een dag te bewerken
-    public function edit_availability(TimeService $time, Request $request, $week)
+    public function edit_availability(TimeService $time, Request $request, $week, $year)
     {
-        $validated = $request->validate([
-            'start_time' => ['required'],
-            'end_time' => ['required'],
-            'weekday' => ['required'],
-            'user_id' => ['required'],
-            'from_home' => [],
-            'comment' => [],
-            'start_week' => ['required'],
-            'end_week' => ['required'],
-            'rooster_id' => ['required']
-        ]);
-
-        $start_time = $time->roundTime($validated['start_time'], 30);
-
-        $end_time  = $time->roundTime($validated['end_time'], 30);
-
-        $start_week = substr($validated['start_week'], 6);
-        $end_week = substr($validated['end_week'], 6);
-
-        $start_year = substr($validated['start_week'], '0',-4);
-        $end_year = substr($validated['end_week'], '0', -4);
-
-
+        $edit_rooster = Rooster::all()
+            ->where('id', $request->input('rooster_id'))
+            ->first();
         $date = Carbon::now();
-        if ($validated['weekday'] == 1)
+        if ($request->input('start_time'))
         {
-            $final_date_start = $date
-                ->setISODate($start_year, $start_week)
-                ->format('Y-m-d');
-            $final_date_end = $date
-                ->setISODate($end_year, $end_week)
-                ->format('Y-m-d');
+            if ($edit_rooster->end_time > $request->input('start_time'))
+            {
+                $edit_rooster->update(['start_time' => $time->roundTime($request->input('start_time'), 30)]);
+            }
+            else
+            {
+                if ($edit_rooster->start_time != $request->input('start_time'). ":00")
+                {
+                    return back()->with(['message' => ['message' => 'De ingevulde begin tijd is later dan de eind tijd.', 'type' => 'danger']]);
+                }
+            }
+        }
+
+        if ($request->input('end_time'))
+        {
+            if (!$edit_rooster->start_time > $request->input('end_time'))
+            {
+                $edit_rooster->update(['end_time' => $time->roundTime($request->input('end_time'), 30)]);
+            }
+            else
+            {
+                if ($edit_rooster->end_time != $request->input('end_time'). ":00")
+                {
+                    return back()->with(['message' => ['message' => 'De ingevulde eind tijd is eerder dan de start tijd.', 'type' => 'danger']]);
+                }
+            }
+        }
+
+        if ($request->input('from_home'))
+        {
+            $edit_rooster->update(['from_home' => true]);
         }
         else
         {
-            $final_date_start = $date
-                ->setISODate($start_year, $start_week)
-                ->addDays($validated['weekday'])
-                ->format('Y-m-d');
-            $final_date_end = $date
-                ->setISODate($end_year, $end_week)
-                ->addDays($validated['weekday'])
-                ->format('Y-m-d');
+            $edit_rooster->update(['from_home' => false]);
         }
 
-        $checkRoosterEdit = Rooster::all()
-            ->where('user_id', $validated['user_id'])
-            ->where('weekdays', $validated['weekday']);
-
-//      Checked of de ingevulde datums niet overlappen met andere datums van de gebruiker.
-        foreach ($checkRoosterEdit as $cr)
+        if ($request->input('comment'))
         {
-            if ($cr->weekday == 1)
+            $edit_rooster->update(['comment' => $request->input('comment')]);
+        }
+
+        if ($request->input('start_week'))
+        {
+            $start_year = substr($request->input('start_week'), '0',-4);
+            $start_week = substr($request->input('start_week'), 6);
+//            dd($start_year, $start_week);
+            if ($request->input('weekday') == 1)
             {
-                $final_db_date_start = $date
-                    ->setISODate($cr->start_year, $cr->start_week)
-                    ->format('Y-m-d');
-                $final_db_date_end = $date
-                    ->setISODate($cr->end_year, $cr->end_week)
+                $final_date_start = $date
+                    ->setISODate($start_year, $start_week)
                     ->format('Y-m-d');
             }
             else
             {
-                $final_db_date_start = $date
-                    ->setISODate($cr->start_year, $cr->start_week)
-                    ->addDays($cr->weekday)
-                    ->format('Y-m-d');
-                $final_db_date_end = $date
-                    ->setISODate($cr->end_year, $cr->end_week)
-                    ->addDays($cr->weekday)
+                $final_date_start = $date
+                    ->setISODate($start_year, $start_week)
+                    ->addDays($request->input('weekday'))
                     ->format('Y-m-d');
             }
-            if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end))
+
+            $checkRoosterEdit = Rooster::all()
+                ->where('user_id', $request->input('user_id'))
+                ->where('weekdays', $request->input('weekday'));
+            if ($edit_rooster->start_week != $start_week || $edit_rooster->start_year != $start_year)
             {
-                return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+//              Checked of de ingevulde datums niet overlappen met andere datums van de gebruiker.
+                foreach ($checkRoosterEdit as $cr)
+                {
+                    if ($cr->weekday == 1)
+                    {
+                        $final_db_date_start = $date
+                            ->setISODate($cr->start_year, $cr->start_week)
+                            ->format('Y-m-d');
+                        $final_db_date_end = $date
+                            ->setISODate($cr->end_year, $cr->end_week)
+                            ->format('Y-m-d');
+                    }
+                    else
+                    {
+                        $final_db_date_start = $date
+                            ->setISODate($cr->start_year, $cr->start_week)
+                            ->addDays($cr->weekday)
+                            ->format('Y-m-d');
+                        $final_db_date_end = $date
+                            ->setISODate($cr->end_year, $cr->end_week)
+                            ->addDays($cr->weekday)
+                            ->format('Y-m-d');
+                    }
+                    if ($cr->id == $request->input('rooster_id'))
+                    {
+                        if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end))
+                        {
+                            $edit_rooster->update(['start_week' => $start_week]);
+                            $edit_rooster->update(['start_year' => $start_year]);
+                        }
+                        else
+                        {
+                            return back()->with(['message' => ['message' => 'De eind week die u heeft ingevuld overlapt met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                        }
+                    }
+                }
             }
-            else if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end))
+
+        }
+
+        if ($request->input('end_week'))
+        {
+            $start_year = substr($request->input('end_week'), '0',-4);
+            $start_week = substr($request->input('end_week'), 6);
+            if ($request->input('weekday') == 1)
             {
-                return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                $final_date_end = $date
+                    ->setISODate($start_year, $start_week)
+                    ->format('Y-m-d');
+            }
+            else
+            {
+                $final_date_end = $date
+                    ->setISODate($start_year, $start_week)
+                    ->addDays($request->input('weekday'))
+                    ->format('Y-m-d');
+            }
+
+            $checkRoosterEdit = Rooster::all()
+                ->where('user_id', $request->input('user_id'))
+                ->where('weekdays', $request->input('weekday'));
+            if ($edit_rooster->end_week != $start_week || $edit_rooster->end_year != $start_year) {
+    //      Checked of de ingevulde datums niet overlappen met andere datums van de gebruiker.
+                foreach ($checkRoosterEdit as $cr)
+                {
+                    if ($cr->weekday == 1)
+                    {
+                        $final_db_date_start = $date
+                            ->setISODate($cr->start_year, $cr->start_week)
+                            ->format('Y-m-d');
+                        $final_db_date_end = $date
+                            ->setISODate($cr->end_year, $cr->end_week)
+                            ->format('Y-m-d');
+                    }
+                    else
+                    {
+                        $final_db_date_start = $date
+                            ->setISODate($cr->start_year, $cr->start_week)
+                            ->addDays($cr->weekday)
+                            ->format('Y-m-d');
+                        $final_db_date_end = $date
+                            ->setISODate($cr->end_year, $cr->end_week)
+                            ->addDays($cr->weekday)
+                            ->format('Y-m-d');
+                    }
+
+                    if ($cr->id == $request->input('rooster_id'))
+                    {
+                        if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end))
+                        {
+                            $edit_rooster->update(['end_week' => $start_week]);
+                            $edit_rooster->update(['end_year' => $start_year]);
+                        }
+                        else
+                        {
+                            return back()->with(['message' => ['message' => 'De eind week die u heeft ingevuld overlapt met weken die al ingevuld zijn.', 'type' => 'danger']]);
+                        }
+                    }
+                }
             }
         }
-
-//      Checked of de begin week die is ingevuld niet eerder is dan de ingevulde eind week.
-        if ($final_date_end < $final_date_start)
-        {
-            return back()->with(['message' => ['message' => 'De begin week die u heeft ingevuld is later dan de ingevulde eind week.', 'type' => 'danger']]);
-        }
-
-//      Checked of de begin tijd die is ingevuld niet eerder is dan de ingevulde eind tijd.
-        if ($start_time > $end_time)
-        {
-            return back()->with(['message' => ['message' => 'De ingevulde begin tijd is later dan de eind tijd.', 'type' => 'danger']]);
-        }
-
-        if (isset($validated['from_home']))
-        {
-            $from_home = 1;
-        }
-        else
-        {
-            $from_home = 0;
-        }
-
-
-        Rooster::all()
-            ->where('id', $validated['rooster_id'])
-            ->first()
-            ->update([
-                'start_time' => $start_time,
-                'end_time' => $end_time,
-                'from_home' => $from_home,
-                'comment' => $validated['comment'],
-                'start_week' => $start_week,
-                'end_week' => $end_week,
-                'start_year' => $start_year,
-                'end_year' => $end_year
-            ]);
 
         return back()->with(['message' => ['message' => 'De aangegeven planning is aangepast.', 'type' => 'success']]);
     }
@@ -574,10 +633,9 @@ class RoosterController extends Controller
 //      Info voor if statements
         $date = Carbon::now();
         $checkDisabled = DisabledDays::all()
-            ->where('id', $validated['id'])
+            ->where('weekday', DisabledDays::all()->where('id', $validated['id'])->first()->weekday)
             ->where('user_id', Auth::id());
-
-        if ($checkDisabled[0]->weekday == 1)
+        if (DisabledDays::all()->where('id', $validated['id'])->first()->weekday == 1)
         {
             $final_date_start = $date
                 ->setISODate($start_year, $start_week)
@@ -590,14 +648,13 @@ class RoosterController extends Controller
         {
             $final_date_start = $date
                 ->setISODate($start_year, $start_week)
-                ->addDays($checkDisabled[0]->weekday)
+                ->addDays(DisabledDays::all()->where('id', $validated['id'])->first()->weekday)
                 ->format('Y-m-d');
             $final_date_end = $date
                 ->setISODate($end_year, $end_week)
-                ->addDays($checkDisabled[0]->weekday)
+                ->addDays(DisabledDays::all()->where('id', $validated['id'])->first()->weekday)
                 ->format('Y-m-d');
         }
-
 //        Checked of de week die is ingevuld niet eerder is dan de huidige week.
         foreach ($checkDisabled as $cr)
         {
@@ -633,6 +690,7 @@ class RoosterController extends Controller
                 }
             }
         }
+
         if ($final_date_start > $final_date_end)
         {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);

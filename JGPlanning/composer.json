@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "ext-json": "*",
+        "acaronlex/laravel-calendar": "^1.6",
         "doctrine/dbal": "^3.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -14,6 +15,7 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "qlick/laravel-full-calendar": "^1.1",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {

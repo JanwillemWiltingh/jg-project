@@ -19,4 +19,9 @@ class Browser extends Model
         $browser = new BrowserDetection();
         return $browser->getName();
     }
+
+    public static function isMobile(): string {
+        $browser = new BrowserDetection();
+        return $browser->isMobile();
+    }
 }
