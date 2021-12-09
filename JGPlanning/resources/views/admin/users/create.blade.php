@@ -27,7 +27,7 @@
                             {{ __('general.'.'phone_number') }}
                         </label>
                         <input type="tel" class="form-control" name="phone_number" pattern="[0-9]{10}" value="{{ old('phone_number') ?? $value ?? null }}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">
-                        <label>Format: 0612345678</label>
+                        <label>Formaat: 0612345678</label>
 {{--                            <input type="tel" class="form-control" name="phone_number" value="{{ old('phone_number') ?? $value ?? null }}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">--}}
 
                         @if($errors->has('phone_number'))
@@ -67,7 +67,6 @@
                         </div>
                     @endif
                 </div>
-
             </div>
         @else
             <input type="hidden" name="roles" value="2">

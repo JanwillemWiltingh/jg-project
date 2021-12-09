@@ -44,14 +44,25 @@
                     @endif
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="black-label-text" for="phone_number">Telefoonnummer</label>
+                    <input type="text" class="form-control" id="phone_number" value="{{$user['phone_number']}}" aria-describedby="phone_number" placeholder="Telefoonnummer" readonly>
+                    @if($errors->has('phone_number'))
+                        <div class="error">{{ $errors->first('phone_number') }}</div>
+                    @endif
+                </div>
+            </div>
             <hr>
             <div class="row">
                 <div class="form-group">
-                    <label class="black-label-text" for="role">Rol</label>
-                    <input type="text" class="form-control" id="role" value="{{$user['role']['name']}}" aria-describedby="role" placeholder="Rol" readonly>
+                    <label class="black-label-text" for="roles">Rol</label>
+                    <input type="text" class="form-control" id="name" value="{{__('general.' .$user['role']['name'])}}" aria-describedby="name" placeholder="Achternaam" readonly>
                 </div>
             </div>
-            <a href="{{route('profile.edit', $user['id'])}}" class="btn btn-primary jg-color-3 border-0" value="Bewerk">Bewerk</a>
+
+            <button class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('dashboard.home')}}" style="text-decoration: none; color: white;">Ga Terug</a></button>
+            <a href="{{route('profile.edit', $user['id'])}}" style="float: right" class="btn btn-primary jg-color-3 border-0">Bewerk</a>
             <a id="changeFont"  href="#" >.</a>
         </div>
     </div>
