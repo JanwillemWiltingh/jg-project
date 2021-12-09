@@ -17,6 +17,5 @@ class DisabledDays extends Model
         'end_year',
         'by_admin'
     ];
-
     public $timestamps = false;
 }
