@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="crud-user-form fadeInDown">
+    <div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
     <h1>Uw Profiel</h1>
     <div class="card">
         <div class="card-body">
