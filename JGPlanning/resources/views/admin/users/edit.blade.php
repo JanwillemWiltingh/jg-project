@@ -1,25 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="crud-user-form fadeInDown">
+    <div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
         <h1>Bewerk Gebruiker</h1>
         <div class="card">
             <div class="card-body">
                 <form method="get" action="{{ route('admin.users.update', $user['id']) }}">
                     <div class="row">
-                        {{--                    <div class="col-3">--}}
-                        <x-forms.input type="text" value="{{$user['firstname']}}" name="firstname"></x-forms.input>
-                        {{--                    </div>--}}
-                    </div>
-
-                    <div class="row">
-                        {{--                    <div class="col-3">--}}
-                        <x-forms.input type="text" value="{{$user['middlename']}}" name="middlename"></x-forms.input>
-                        {{--                    </div>--}}
-                    </div>
-
-                    <div class="row">
-                        <x-forms.input type="text" value="{{$user['lastname']}}" name="lastname"></x-forms.input>
+                        <div class="col-4">
+                        {{-- Firstname --}}
+                            <x-forms.input type="text" value="{{$user['firstname']}}" name="firstname"></x-forms.input>
+                        </div>
+                        <div class="col-4">
+                        {{-- Middlename --}}
+                            <x-forms.input type="text" value="{{$user['middlename']}}" name="middlename"></x-forms.input>
+                        </div>
+                        <div class="col-4">
+                        {{-- Lastname --}}
+                            <x-forms.input type="text" value="{{$user['lastname']}}" name="lastname"></x-forms.input>
+                        </div>
                     </div>
                     <div class="row">
                         <x-forms.input type="email" value="{{$user['email']}}" name="email"></x-forms.input>
