@@ -5664,11 +5664,7 @@ $(document).ready(function () {
   $('#week_rooster').on('click', function () {
     $('#calender_hide').hide();
     $('#rooster').show();
-  }); // $('#'+ $('#id_calender').val()).fullCalendar({
-  //     businessHours: {
-  //         daysOfWeek: [1],
-  //     }
-  // });
+  });
 });
 
 /***/ }),

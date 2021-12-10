@@ -14,29 +14,21 @@ class RosterService
 {
     public function generateRosterData($user_id)
     {
-        $weekdays = Availability::WEEK_DAYS;
+//      Gets the current date and creates a array for all the variables to go into.
         $date = Carbon::now();
-//        dd(in_array($date->dayOfYear, range(Carbon::parse('2021-02-15')->dayOfYear, Carbon::parse('2021-12-15')->dayOfYear)));
         $events = [];
-        $events2 = [];
-        $array = [];
-        $array_test = [
-            ['id' => 'yeas'],
-            ['id' => 'nah']
-        ];
+
+//      Database data.
         $data = Rooster::all()
-            ->sortBy('weekdays')
             ->where('user_id', $user_id);
         $disdays = DisabledDays::all()
             ->where('user_id', $user_id);
+
+//      Gets every day from this year
         $period = CarbonPeriod::create(Carbon::parse(date('Y-m-d'))->startOfYear(), Carbon::parse(date('Y-m-d'))->endOfYear());
 
-        // Convert the period to an array of dates
+//      Convert the period to an array of dates
         $dates = $period->toArray();
-
-
-        $date_final = null;
-        $date_final_array = [];
 
         foreach ($dates as $da)
         {
@@ -51,24 +43,66 @@ class RosterService
                     ->addDays($d->weekdays - 1)
                     ->format('Y-m-d');
 
-//                $days = [];
-//
                 $start_date = Carbon::parse($date_start);
                 $end_date = Carbon::parse($date_end);
                 if ($da->dayOfWeek == $d->weekdays)
                 {
-                    if (in_array($da->dayOfYear, range($start_date->dayOfYear, $end_date->dayOfYear)))
+                  if (in_array($da->dayOfYear, range($start_date->dayOfYear, $end_date->dayOfYear)))
                     {
                         $events[] = Calendar::event(
-                            'Op deze dag bent u ingeroosterd',
+                            substr($d->start_time, 0, -3) . " - " . substr($d->end_time, 0, -3),
                             true,
                             $da->format('Y-m-d'),
-                            $da->format('Y-m-d'),
+                            $da->format('Y-m-d'). '- 1 day',
                             null,
                             [
-                                'textColor' => 'white'
+                                'color' => '1C88A4',
+                                'textColor' => 'white',
+                                'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'
                             ]
                         );
+                    }
+                }
+            }
+        }
+
+        foreach ($dates as $da)
+        {
+            foreach ($disdays as $dis)
+            {
+                $date_dis_start = $date
+                    ->setISODate($dis->start_year, $dis->start_week)
+                    ->addDays($dis->weekday - 1)
+                    ->format('Y-m-d');
+                $date_dis_end = $date
+                    ->setISODate($dis->end_year, $dis->end_week)
+                    ->addDays($dis->weekday - 1)
+                    ->format('Y-m-d');
+
+                $start_dis_date = Carbon::parse($date_dis_start);
+                $end_dis_date = Carbon::parse($date_dis_end);
+                if ($da->dayOfWeek == $dis->weekday)
+                {
+                    if (in_array($da->dayOfYear, range($start_dis_date->dayOfYear, $end_dis_date->dayOfYear)))
+                    {
+                        for ($i = 0; $i < count($events); $i++)
+                        {
+                            if ($events[$i]->start->format('Y-m-d') == $da->format('Y-m-d'))
+                            {
+                                $events[$i] = Calendar::event(
+                                    'Dag Uitgezet',
+                                    true,
+                                    $da->format('Y-m-d'),
+                                    $da->format('Y-m-d'). '- 1 day',
+                                    null,
+                                    [
+                                        'color' => 'lightgray',
+                                        'textColor' => 'black',
+                                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'
+                                    ]
+                                );
+                            }
+                        }
                     }
                 }
             }

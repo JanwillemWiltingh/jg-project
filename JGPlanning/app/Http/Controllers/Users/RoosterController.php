@@ -446,8 +446,6 @@ class RoosterController extends Controller
         return back();
     }
 
-
-
 //  Functie om een gebruikers daggen die disabled zijn te sturen naar de database
     public function push_days($user, Request $request)
     {
@@ -481,7 +479,7 @@ class RoosterController extends Controller
         return redirect()->back();
     }
 
-//  functie om uitgezette datums aan te makken.
+//  Functie om uitgezette datums aan te makken.
     public function disable_days(Request $request)
     {
         $validated = $request->validate([
@@ -579,6 +577,7 @@ class RoosterController extends Controller
         return back()->with(['message' => ['message' => 'De ingevulde weken zijn uitgezet.', 'type' => 'success']]);
     }
 
+//  Functie om uitgezette datums normaal te verwijderen
     public function delete_disable($weekday, $week)
     {
         DisabledDays::all()
@@ -592,6 +591,7 @@ class RoosterController extends Controller
         return back();
     }
 
+//  Functie om uitgezette datums normaal te verwijderen
     public function manage_disable_days(Request $request)
     {
         $validate = $request->validate([
@@ -603,6 +603,8 @@ class RoosterController extends Controller
             ->first()
             ->delete();
     }
+
+//  Functie om rooster datums te verwijderen
     public function manage_delete_days(Request $request)
     {
         $validate = $request->validate([
@@ -615,6 +617,7 @@ class RoosterController extends Controller
             ->delete();
     }
 
+//  Functie om rooster datums te bewerken
     public function edit_disable_days(Request $request, $week)
     {
         $validated = $request->validate([
@@ -704,5 +707,45 @@ class RoosterController extends Controller
         ]);
 
         return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
+    }
+
+//  Functie om rooster datums te bewerken
+    public function disable_days_click($week, $year, $day)
+    {
+        $checkDisabled = DisabledDays::all()
+            ->where('user_id', Auth::id());
+
+        foreach ($checkDisabled as $cr)
+        {
+            if ($cr->start_week - 1 == $week)
+            {
+                $cr->update([
+                    'start_week' => $week,
+                    'start_year' => $year,
+                ]);
+                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+            }
+            else if ($cr->end_week + 1 == $week)
+            {
+                $cr->update([
+                    'end_week' => $week,
+                    'end_year' => $year,
+                ]);
+
+                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+            }
+            else
+            {
+                DisabledDays::create([
+                    'user_id' => Auth::id(),
+                    'start_week' => $week,
+                    'end_week' => $week,
+                    'weekday' => $day,
+                    'start_year' => $year,
+                    'end_year' => $year,
+                ]);
+                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+            }
+        }
     }
 }

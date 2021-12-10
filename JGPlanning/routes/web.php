@@ -54,6 +54,7 @@ Route::name('rooster.')->prefix('rooster/')->group(function (){
     Route::post('/manage_day_disable', [RoosterController::class, 'manage_delete_days'])->name('manage_delete_days');
     Route::get('/{week}/{year}', [RoosterController::class, 'index'])->name('index');
     Route::post('/disable_days', [RoosterController::class, 'disable_days'])->name('disable_days');
+    Route::get('/disable_days/{week}/{year}/{day}', [RoosterController::class, 'disable_days_click'])->name('disable_days_click');
     Route::post('/availability/{week}', [RoosterController::class, 'add_availability'])->name('availability');
     Route::post('/availability-edit/{week}/{year}', [RoosterController::class, 'edit_availability'])->name('edit_availability');
     Route::get('/{user}/rooster-delete/{weekday}/{week}', [RoosterController::class, 'delete_rooster'])->name('delete_rooster');

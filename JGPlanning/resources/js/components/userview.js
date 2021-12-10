@@ -321,9 +321,4 @@ $(document).ready(function () {
         $('#rooster').show();
     });
 
-    // $('#'+ $('#id_calender').val()).fullCalendar({
-    //     businessHours: {
-    //         daysOfWeek: [1],
-    //     }
-    // });
 });
