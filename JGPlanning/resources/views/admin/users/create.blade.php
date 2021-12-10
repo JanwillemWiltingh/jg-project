@@ -1,22 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="crud-user-form fadeInDown">
+<div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
     <text class="crud-user-form-title icon-color">Maak een nieuwe Gebruiker aan </text>
     <div class="card">
         <div class="card-body">
             <form method="get" action="{{ route('admin.users.store') }}">
                 <div class="row">
-                    <x-forms.input type="text" name="firstname"></x-forms.input>
-                </div>
-                <div class="row">
-                    <x-forms.input type="text" name="middlename"></x-forms.input>
-                </div>
-                <div class="row">
-                    <x-forms.input type="text" name="lastname"></x-forms.input>
-                </div>
-                <div class="row">
-                    <x-forms.input type="email" name="email"></x-forms.input>
+                    <div class="col-4">
+                        {{-- Firstname --}}
+                        <x-forms.input type="text" name="firstname"></x-forms.input>
+                    </div>
+                    <div class="col-4">
+                        {{-- Middlename --}}
+                        <x-forms.input type="text" name="middlename"></x-forms.input>
+                    </div>
+                    <div class="col-4">
+                        {{-- Lastname --}}
+                        <x-forms.input type="text" name="lastname"></x-forms.input>
+                    </div>
                 </div>
                 <div class="row">
                     {{-- Telefoon nummer input --}}

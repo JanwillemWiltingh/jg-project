@@ -65,12 +65,12 @@
                         @if($days->count() > 0)
                             @foreach($days as $work_day)
                                 <tr>
-                                    <td style="width: 10%">{{ $work_day->format('d-m-Y') }}</td>
-                                    <td style="width: 10%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
-                                    <td style="width: 5%">{{ $user->getStartTime($work_day) }}</td>
-                                    <td style="width: 5%">{{ $user->getEndTime($work_day) }}</td>
+                                    <td style="width: 15%">{{ $work_day->format('d-m-Y') }}</td>
+                                    <td style="width: 13%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
+                                    <td style="width: 10%">{{ $user->getStartTime($work_day) }}</td>
+                                    <td style="width: 10%">{{ $user->getEndTime($work_day) }}</td>
                                     <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }}</td>
-                                    <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
+                                    <td>Klik het oogje voor meer informatie</td>
                                     <td style="width: 1%"><a class="table-label" href="{{route('user.clock.show', $user['id'])}}" title="Gebruikers uren bekijken"><i class="fa fa-eye icon-color"></i></a></td>
 
                                 <tr><!-- TODO: Add show to seen comments -->

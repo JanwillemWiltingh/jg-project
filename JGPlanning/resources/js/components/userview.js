@@ -320,4 +320,5 @@ $(document).ready(function () {
         $('#calender_hide').hide();
         $('#rooster').show();
     });
+
 });

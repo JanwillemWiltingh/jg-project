@@ -6,51 +6,37 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="form-group">
-                    <label class="black-label-text" for="name">Voornaam</label>
-                    <input type="text" class="form-control" id="name" value="{{$user['firstname']}}" aria-describedby="name" placeholder="Voornaam" readonly>
-                    @if($errors->has('name'))
-                        <div class="error">{{ $errors->first('name') }}</div>
-                    @endif
+                <div class="@if(!empty($user['middlename']))col-4 @else col-6 @endif">
+                    <div class="form-group">
+                        <label class="black-label-text" for="name">Voornaam</label>
+                        <input type="text" class="form-control" id="name" value="{{$user['firstname']}}" aria-describedby="name" placeholder="Voornaam" readonly>
+                    </div>
                 </div>
-            </div>
-
             @if(!empty($user['middlename']))
-            <div class="row">
-                <div class="form-group">
-                    <label class="black-label-text" for="name">Middlename</label>
-                    <input type="text" class="form-control" id="name" value="{{$user['middlename']}}" aria-describedby="name" placeholder="Voornaam" readonly>
-                    @if($errors->has('name'))
-                        <div class="error">{{ $errors->first('name') }}</div>
-                    @endif
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="black-label-text" for="name">Middlename</label>
+                        <input type="text" class="form-control" id="name" value="{{$user['middlename']}}" aria-describedby="name" placeholder="Voornaam" readonly>
+                    </div>
                 </div>
-            </div>
             @endif
-            <div class="row">
-                <div class="form-group">
-                    <label class="black-label-text" for="name">Achternaam</label>
-                    <input type="text" class="form-control" id="name" value="{{$user['lastname']}}" aria-describedby="name" placeholder="Achternaam" readonly>
-                    @if($errors->has('name'))
-                        <div class="error">{{ $errors->first('name') }}</div>
-                    @endif
+                <div class="@if(!empty($user['middlename']))col-4 @else col-6 @endif">
+                    <div class="form-group">
+                        <label class="black-label-text" for="name">Achternaam</label>
+                        <input type="text" class="form-control" id="name" value="{{$user['lastname']}}" aria-describedby="name" placeholder="Achternaam" readonly>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
                     <label class="black-label-text" for="email">Email</label>
                     <input type="email" class="form-control" id="email" value="{{$user['email']}}" aria-describedby="email" placeholder="Email" readonly>
-                    @if($errors->has('email'))
-                        <div class="error">{{ $errors->first('email') }}</div>
-                    @endif
                 </div>
             </div>
             <div class="row">
                 <div class="form-group">
                     <label class="black-label-text" for="phone_number">Telefoonnummer</label>
                     <input type="text" class="form-control" id="phone_number" value="{{$user['phone_number']}}" aria-describedby="phone_number" placeholder="Telefoonnummer" readonly>
-                    @if($errors->has('phone_number'))
-                        <div class="error">{{ $errors->first('phone_number') }}</div>
-                    @endif
                 </div>
             </div>
             <hr>
