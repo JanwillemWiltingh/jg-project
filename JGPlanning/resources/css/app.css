@@ -742,3 +742,6 @@ table.dataTable td.focus {
     height: 10% !important;
     font-size: 8px !important;
 }
+#comment{
+    height: 119px !important;
+}
