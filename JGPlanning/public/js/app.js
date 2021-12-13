@@ -5665,6 +5665,21 @@ $(document).ready(function () {
     $('#calender_hide').hide();
     $('#rooster').show();
   });
+  $('.fc-center h2').css('textTransform', 'capitalize');
+  $('#count').text('0 ');
+  $('#comment').on('keyup', function () {
+    if (this.value.length) {
+      $('#count').text(this.value.length);
+    } else {
+      $('#count').text('0');
+    }
+
+    if (this.value.length > 150) {
+      $('#comment').css('color', 'red');
+    } else {
+      $('#comment').css('color', 'black');
+    }
+  });
 });
 
 /***/ }),

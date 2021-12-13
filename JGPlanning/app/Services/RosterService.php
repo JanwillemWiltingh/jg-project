@@ -23,7 +23,6 @@ class RosterService
             ->where('user_id', $user_id);
         $disdays = DisabledDays::all()
             ->where('user_id', $user_id);
-
 //      Gets every day from this year
         $period = CarbonPeriod::create(Carbon::parse(date('Y-m-d'))->startOfYear(), Carbon::parse(date('Y-m-d'))->endOfYear());
 
@@ -58,7 +57,7 @@ class RosterService
                             [
                                 'color' => '1C88A4',
                                 'textColor' => 'white',
-                                'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'
+                                'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/'
                             ]
                         );
                     }
@@ -99,7 +98,7 @@ class RosterService
                                     [
                                         'color' => 'lightgray',
                                         'textColor' => 'black',
-                                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'
+                                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$user_id .'/'
                                     ]
                                 );
                             }

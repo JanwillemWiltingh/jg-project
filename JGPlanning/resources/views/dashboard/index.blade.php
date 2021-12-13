@@ -141,7 +141,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="comment" class="form-label">Aantekening</label>
+                                    <label for="comment" class="form-label">Opmerking</label>
+                                    <label style="float: right !important;">
+                                        <text id="count"></text><text>/ 150</text>
+                                    </label>
                                     <textarea class="form-control" id="comment" name="comment" rows="4" @if($start == False) @else DISABLED @endif></textarea>
                                 </div>
                             </div>
