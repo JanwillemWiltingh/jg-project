@@ -18,6 +18,7 @@
     </div>
 
     <div @if($browser->isMobile())style="width: 105% !important;" @else class="row"@endif>
+        @if($user['role_id'] == \App\Models\Role::getRoleID('employee'))
         @if(!$browser->isMobile())
             <div class=" col-4">
                 <div class="card">
@@ -131,7 +132,6 @@
         </div>
     @endif
 
-    @if($user['role_id'] == \App\Models\Role::getRoleID('employee'))
     <div class="row">
         <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="card">
@@ -159,7 +159,6 @@
                 </div>
             </div>
         </div>
-        @endif
         @if(!$browser->isMobile())
         <div class="col-6">
             <div class="row">
@@ -221,6 +220,7 @@
                 </div>
             </div>
         </div>
+        @endif
         @endif
     </div>
 <a style="color: white; cursor: pointer" id="changeFont" target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>

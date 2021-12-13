@@ -8,7 +8,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Selectie Opties</h4>
+                                <h4 class="card-title">Selectie opties</h4>
                                 <form method="GET" action="{{ route('admin.clock.index') }}">
 
                                     <!-- Single User selector -->

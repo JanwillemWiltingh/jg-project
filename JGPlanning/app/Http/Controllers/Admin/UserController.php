@@ -67,7 +67,7 @@ class UserController extends Controller
             'lastname' => ['required'],
             'email' => ['required','unique:users,email'],
             'roles' =>['required'],
-            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10'],
+            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', 'unique:users,phone_number'],
         ]);
 
         $current_user = Auth::user();
@@ -77,7 +77,7 @@ class UserController extends Controller
         //create random string of 20 for password
         $password = \Illuminate\Support\Str::random(20);
 
-        $newUser = User::create([
+        User::create([
             'firstname' => ucfirst($validated['firstname']),
             'middlename' => ($validated['middlename']),
             'lastname' => ucfirst($validated['lastname']),
@@ -90,6 +90,7 @@ class UserController extends Controller
             $message->to($request->email);
             $message->subject('Nieuwe Gebruiker JG Planning');
         });
+        
 //
 //        for ($i = 1; $i < 6; $i++)
 //        {

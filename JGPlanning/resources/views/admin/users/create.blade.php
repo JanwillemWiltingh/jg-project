@@ -21,6 +21,9 @@
                     </div>
                 </div>
                 <div class="row">
+                    <x-forms.input type="email" name="email"></x-forms.input>
+                </div>
+                <div class="row">
                     {{-- Telefoon nummer input --}}
                     <div class="form-group">
                         <label
