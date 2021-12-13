@@ -710,17 +710,16 @@ class RoosterController extends Controller
     }
 
 //  Functie om rooster datums te bewerken
-    public function disable_days_click($week, $year, $day)
+    public function disable_days_click($week, $year, $day, $user)
     {
         $date = Carbon::now();
-
         $date_get = $date
             ->setISODate($year,$week)
             ->addDays($day - 1)
             ->format('Y-m-d');
 
         $checkDisabled = DisabledDays::all()
-            ->where('user_id', Auth::id())
+            ->where('user_id', $user)
             ->where('weekday', $day);
 
 
@@ -768,7 +767,7 @@ class RoosterController extends Controller
             else if (($date_get>= $date_dis_start) && ($date_get <= $date_dis_end))
             {
                 DisabledDays::create([
-                    'user_id' => Auth::id(),
+                    'user_id' => $user,
                     'start_week' => ($week + 1),
                     'end_week' => $cr->end_week,
                     'weekday' => $cr->weekday,
@@ -799,7 +798,7 @@ class RoosterController extends Controller
             else
             {
                 DisabledDays::create([
-                    'user_id' => Auth::id(),
+                    'user_id' => $user(),
                     'start_week' => $week,
                     'end_week' => $week,
                     'weekday' => $day,
@@ -812,7 +811,7 @@ class RoosterController extends Controller
         if ($checkDisabled->count() == 0)
         {
             DisabledDays::create([
-                'user_id' => Auth::id(),
+                'user_id' => $user,
                 'start_week' => $week,
                 'end_week' => $week,
                 'weekday' => $day,

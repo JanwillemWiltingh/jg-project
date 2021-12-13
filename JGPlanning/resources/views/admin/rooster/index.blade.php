@@ -50,7 +50,7 @@
                             @include('calender')
                         </div>
                     </div>
-                    <div class="card-header ">
+                    <div class="card-header" id="rooster">
                         <div class="card-body">
                             @if(session('status'))
                                 <div class="alert alert-success" role="alert">

@@ -5665,6 +5665,7 @@ $(document).ready(function () {
     $('#calender_hide').hide();
     $('#rooster').show();
   });
+  $('.fc-center h2').css('textTransform', 'capitalize');
 });
 
 /***/ }),

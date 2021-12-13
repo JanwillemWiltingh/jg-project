@@ -321,4 +321,5 @@ $(document).ready(function () {
         $('#rooster').show();
     });
 
+    $('.fc-center h2').css('textTransform', 'capitalize');
 });
