@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Beschikbaarheid</h5>
+                    <h5 class="modal-title">Beschikbaarheid Aangeven</h5>
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Dagen</p>
@@ -195,13 +195,13 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Beschikbaarheid</h5>
+                    <h5 class="modal-title">Beschikbaarheid beheren</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Dagen</p>
-                    <select class="form-control" style="width: 14%; height: 50% !important; display: inline" id="weekDropdown">
+                    <select class="form-control" style="width: 14%; height: 50% !important; display: inline; margin-bottom: 15px" id="weekDropdown">
                         <option value="Uitzetten">Uitzetten</option>
                         <option value="Toevoegen">Toevoegen</option>
                     </select>
@@ -245,16 +245,10 @@
                                 @else
                                     <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
                                 @endif
+                                <label style="font-style: italic;">
+                                    <p>Allen van toepassing voor zaterdagen of om fouten te verbeteren.</p>
+                                </label>
 
-                                <p>Voor zaterdagen of om fouten te verbeteren.</p>
-{{--                                <label style="width: 100%">--}}
-{{--                                    <p>Kies een dag:</p>--}}
-{{--                                    <select class="form-control" name="weekday">--}}
-{{--                                        @for($i = 1; $i <= count($weekDays); $i++)--}}
-{{--                                            <option value="{{$i}}">{{$weekDays[$i]}}</option>--}}
-{{--                                        @endfor--}}
-{{--                                    </select>--}}
-{{--                                </label>--}}
                                 <div style="display: flex">
                                     <div style="width: 50%">
                                         <label style="width: 95%">
@@ -272,7 +266,9 @@
                                                 <input type="time" name="end_time" class="form-control" style="outline: none; width: 50%;" id="time_picker_av_start" min="08:00" max="18:00" >
                                             </div>
                                         </label>
+                                        <p style="font-size: 12px" class="text-warning">De tijden die u hier invult worden op halve uren en hele uren afgerond</p>
                                     </div>
+
                                     <div>
                                         <label style="width: 100%;">
                                             <p>Opmerking:</p>
@@ -280,9 +276,15 @@
                                         </label>
                                     </div>
                                 </div>
-                            <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
 
-
+                            <label style="width: 100%">
+                                <p  style="font-style: italic">Mocht het niet voor een zaterdag zijn, kies hier een dag:</p>
+                                <select class="form-control" name="weekday">
+                                    @for($i = 1; $i <= count($weekDays); $i++)
+                                        <option value="{{$i}}" @if($weekDays[$i] == 'Zaterdag') selected @endif>{{$weekDays[$i]}}</option>
+                                    @endfor
+                                </select>
+                            </label>
                             <input type="checkbox" id="switch" class="toggle-box " name="from_home" />
                                 <label for="switch" class="toggle-label float-right" ></label>
 
