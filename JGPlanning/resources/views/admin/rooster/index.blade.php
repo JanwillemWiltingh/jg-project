@@ -31,6 +31,25 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
+                    <div class="card-header" id="calender_hide" style="display: none">
+                        <div class="card-body">
+                            <button class="btn jg-color-1 disabled" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            ">maand</button>
+                            <button class="btn jg-color-1" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            " id="week_rooster">
+                                Week
+                            </button>
+                            @include('calender')
+                        </div>
+                    </div>
                     <div class="card-header ">
                         <div class="card-body">
                             @if(session('status'))
@@ -67,6 +86,25 @@
                                     </a>
                                 </p>
 
+                                <button class="btn jg-color-1" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    " id="maand">
+                                    Maand
+                                </button>
+                                <button class="btn jg-color-1 disabled" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    ">Week</button>
+                                <form id="week_form">
+                                    <input type="hidden" value="{{request('week')}}" id="hidden_week">
+                                    <input type="hidden" value="{{request('year')}}" id="hidden_year">
+                                    <input type="week" class="form-control" name="week" id="week" value="{{request('year')}}-W{{request('week')}}">
+                                </form>
                             <table class="card-body table table-bordered">
                                 <thead >
                                 <th width="14%" style="border: none; text-align: center; border-radius: 15px 15px 0 0 !important;" >Time</th>
@@ -93,7 +131,7 @@
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Uitgezet door admin.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
 
                                                     @if($days[$i]['from_home'] != "")
                                                         @if($days[$i]['from_home'] == 1)
@@ -104,7 +142,7 @@
                                                     @endif
 
                                                     @if(!$days[$i]['comment'] == "")
-                                                        @if($days[$i]['comment'] == "Uitgezet door admin.")
+                                                        @if($days[$i]['comment'] == "Dag uitgezet.")
                                                             @if($days[$i]['by_admin'] == 0)
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
@@ -120,7 +158,7 @@
                                                         Geen opmerking
                                                     @endif
 
-                                                    @if($days[$i]['comment'] != "Uitgezet door admin.")
+                                                    @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p><a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
                                                     @endif
                                                 </th>

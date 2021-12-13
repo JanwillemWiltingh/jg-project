@@ -137,7 +137,7 @@
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
                                                 <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif  color: white;">
-                                                    @if($days[$i]['comment'] != "Uitgezet door admin.")
+                                                    @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>
                                                         @else

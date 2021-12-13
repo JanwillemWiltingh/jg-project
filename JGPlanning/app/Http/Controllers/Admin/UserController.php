@@ -90,25 +90,25 @@ class UserController extends Controller
             $message->to($request->email);
             $message->subject('Nieuwe Gebruiker JG Planning');
         });
-
-        for ($i = 1; $i < 6; $i++)
-        {
-            Rooster::create([
-                'start_time' => '08:30:00',
-                'end_time' => '17:00:00',
-                'comment' => "",
-                'from_home' => 0,
-                'weekdays' => $i,
-                'created_at' => date('Y-m-d h:i:s'),
-                'updated_at' => null,
-                'user_id' => $newUser->id,
-                'start_week' => '1',
-                'end_week' => '52',
-                'disabled' => false,
-                'start_year' => date('Y'),
-                'end_year' => date('Y'),
-            ]);
-        }
+//
+//        for ($i = 1; $i < 6; $i++)
+//        {
+//            Rooster::create([
+//                'start_time' => '08:30:00',
+//                'end_time' => '17:00:00',
+//                'comment' => "",
+//                'from_home' => 0,
+//                'weekdays' => $i,
+//                'created_at' => date('Y-m-d h:i:s'),
+//                'updated_at' => null,
+//                'user_id' => $newUser->id,
+//                'start_week' => '1',
+//                'end_week' => '52',
+//                'disabled' => false,
+//                'start_year' => date('Y'),
+//                'end_year' => date('Y'),
+//            ]);
+//        }
 
 //        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);

@@ -79,11 +79,12 @@ class RosterService
                     ->addDays($dis->weekday - 1)
                     ->format('Y-m-d');
 
-                $start_dis_date = Carbon::parse($date_dis_start);
-                $end_dis_date = Carbon::parse($date_dis_end);
+//                dd(, $date_dis_start);
+//                $start_dis_date = Carbon::parse($date_dis_start);
+//                $end_dis_date = Carbon::parse($date_dis_end);
                 if ($da->dayOfWeek == $dis->weekday)
                 {
-                    if (in_array($da->dayOfYear, range($start_dis_date->dayOfYear, $end_dis_date->dayOfYear)))
+                    if (($da->format('Y-m-d') >= $date_dis_start) && ($da->format('Y-m-d') <= $date_dis_end))
                     {
                         for ($i = 0; $i < count($events); $i++)
                         {
