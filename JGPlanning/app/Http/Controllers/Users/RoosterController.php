@@ -39,23 +39,26 @@ class RoosterController extends Controller
 
         $checkRooster = Rooster::all()->where('user_id', Auth::id());
         if ($checkRooster->count() == 0) {
-            for ($i = 1; $i < 6; $i++)
+            for ($a = 1; $a <= 52; $a++)
             {
-                Rooster::create([
-                    'start_time' => '08:30:00',
-                    'end_time' => '17:00:00',
-                    'comment' => "",
-                    'from_home' => 0,
-                    'weekdays' => $i,
-                    'created_at' => date('Y-m-d h:i:s'),
-                    'updated_at' => null,
-                    'user_id' => Auth::id(),
-                    'start_week' => '1',
-                    'end_week' => '52',
-                    'disabled' => false,
-                    'start_year' => date('Y'),
-                    'end_year' => date('Y'),
-                ]);
+                for ($i = 1; $i < 6; $i++)
+                {
+                    Rooster::create([
+                        'start_time' => '08:30:00',
+                        'end_time' => '17:00:00',
+                        'comment' => "",
+                        'from_home' => 0,
+                        'weekdays' => $i,
+                        'created_at' => date('Y-m-d h:i:s'),
+                        'updated_at' => null,
+                        'user_id' => Auth::id(),
+                        'start_week' => $a,
+                        'end_week' => $a,
+                        'disabled' => false,
+                        'start_year' => date('Y'),
+                        'end_year' => date('Y'),
+                    ]);
+                }
             }
         }
 
@@ -798,7 +801,7 @@ class RoosterController extends Controller
             else
             {
                 DisabledDays::create([
-                    'user_id' => $user(),
+                    'user_id' => $user,
                     'start_week' => $week,
                     'end_week' => $week,
                     'weekday' => $day,
