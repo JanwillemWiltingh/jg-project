@@ -13,10 +13,9 @@
     .fc-right {
         display: none;
     }
-    .fc-content {
-        background: var(--pagination-color);
-        color: white;
-    }
+    /*.fc-content {*/
+    /*    color: white;*/
+    /*}*/
     .fc-close::after {
         display: none;
     }

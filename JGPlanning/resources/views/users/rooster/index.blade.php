@@ -19,6 +19,12 @@
             <div class="card">
                 <div class="card-header" id="calender_hide" style="display: none">
                     <div class="card-body">
+                        <button class="btn jg-color-1 disabled" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            ">maand</button>
                         <button class="btn jg-color-1" style="
                                 color: white !important;
                                 float: right;
@@ -74,6 +80,12 @@
                                     " id="maand">
                                 Maand
                             </button>
+                            <button class="btn jg-color-1 disabled" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    ">Week</button>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">
@@ -124,7 +136,7 @@
 
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Uitgezet door admin.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif  color: white;">
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif  color: white;">
                                                     @if($days[$i]['comment'] != "Uitgezet door admin.")
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>
@@ -133,7 +145,7 @@
                                                         @endif
                                                     @endif
                                                     @if(!$days[$i]['comment'] == "")
-                                                        @if($days[$i]['comment'] == "Uitgezet door admin.")
+                                                        @if($days[$i]['comment'] == "Dag uitgezet.")
                                                             @if($days[$i]['by_admin'] == 0)
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
@@ -150,7 +162,7 @@
                                                     @else
                                                         Geen opmerking
                                                     @endif
-                                                    @if($days[$i]['comment'] != "Uitgezet door admin.")
+                                                    @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         <p style="font-weight: lighter">{{$days[$i]['start_time']}}
                                                         @if(App\Models\Browser::isMobile()) <br> @endif
                                                             -
