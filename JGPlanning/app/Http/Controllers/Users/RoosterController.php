@@ -713,11 +713,56 @@ class RoosterController extends Controller
     public function disable_days_click($week, $year, $day)
     {
         $checkDisabled = DisabledDays::all()
-            ->where('user_id', Auth::id());
-
+            ->where('user_id', Auth::id())
+            ->where('weekday', $day);
         foreach ($checkDisabled as $cr)
         {
-            if ($cr->start_week - 1 == $week)
+            if ($cr->start_week == $week)
+            {
+                if ($cr->start_week == $cr->end_week)
+                {
+                    $cr->delete();
+                }
+                else
+                {
+                    $cr->update([
+                        'start_week' => $week + 1,
+                        'start_year' => $year,
+                    ]);
+                }
+                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
+            }
+            else if ($cr->end_week == $week)
+            {
+                if ($cr->start_week == $cr->end_week)
+                {
+                    $cr->delete();
+                }
+                else
+                {
+                    $cr->update([
+                        'end_week' => $week - 1,
+                        'end_year' => $year,
+                    ]);
+                }
+                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
+            }
+            else if (in_array($week, range($cr->start_week, $cr->end_week)))
+            {
+                DisabledDays::create([
+                    'user_id' => Auth::id(),
+                    'start_week' => ($week + 1),
+                    'end_week' => $cr->end_week,
+                    'weekday' => $cr->weekday,
+                    'start_year' => $cr->start_year,
+                    'end_year' => $cr->end_year,
+                ]);
+                $cr->update([
+                    'end_week' => ($week - 1),
+                ]);
+                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
+            }
+            else if ($cr->start_week - 1 == $week)
             {
                 $cr->update([
                     'start_week' => $week,
@@ -731,7 +776,6 @@ class RoosterController extends Controller
                     'end_week' => $week,
                     'end_year' => $year,
                 ]);
-
                 return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
             }
             else
@@ -747,5 +791,43 @@ class RoosterController extends Controller
                 return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
             }
         }
+        if ($checkDisabled->count() == 0)
+        {
+            DisabledDays::create([
+                'user_id' => Auth::id(),
+                'start_week' => $week,
+                'end_week' => $week,
+                'weekday' => $day,
+                'start_year' => $year,
+                'end_year' => $year,
+            ]);
+            return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+        }
+
+//        TODO: een betere plaats voor deze code vinden.
+//        foreach ($checkDisabled as $dis1)
+//        {
+//            foreach ($checkDisabled as $dis2)
+//            {
+//                if ($dis1->weekday == $dis2->weekday)
+//                {
+//                    if ($dis1->end_week + 1 == $dis2->start_week)
+//                    {
+//                        DisabledDays::create([
+//                            'user_id' => Auth::id(),
+//                            'start_week' => $dis1->start_week,
+//                            'end_week' => $dis2->end_week,
+//                            'weekday' => $dis1->weekday,
+//                            'start_year' => $dis1->start_year,
+//                            'end_year' => $dis2->end_year,
+//                        ]);
+//                        $dis1->delete();
+//                        $dis2->delete();
+//                    }
+//                }
+//            }
+//        }
+
+        return back()->with(['message' => ['message' => 'Er is iets fout gegaan.', 'type' => 'danger']]);
     }
 }

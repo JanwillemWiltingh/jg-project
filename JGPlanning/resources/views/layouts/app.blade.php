@@ -67,22 +67,12 @@
                         @endcan
 
                         @can('employee-rooster')
-                            <li class="nav-item active hover-navbar">
-                                <a class="nav-link nav-color" style="margin-top: 120px;">
+                            <li class="nav-item active {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  {{--style="position:absolute; left: 22px ;width: 90%"--}}>
+                                <a class="nav-link nav-color" href="{{route('rooster.index', ['week' => \Carbon\Carbon::now()->week, 'year' => \Carbon\Carbon::now('Y')->format('Y')])}}" style="margin-top: 120px;">
                                     <i class="fa fa-calendar" style="color: white"></i>
-                                    <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -15px; margin-right: 6px"></i>
-                                    <p style="color: white">Tijden</p>
+                                    <p style="color: white">Rooster</p>
                                 </a>
                             </li>
-
-                            <div class="@if(!request()->is('rooster')) hover-navbar-content @endif">
-                                <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster/*')) ? 'nav-color-active' : '' }}"  {{--style="position:absolute; left: 22px ;width: 90%"--}}>
-                                    <a class="nav-link nav-color" href="{{route('rooster.index', ['week' => \Carbon\Carbon::now()->week, 'year' => \Carbon\Carbon::now('Y')->format('Y')])}}" style="margin-top: 120px;">
-                                        <i class="fa fa-calendar" style="color: white"></i>
-                                        <p style="color: white">Rooster</p>
-                                    </a>
-                                </li>
-                            </div>
                         @endcan
 
                         @can('admin-users')
