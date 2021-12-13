@@ -15,6 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use phpDocumentor\Reflection\Types\Boolean;
 use phpDocumentor\Reflection\Types\False_;
 use Kyslik\ColumnSortable\Sortable;
 
@@ -195,8 +196,8 @@ class User extends Authenticatable
      * @return float
      */
     public function WorkedInAMonthInHours(int $month, int $decimal_number=1): float {
-        $time = $this->workedInAMonthInSeconds($month);
-        return number_format($time / 3600, $decimal_number);
+            $time = $this->workedInAMonthInSeconds($month);
+            return number_format($time / 3600, $decimal_number);
     }
 
     /**
