@@ -141,7 +141,7 @@
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>
                                                         @else
-                                                            <p style="font-weight: lighter">Op kantoor</p>
+                                                            <p style="font-weight: lighter">Werkdag</p>
                                                         @endif
                                                     @endif
                                                     @if(!$days[$i]['comment'] == "")

@@ -511,7 +511,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="a">Edit Availability</h5>
+                    <h5 class="modal-title" id="a">Bewerk beschikbaarheid</h5>
                 </div>
                 <form method="post" action="{{route('rooster.edit_availability', ['week' => request('week'), 'year' => request('year')])}}">
                     @csrf
