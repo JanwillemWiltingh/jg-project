@@ -130,6 +130,8 @@
             </div>
         </div>
     @endif
+
+    @if($user['role_id'] == \App\Models\Role::getRoleID('employee'))
     <div class="row">
         <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="card">
@@ -157,7 +159,7 @@
                 </div>
             </div>
         </div>
-
+        @endif
         @if(!$browser->isMobile())
         <div class="col-6">
             <div class="row">
