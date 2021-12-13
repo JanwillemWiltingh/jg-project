@@ -19743,7 +19743,7 @@ table.dataTable td.focus {
 .dataTable>thead>tr>th, .dataTable>tbody>tr>th, .dataTable>tfoot>tr>th, .dataTable>thead>tr>td, .dataTable>tbody>tr>td, .dataTable>tfoot>tr>td {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
-    border-radius: 5px 5px 0 0 !important;
+    border-radius: 5px 5px 5px 5px !important;
 }
 .data-table-custom tbody{
     box-shadow: 0 0 5px 0 lightgrey;

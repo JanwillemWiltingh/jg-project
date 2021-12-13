@@ -712,11 +712,29 @@ class RoosterController extends Controller
 //  Functie om rooster datums te bewerken
     public function disable_days_click($week, $year, $day)
     {
+        $date = Carbon::now();
+
+        $date_get = $date
+            ->setISODate($year,$week)
+            ->addDays($day - 1)
+            ->format('Y-m-d');
+
         $checkDisabled = DisabledDays::all()
             ->where('user_id', Auth::id())
             ->where('weekday', $day);
+
+
         foreach ($checkDisabled as $cr)
         {
+            $date_dis_start = $date
+                ->setISODate($cr->start_year, $cr->start_week)
+                ->addDays($cr->weekday - 1)
+                ->format('Y-m-d');
+            $date_dis_end = $date
+                ->setISODate($cr->end_year, $cr->end_week)
+                ->addDays($cr->weekday - 1)
+                ->format('Y-m-d');
+
             if ($cr->start_week == $week)
             {
                 if ($cr->start_week == $cr->end_week)
@@ -734,7 +752,7 @@ class RoosterController extends Controller
             }
             else if ($cr->end_week == $week)
             {
-                if ($cr->start_week == $cr->end_week)
+                if ($cr->end_week == $cr->start_week)
                 {
                     $cr->delete();
                 }
@@ -747,7 +765,7 @@ class RoosterController extends Controller
                 }
                 return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
             }
-            else if (in_array($week, range($cr->start_week, $cr->end_week)))
+            else if (($date_get>= $date_dis_start) && ($date_get <= $date_dis_end))
             {
                 DisabledDays::create([
                     'user_id' => Auth::id(),
