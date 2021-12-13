@@ -33,17 +33,19 @@
                 <div class="card">
                     <div class="card-header" id="calender_hide" style="display: none">
                         <div class="card-body">
-                            <button class="btn jg-color-1 disabled" style="
-                                color: white !important;
-                                float: right;
-                                top: 60px;
-                                right: 28px;
-                            ">maand</button>
                             <button class="btn jg-color-1" style="
                                 color: white !important;
                                 float: right;
                                 top: 60px;
                                 right: 28px;
+                            ">maand</button>
+                            <button class="btn jg-color-1 " style="
+                                color: black !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                                background: lightgray !important;
+                                border-color: lightgray !important;
                             " id="week_rooster">
                                 Week
                             </button>
@@ -87,14 +89,16 @@
                                 </p>
 
                                 <button class="btn jg-color-1" style="
-                                        color: white !important;
+                                        color: black !important;
                                         float: right;
                                         right: 28px;
                                         bottom: 44px;
+                                        background: lightgray !important;
+                                        border-color: lightgray !important;
                                     " id="maand">
                                     Maand
                                 </button>
-                                <button class="btn jg-color-1 disabled" style="
+                                <button class="btn jg-color-1" style="
                                         color: white !important;
                                         float: right;
                                         right: 28px;
