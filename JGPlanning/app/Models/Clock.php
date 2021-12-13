@@ -114,9 +114,9 @@ class Clock extends Model
         $user = $this->user()->first();
         return $user[$field];
     }
-//    public function getClockData(string $field) {
-//        $clock = Clock::find($field)->first();
-//        return $clock[$field];
+//    function roundToQuarterHour(string $start_time, $end_time) {
+//        $minutes = date('i', strtotime($timestring));
+//        return $minutes - ($minutes % 15);
 //    }
     /**
      * @param string $role

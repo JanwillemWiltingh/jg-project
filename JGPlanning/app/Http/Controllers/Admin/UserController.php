@@ -90,7 +90,7 @@ class UserController extends Controller
             $message->to($request->email);
             $message->subject('Nieuwe Gebruiker JG Planning');
         });
-        
+
 //
 //        for ($i = 1; $i < 6; $i++)
 //        {

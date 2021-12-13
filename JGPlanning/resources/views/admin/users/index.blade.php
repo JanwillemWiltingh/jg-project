@@ -3,7 +3,7 @@
 @section('content')
 <div class="fadeInDown crud-table">
 
-    <h1>Alle Gebruikers</h1>
+    <text class="crud-user-form-title icon-color">Alle gebruikers</text><br>
     <div style="display: inline-block">
         <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 100%">
     </div>
@@ -15,41 +15,41 @@
     <table class="table table-hover" id="user_crud">
         <thead>
         <tr>
-            <th scope="col"><strong>#</strong></th>
+{{--            <th scope="col"><strong>#</strong></th>--}}
             <th scope="col"><strong>Voornaam</strong></th>
             <th scope="col"><strong>Tussenvoegsel</strong></th>
             <th scope="col"><strong>Achternaam</strong></th>
-            <th scope="col"><strong>E-mail</strong></th>
+{{--            <th scope="col"><strong>E-mail</strong></th>--}}
             <th scope="col"><strong>Telefoonnummer</strong></th>
-            <th scope="col"><strong>Rol</strong></th>
-            <th scope="col"><strong>Actief?</strong></th>
+{{--            <th scope="col"><strong>Rol</strong></th>--}}
+            <th scope="col"><strong>Actief</strong></th>
             <th scope="col"></th>
             <th scope="col"></th>
-            <th scope="col"></th>
+{{--            <th scope="col"></th>--}}
         </tr>
         </thead>
         <tbody>
         {{--Loop each user to show in a table--}}
         @foreach($users as $user)
             <tr class="{{ $user->isCurrentUser() }}">
-                <th scope="row">{{ $loop->index + 1 }}</th>
+{{--                <th scope="row">{{ $loop->index + 1 }}</th>--}}
                 {{--Check the email from the current user and the email in the database to show who is selected(logged in)--}}
                 <td>{{$user['firstname']}}</td>
                 <td>{{ $user['middlename'] ?? '' }}</td>
                 <td>{{$user['lastname']}}</td>
 
-                <td>{{$user['email']}}</td>
+{{--                <td>{{$user['email']}}</td>--}}
                 <td>{{$user['phone_number']}}</td>
 
                 {{--Big letter maintainer--}}
-                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>
+{{--                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>--}}
 
                 {{--Shows if the user is soft-deleted(active) or not--}}
                 <td>
                     @if(empty($user['deleted_at']))
-                        JA
+                        Ja
                     @else
-                        NEE
+                        Nee
                     @endif
                 </td>
 
@@ -112,9 +112,9 @@
                         </strong>
                     @endif
                 </td>
-                <td>
-                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}" data-toggle="tooltip" title="Bekijken"><i class="fa-solid fa-user-gear icon-color"></i></a>
-                </td>
+{{--                <td>--}}
+{{--                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}" data-toggle="tooltip" title="Bekijken"><i class="fa-solid fa-user-gear icon-color"></i></a>--}}
+{{--                </td>--}}
             </tr>
         @endforeach
         </tbody>
