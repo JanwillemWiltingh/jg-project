@@ -19782,3 +19782,6 @@ table.dataTable td.focus {
     height: 119px !important;
 }
 
+.fc-center h2 {
+    text-transform: capitalize !important;
+}

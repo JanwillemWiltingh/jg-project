@@ -142,6 +142,11 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <textarea class="form-control" id="comment" name="comment" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." rows="4" @if($start == False) @else DISABLED @endif></textarea>
+                                    <label for="comment" class="form-label">Opmerking</label>
+                                    <label style="float: right !important;">
+                                        <text id="count"></text><text>/ 150</text>
+                                    </label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="4" @if($start == False) @else DISABLED @endif></textarea>
                                 </div>
                             </div>
                         </div>
