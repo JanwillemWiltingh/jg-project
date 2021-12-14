@@ -17,26 +17,28 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header" id="calender_hide" style="display: none">
+                <div class="card-header" id="calender_hide">
                     <div class="card-body">
-                        <button class="btn jg-color-1 disabled" style="
-                                color: white !important;
+                        <button class="btn jg-color-1 " style="
+                                color: black !important;
                                 float: right;
                                 top: 60px;
                                 right: 28px;
-                            ">maand</button>
+                                background: lightgray !important;
+                                border-color: lightgray !important;
+                            " id="week_rooster">
+                            Week
+                        </button>
                         <button class="btn jg-color-1" style="
                                 color: white !important;
                                 float: right;
                                 top: 60px;
                                 right: 28px;
-                            " id="week_rooster">
-                            Week
-                        </button>
+                            ">maand</button>
                         @include('calender')
                     </div>
                 </div>
-                <div class="card-header" id="rooster">
+                <div class="card-header" id="rooster" style="display: none">
                     <div class="card-body" @if(App\Models\Browser::isMobile()) style="width: 120% !important; right: 10%" @endif>
                         @if(session('status'))
                             <div class="alert alert-success" role="alert">
@@ -72,20 +74,23 @@
                                     Dagen beheren
                                 </a>
                             </p>
+
                             <button class="btn jg-color-1" style="
                                         color: white !important;
                                         float: right;
                                         right: 28px;
                                         bottom: 44px;
-                                    " id="maand">
-                                Maand
-                            </button>
-                            <button class="btn jg-color-1 disabled" style="
-                                        color: white !important;
+                                    ">Week</button>
+                            <button class="btn jg-color-1" style="
+                                        color: black !important;
                                         float: right;
                                         right: 28px;
                                         bottom: 44px;
-                                    ">Week</button>
+                                        background: lightgray !important;
+                                        border-color: lightgray !important;
+                                    " id="maand">
+                                Maand
+                            </button>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">
