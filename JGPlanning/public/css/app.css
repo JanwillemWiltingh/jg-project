@@ -7662,6 +7662,7 @@ button.bg-dark:focus {
 }
 
 .position-sticky {
+  position: -webkit-sticky !important;
   position: sticky !important;
 }
 
@@ -7681,8 +7682,9 @@ button.bg-dark:focus {
   z-index: 1030;
 }
 
-@supports (position: sticky) {
+@supports ((position: -webkit-sticky) or (position: sticky)) {
   .sticky-top {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -19783,6 +19785,7 @@ table.dataTable td.focus {
     height: 119px !important;
 }
 
+<<<<<<< HEAD
 .fc-center h2 {
     position: relative;
     text-transform: capitalize !important;
@@ -19809,3 +19812,5 @@ table.dataTable td.focus {
 /*    bottom: 10px;*/
 /*}*/
 
+=======
+>>>>>>> 63fb775a272e2a21692057cc6ee86c5ff2140f03
