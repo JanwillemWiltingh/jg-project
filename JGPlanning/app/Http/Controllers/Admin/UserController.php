@@ -86,10 +86,10 @@ class UserController extends Controller
             'role_id' => $validated['roles'],
             'phone_number' => $validated['phone_number']
         ]);
-//        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
-//            $message->to($request->email);
-//            $message->subject('Nieuwe Gebruiker JG Planning');
-//        });
+        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Nieuwe Gebruiker JG Planning');
+        });
 
 //
 //        for ($i = 1; $i < 6; $i++)

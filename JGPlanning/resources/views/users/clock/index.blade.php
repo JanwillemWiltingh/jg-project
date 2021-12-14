@@ -57,7 +57,6 @@
                             <th scope="col">Eind tijd</th>
                             <th scope="col">Gewerkte uren</th>
                             <th scope="col"></th>
-                            <th scope="col"></th>
                         </tr>
                         </thead>
                         </thead>
@@ -70,8 +69,7 @@
                                     <td style="width: 10%">{{ $user->getStartTime($work_day) }}</td>
                                     <td style="width: 10%">{{ $user->getEndTime($work_day) }}</td>
                                     <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }}</td>
-                                    <td>Klik het oogje voor meer informatie</td>
-                                    <td style="width: 1%"><a class="table-label" href="{{route('user.clock.show', $user['id'])}}" title="Gebruikers uren bekijken"><i class="fa fa-eye icon-color"></i></a></td>
+                                    <td style="width: 1%"><a class="table-label" title="Hier zal comment info komen te staan"><i class="fa fa-eye icon-color"></i></a></td>
 
                                 <tr><!-- TODO: Add show to seen comments -->
                             @endforeach
