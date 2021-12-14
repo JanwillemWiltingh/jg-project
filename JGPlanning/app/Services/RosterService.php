@@ -41,12 +41,9 @@ class RosterService
                     ->setISODate($d->end_year, $d->end_week)
                     ->addDays($d->weekdays - 1)
                     ->format('Y-m-d');
-
-                $start_date = Carbon::parse($date_start);
-                $end_date = Carbon::parse($date_end);
                 if ($da->dayOfWeek == $d->weekdays)
                 {
-                  if (in_array($da->dayOfYear, range($start_date->dayOfYear, $end_date->dayOfYear)))
+                  if (($da->format('Y-m-d') >= $date_start) && ($da->format('Y-m-d') <= $date_end))
                     {
                         $events[] = Calendar::event(
                             substr($d->start_time, 0, -3) . " - " . substr($d->end_time, 0, -3),
@@ -77,10 +74,6 @@ class RosterService
                     ->setISODate($dis->end_year, $dis->end_week)
                     ->addDays($dis->weekday - 1)
                     ->format('Y-m-d');
-
-//                dd(, $date_dis_start);
-//                $start_dis_date = Carbon::parse($date_dis_start);
-//                $end_dis_date = Carbon::parse($date_dis_end);
                 if ($da->dayOfWeek == $dis->weekday)
                 {
                     if (($da->format('Y-m-d') >= $date_dis_start) && ($da->format('Y-m-d') <= $date_dis_end))
@@ -98,7 +91,7 @@ class RosterService
                                     [
                                         'color' => 'lightgray',
                                         'textColor' => 'black',
-                                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$user_id .'/'
+                                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$dis->id .'/'
                                     ]
                                 );
                             }

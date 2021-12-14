@@ -41,7 +41,6 @@ class DashboardController extends Controller
                     }
                 }
             }
-
         }
         return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request), 'enable_time' => $enable_time]);
     }
