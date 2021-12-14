@@ -13,7 +13,7 @@
             document.getElementById('lastname').value = deleted_at;
         }
     </script>
-    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
+    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" style="margin-top: 6%">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
