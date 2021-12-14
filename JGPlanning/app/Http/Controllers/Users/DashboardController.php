@@ -43,8 +43,6 @@ class DashboardController extends Controller
             }
 
         }
-
-
         return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request), 'enable_time' => $enable_time]);
     }
 
@@ -56,7 +54,7 @@ class DashboardController extends Controller
     {
         if(Clock::isIPCorrect($request)) {
             $validated = $request->validate([
-                'comment' => ['nullable', 'string'],
+                'comment' => ['nullable', 'string', 'max:150'],
             ]);
 
             $user = Auth::user();

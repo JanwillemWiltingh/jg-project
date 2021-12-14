@@ -23,7 +23,7 @@
             <div class=" col-4">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Uren deze maand</h3>
+                        <h3>Gewerkte uren {{$now->format('F')}}</h3>
                         <hr>
                         <div class="media align-items-stretch" >
                             <div class="align-self-center">
@@ -60,7 +60,7 @@
             <div class="col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Uren deze week</h3>
+                        <h3>Gewerkte uren week</h3>
                         <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
@@ -97,7 +97,7 @@
             <div class="  col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Uren voor vandaag</h3>
+                        <h3>Gewerkte uren vandaag</h3>
                         <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
@@ -141,6 +141,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
+                                    <textarea class="form-control" id="comment" name="comment" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." rows="4" @if($start == False) @else DISABLED @endif></textarea>
                                     <label for="comment" class="form-label">Opmerking</label>
                                     <label style="float: right !important;">
                                         <text id="count"></text><text>/ 150</text>
