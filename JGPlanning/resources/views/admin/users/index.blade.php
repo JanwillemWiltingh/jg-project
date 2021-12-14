@@ -2,13 +2,14 @@
 
 @section('content')
     <script>
-        function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at)
+        function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id)
         {
             console.log(phone_number);
             document.getElementById('firstname').value = firstname;
             document.getElementById('middlename').value = middlename;
             document.getElementById('lastname').value = lastname;
             document.getElementById('email').value = email;
+            document.getElementById('admin_user_id_edit').value = id;
             if(phone_number)
             {
                 document.getElementById('phone_number').value = phone_number;
@@ -105,6 +106,9 @@
                             </div>
                         </div>
                     </div>
+
+                    <input type="hidden" id="admin_user_id_edit">
+                    <a href="#" id="go_to_user_edit"><i class="fa fa-user-edit"></i></a>
                 </div>
             </div>
         </div>
@@ -142,12 +146,12 @@
             <tr class="{{ $user->isCurrentUser() }}">
 {{--                <th scope="row">{{ $loop->index + 1 }}</th>--}}
                 {{--Check the email from the current user and the email in the database to show who is selected(logged in)--}}
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{$user['firstname']}}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{ $user['middlename'] ?? '' }}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{$user['lastname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{$user['firstname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{ $user['middlename'] ?? '' }}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{$user['lastname']}}</td>
 
 {{--                <td>{{$user['email']}}</td>--}}
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{$user['phone_number']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{$user['phone_number']}}</td>
 
                 {{--Big letter maintainer--}}
 {{--                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>--}}
