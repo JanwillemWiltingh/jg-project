@@ -68,7 +68,7 @@
                                     <td style="width: 15%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
                                     <td style="width: 5%">{{ $user->getStartTime($work_day) }}</td>
                                     <td style="width: 5%">{{ $user->getEndTime($work_day) }}</td>
-                                    <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }}</td>
+                                    <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }} uur</td>
                                 <tr><!-- TODO: Add show to seen comments -->
                             @endforeach
                         @else
