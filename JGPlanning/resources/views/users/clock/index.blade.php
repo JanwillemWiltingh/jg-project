@@ -59,7 +59,6 @@
                             <th scope="col"></th>
                         </tr>
                         </thead>
-                        </thead>
                         <tbody>
                         @if($days->count() > 0)
                             @foreach($days as $work_day)
