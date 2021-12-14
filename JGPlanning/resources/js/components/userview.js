@@ -344,4 +344,8 @@ $(document).ready(function () {
             $('#comment').css('color', 'black');
         }
     });
+
+    $('#go_to_user_edit').on('click', function () {
+        window.location = "/admin/users/edit/" + $('#admin_user_id_edit').val();
+    });
 });
