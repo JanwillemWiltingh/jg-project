@@ -1,3 +1,5 @@
+import Cookies from "lodash/_Hash";
+
 $(document).ready(function () {
     // Menu Button
     $('.toggle-btn').on('click', 	function(){
