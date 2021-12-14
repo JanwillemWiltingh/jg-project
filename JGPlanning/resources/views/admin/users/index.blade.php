@@ -110,13 +110,12 @@
                     <div class="row"
                         @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
                                 <strong>
-                                    <a class="table-label" href="" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
+{{--                                    <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
                                 </strong>
                         @else
                             <i class="fa-solid fa-user-lock"></i>
                         @endif
                     </div>
-                <input type="hidden" value="" id="id">
                 </div>
             </div>
         </div>
