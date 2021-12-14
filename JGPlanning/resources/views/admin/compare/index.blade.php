@@ -43,14 +43,14 @@
                                 <!-- Submit button -->
                                 <button type="submit" class="btn jg-color-3" style="color: white">Selecteer</button>
 
-                                <!-- Time switch -->
-                                <label class="switch">
-                                    <input type="checkbox" id="time-switch" name="time_switch" @if(old('time_switch')) checked @endif>
-                                    <span class="slider round"></span>
-                                </label>
-                                <div style="display: inline-block">
-                                    <label for="switch" id="switch-label">@if(old('time_switch')) Precies @else Uren @endif</label>
-                                </div>
+{{--                                <!-- Time switch -->--}}
+{{--                                <label class="switch">--}}
+{{--                                    <input type="checkbox" id="time-switch" name="time_switch" @if(old('time_switch')) checked @endif>--}}
+{{--                                    <span class="slider round"></span>--}}
+{{--                                </label>--}}
+{{--                                <div style="display: inline-block">--}}
+{{--                                    <label for="switch" id="switch-label">@if(old('time_switch')) Precies @else Uren @endif</label>--}}
+{{--                                </div>--}}
 
                             </form>
                         </div>
@@ -67,8 +67,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Naam</th>
-                            <th scope="col">Tijd Gewerkt</th>
                             <th scope="col">Tijd Ingepland</th>
+                            <th scope="col">Tijd Gewerkt</th>
                             <th scope="col">Verschil</th>
                             <th scope="col"></th>
                         </tr>
@@ -85,28 +85,66 @@
                                     {{ $user['firstname'] }} {{ $user['middlename'] }} {{ $user['lastname'] }}
                                 </td>
 
-                                <!-- Time worked in a week and month -->
-                                <td class="precies" style="width: 22.5%">
-                                    @if($input_field == 'day')
-                                        @if($user->workedInADayInSeconds(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')))
-                                            {{ $user->workedInADayForHumans(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }}
-                                        @else
-                                            0 seconden
-                                        @endif
-                                    @elseif($input_field == 'weeks')
-                                        @if($user->workedInAWeekInSeconds(str_replace('W', '',explode('-', $weeks)[1])) > 0)
-                                            {{ $user->workedInAWeekForHumans(str_replace('W', '',explode('-', $weeks)[1])) }}
-                                        @else
-                                            0 seconden
-                                        @endif
-                                    @else
-                                        @if($user->workedInAMonthInSeconds(explode('-', $month)[1]) > 0)
-                                            {{ $user->workedInAMonthForHumans(explode('-', $month)[1]) }}
-                                        @else
-                                            0 seconden
-                                        @endif
-                                    @endif
-                                </td>
+{{--                                <!-- Time worked in a week and month -->--}}
+{{--                                <td class="precies" style="width: 22.5%">--}}
+{{--                                    @if($input_field == 'day')--}}
+{{--                                        @if($user->workedInADayInSeconds(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')))--}}
+{{--                                            {{ $user->workedInADayForHumans(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }}--}}
+{{--                                        @else--}}
+{{--                                            0 seconden--}}
+{{--                                        @endif--}}
+{{--                                    @elseif($input_field == 'weeks')--}}
+{{--                                        @if($user->workedInAWeekInSeconds(str_replace('W', '',explode('-', $weeks)[1])) > 0)--}}
+{{--                                            {{ $user->workedInAWeekForHumans(str_replace('W', '',explode('-', $weeks)[1])) }}--}}
+{{--                                        @else--}}
+{{--                                            0 seconden--}}
+{{--                                        @endif--}}
+{{--                                    @else--}}
+{{--                                        @if($user->workedInAMonthInSeconds(explode('-', $month)[1]) > 0)--}}
+{{--                                            {{ $user->workedInAMonthForHumans(explode('-', $month)[1]) }}--}}
+{{--                                        @else--}}
+{{--                                            0 seconden--}}
+{{--                                        @endif--}}
+{{--                                    @endif--}}
+{{--                                </td>--}}
+                                {{-- tijd ingepland --}}
+
+
+                                <!-- Time Work planned in a week and month -->
+                                @if($input_field == 'day')
+{{--                                    <td class="precies" style="width: 22.5%">--}}
+{{--                                        @if($user->plannedWorkADayInSeconds(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->weekOfYear, Carbon\Carbon::parse($day)->format('d')) > 0)--}}
+{{--                                            {{ $user->plannedWorkADayForHumans(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->weekOfYear, Carbon\Carbon::parse($day)->format('d')) }}--}}
+{{--                                        @else--}}
+{{--                                            0 seconden--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
+                                    <td class="uren" style="width: 22.5%">
+                                        {{ $user->plannedWorkADayInHours(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->weekOfYear, Carbon\Carbon::parse($day)->format('d')) }}
+                                    </td>
+                                @elseif($input_field == 'weeks')
+{{--                                    <td class="precies" style="width: 22.5%">--}}
+{{--                                        @if($user->plannedWorkAWeekInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) > 0)--}}
+{{--                                            {{ $user->plannedWorkAWeekForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}--}}
+{{--                                        @else--}}
+{{--                                            0 seconden--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
+                                    <td class="uren" style="width: 22.5%">
+                                        {{ $user->plannedWorkAWeekInHours(2021, str_replace('W', '',explode('-', $weeks)[1])) }} uur
+                                    </td>
+                                @else
+{{--                                    <td class="precies" style="width: 22.5%">--}}
+{{--                                        @if($user->plannedWorkAMonthInSeconds(2021, explode('-', $month)[1]) > 0)--}}
+{{--                                        {{ $user->plannedWorkAMonthForHumans(2021, explode('-', $month)[1]) }}--}}
+{{--                                        @else--}}
+{{--                                            0 seconden--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
+                                    <td class="uren" style="width: 22.5%">
+                                        {{ $user->plannedWorkAMonthInHours(2021, explode('-', $month)[1]) }} uur
+                                    </td>
+                                @endif
                                 <td class="uren" style="width: 22.5%">
                                     @if($input_field == 'day')
                                         {{ $user->workedInADayInHours(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }}
@@ -116,74 +154,37 @@
                                         {{ $user->WorkedInAMonthInHours(explode('-', $month)[1]) }} uur
                                     @endif
                                 </td>
-
-                                <!-- Time Work planned in a week and month -->
-                                @if($input_field == 'day')
-                                    <td class="precies" style="width: 22.5%">
-                                        @if($user->plannedWorkADayInSeconds(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->weekOfYear, Carbon\Carbon::parse($day)->format('d')) > 0)
-                                            {{ $user->plannedWorkADayForHumans(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->weekOfYear, Carbon\Carbon::parse($day)->format('d')) }}
-                                        @else
-                                            0 seconden
-                                        @endif
-                                    </td>
-                                    <td class="uren" style="width: 22.5%">
-                                        {{ $user->plannedWorkADayInHours(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->weekOfYear, Carbon\Carbon::parse($day)->format('d')) }}
-                                    </td>
-                                @elseif($input_field == 'weeks')
-                                    <td class="precies" style="width: 22.5%">
-                                        @if($user->plannedWorkAWeekInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) > 0)
-                                            {{ $user->plannedWorkAWeekForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}
-                                        @else
-                                            0 seconden
-                                        @endif
-                                    </td>
-                                    <td class="uren" style="width: 22.5%">
-                                        {{ $user->plannedWorkAWeekInHours(2021, str_replace('W', '',explode('-', $weeks)[1])) }} uur
-                                    </td>
-                                @else
-                                    <td class="precies" style="width: 22.5%">
-                                        @if($user->plannedWorkAMonthInSeconds(2021, explode('-', $month)[1]) > 0)
-                                        {{ $user->plannedWorkAMonthForHumans(2021, explode('-', $month)[1]) }}
-                                        @else
-                                            0 seconden
-                                        @endif
-                                    </td>
-                                    <td class="uren" style="width: 22.5%">
-                                        {{ $user->plannedWorkAMonthInHours(2021, explode('-', $month)[1]) }} uur
-                                    </td>
-                                @endif
-
                                 <!-- Vergelijken uren -->
                                 @if($input_field == 'day')
-                                    <td class="{{ $user->fieldColorForDay(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }} precies" style="width: 22.5%">
-                                        @if($user->compareDayWorkedInSeconds(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) == 0)
-                                            0 seconden
-                                        @else
-                                            {{ $user->compareDayWorkedForHumans(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }}
-                                        @endif
-                                    </td>
+{{--                                    <td class="{{ $user->fieldColorForDay(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }} precies" style="width: 22.5%">--}}
+{{--                                        @if($user->compareDayWorkedInSeconds(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) == 0)--}}
+{{--                                            0 seconden--}}
+{{--                                        @else--}}
+{{--                                            {{ $user->compareDayWorkedForHumans(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }}--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
                                     <td class="{{ $user->fieldColorForDay(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }} uren" style="width: 22.5%">
                                         {{ $user->compareDayWorkedInHours(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }}
                                     </td>
                                 @elseif($input_field == 'weeks')
-                                    <td class="{{ $user->fieldColorForWeek(2021, $weeks) }} precies" style="width: 22.5%">
-                                        @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) == 0)
-                                            0 seconden
-                                        @else
-                                            {{ $user->compareWeekWorkedForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}
-                                        @endif
-                                    </td>
+{{--                                    <td class="{{ $user->fieldColorForWeek(2021, $weeks) }} precies" style="width: 22.5%">--}}
+{{--                                        @if($user->compareWeekWorkedInSeconds(2021, str_replace('W', '',explode('-', $weeks)[1])) == 0)--}}
+{{--                                            0 seconden--}}
+{{--                                        @else--}}
+{{--                                            {{ $user->compareWeekWorkedForHumans(2021, str_replace('W', '',explode('-', $weeks)[1])) }}--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
                                     <td class="{{ $user->fieldColorForWeek(2021, $weeks) }} uren" style="width: 22.5%">
                                         {{ abs($user->compareWeekWorkedInHours(2021, str_replace('W', '',explode('-', $weeks)[1]))) }} uur
                                     </td>
                                 @else
-                                    <td class="{{ $user->fieldColorForMonth(2021, $month) }} precies" style="width: 22.5%">
-                                        @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) == 0)
-                                            0 seconden
-                                        @else
-                                            {{ $user->compareMonthWorkedForHumans(2021, explode('-', $month)[1]) }}
-                                        @endif
-                                    </td>
+{{--                                    <td class="{{ $user->fieldColorForMonth(2021, $month) }} precies" style="width: 22.5%">--}}
+{{--                                        @if($user->compareMonthWorkedInSeconds(2021, explode('-', $month)[1]) == 0)--}}
+{{--                                            0 seconden--}}
+{{--                                        @else--}}
+{{--                                            {{ $user->compareMonthWorkedForHumans(2021, explode('-', $month)[1]) }}--}}
+{{--                                        @endif--}}
+{{--                                    </td>--}}
                                     <td class="{{ $user->fieldColorForMonth(2021, $month) }} uren" style="width: 22.5%">
                                         {{ abs($user->compareMonthWorkedInHours(2021, explode('-', $month)[1])) }} uur
                                     </td>

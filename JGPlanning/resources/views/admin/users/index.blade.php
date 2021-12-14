@@ -2,13 +2,14 @@
 
 @section('content')
     <script>
-        function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at)
+        function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id)
         {
             console.log(phone_number);
             document.getElementById('firstname').value = firstname;
             document.getElementById('middlename').value = middlename;
             document.getElementById('lastname').value = lastname;
             document.getElementById('email').value = email;
+
             if(phone_number)
             {
                 document.getElementById('phone_number').value = phone_number;
@@ -36,9 +37,10 @@
             {
                 document.getElementById('deleted_at').value = "-";
             }
+            document.getElementById('id').value = id;
         }
     </script>
-    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
+    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" style="margin-top: 6%">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -105,6 +107,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row"
+                        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
+                                <strong>
+{{--                                    <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
+                                </strong>
+                        @else
+                            <i class="fa-solid fa-user-lock"></i>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -142,18 +153,18 @@
             <tr class="{{ $user->isCurrentUser() }}">
 {{--                <th scope="row">{{ $loop->index + 1 }}</th>--}}
                 {{--Check the email from the current user and the email in the database to show who is selected(logged in)--}}
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{$user['firstname']}}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{ $user['middlename'] ?? '' }}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{$user['lastname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}',)">{{$user['firstname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}',)">{{ $user['middlename'] ?? '' }}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}',)">{{$user['lastname']}}</td>
 
 {{--                <td>{{$user['email']}}</td>--}}
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}',)">{{$user['phone_number']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}',)">{{$user['phone_number']}}</td>
 
                 {{--Big letter maintainer--}}
 {{--                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>--}}
 
                 {{--Shows if the user is soft-deleted(active) or not--}}
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="">
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}',)">
                     @if(empty($user['deleted_at']))
                         Ja
                     @else
@@ -162,25 +173,25 @@
                 </td>
 
                 {{-- Check if the user is allowed to edit the user --}}
-                <td>
-                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))
-                        @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
-                            <i class="fa-solid fa-user-lock"></i>
-                        @else
-                            <strong>
-                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
-                            </strong>
-                        @endif
-                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
-                            <strong>
-                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
-                            </strong>
-                        @else
-                            <i class="fa-solid fa-user-lock"></i>
-                        @endif
-                    @endif
-                </td>
+{{--                <td>--}}
+{{--                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))--}}
+{{--                        @if($user['role_id'] != App\Models\Role::getRoleID('employee'))--}}
+{{--                            <i class="fa-solid fa-user-lock"></i>--}}
+{{--                        @else--}}
+{{--                            <strong>--}}
+{{--                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
+{{--                            </strong>--}}
+{{--                        @endif--}}
+{{--                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))--}}
+{{--                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))--}}
+{{--                            <strong>--}}
+{{--                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
+{{--                            </strong>--}}
+{{--                        @else--}}
+{{--                            <i class="fa-solid fa-user-lock"></i>--}}
+{{--                        @endif--}}
+{{--                    @endif--}}
+{{--                </td>--}}
 
                 {{-- Check if the user is allowed to delete the user --}}
                 <td>
@@ -225,7 +236,6 @@
 {{--                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}" data-toggle="tooltip" title="Bekijken"><i class="fa-solid fa-user-gear icon-color"></i></a>--}}
 {{--                </td>--}}
             </tr>
-            </a>
         @endforeach
         </tbody>
     </table>
