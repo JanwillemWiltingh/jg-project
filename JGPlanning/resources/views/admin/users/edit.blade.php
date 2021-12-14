@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
-        <h1>Bewerk Gebruiker</h1>
+        <text class="crud-user-form-title icon-color">Bewerk gebruiker</text>
         <div class="card">
             <div class="card-body">
                 <form method="get" action="{{ route('admin.users.update', $user['id']) }}">

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
-    <text class="crud-user-form-title icon-color">Maak een nieuwe Gebruiker aan </text>
+    <text class="crud-user-form-title icon-color">Maak een nieuwe gebruiker aan </text>
     <div class="card">
         <div class="card-body">
             <form method="get" action="{{ route('admin.users.store') }}">

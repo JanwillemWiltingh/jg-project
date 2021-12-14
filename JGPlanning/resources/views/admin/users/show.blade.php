@@ -8,15 +8,24 @@
                 <div class="row">
                     <div class="col-4">
                         {{-- Firstname --}}
-                        <x-forms.input type="text" value="{{$user['firstname']}}" name="firstname"></x-forms.input>
+                        <div class="form-group">
+                            <label class="black-label-text" for="firstname">Voornaam</label>
+                            <input type="text" class="form-control" id="firstname" value="@if(empty($user['firstname']))NULL @else{{$user['firstname']}} @endif" aria-describedby="firstname" placeholder="Voornaam" disabled>
+                        </div>
                     </div>
                     <div class="col-4">
                         {{-- Middlename --}}
-                        <x-forms.input type="text" value="{{$user['middlename']}}" name="middlename"></x-forms.input>
+                        <div class="form-group">
+                            <label class="black-label-text" for="middlename">Tussenvoegsel</label>
+                            <input type="text" class="form-control" id="middlename" value="@if(empty($user['middlename']))NULL @else{{$user['middlename']}} @endif" aria-describedby="middlename" placeholder="Tussenvoegsel" disabled>
+                        </div>
                     </div>
                     <div class="col-4">
                         {{-- Lastname --}}
-                        <x-forms.input type="text" value="{{$user['lastname']}}" name="lastname"></x-forms.input>
+                        <div class="form-group">
+                            <label class="black-label-text" for="lastname">Achternaam</label>
+                            <input type="text" class="form-control" id="lastname" value="@if(empty($user['lastname']))NULL @else{{$user['lastname']}} @endif" aria-describedby="lastname" placeholder="Achternaam" disabled>
+                        </div>
                     </div>
                 </div>
 
