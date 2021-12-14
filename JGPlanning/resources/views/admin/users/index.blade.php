@@ -39,7 +39,7 @@
             }
         }
     </script>
-    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
+    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" style="margin-top: 6%">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -106,9 +106,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row"
+                        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
+                                <strong>
+                                    <a id="go_to_user_edit" class="table-label" href="#" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
+                                </strong>
+                        @else
+                            <i class="fa-solid fa-user-lock"></i>
+                        @endif
+                    </div>
 
                     <input type="hidden" id="admin_user_id_edit">
-                    <a href="#" id="go_to_user_edit"><i class="fa fa-user-edit"></i></a>
                 </div>
             </div>
         </div>
@@ -157,7 +165,7 @@
 {{--                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>--}}
 
                 {{--Shows if the user is soft-deleted(active) or not--}}
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="">
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}',)">
                     @if(empty($user['deleted_at']))
                         Ja
                     @else
@@ -166,25 +174,25 @@
                 </td>
 
                 {{-- Check if the user is allowed to edit the user --}}
-                <td>
-                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))
-                        @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
-                            <i class="fa-solid fa-user-lock"></i>
-                        @else
-                            <strong>
-                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
-                            </strong>
-                        @endif
-                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
-                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
-                            <strong>
-                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
-                            </strong>
-                        @else
-                            <i class="fa-solid fa-user-lock"></i>
-                        @endif
-                    @endif
-                </td>
+{{--                <td>--}}
+{{--                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))--}}
+{{--                        @if($user['role_id'] != App\Models\Role::getRoleID('employee'))--}}
+{{--                            <i class="fa-solid fa-user-lock"></i>--}}
+{{--                        @else--}}
+{{--                            <strong>--}}
+{{--                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
+{{--                            </strong>--}}
+{{--                        @endif--}}
+{{--                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))--}}
+{{--                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))--}}
+{{--                            <strong>--}}
+{{--                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
+{{--                            </strong>--}}
+{{--                        @else--}}
+{{--                            <i class="fa-solid fa-user-lock"></i>--}}
+{{--                        @endif--}}
+{{--                    @endif--}}
+{{--                </td>--}}
 
                 {{-- Check if the user is allowed to delete the user --}}
                 <td>
@@ -229,7 +237,6 @@
 {{--                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}" data-toggle="tooltip" title="Bekijken"><i class="fa-solid fa-user-gear icon-color"></i></a>--}}
 {{--                </td>--}}
             </tr>
-            </a>
         @endforeach
         </tbody>
     </table>
