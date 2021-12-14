@@ -114,7 +114,10 @@ class Clock extends Model
         $user = $this->user()->first();
         return $user[$field];
     }
-
+//    public function getClockData(string $field) {
+//        $clock = Clock::find($field)->first();
+//        return $clock[$field];
+//    }
     /**
      * @param string $role
      * @return bool

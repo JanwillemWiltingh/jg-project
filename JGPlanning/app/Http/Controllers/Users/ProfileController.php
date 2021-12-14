@@ -63,13 +63,14 @@ class ProfileController extends Controller
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
-            'firstname' => ['required', 'string', 'min:3'],
-            'middlename' => ['nullable', 'string'],
-            'lastname' => ['required', 'string', 'min:3'],
-            'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'roles' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
+            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
-
+        //checken of telefoonnummer wel begint met 06
+        $number = substr($validated['phone_number'], 0, 2);
+        if($number != '06'){
+            return redirect()->back()->with(['message' => ['message' => 'Telefoonnummer moet beginnen met 06', 'type' => 'danger']]);
+        }
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if ($auth_user['role_id'] == Role::getRoleID('maintainer')) {
@@ -78,11 +79,8 @@ class ProfileController extends Controller
             }
         }
         $user->update([
-            'firstname' => ucfirst($validated['firstname']),
-            'middlename' => $validated['middlename'],
-            'lastname' => ucfirst($validated['lastname']),
-            'email' => $validated['email'],
             'role_id' => $validated['roles']??$auth_user['role_id'],
+            'phone_number' => $validated['phone_number']
         ]);
         return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
     }

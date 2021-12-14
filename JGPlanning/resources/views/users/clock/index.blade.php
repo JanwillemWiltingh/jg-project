@@ -8,7 +8,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Selectie Opties</h4>
+                            <h4 class="card-title">Selectie opties</h4>
                             <form method="GET" action="{{ route('user.clock.index') }}">
                                 <div class="form-group">
                                     @foreach (['month' => 'Maand', 'weeks' => 'Week', 'days' => 'Dag'] as $id => $format)
@@ -51,24 +51,27 @@
                     <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">Datum</th>
                             <th scope="col">Dag</th>
-                            <th scope="col">Start</th>
-                            <th scope="col">Eind</th>
-                            <th scope="col">Totaal</th>
+                            <th scope="col">Start tijd</th>
+                            <th scope="col">Eind tijd</th>
+                            <th scope="col">Gewerkte uren</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
                         @if($days->count() > 0)
                             @foreach($days as $work_day)
                                 <tr>
-                                    <th style="width: 1%" scope="row">{{ $loop->iteration }}</th>
-                                    <td style="width: 15%">{{ $work_day->format('Y-m-d') }}</td>
-                                    <td style="width: 15%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
-                                    <td style="width: 5%">{{ $user->getStartTime($work_day) }}</td>
-                                    <td style="width: 5%">{{ $user->getEndTime($work_day) }}</td>
-                                    <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }} uur</td>
+                                    <td style="width: 15%">{{ $work_day->format('d-m-Y') }}</td>
+                                    <td style="width: 13%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
+                                    <td style="width: 10%">{{ $user->getStartTime($work_day) }}</td>
+                                    <td style="width: 10%">{{ $user->getEndTime($work_day) }}</td>
+                                    <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }}</td>
+                                    <td>Klik het oogje voor meer informatie</td>
+                                    <td style="width: 1%"><a class="table-label" href="{{route('user.clock.show', $user['id'])}}" title="Gebruikers uren bekijken"><i class="fa fa-eye icon-color"></i></a></td>
+
                                 <tr><!-- TODO: Add show to seen comments -->
                             @endforeach
                         @else

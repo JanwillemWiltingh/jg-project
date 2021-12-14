@@ -12,4 +12,5 @@ return [
     'maintainer' => 'Beheerder',
     'admin' => 'Administrator',
     'employee' => 'Werknemer',
+    'phone_number' => 'Telefoonnummer',
 ];

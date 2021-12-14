@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use DateTime;
+use Psy\Util\Str;
+
 class UserController extends Controller
 {
 
@@ -65,44 +67,49 @@ class UserController extends Controller
             'lastname' => ['required'],
             'email' => ['required','unique:users,email'],
             'roles' =>['required'],
+            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', 'unique:users,phone_number'],
         ]);
 
         $current_user = Auth::user();
         if($current_user['role_id'] == Role::getRoleID('admin')){
             $validated['roles'] = Role::getRoleID('employee');
         }
+        //create random string of 20 for password
+        $password = \Illuminate\Support\Str::random(20);
 
-        $newUser = User::create([
+        User::create([
             'firstname' => ucfirst($validated['firstname']),
             'middlename' => ($validated['middlename']),
             'lastname' => ucfirst($validated['lastname']),
             'email' => $validated['email'],
-            'password' => Hash::make('welkom1203@'),
+            'password' => Hash::make($password),
             'role_id' => $validated['roles'],
+            'phone_number' => $validated['phone_number']
         ]);
-        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
-            $message->to($request->email);
-            $message->subject('Nieuwe Gebruiker JG Planning');
-        });
+//        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
+//            $message->to($request->email);
+//            $message->subject('Nieuwe Gebruiker JG Planning');
+//        });
 
-        for ($i = 1; $i < 6; $i++)
-        {
-            Rooster::create([
-                'start_time' => '08:30:00',
-                'end_time' => '17:00:00',
-                'comment' => "",
-                'from_home' => 0,
-                'weekdays' => $i,
-                'created_at' => date('Y-m-d h:i:s'),
-                'updated_at' => null,
-                'user_id' => $newUser->id,
-                'start_week' => '1',
-                'end_week' => '52',
-                'disabled' => false,
-                'start_year' => date('Y'),
-                'end_year' => date('Y'),
-            ]);
-        }
+//
+//        for ($i = 1; $i < 6; $i++)
+//        {
+//            Rooster::create([
+//                'start_time' => '08:30:00',
+//                'end_time' => '17:00:00',
+//                'comment' => "",
+//                'from_home' => 0,
+//                'weekdays' => $i,
+//                'created_at' => date('Y-m-d h:i:s'),
+//                'updated_at' => null,
+//                'user_id' => $newUser->id,
+//                'start_week' => '1',
+//                'end_week' => '52',
+//                'disabled' => false,
+//                'start_year' => date('Y'),
+//                'end_year' => date('Y'),
+//            ]);
+//        }
 
 //        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
@@ -134,6 +141,9 @@ class UserController extends Controller
         if($user['role_id'] == Role::getRoleID('maintainer')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
+        if(!empty($user['deleted_at'])){
+            return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Kan een gebruiker niet aanpassen als het account gedeactiveerd is', 'type' => 'danger']]);
+        }
         $roles = Role::all();
 
         return view('admin/users/edit')->with(['user' => $user, 'roles' => $roles, 'user_session' => $user_session]);
@@ -161,8 +171,13 @@ class UserController extends Controller
             'lastname' => ['required', 'string'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
             'roles' =>['required'],
+            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
-
+        //checken of telefoonnummer wel begint met 06
+        $number = substr($validated['phone_number'], 0, 2);
+        if($number != '06'){
+            return redirect()->back()->with(['message' => ['message' => 'Telefoonnummer moet beginnen met 06', 'type' => 'danger']]);
+        }
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
@@ -175,9 +190,10 @@ class UserController extends Controller
             'lastname' => ucfirst($validated['lastname']),
             'email' => $validated['email'],
             'role_id' => $validated['roles'],
+            'phone_number' => $validated['phone_number']
         ]);
 
-        return redirect()->route('admin.users.index')->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
+        return redirect()->route('admin.users.index')->with(['message' => ['message' => 'Gebruiker succesvol bewerkt', 'type' => 'success']]);
     }
 
     /**
@@ -207,10 +223,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Verwijderd!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol verwijderd!', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Hersteld!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol hersteld!', 'type' => 'success']]);
         }
     }
 }

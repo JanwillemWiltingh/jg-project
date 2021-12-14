@@ -19,7 +19,7 @@ class ClockController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, Clock $clock)
     {
         //  Take the current month, week and day
         $month = Carbon::now()->year.'-'.Carbon::now()->month;
@@ -201,6 +201,7 @@ class ClockController extends Controller
         }
 
         return view('users.clock.index')->with([
+            'clock' => $clock,
             'user' => $user,
             'days' => $days,
             'month' => $month,
@@ -209,5 +210,10 @@ class ClockController extends Controller
             'input' => $input_field,
             'entries' => (new CollectionPagination)->paginate($entries, 10, request('page'), ['path' => 'clock'])
         ]);
+    }
+    public function show($id)
+    {
+        $clock = Clock::find($id);
+        return view('users.clock.show')->with(['clock' => $clock]);
     }
 }

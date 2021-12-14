@@ -8,7 +8,7 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Selectie Opties</h4>
+                                <h4 class="card-title">Selectie opties</h4>
                                 <form method="GET" action="{{ route('admin.clock.index') }}">
 
                                     <!-- Single User selector -->
@@ -26,7 +26,7 @@
                                     <!-- Date Picker -->
                                     <div class="form-group">
                                         <label for="date">Datum</label>
-                                        <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now }}">
+                                        <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now ?? $clock['date'] }}">
                                     </div>
                                     <button type="submit" class="btn btn-primary jg-color-3 border-0">Selecteer</button>
                                 </form>
@@ -42,12 +42,12 @@
                 <table id="table" class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Gebruiker</th>
-                        <th scope="col">Start</th>
-                        <th scope="col">Eind</th>
-                        <th scope="col">Totaal</th>
-                        <th scope="col">Aantekening</th>
+                        <th scope="col">Start tijd</th>
+                        <th scope="col">Eind tijd</th>
+                        <th scope="col">Gewerkte uren</th>
+                        <th scope="col">Opmerkingen</th>
+                        <th></th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -57,7 +57,7 @@
                         @foreach($clocks as $clock)
                             <tr @if($clock['deleted_at']) class="table-danger" @endif>
                                 <!-- Table index -->
-                                <th style="width: 1%" scope="row">{{ $loop->index + 1 }}</th>
+{{--                                <th style="width: 1%" scope="row">{{ $loop->index + 1 }}</th>--}}
 
                                 <!-- User full name -->
                                 <td style="width: 20%">{{ $clock->getUserData('firstname') }} {{ $clock->getUserData('middlename') }} {{ $clock->getUserData('lastname') }}</td>
@@ -72,12 +72,12 @@
                                 <!-- Comment given with Start time -->
                                 <td style="max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                     {!! $clock['comment'] !!}
-                                </td><!-- TODO: Add show to seen comments -->
+                                </td>
                                 <!-- Edit button if user is maintainer -->
-                                @if($clock->allowedToEdit('maintainer'))
-                                    <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
+                                @if($clock->allowedToEdit('maintainer') && empty($clock['deleted_at']))
+                                    <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}" title="Gebruikers Uren Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
                                 @else
-                                    <td style="width: 0"></td>
+                                    <td style="width: 0"><i class="fa-solid fa-user-lock"></i></td>
                                 @endif
 
                                 @if(empty($clock['deleted_at']))
@@ -87,6 +87,7 @@
                                 {{--If deleted--}}
                                     <td style="width: 1%;"><a class="table-label-green" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i></a></td>
                                 @endif
+                                <td style="width: 1%"><a class="table-label" href="{{route('admin.clock.show', $clock['id'])}}" title="Gebruikers Uren Bekijken"><i class="fa fa-eye icon-color"></i></a></td>
                             </tr>
                         @endforeach
                     @else

@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-{{--    @dd($calendarData)--}}
 @include('modals')
 
 <div class="content fadeInDown">
@@ -14,11 +13,31 @@
             </button>
         </div>
     @endif
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header ">
+                <div class="card-header" id="calender_hide" style="display: none">
                     <div class="card-body">
+                        <button class="btn jg-color-1 disabled" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            ">maand</button>
+                        <button class="btn jg-color-1" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            " id="week_rooster">
+                            Week
+                        </button>
+                        @include('calender')
+                    </div>
+                </div>
+                <div class="card-header" id="rooster">
+                    <div class="card-body" @if(App\Models\Browser::isMobile()) style="width: 120% !important; right: 10%" @endif>
                         @if(session('status'))
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}
@@ -36,6 +55,7 @@
                                 <a style="font-size: 20px">
                                     {{request('year')}}
                                 </a>
+                                <br>
                             </div>
                             <p style="
                                         text-align: center;
@@ -52,51 +72,87 @@
                                     Dagen beheren
                                 </a>
                             </p>
+                            <button class="btn jg-color-1" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    " id="maand">
+                                Maand
+                            </button>
+                            <button class="btn jg-color-1 disabled" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    ">Week</button>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">
                                 <input type="week" class="form-control" name="week" id="week" value="{{request('year')}}-W{{request('week')}}">
                             </form>
-                            <table class="card-body table table-bordered">
+                            <table class="table table-bordered @if(App\Models\Browser::isMobile()) mobile-table @endif">
                                 <thead>
-                                <th width="14%" style="border: none; text-align: center">Time</th>
-                                @for($i = 1; $i < count($weekDays) + 1; $i++)
-                                    <th width="14%" style="border: none; text-align: center;">
-                                        {{ $weekDays[$i] }}
-                                    </th>
-                                @endfor
+                                @if(!App\Models\Browser::isMobile())
+                                    <th width="3%" style="border: none; text-align: center">Tijd</th>
+                                    @for($i = 1; $i < count($weekDays) + 1; $i++)
+                                        <th width="14%" style="border: none; text-align: center;">
+                                            {{ $weekDays[$i] }}
+                                        </th>
+                                    @endfor
+                                @else
+                                    @for($i = 1; $i < count(App\Models\Availability::WEEK_DAYS_MOB) + 1; $i++)
+                                        <th style="border: none; text-align: center; font-size: 12px;">
+                                            {{ App\Models\Availability::WEEK_DAYS_MOB[$i] }}
+                                        </th>
+                                    @endfor
+                                @endif
                                 </thead>
                                 <tbody>
                                 @foreach($calendarData as $time => $days)
                                     <tr>
-                                        <td>
-                                            {{ $time }}
-                                        </td>
+                                        @if(!App\Models\Browser::isMobile())
+                                            <td style=" @if(App\Models\Browser::isMobile()) font-size: 10px !important; @endif">
+                                                {{ $time }}
+                                            </td>
+                                        @endif
                                         @for($i = 0; $i < count($days); $i++)
                                             @if(is_array($days[$i]))
-                                                {{-- Hidden value's voor de edit functie--}}
+                                                {{--Hidden value's voor de edit functie--}}
                                                 <input type="hidden" value="{{$days[$i]['start_time']}}" id="start_time_user_rooster{{$i + 1}}">
                                                 <input type="hidden" value="{{$days[$i]['end_time']}}" id="end_time_user_rooster{{$i + 1}}">
                                                 @if($availability->where('id', $days[$i]['id'])->first())
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @if(strlen($availability->where('id', $days[$i]['id'])->first()->start_week) == 2)
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
+                                                    @else
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W0{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
+                                                    @endif
+
+                                                    @if(strlen($availability->where('id', $days[$i]['id'])->first()->end_week) == 2)
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @else
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W0{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @endif
+
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Uitgezet door admin.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
-                                                    @if($days[$i]['comment'] != "Uitgezet door admin.")
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif  color: white;">
+                                                    @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>
                                                         @else
-                                                            <p style="font-weight: lighter">Op kantoor</p>
+                                                            <p style="font-weight: lighter">Werkdag</p>
                                                         @endif
                                                     @endif
                                                     @if(!$days[$i]['comment'] == "")
-                                                        @if($days[$i]['comment'] == "Uitgezet door admin.")
+                                                        @if($days[$i]['comment'] == "Dag uitgezet.")
                                                             @if($days[$i]['by_admin'] == 0)
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
                                                                 <input type="hidden" id="end_date_disable{{$i + 1}}" value="{{$days[$i]['end_time']}}">
-                                                                <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                                @if(!App\Models\Browser::isMobile())
+                                                                    <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                                @endif
                                                             @else
                                                                 <p style="color: black">{{$days[$i]['comment']}}</p>
                                                             @endif
@@ -106,8 +162,15 @@
                                                     @else
                                                         Geen opmerking
                                                     @endif
-                                                    @if($days[$i]['comment'] != "Uitgezet door admin.")
-                                                        <p style="font-weight: lighter">{{$days[$i]['start_time']}} - {{$days[$i]['end_time']}}</p> <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                    @if($days[$i]['comment'] != "Dag uitgezet.")
+                                                        <p style="font-weight: lighter">{{$days[$i]['start_time']}}
+                                                        @if(App\Models\Browser::isMobile()) <br> @endif
+                                                            -
+                                                        @if(App\Models\Browser::isMobile()) <br> @endif
+                                                            {{$days[$i]['end_time']}}</p>
+                                                        @if(!App\Models\Browser::isMobile())
+                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                        @endif
                                                     @endif
                                                 </th>
                                             @elseif ($days[$i] === 1)

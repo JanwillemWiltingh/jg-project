@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     // Menu Button
     $('.toggle-btn').on('click', 	function(){
         $(this).toggleClass('onclick');
@@ -285,7 +284,7 @@ $(document).ready(function () {
     for (let i = 0; i < 7; i++)
     {
         $('#edit_rooster_modal' + i).on('click', function () {
-            console.log($('#end_time_user_rooster' + i).val());
+            console.log($('#start_rooster' + i).val());
             $('[name="start_time"]').val($('#start_time_user_rooster' + i).val());
             $('#time_picker_av_end').val($('#end_time_user_rooster' + i).val());
             $('#start_date').val($('#start_rooster' + i).val());
@@ -309,5 +308,40 @@ $(document).ready(function () {
         setTimeout(function () {
             location.reload();
         }, 100);
+    });
+
+    $('#maand').on('click', function () {
+        $('#rooster').hide();
+        $('#calender_hide').show();
+        $('.fc-today-button').trigger('click');
+    });
+
+    $('#week_rooster').on('click', function () {
+        $('#calender_hide').hide();
+        $('#rooster').show();
+    });
+
+    $('.fc-center h2').css('textTransform', 'capitalize');
+
+
+    $('#count').text('0 ');
+    $('#comment').on('keyup', function () {
+        if (this.value.length)
+        {
+            $('#count').text(this.value.length);
+        }
+        else
+        {
+            $('#count').text('0');
+        }
+
+        if (this.value.length > 150)
+        {
+            $('#comment').css('color', 'red');
+        }
+        else
+        {
+            $('#comment').css('color', 'black');
+        }
     });
 });
