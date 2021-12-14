@@ -38,10 +38,25 @@ class RoosterController extends Controller
         }
 
         $checkRooster = Rooster::all()->where('user_id', Auth::id());
+        $checkDisabledDays = DisabledDays::all()->where('user_id', Auth::id());
+
+        if ($checkDisabledDays->count() == 0)
+        {
+                DisabledDays::create([
+                    'weekday' => 6,
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'updated_at' => null,
+                    'user_id' => Auth::id(),
+                    'start_week' => 1,
+                    'end_week' => 1,
+                    'start_year' => date('Y'),
+                    'end_year' => date('Y'),
+                ]);
+        }
         if ($checkRooster->count() == 0) {
             for ($a = 1; $a <= 52; $a++)
             {
-                for ($i = 1; $i < 6; $i++)
+                for ($i = 1; $i <= 6; $i++)
                 {
                     Rooster::create([
                         'start_time' => '08:30:00',
@@ -722,9 +737,8 @@ class RoosterController extends Controller
             ->format('Y-m-d');
 
         $checkDisabled = DisabledDays::all()
-            ->where('user_id', $user)
+            ->where('id', $user)
             ->where('weekday', $day);
-
 
         foreach ($checkDisabled as $cr)
         {
@@ -736,7 +750,6 @@ class RoosterController extends Controller
                 ->setISODate($cr->end_year, $cr->end_week)
                 ->addDays($cr->weekday - 1)
                 ->format('Y-m-d');
-
             if ($cr->start_week == $week)
             {
                 if ($cr->start_week == $cr->end_week)
@@ -750,7 +763,7 @@ class RoosterController extends Controller
                         'start_year' => $year,
                     ]);
                 }
-                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag opengezet 1.', 'type' => 'success']]);
             }
             else if ($cr->end_week == $week)
             {
@@ -765,12 +778,12 @@ class RoosterController extends Controller
                         'end_year' => $year,
                     ]);
                 }
-                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag opengezet 2.', 'type' => 'success']]);
             }
             else if (($date_get>= $date_dis_start) && ($date_get <= $date_dis_end))
             {
                 DisabledDays::create([
-                    'user_id' => $user,
+                    'user_id' => $cr->user_id,
                     'start_week' => ($week + 1),
                     'end_week' => $cr->end_week,
                     'weekday' => $cr->weekday,
@@ -780,7 +793,7 @@ class RoosterController extends Controller
                 $cr->update([
                     'end_week' => ($week - 1),
                 ]);
-                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag opengezet 3.', 'type' => 'success']]);
             }
             else if ($cr->start_week - 1 == $week)
             {
@@ -788,7 +801,7 @@ class RoosterController extends Controller
                     'start_week' => $week,
                     'start_year' => $year,
                 ]);
-                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag uitgezet 4.', 'type' => 'success']]);
             }
             else if ($cr->end_week + 1 == $week)
             {
@@ -796,25 +809,25 @@ class RoosterController extends Controller
                     'end_week' => $week,
                     'end_year' => $year,
                 ]);
-                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag uitgezet 5.', 'type' => 'success']]);
             }
             else
             {
                 DisabledDays::create([
-                    'user_id' => $user,
+                    'user_id' => $cr->user_id,
                     'start_week' => $week,
                     'end_week' => $week,
                     'weekday' => $day,
                     'start_year' => $year,
                     'end_year' => $year,
                 ]);
-                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag uitgezet 6.', 'type' => 'success']]);
             }
         }
         if ($checkDisabled->count() == 0)
         {
             DisabledDays::create([
-                'user_id' => $user,
+                'user_id' => Auth::id(),
                 'start_week' => $week,
                 'end_week' => $week,
                 'weekday' => $day,
@@ -847,7 +860,6 @@ class RoosterController extends Controller
 //                }
 //            }
 //        }
-
         return back()->with(['message' => ['message' => 'Er is iets fout gegaan.', 'type' => 'danger']]);
     }
 }

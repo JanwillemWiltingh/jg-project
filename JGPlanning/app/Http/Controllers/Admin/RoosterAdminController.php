@@ -67,7 +67,7 @@ class RoosterAdminController extends Controller
         {
             for ($a = 1; $a <= 52; $a++)
             {
-                for ($i = 1; $i < 6; $i++)
+                for ($i = 1; $i < 7; $i++)
                 {
                     Rooster::create([
                         'start_time' => '08:30:00',

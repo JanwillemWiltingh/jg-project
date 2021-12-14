@@ -10,6 +10,7 @@
     --input-focus-underline: #1C88A4;
     --icon-color: #1C88A4;
     --icon-color-hover: #1A6686;
+    --jg-orange: #CB6827;
 }
 
 .white-text-hover:hover {color: white !important;}
@@ -745,3 +746,29 @@ table.dataTable td.focus {
 #comment{
     height: 119px !important;
 }
+
+.fc-center h2 {
+    position: relative;
+    text-transform: capitalize !important;
+    color: var(--pagination-color);
+    font-weight: bolder;
+    border-bottom: 5px solid var(--jg-orange);
+    left: -105px !important;
+}
+
+.fc-day-grid-event {
+    padding: 12px 6px !important;
+}
+
+/*.dashboard-welkom a*/
+/*{*/
+/*    display: inline;*/
+/*    position: absolute;*/
+/*    background: -webkit-linear-gradient(#1A6686, #1C88A4);*/
+/*    -webkit-background-clip: text;*/
+/*    -webkit-text-fill-color: transparent;*/
+/*    font-size: 45px;*/
+/*    font-weight: bolder;*/
+/*    font-style: italic;*/
+/*    bottom: 10px;*/
+/*}*/
