@@ -179,15 +179,16 @@
                         <strong>
                             @if($user['role_id'] != App\Models\Role::getRoleID('maintainer'))
                                 @if(empty($user['deleted_at']))
-                                    <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
+{{--                                    <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" onclick="if(confirm('weet je zeker dat je deze gebruiker wilt verwijderen?')) true;return false" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>--}}
+                                    <a class="table-label-red" id="delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip"><i class="fa-solid fa-user-slash"></i></a>
                                 @else
-                                    <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
+                                    <a class="table-label-green" id="restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
                                 @endif
                             @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && $user['role_id'] != App\Models\Role::getRoleID('maintainer'))
                                 @if(empty($user['deleted_at']))
-                                    <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
+                                    <a class="table-label-red" id="delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
                                 @else
-                                    <a class="table-label-green" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
+                                    <a class="table-label-green" id="restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
                                 @endif
                             @else
                                 <i class="fa-solid fa-user-lock"></i>
@@ -203,4 +204,91 @@
         @endforeach
         </tbody>
     </table>
+
+    <script>
+        $('#delete-link').on('click', function () {
+            // https://sweetalert.js.org/docs/
+            event.preventDefault();
+
+            swal({
+                title: "Pas Op!",
+                text: "Weet u zeker dat u " + $(this).attr('data-name') + " wilt uitzetten?",
+                icon: "warning",
+                dangerMode: true,
+                buttons: {
+                    cancel: {
+                        text: "Annuleren",
+                        value: null,
+                        visible: true,
+                        className: "swal-cancel-button",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "swal-confirm-button",
+                        closeModal: true
+                    },
+                },
+                closeOnEscape: true,
+            });
+
+            const href = this.href;
+            setInterval(function (){
+                $('.swal-confirm-button').on('click', function () {
+                    window.location = href;
+                    clearInterval();
+                });
+
+                $('.swal-cancel-button').on('click', function () {
+                    console.log('Deletion Canceled');
+                    clearInterval();
+                });
+            }, 500);
+        });
+
+        $('#restore-link').on('click', function () {
+            // https://sweetalert.js.org/docs/
+            event.preventDefault();
+
+            swal({
+                title: "Pas Op!",
+                text: "Weet u zeker dat u " + $(this).attr('data-name') + " wilt herstellen?",
+                icon: "warning",
+                dangerMode: true,
+                buttons: {
+                    cancel: {
+                        text: "Annuleren",
+                        value: null,
+                        visible: true,
+                        className: "swal-cancel-button",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "swal-confirm-button",
+                        closeModal: true
+                    },
+                },
+                closeOnEscape: true,
+            });
+
+            const href = this.href;
+            setInterval(function (){
+                $('.swal-confirm-button').on('click', function () {
+                    window.location = href;
+                    clearInterval();
+                });
+
+                $('.swal-cancel-button').on('click', function () {
+                    console.log('Restoration Canceled');
+                    clearInterval();
+                });
+            }, 500);
+        });
+    </script>
+
 @endsection

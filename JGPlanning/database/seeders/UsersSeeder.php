@@ -30,6 +30,7 @@ class UsersSeeder extends Seeder
             'email' => 'robertpolman1217@gmail.com',
             'created_at' => Carbon::now(),
             'password' => Hash::make('123'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('maintainer'),
         ]);
 
@@ -39,6 +40,7 @@ class UsersSeeder extends Seeder
             'email' => 'mail@mail.com',
             'created_at' => Carbon::now(),
             'password' => Hash::make('welkom'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('maintainer'),
         ]);
 
@@ -48,6 +50,7 @@ class UsersSeeder extends Seeder
             'email' => 'barend@gmail.com',
             'created_at' => Carbon::now(),
             'password' => Hash::make('welkom'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('admin'),
         ]);
 
@@ -57,6 +60,7 @@ class UsersSeeder extends Seeder
             'email' => 'hugo@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
             'password' => Hash::make('Hugo123@'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('employee'),
         ]);
 
@@ -66,6 +70,7 @@ class UsersSeeder extends Seeder
             'email' => 'gobi@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
             'password' => Hash::make('Gobi123@'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('admin'),
         ]);
 
@@ -75,6 +80,7 @@ class UsersSeeder extends Seeder
             'email' => 'sander@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
             'password' => Hash::make('Sander123@'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('admin'),
         ]);
 
@@ -84,6 +90,7 @@ class UsersSeeder extends Seeder
             'email' => 'cas@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
             'password' => Hash::make('Cas123@'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('employee'),
         ]);
 
@@ -93,6 +100,7 @@ class UsersSeeder extends Seeder
             'email' => 'brian@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
             'password' => Hash::make('Brian123@'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('employee'),
         ]);
 
@@ -102,6 +110,7 @@ class UsersSeeder extends Seeder
             'email' => 'nick@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
             'password' => Hash::make('Nick123@'),
+            'phone_number' => '1234567890',
             'role_id' => Role::getRoleID('employee'),
         ]);
     }

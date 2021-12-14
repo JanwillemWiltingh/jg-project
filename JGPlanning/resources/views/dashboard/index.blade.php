@@ -34,7 +34,7 @@
                                 <span class="dashboard-title-hours">{{ $now->format('F') }}, {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-hours">{{ $user->WorkedInAMonthInHours($now->month) }}</h1>
+                                <h1 class="dashboard-hours">{{ sprintf('%.2f', $user->WorkedInAMonthInHours($now->month, 2)) }}</h1>
                             </div>
                         </div>
 
@@ -71,7 +71,7 @@
                                 <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ $user->workedInAWeekInHours($now->weekOfYear) }}</h1>
+                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user->workedInAWeekInHours($now->weekOfYear, 2)) }}</h1>
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                                 <span class="dashboard-title-hours">{{ $now->format('j F, Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ $user->workedInADayInHours($now->year, $now->month, $now->day)  }}/{{$user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)}}</h1>
+                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>
                             </div>
                         </div>
 
