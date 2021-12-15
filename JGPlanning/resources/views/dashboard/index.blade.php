@@ -31,7 +31,7 @@
                             </div>
                             <div class="media-body pl-3">
                                 <h4 class="dashboard-title-hours">Uren gewerkt</h4>
-                                <span class="dashboard-title-hours">{{ $now->format('F') }}, {{ $now->format('Y') }}</span>
+                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
                                 <h1 class="dashboard-hours">{{ sprintf('%.2f', $user->WorkedInAMonthInHours($now->month, 2)) }}</h1>
