@@ -41,7 +41,7 @@ class Clock extends Model
      */
     public static function isIPCorrect(Request $request): bool {
         $ip = $request->ip();
-        $valid_ip = '192.168.1.';
+        $valid_ip = '88.218.7.239';
 
         return str_contains($ip, $valid_ip);
     }

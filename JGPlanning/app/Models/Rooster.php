@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rooster extends Model
 {
-    protected $table = 'Rooster';
+    protected $table = 'rooster';
 
 
     protected $fillable = [
