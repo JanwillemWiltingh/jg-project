@@ -4,6 +4,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Beschikbaarheid Aangeven</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Dagen</p>
@@ -165,6 +167,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Uitgezette Week bewerken</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="{{route('admin.rooster.edit_disable_days', ['user' => request('user'), 'week' => request('week')])}}">
@@ -432,6 +436,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Uitgezette Week bewerken</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
                 <div class="modal-body">
                     <form method="post" action="{{route('rooster.edit_disable_days', request('week') )}}">
@@ -459,6 +465,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="a">Add Availability</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
                 <form method="post" action="{{route('rooster.availability', request('week'))}}">
                     @csrf
@@ -512,6 +520,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="a">Bewerk beschikbaarheid</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
                 </div>
                 <form method="post" action="{{route('rooster.edit_availability', ['week' => request('week'), 'year' => request('year')])}}">
                     @csrf

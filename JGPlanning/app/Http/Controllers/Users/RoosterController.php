@@ -276,8 +276,6 @@ class RoosterController extends Controller
             ->first();
         $date = Carbon::now();
 
-        dd($request->input('start_time'));
-
         if ($request->input('start_time'))
         {
             if ($edit_rooster->end_time > $request->input('start_time'))
