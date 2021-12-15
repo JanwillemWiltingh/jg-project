@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use DateTime;
+use phpDocumentor\Reflection\Types\Null_;
 use Psy\Util\Str;
 
 class UserController extends Controller
@@ -33,11 +34,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::all()->where('deleted_at', '=', null);
+        $deleted_users = User::all()->where('deleted_at', '!=', null);
         $user_session = Auth::user();
         $roles = Role::all();
 
-        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session, 'roles'=>$roles]);
+        return view('admin/users/index')->with(['users'=>$users, 'deleted_users' => $deleted_users, 'user_session' => $user_session, 'roles'=>$roles]);
     }
 
     /**
@@ -75,9 +77,13 @@ class UserController extends Controller
         if($current_user['role_id'] == Role::getRoleID('admin')){
             $validated['roles'] = Role::getRoleID('employee');
         }
+        //checken of telefoonnummer wel begint met 06
+        $number = substr($validated['phone_number'], 0, 2);
+        if($number != '06'){
+            return redirect()->back()->with(['message' => ['message' => 'Telefoonnummer moet beginnen met 06', 'type' => 'danger']]);
+        }
         //create random string of 20 for password
         $password = \Illuminate\Support\Str::random(20);
-
         User::create([
             'firstname' => ucfirst($validated['firstname']),
             'middlename' => ($validated['middlename']),
@@ -87,9 +93,9 @@ class UserController extends Controller
             'role_id' => $validated['roles'],
             'phone_number' => $validated['phone_number']
         ]);
-        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
+        Mail::send('Auth.user', ['request' => $request], function($message) use($request){
             $message->to($request->email);
-            $message->subject('Nieuwe Gebruiker JG Planning');
+            $message->subject('Nieuwe gebruiker JG Planning');
         });
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
     }
