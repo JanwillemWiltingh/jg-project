@@ -364,4 +364,5 @@ $(document).ready(function () {
     $('#go_to_user_edit').on('click', function () {
         window.location = "/admin/users/edit/" + $('#admin_user_id_edit').val();
     });
+
 });

@@ -59,21 +59,21 @@
                                 </a>
                                 <br>
                             </div>
-                            <p style="
-                                        text-align: center;
-                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);
-                                        -webkit-background-clip: text;
-                                        -webkit-text-fill-color: transparent;
-                                        font-size: 45px;
-                                        font-weight: bolder;
-                                        font-style: italic;
-                                        margin-top: -40px;
-                                    ">
-                                <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">
-                                    <i class="fa fa-pencil-alt"></i>
-                                    Dagen beheren
-                                </a>
-                            </p>
+{{--                            <p style="--}}
+{{--                                        text-align: center;--}}
+{{--                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);--}}
+{{--                                        -webkit-background-clip: text;--}}
+{{--                                        -webkit-text-fill-color: transparent;--}}
+{{--                                        font-size: 45px;--}}
+{{--                                        font-weight: bolder;--}}
+{{--                                        font-style: italic;--}}
+{{--                                        margin-top: -40px;--}}
+{{--                                    ">--}}
+{{--                                <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">--}}
+{{--                                    <i class="fa fa-pencil-alt"></i>--}}
+{{--                                    Dagen beheren--}}
+{{--                                </a>--}}
+{{--                            </p>--}}
 
                             <button class="btn jg-color-1" style="
                                         color: black !important;
@@ -157,9 +157,6 @@
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
                                                                 <input type="hidden" id="end_date_disable{{$i + 1}}" value="{{$days[$i]['end_time']}}">
-                                                                @if(!App\Models\Browser::isMobile())
-                                                                    <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
-                                                                @endif
                                                             @else
                                                                 <p style="color: black">{{$days[$i]['comment']}}</p>
                                                             @endif

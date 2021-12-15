@@ -1,6 +1,3 @@
-@if(str_contains(url()->current(), '/admin/'))
-@endif
-
 @if(request('admin'))
     <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
         <div class="modal-dialog modal-xl" role="document">
@@ -191,12 +188,11 @@
         </div>
     </div>
 @else
-
     <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Beschikbaarheid beheren</h5>
+                    <h5 class="modal-title">Beschikbaarheid opgeven</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -532,7 +528,7 @@
                                 <label style="width: 95%">
                                     <p>Begin Tijd:</p>
                                     <div style="display: flex;">
-                                        <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
+                                        <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
                                     </div>
                                 </label>
                                 <br>

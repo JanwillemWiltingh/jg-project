@@ -72,21 +72,21 @@
                                         {{request('year')}}
                                     </a>
                                 </div>
-                                <p style="
-                                        text-align: center;
-                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);
-                                        -webkit-background-clip: text;
-                                        -webkit-text-fill-color: transparent;
-                                        font-size: 45px;
-                                        font-weight: bolder;
-                                        font-style: italic;
-                                        margin-top: -40px;
-                                    ">
-                                    <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">
-                                        <i class="fa fa-pencil-alt"></i>
-                                        Dagen beheren
-                                    </a>
-                                </p>
+{{--                                <p style="--}}
+{{--                                        text-align: center;--}}
+{{--                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);--}}
+{{--                                        -webkit-background-clip: text;--}}
+{{--                                        -webkit-text-fill-color: transparent;--}}
+{{--                                        font-size: 45px;--}}
+{{--                                        font-weight: bolder;--}}
+{{--                                        font-style: italic;--}}
+{{--                                        margin-top: -40px;--}}
+{{--                                    ">--}}
+{{--                                    <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">--}}
+{{--                                        <i class="fa fa-pencil-alt"></i>--}}
+{{--                                        Dagen beheren--}}
+{{--                                    </a>--}}
+{{--                                </p>--}}
 
                                 <button class="btn jg-color-1" style="
                                         color: black !important;
