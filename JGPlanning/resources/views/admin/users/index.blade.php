@@ -2,7 +2,7 @@
 
 @section('content')
     <script>
-        function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id)
+        function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id, roles)
         {
             console.log(phone_number);
             document.getElementById('firstname').value = firstname;
@@ -10,6 +10,7 @@
             document.getElementById('lastname').value = lastname;
             document.getElementById('email').value = email;
             document.getElementById('admin_user_id_edit').value = id;
+            document.getElementById('roles').value = roles;
             if(phone_number)
             {
                 document.getElementById('phone_number').value = phone_number;
@@ -38,12 +39,15 @@
                 document.getElementById('deleted_at').value = "-";
             }
         }
+        function getRoles(roles){
+            document.getElementById('roles').value = roles;
+        }
     </script>
-    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" style="margin-top: 6%">
+    <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" style="margin-top: 5.5%">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Gebruikers informatie</h5>
+                    <h5 class="modal-title">Gebruiker informatie</h5>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -51,7 +55,7 @@
                             {{-- Firstname --}}
                             <div class="form-group">
                                 <label class="black-label-text" for="firstname">Voornaam</label>
-                                <input type="text" class="form-control" id="firstname" value="@if(empty($user['firstname']))NULL @else{{$user['firstname']}} @endif" aria-describedby="firstname" placeholder="Voornaam" disabled>
+                                <input type="text" class="form-control" id="firstname" value="@if(empty($user['firstname']))NULL @else{{$user['firstname']}} @endif" aria-describedby="voornaam" placeholder="Voornaam" disabled>
                             </div>
                         </div>
                         <div class="col-4">
@@ -109,18 +113,102 @@
                     <div class="row"
                         @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
                                 <strong>
-                                    <a id="go_to_user_edit" class="table-label" href="#" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>
+                                    <a id="go_to_user_edit" class="btn btn-primary jg-color-3 border-0" href="#" data-toggle="tooltip" title="Gebruiker Aanpassen">Bewerk gebruiker</a>
                                 </strong>
-                        @else
+                        @elseif($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))
                             <i class="fa-solid fa-user-lock"></i>
                         @endif
                     </div>
-
                     <input type="hidden" id="admin_user_id_edit">
                 </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="showUserCreate" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" style="margin-top: 5%">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gebruiker toevoegen</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{ route('admin.users.store') }}">
+                        @csrf
+                        <div class="row">
+                            <div class="col-4">
+                                {{-- Firstname --}}
+                                <x-forms.input type="text" name="firstname"></x-forms.input>
+                            </div>
+                            <div class="col-4">
+                                {{-- Middlename --}}
+                                <x-forms.input type="text" name="middlename"></x-forms.input>
+                            </div>
+                            <div class="col-4">
+                                {{-- Lastname --}}
+                                <x-forms.input type="text" name="lastname"></x-forms.input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <x-forms.input type="email" name="email"></x-forms.input>
+                        </div>
+                        <div class="row">
+                            {{-- Telefoon nummer input --}}
+                            <div class="form-group">
+                                <label
+                                    class="black-label-text"
+                                    for="phone_number">
+                                    {{ __('general.'.'phone_number') }}
+                                </label>
+                                <input type="tel" class="form-control" name="phone_number" pattern="[0-9]{10}" value="{{ old('phone_number') ?? $value ?? null }}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">
+                                <label>Formaat: 0612345678</label>
+                                @if($errors->has('phone_number'))
+                                    <div class="error">
+                                        <label class="warning-label">
+                                            {{ $errors->first('phone_number') }}
+                                        </label>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
+                            <hr>
+                            <label class="black-label-text" style="font-size: 20px;">Welke rol krijgt de gebruiker?</label>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="black-label-text"
+                                           for="roles">
+                                        Rol
+                                    </label>
+                                    <select class="form-control"
+                                            name="roles"
+                                            id="roles">
+                                        @foreach($roles as $role)
+                                            <option value="{{$role['id']}}"
+                                                    @if($role['id'] == '3')
+                                                    selected
+                                                @endif>
+                                                {{__('general.' .$role['name'])}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @if($errors->has('roles'))
+                                        <div class="error">
+                                            {{ $errors->first('roles') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            <input type="hidden" name="roles" value="2">
+                        @endif
+                        <button style="float: right" type="submit" class="btn btn-primary jg-color-3 border-0" value="Save">Toevoegen</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="fadeInDown crud-table">
 
     <text class="crud-user-form-title icon-color">Alle gebruikers</text><br>
@@ -128,43 +216,29 @@
         <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 100%">
     </div>
     <div style="display: inline-block">
-        <a class="btn btn-primary jg-color-3 border-0" href="{{route('admin.users.create')}}" data-toggle="tooltip" title="Gebruiker Toevoegen">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
+        <a class="btn btn-primary jg-color-3 border-0" style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserCreate" onclick="getRoles('{{$roles}}')">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
     </div>
 
     <br>
     <table class="table table-hover" id="user_crud">
         <thead>
         <tr>
-{{--            <th scope="col"><strong>#</strong></th>--}}
             <th scope="col"><strong>Voornaam</strong></th>
             <th scope="col"><strong>Tussenvoegsel</strong></th>
             <th scope="col"><strong>Achternaam</strong></th>
-{{--            <th scope="col"><strong>E-mail</strong></th>--}}
             <th scope="col"><strong>Telefoonnummer</strong></th>
-{{--            <th scope="col"><strong>Rol</strong></th>--}}
             <th scope="col"><strong>Actief</strong></th>
             <th scope="col"></th>
-            <th scope="col"></th>
-{{--            <th scope="col"></th>--}}
         </tr>
         </thead>
         <tbody>
         {{--Loop each user to show in a table--}}
         @foreach($users as $user)
             <tr class="{{ $user->isCurrentUser() }}">
-{{--                <th scope="row">{{ $loop->index + 1 }}</th>--}}
-                {{--Check the email from the current user and the email in the database to show who is selected(logged in)--}}
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{$user['firstname']}}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{ $user['middlename'] ?? '' }}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{$user['lastname']}}</td>
-
-{{--                <td>{{$user['email']}}</td>--}}
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{$user['phone_number']}}</td>
-
-                {{--Big letter maintainer--}}
-{{--                <td>@if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))<strong>{{__('general.' .$user->role()->get()->first()->name)}}</strong> @else {{__('general.' .$user->role()->get()->first()->name)}} @endif</td>--}}
-
-                {{--Shows if the user is soft-deleted(active) or not--}}
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}',)">
                     @if(empty($user['deleted_at']))
                         Ja
@@ -172,29 +246,6 @@
                         Nee
                     @endif
                 </td>
-
-                {{-- Check if the user is allowed to edit the user --}}
-{{--                <td>--}}
-{{--                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))--}}
-{{--                        @if($user['role_id'] != App\Models\Role::getRoleID('employee'))--}}
-{{--                            <i class="fa-solid fa-user-lock"></i>--}}
-{{--                        @else--}}
-{{--                            <strong>--}}
-{{--                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
-{{--                            </strong>--}}
-{{--                        @endif--}}
-{{--                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))--}}
-{{--                        @if($user['role_id'] != App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))--}}
-{{--                            <strong>--}}
-{{--                                <a class="table-label" href="{{route('admin.users.edit',$user['id'])}}" data-toggle="tooltip" title="Gebruiker aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a>--}}
-{{--                            </strong>--}}
-{{--                        @else--}}
-{{--                            <i class="fa-solid fa-user-lock"></i>--}}
-{{--                        @endif--}}
-{{--                    @endif--}}
-{{--                </td>--}}
-
-                {{-- Check if the user is allowed to delete the user --}}
                 <td>
                     @if($user_session['role_id'] == App\Models\Role::getRoleID('admin'))
                         @if($user['role_id'] != App\Models\Role::getRoleID('employee'))
@@ -233,9 +284,6 @@
                         </strong>
                     @endif
                 </td>
-{{--                <td>--}}
-{{--                    <a class="table-label" href="{{route('admin.users.show',$user['id'])}}" data-toggle="tooltip" title="Bekijken"><i class="fa-solid fa-user-gear icon-color"></i></a>--}}
-{{--                </td>--}}
             </tr>
         @endforeach
         </tbody>
