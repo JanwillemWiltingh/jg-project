@@ -19,6 +19,12 @@
             <div class="card">
                 <div class="card-header" id="calender_hide">
                     <div class="card-body">
+                        <button class="btn jg-color-1" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            ">maand</button>
                         <button class="btn jg-color-1 " style="
                                 color: black !important;
                                 float: right;
@@ -29,12 +35,6 @@
                             " id="week_rooster">
                             Week
                         </button>
-                        <button class="btn jg-color-1" style="
-                                color: white !important;
-                                float: right;
-                                top: 60px;
-                                right: 28px;
-                            ">maand</button>
                         @include('calender')
                     </div>
                 </div>
@@ -76,12 +76,6 @@
                             </p>
 
                             <button class="btn jg-color-1" style="
-                                        color: white !important;
-                                        float: right;
-                                        right: 28px;
-                                        bottom: 44px;
-                                    ">Week</button>
-                            <button class="btn jg-color-1" style="
                                         color: black !important;
                                         float: right;
                                         right: 28px;
@@ -91,6 +85,12 @@
                                     " id="maand">
                                 Maand
                             </button>
+                            <button class="btn jg-color-1" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    ">Week</button>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">
@@ -127,6 +127,8 @@
                                                 <input type="hidden" value="{{$days[$i]['start_time']}}" id="start_time_user_rooster{{$i + 1}}">
                                                 <input type="hidden" value="{{$days[$i]['end_time']}}" id="end_time_user_rooster{{$i + 1}}">
                                                 @if($availability->where('id', $days[$i]['id'])->first())
+                                                    <input type="hidden" value="{{$days[$i]['from_home']}}" id="from_home{{$i + 1}}">
+
                                                     @if(strlen($availability->where('id', $days[$i]['id'])->first()->start_week) == 2)
                                                         <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
                                                     @else

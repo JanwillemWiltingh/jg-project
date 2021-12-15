@@ -191,13 +191,14 @@
         </div>
     </div>
 @else
+
     <div class="modal fade" id="disableModal" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" >
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Beschikbaarheid beheren</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-
+                    </button>
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Dagen</p>
@@ -511,7 +512,7 @@
     </div>
 
     <div class="modal fade" id="availabilityModalEdit" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="a">Bewerk beschikbaarheid</h5>
@@ -526,34 +527,34 @@
                         @else
                             <input type="hidden" name="user_id" value="{{\Illuminate\Support\Facades\Auth::user()->id}}">
                         @endif
+                        <div style="display: flex">
+                            <div style="width: 50%">
+                                <label style="width: 95%">
+                                    <p>Begin Tijd:</p>
+                                    <div style="display: flex;">
+                                        <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start"  min="08:00" max="18:00">
+                                    </div>
+                                </label>
+                                <br>
+                                <label style="width:95%;">
+                                    <p>Eind Tijd:</p>
+                                    <div style="display: flex;">
+                                        <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00" >
+                                    </div>
+                                </label>
+                                <p style="font-size: 12px" class="text-warning">De tijden die u hier invult worden op halve uren en hele uren afgerond</p>
+                            </div>
 
-                        <label style="width: 49%">
-                            <p>Begin Tijd:</p>
-                            <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
-                        </label>
-                        <label style="width: 49%">
-                            <p>Eind Tijd:</p>
-                            <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_end" min="08:00" max="18:00">
-                        </label>
+                            <div>
+                                <label style="width: 100%;">
+                                    <p>Opmerking:</p>
+                                    <textarea rows="5" cols="68" placeholder="Opmerking (optioneel)" class="form-control" id="comment_edit" name="comment"></textarea>
+                                </label>
+                            </div>
+                        </div>
 
-                        <p style="font-size: 12px" class="text-warning">De tijden die u invult worden op halve uren en hele uren afgerond</p>
-                        <label style="width: 100%">
-                            <textarea rows="5" cols="68" placeholder="Aantekening (optioneel)" class="form-control" name="comment" id="comment_edit"></textarea>
-                        </label>
-
-                        <label style="width: 49%">
-                            <p>Kies een begin week:</p>
-                            <input class="form-control" type="week" name="start_week" id="start_date" min="2000-W01" max="2100-W52">
-                        </label>
-
-                        <label style="width: 49%">
-                            <p>Kies een eind week:</p>
-                            <input class="form-control" type="week" name="end_week" id="end_date"  min="2000-W01" max="2100-W52">
-                        </label>
-
-
-                        <input type="checkbox" id="switch" class="toggle-box " name="from_home"/>
-                        <label for="switch" class="toggle-label float-right" > </label>
+                        <input type="checkbox" id="switch_box" class="toggle-box" name="from_home"/>
+                        <label for="switch_box" class="toggle-label float-right"> </label>
 
                         <p class="float-right" style="margin-right: 15px">Thuis werken</p>
                         <br>

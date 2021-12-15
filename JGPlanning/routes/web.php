@@ -100,6 +100,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/{user}/{week}/{weekday}', [RoosterAdminController::class, 'delete_disable_days'])->name('delete_disable_days');
         Route::post('/manage_disable', [RoosterAdminController::class, 'manage_disable_days'])->name('manage_disable_days');
         Route::post('/manage_day_disable', [RoosterAdminController::class, 'manage_delete_days'])->name('manage_delete_days');
+        Route::post('/plan_users', [RoosterAdminController::class, 'plan_next_year'])->name('plan_next_year');
     });
 
 //admin compare table

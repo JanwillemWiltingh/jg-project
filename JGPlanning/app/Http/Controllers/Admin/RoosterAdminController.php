@@ -31,10 +31,22 @@ class RoosterAdminController extends Controller
      */
     public function index_rooster()
     {
+        $plan_in = false;
+
+        if (Carbon::now()->month == 12)
+        {
+            if (Rooster::all()->where('start_year', date('Y') + 1)->count() == 0)
+            {
+                $plan_in = true;
+            }
+        }
+
+
         $users = User::all();
 
         return view('admin.availability.calender.table', compact(
             'users',
+            'plan_in'
         ));
     }
 
@@ -46,49 +58,49 @@ class RoosterAdminController extends Controller
      * @param $week
      * @return Application|Factory|View
      */
-    public function user_rooster(RosterService $rosterService,CalendarService $calendarService, $user, $week, $year)
+    public function user_rooster(RosterService $rosterService, CalendarService $calendarService, $user, $week, $year)
     {
-        if ($week > 52)
-        {
+        if ($week > 52) {
             $targetYear = $year + 1;
-            return redirect('/admin/rooster/' .$user. '/1/' . $targetYear);
-        }
-        else if($week < 1)
-        {
+            return redirect('/admin/rooster/' . $user . '/1/' . $targetYear);
+        } else if ($week < 1) {
             $targetYear = $year - 1;
-            return redirect('/admin/rooster/' .$user. '/52/' . $targetYear);
+            return redirect('/admin/rooster/' . $user . '/52/' . $targetYear);
         }
         $user_info = User::find($user);
 
         $rooster = Rooster::all()
             ->where('user_id', $user);
 
-        if ($rooster->count() == 0)
-        {
-            for ($a = 1; $a <= 52; $a++)
-            {
-                for ($i = 1; $i < 7; $i++)
-                {
-                    Rooster::create([
-                        'start_time' => '08:30:00',
-                        'end_time' => '17:00:00',
-                        'comment' => "",
-                        'from_home' => 0,
-                        'weekdays' => $i,
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => null,
-                        'user_id' => $user,
-                        'start_week' => $a,
-                        'end_week' => $a,
-                        'disabled' => false,
-                        'start_year' => date('Y'),
-                        'end_year' => date('Y'),
-                    ]);
-                }
-            }
-        }
+//        if ($rooster->count() == 0)
+//        {
+//            for ($x = 0; $x < 1; $x++)
+//            {
+//                for ($a = 1; $a <= 52; $a++)
+//                {
+//                    for ($i = 1; $i < 7; $i++)
+//                    {
+//                        Rooster::create([
+//                            'start_time' => '08:30:00',
+//                            'end_time' => '17:00:00',
+//                            'comment' => "",
+//                            'from_home' => 0,
+//                            'weekdays' => $i,
+//                            'created_at' => date('Y-m-d h:i:s'),
+//                            'updated_at' => null,
+//                            'user_id' => $user,
+//                            'start_week' => $a,
+//                            'end_week' => $a,
+//                            'disabled' => false,
+//                            'start_year' => date('Y') + $x,
+//                            'end_year' => date('Y') + $x,
+//                        ]);
+//                    }
+//                }
+//            }
+//        }
 
-        $weekDays  = Availability::WEEK_DAYS;
+        $weekDays = Availability::WEEK_DAYS;
 
         $array1 = [];
         $disabled_array = [];
@@ -102,19 +114,14 @@ class RoosterAdminController extends Controller
 
         $disabled_count = count($disabled_days);
 
-        foreach ($disabled_days as $dd)
-        {
+        foreach ($disabled_days as $dd) {
             array_push($array1, $dd->weekday);
         }
 
-        foreach ($weekDays as $index => $day)
-        {
-            if (in_array($index, $array1))
-            {
+        foreach ($weekDays as $index => $day) {
+            if (in_array($index, $array1)) {
                 array_push($disabled_array, 1);
-            }
-            else
-            {
+            } else {
                 array_push($disabled_array, null);
             }
         }
@@ -125,7 +132,7 @@ class RoosterAdminController extends Controller
         $start_of_week = $current_week->startOfWeek()->format('d-M');
         $end_of_week = $current_week->endOfWeek()->format('d-M');
 
-        $weekstring = $start_of_week . " - ". $end_of_week;
+        $weekstring = $start_of_week . " - " . $end_of_week;
 
         $availability = Rooster::where('user_id', $user)->get();
         $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $week, $year);
@@ -158,19 +165,14 @@ class RoosterAdminController extends Controller
         ]);
 
 
-        for ($i = 1; $i < 6; $i++)
-        {
-            if ($validated['data'][$i - 1])
-            {
-                if(Rooster::all()->where('user_id', $user)->where('weekdays', $i)->first())
-                {
+        for ($i = 1; $i < 6; $i++) {
+            if ($validated['data'][$i - 1]) {
+                if (Rooster::all()->where('user_id', $user)->where('weekdays', $i)->first()) {
                     $updaterooster = Rooster::where('weekdays', $i)->where('user_id', $user)->update([
                         'disabled' => true
                     ]);
                 }
-            }
-            else
-            {
+            } else {
                 $updaterooster = Rooster::where('weekdays', $i)->where('user_id', $user)->update([
                     'disabled' => false
                 ]);
@@ -207,17 +209,14 @@ class RoosterAdminController extends Controller
         $start_year = substr($validated['start_week'], '0', '-4');
         $end_year = substr($validated['end_week'], '0', '-4');
 
-        if ($validated['weekday'] == 1)
-        {
+        if ($validated['weekday'] == 1) {
             $final_date_start = $date
                 ->setISODate($start_year, $start_week)
                 ->format('Y-m-d');
             $final_date_end = $date
                 ->setISODate($end_year, $end_week)
                 ->format('Y-m-d');
-        }
-        else
-        {
+        } else {
             $final_date_start = $date
                 ->setISODate($start_year, $start_week)
                 ->addDays($validated['weekday'])
@@ -232,19 +231,15 @@ class RoosterAdminController extends Controller
             ->where('user_id', $user)
             ->where('weekday', $validated['weekday']);
 
-        foreach ($checkDisabled as $cd)
-        {
-            if ($cd->weekday == 1)
-            {
+        foreach ($checkDisabled as $cd) {
+            if ($cd->weekday == 1) {
                 $final_db_date_start = $date
                     ->setISODate($cd->start_year, $cd->start_week)
                     ->format('Y-m-d');
                 $final_db_date_end = $date
                     ->setISODate($cd->end_year, $cd->end_week)
                     ->format('Y-m-d');
-            }
-            else
-            {
+            } else {
                 $final_db_date_start = $date
                     ->setISODate($cd->start_year, $cd->start_week)
                     ->addDays($cd->weekday)
@@ -254,18 +249,14 @@ class RoosterAdminController extends Controller
                     ->addDays($cd->weekday)
                     ->format('Y-m-d');
             }
-            if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end))
-            {
+            if (($final_date_start >= $final_db_date_start) && ($final_date_start <= $final_db_date_end)) {
                 return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
-            }
-            else if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end))
-            {
+            } else if (($final_date_end >= $final_db_date_start) && ($final_date_end <= $final_db_date_end)) {
                 return back()->with(['message' => ['message' => 'De weken die u heeft ingevuld overlappen met weken die al ingevuld zijn.', 'type' => 'danger']]);
             }
         }
 
-        if ($final_date_start > $final_date_end)
-        {
+        if ($final_date_start > $final_date_end) {
             return back()->with(['message' => ['message' => 'De ingevulde begin tijd is later dan de eind tijd', 'type' => 'danger']]);
         }
 
@@ -290,7 +281,7 @@ class RoosterAdminController extends Controller
      * @param $week
      * @return RedirectResponse
      */
-    public function edit_disable_days (Request $request, $user, $week): RedirectResponse
+    public function edit_disable_days(Request $request, $user, $week): RedirectResponse
     {
         $validated = $request->validate([
             'weekday' => ['required', 'integer'],
@@ -314,16 +305,15 @@ class RoosterAdminController extends Controller
             ->first();
 
 
-        if ($start_week > $end_week)
-        {
+        if ($start_week > $end_week) {
             return back()->with(['message' => ['message' => 'De ingevulde begin week is later dan de eind week', 'type' => 'danger']]);
         }
 
         $checkDisabled->update([
-                'start_week' => $start_week,
-                'end_week' => $end_week,
-                'by_admin' => true
-            ]);
+            'start_week' => $start_week,
+            'end_week' => $end_week,
+            'by_admin' => true
+        ]);
 
         return back()->with(['message' => ['message' => 'De aangegeven weken zijn aangepast', 'type' => 'success']]);
     }
@@ -377,4 +367,38 @@ class RoosterAdminController extends Controller
             ->delete();
     }
 
+    public function plan_next_year()
+    {
+        $rooster = Rooster::all();
+        $user = User::all();
+        foreach ($user as $u)
+        {
+            for ($x = 1; $x <= 2; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    for ($i = 1; $i < 7; $i++)
+                    {
+                        Rooster::create([
+                            'start_time' => '08:30:00',
+                            'end_time' => '17:00:00',
+                            'comment' => "",
+                            'from_home' => 0,
+                            'weekdays' => $i,
+                            'created_at' => date('Y-m-d h:i:s'),
+                            'updated_at' => null,
+                            'user_id' => $u->id,
+                            'start_week' => $a,
+                            'end_week' => $a,
+                            'disabled' => false,
+                            'start_year' => date('Y') + $x,
+                            'end_year' => date('Y') + $x,
+                        ]);
+                    }
+                }
+            }
+        }
+
+        return back();
+    }
 }

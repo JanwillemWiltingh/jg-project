@@ -33,6 +33,12 @@
                 <div class="card">
                     <div class="card-header" id="calender_hide">
                         <div class="card-body">
+                            <button class="btn jg-color-1" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            ">maand</button>
                             <button class="btn jg-color-1 " style="
                                 color: black !important;
                                 float: right;
@@ -43,12 +49,6 @@
                             " id="week_rooster">
                                 Week
                             </button>
-                            <button class="btn jg-color-1" style="
-                                color: white !important;
-                                float: right;
-                                top: 60px;
-                                right: 28px;
-                            ">maand</button>
                             @include('calender')
                         </div>
                     </div>
@@ -89,12 +89,6 @@
                                 </p>
 
                                 <button class="btn jg-color-1" style="
-                                        color: white !important;
-                                        float: right;
-                                        right: 28px;
-                                        bottom: 44px;
-                                    ">Week</button>
-                                <button class="btn jg-color-1" style="
                                         color: black !important;
                                         float: right;
                                         right: 28px;
@@ -104,6 +98,12 @@
                                     " id="maand">
                                     Maand
                                 </button>
+                                <button class="btn jg-color-1" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    ">Week</button>
                                 <form id="week_form">
                                     <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                     <input type="hidden" value="{{request('year')}}" id="hidden_year">

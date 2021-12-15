@@ -760,15 +760,6 @@ table.dataTable td.focus {
     padding: 12px 6px !important;
 }
 
-/*.dashboard-welkom a*/
-/*{*/
-/*    display: inline;*/
-/*    position: absolute;*/
-/*    background: -webkit-linear-gradient(#1A6686, #1C88A4);*/
-/*    -webkit-background-clip: text;*/
-/*    -webkit-text-fill-color: transparent;*/
-/*    font-size: 45px;*/
-/*    font-weight: bolder;*/
-/*    font-style: italic;*/
-/*    bottom: 10px;*/
-/*}*/
+.btn {
+    text-transform: capitalize !important;
+}

@@ -54,25 +54,28 @@ class RoosterController extends Controller
                 ]);
         }
         if ($checkRooster->count() == 0) {
-            for ($a = 1; $a <= 52; $a++)
+            for ($x = 0; $x < 1; $x++)
             {
-                for ($i = 1; $i <= 6; $i++)
+                for ($a = 1; $a <= 52; $a++)
                 {
-                    Rooster::create([
-                        'start_time' => '08:30:00',
-                        'end_time' => '17:00:00',
-                        'comment' => "",
-                        'from_home' => 0,
-                        'weekdays' => $i,
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => null,
-                        'user_id' => Auth::id(),
-                        'start_week' => $a,
-                        'end_week' => $a,
-                        'disabled' => false,
-                        'start_year' => date('Y'),
-                        'end_year' => date('Y'),
-                    ]);
+                    for ($i = 1; $i <= 6; $i++)
+                    {
+                        Rooster::create([
+                            'start_time' => '08:30:00',
+                            'end_time' => '17:00:00',
+                            'comment' => "",
+                            'from_home' => 0,
+                            'weekdays' => $i,
+                            'created_at' => date('Y-m-d h:i:s'),
+                            'updated_at' => null,
+                            'user_id' => Auth::id(),
+                            'start_week' => $a,
+                            'end_week' => $a,
+                            'disabled' => false,
+                            'start_year' => date('Y') + $x,
+                            'end_year' => date('Y') + $x,
+                        ]);
+                    }
                 }
             }
         }
@@ -286,16 +289,16 @@ class RoosterController extends Controller
                 }
             }
         }
-
+//        dd($edit_rooster->start_time, $time->roundTime($request->input('end_time'), 30));
         if ($request->input('end_time'))
         {
-            if (!$edit_rooster->start_time > $request->input('end_time'))
+            if ($edit_rooster->start_time < $request->input('end_time'))
             {
                 $edit_rooster->update(['end_time' => $time->roundTime($request->input('end_time'), 30)]);
             }
             else
             {
-                if ($edit_rooster->end_time != $request->input('end_time'). ":00")
+                if ($edit_rooster->end_time != $time->roundTime($request->input('end_time'), 30))
                 {
                     return back()->with(['message' => ['message' => 'De ingevulde eind tijd is eerder dan de start tijd.', 'type' => 'danger']]);
                 }
@@ -320,7 +323,6 @@ class RoosterController extends Controller
         {
             $start_year = substr($request->input('start_week'), '0',-4);
             $start_week = substr($request->input('start_week'), 6);
-//            dd($start_year, $start_week);
             if ($request->input('weekday') == 1)
             {
                 $final_date_start = $date
@@ -740,6 +742,13 @@ class RoosterController extends Controller
             ->where('id', $user)
             ->where('weekday', $day);
 
+        if ($checkDisabled->first())
+        {
+            if ($checkDisabled->first()->by_admin == true)
+            {
+                return back()->with(['message' => ['message' => 'Deze dag is door een admin uitgezet en kan dus niet door u aangepast worden.', 'type' => 'danger']]);
+            }
+        }
         foreach ($checkDisabled as $cr)
         {
             $date_dis_start = $date
@@ -761,9 +770,16 @@ class RoosterController extends Controller
                     $cr->update([
                         'start_week' => $week + 1,
                         'start_year' => $year,
+                        'by_admin' => false,
                     ]);
+                    if (Auth::user()->role->name == "admin" || Auth::user()->role->name == "maintainer")
+                    {
+                        $cr->update([
+                            'by_admin' => true,
+                        ]);
+                    }
                 }
-                return back()->with(['message' => ['message' => 'Dag opengezet 1.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
             }
             else if ($cr->end_week == $week)
             {
@@ -776,64 +792,139 @@ class RoosterController extends Controller
                     $cr->update([
                         'end_week' => $week - 1,
                         'end_year' => $year,
+                        'by_admin' => false,
                     ]);
+                    if (Auth::user()->role->name == "admin" || Auth::user()->role->name == "maintainer")
+                    {
+                        $cr->update([
+                            'by_admin' => true,
+                        ]);
+                    }
                 }
-                return back()->with(['message' => ['message' => 'Dag opengezet 2.', 'type' => 'success']]);
+                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
             }
             else if (($date_get>= $date_dis_start) && ($date_get <= $date_dis_end))
             {
-                DisabledDays::create([
-                    'user_id' => $cr->user_id,
-                    'start_week' => ($week + 1),
-                    'end_week' => $cr->end_week,
-                    'weekday' => $cr->weekday,
-                    'start_year' => $cr->start_year,
-                    'end_year' => $cr->end_year,
-                ]);
-                $cr->update([
-                    'end_week' => ($week - 1),
-                ]);
-                return back()->with(['message' => ['message' => 'Dag opengezet 3.', 'type' => 'success']]);
+                if (Auth::user()->role->name == "admin" || Auth::user()->role->name == "maintainer")
+                {
+                    DisabledDays::create([
+                        'user_id' => $cr->user_id,
+                        'start_week' => ($week + 1),
+                        'end_week' => $cr->end_week,
+                        'weekday' => $cr->weekday,
+                        'start_year' => $cr->start_year,
+                        'end_year' => $cr->end_year,
+                        'by_admin' => true
+                    ]);
+                    $cr->update([
+                        'end_week' => ($week - 1),
+                        'by_admin' => true,
+                    ]);
+                }
+                else
+                {
+                    DisabledDays::create([
+                        'user_id' => $cr->user_id,
+                        'start_week' => ($week + 1),
+                        'end_week' => $cr->end_week,
+                        'weekday' => $cr->weekday,
+                        'start_year' => $cr->start_year,
+                        'end_year' => $cr->end_year,
+                        'by_admin' => false,
+                    ]);
+                    $cr->update([
+                        'end_week' => ($week - 1),
+                        'by_admin' => false,
+                    ]);
+                }
+
+                return back()->with(['message' => ['message' => 'Dag opengezet.', 'type' => 'success']]);
             }
             else if ($cr->start_week - 1 == $week)
             {
                 $cr->update([
                     'start_week' => $week,
                     'start_year' => $year,
+                    'by_admin' => false,
                 ]);
-                return back()->with(['message' => ['message' => 'Dag uitgezet 4.', 'type' => 'success']]);
+                if (Auth::user()->role->name == "admin" || Auth::user()->role->name == "maintainer")
+                {
+                    $cr->update([
+                        'by_admin' => true,
+                    ]);
+                }
+                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
             }
             else if ($cr->end_week + 1 == $week)
             {
                 $cr->update([
                     'end_week' => $week,
                     'end_year' => $year,
+                    'by_admin' => false,
                 ]);
-                return back()->with(['message' => ['message' => 'Dag uitgezet 5.', 'type' => 'success']]);
+                if (Auth::user()->role->name == "admin" || Auth::user()->role->name == "maintainer")
+                {
+                    $cr->update([
+                        'by_admin' => true,
+                    ]);
+                }
+                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
             }
             else
             {
+                if (Auth::user()->role->name == "admin" || Auth::user()->role->name == "maintainer")
+                {
+                    DisabledDays::create([
+                        'user_id' => $cr->user_id,
+                        'start_week' => $week,
+                        'end_week' => $week,
+                        'weekday' => $day,
+                        'start_year' => $year,
+                        'end_year' => $year,
+                        'by_admin' => true,
+                    ]);
+                }
+                else
+                {
+                    DisabledDays::create([
+                        'user_id' => $cr->user_id,
+                        'start_week' => $week,
+                        'end_week' => $week,
+                        'weekday' => $day,
+                        'start_year' => $year,
+                        'end_year' => $year,
+                        'by_admin' => false,
+                    ]);
+                }
+                return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
+            }
+        }
+        if ($checkDisabled->count() == 0)
+        {
+            if (Auth::user()->role->name == "admin" || Auth::user()->role->name == "maintainer")
+            {
                 DisabledDays::create([
-                    'user_id' => $cr->user_id,
+                    'user_id' => $user,
                     'start_week' => $week,
                     'end_week' => $week,
                     'weekday' => $day,
                     'start_year' => $year,
                     'end_year' => $year,
+                    'by_admin' => true,
                 ]);
-                return back()->with(['message' => ['message' => 'Dag uitgezet 6.', 'type' => 'success']]);
             }
-        }
-        if ($checkDisabled->count() == 0)
-        {
-            DisabledDays::create([
-                'user_id' => Auth::id(),
-                'start_week' => $week,
-                'end_week' => $week,
-                'weekday' => $day,
-                'start_year' => $year,
-                'end_year' => $year,
-            ]);
+            else
+            {
+                DisabledDays::create([
+                    'user_id' => $user,
+                    'start_week' => $week,
+                    'end_week' => $week,
+                    'weekday' => $day,
+                    'start_year' => $year,
+                    'end_year' => $year,
+                    'by_admin' => false,
+                ]);
+            }
             return back()->with(['message' => ['message' => 'Dag uitgezet.', 'type' => 'success']]);
         }
 

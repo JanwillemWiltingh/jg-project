@@ -4,9 +4,17 @@
     <div class="container fadeInDown">
         <div class="col-md-8">
             <div class="card" style="padding: 15px 15px">
-                <label>
-                    <p>Kies een gebruiker waarvan je de rooster wilt bewerken</p>
-                </label>
+                <div>
+                    <label style="display: inline-block">
+                        <p>Kies een gebruiker waarvan je de rooster wilt bewerken</p>
+                    </label>
+                    @if($plan_in)
+                        <form method="POST" action="{{route('admin.rooster.plan_next_year')}}">
+                            @csrf
+                            <button type="submit" class="btn jg-color-1 " style="color: white !important; text-transform: capitalize !important; font-size: 12px !important; float: right !important; margin: 0 !important; padding: 5px 15px">Plan volgend jaar in voor elke gebruiker</button>
+                        </form>
+                    @endif
+                </div>
                 <table class="data-table-custom" style="" id="admin_availability">
                     <thead>
                         <tr>

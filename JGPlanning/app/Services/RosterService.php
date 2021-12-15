@@ -45,18 +45,36 @@ class RosterService
                 {
                   if (($da->format('Y-m-d') >= $date_start) && ($da->format('Y-m-d') <= $date_end))
                     {
-                        $events[] = Calendar::event(
-                            substr($d->start_time, 0, -3) . " - " . substr($d->end_time, 0, -3),
-                            true,
-                            $da->format('Y-m-d'),
-                            $da->format('Y-m-d'). '- 1 day',
-                            null,
-                            [
-                                'color' => '1C88A4',
-                                'textColor' => 'white',
-                                'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/'
-                            ]
-                        );
+                        if ($d->comment)
+                        {
+                            $events[] = Calendar::event(
+                                substr($d->start_time, 0, -3) . " - " . substr($d->end_time, 0, -3). ": " . $d->comment,
+                                true,
+                                $da->format('Y-m-d'),
+                                $da->format('Y-m-d'). '- 1 day',
+                                null,
+                                [
+                                    'color' => '1C88A4',
+                                    'textColor' => 'white',
+                                    'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/'
+                                ]
+                            );
+                        }
+                        else
+                        {
+                            $events[] = Calendar::event(
+                                substr($d->start_time, 0, -3) . " - " . substr($d->end_time, 0, -3). ": Geen opmerking",
+                                true,
+                                $da->format('Y-m-d'),
+                                $da->format('Y-m-d'). '- 1 day',
+                                null,
+                                [
+                                    'color' => '1C88A4',
+                                    'textColor' => 'white',
+                                    'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/'
+                                ]
+                            );
+                        }
                     }
                 }
             }
@@ -82,18 +100,36 @@ class RosterService
                         {
                             if ($events[$i]->start->format('Y-m-d') == $da->format('Y-m-d'))
                             {
-                                $events[$i] = Calendar::event(
-                                    'Dag Uitgezet',
-                                    true,
-                                    $da->format('Y-m-d'),
-                                    $da->format('Y-m-d'). '- 1 day',
-                                    null,
-                                    [
-                                        'color' => 'lightgray',
-                                        'textColor' => 'black',
-                                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$dis->id .'/'
-                                    ]
-                                );
+                                if ($dis->by_admin == true)
+                                {
+                                    $events[$i] = Calendar::event(
+                                        'Dag Uitgezet door admin',
+                                        true,
+                                        $da->format('Y-m-d'),
+                                        $da->format('Y-m-d'). '- 1 day',
+                                        null,
+                                        [
+                                            'color' => 'lightgray',
+                                            'textColor' => 'black',
+                                            'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$dis->id .'/'
+                                        ]
+                                    );
+                                }
+                                else
+                                {
+                                    $events[$i] = Calendar::event(
+                                        'Dag Uitgezet',
+                                        true,
+                                        $da->format('Y-m-d'),
+                                        $da->format('Y-m-d'). '- 1 day',
+                                        null,
+                                        [
+                                            'color' => 'lightgray',
+                                            'textColor' => 'black',
+                                            'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$dis->id .'/'
+                                        ]
+                                    );
+                                }
                             }
                         }
                     }

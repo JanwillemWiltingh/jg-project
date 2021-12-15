@@ -7662,7 +7662,6 @@ button.bg-dark:focus {
 }
 
 .position-sticky {
-  position: -webkit-sticky !important;
   position: sticky !important;
 }
 
@@ -7682,9 +7681,8 @@ button.bg-dark:focus {
   z-index: 1030;
 }
 
-@supports ((position: -webkit-sticky) or (position: sticky)) {
+@supports (position: sticky) {
   .sticky-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -19785,7 +19783,6 @@ table.dataTable td.focus {
     height: 119px !important;
 }
 
-<<<<<<< HEAD
 .fc-center h2 {
     position: relative;
     text-transform: capitalize !important;
@@ -19799,18 +19796,7 @@ table.dataTable td.focus {
     padding: 12px 6px !important;
 }
 
-/*.dashboard-welkom a*/
-/*{*/
-/*    display: inline;*/
-/*    position: absolute;*/
-/*    background: -webkit-linear-gradient(#1A6686, #1C88A4);*/
-/*    -webkit-background-clip: text;*/
-/*    -webkit-text-fill-color: transparent;*/
-/*    font-size: 45px;*/
-/*    font-weight: bolder;*/
-/*    font-style: italic;*/
-/*    bottom: 10px;*/
-/*}*/
+.btn {
+    text-transform: capitalize !important;
+}
 
-=======
->>>>>>> 63fb775a272e2a21692057cc6ee86c5ff2140f03
