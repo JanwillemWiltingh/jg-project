@@ -136,7 +136,7 @@
         <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="card">
                 <div class="card-body ">
-                    <form action="{{ route('dashboard.clock') }}" method="post">
+                    <form id="klok-form" action="{{ route('dashboard.clock') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
@@ -228,4 +228,47 @@
         @endif
     </div>
 <a style="color: white; cursor: pointer" id="changeFont" target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
+
+    <script>
+        $("#clock_button").on('click', function () {
+            // https://sweetalert.js.org/docs/
+            event.preventDefault();
+
+            swal({
+                title: "Pas Op!",
+                text: "Weet u zeker dat u wilt "+ $(this).text() +"?",
+                icon: "warning",
+                dangerMode: true,
+                buttons: {
+                    cancel: {
+                        text: "Annuleren",
+                        value: null,
+                        visible: true,
+                        className: "swal-cancel-button",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "swal-confirm-button",
+                        closeModal: true
+                    },
+                },
+                closeOnEscape: true,
+            });
+
+            setInterval(function (){
+                $('.swal-confirm-button').on('click', function () {
+                    $('#klok-form').submit();
+                    clearInterval();
+                });
+
+                $('.swal-cancel-button').on('click', function () {
+                    console.log('Canceled');
+                    clearInterval();
+                });
+            }, 500);
+        });
+    </script>
 @endsection
