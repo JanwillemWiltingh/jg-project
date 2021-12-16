@@ -1,4 +1,5 @@
 require('./bootstrap');
 require('./components/userview');
-require('./components/navbar-script');
+require('./components/switch-input-fieds');
+require('./components/edit_clock');
 

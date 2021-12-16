@@ -1,0 +1,6 @@
+1. Is er documentatie van de API?
+2. Is er een API Key nodig en veranderd deze regelmatig?
+3. In welk formaat moet data doorgestuurd worden?
+4. Wat is de rate limit?
+5. Zijn er verder dingen waar rekening mee gehouden moet worden wanneer er gewerkt wordt uw API?
+6. Wanneer wilt u de data ontvangen	?

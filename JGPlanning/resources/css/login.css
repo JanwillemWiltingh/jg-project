@@ -1,0 +1,60 @@
+.login-page {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+}
+.login-form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 375px;
+    height: 100%;
+    padding: 20px;
+    background: white;
+    border-radius: 15px 15px 15px 15px;
+}
+.login-icon {
+    text-align: center;
+    margin: 15px;
+    font-size: 115px;
+}
+.login-jg-logo{
+    height: 100px;
+    margin-bottom: 3%;
+    margin-top: 2%;
+    margin-right:35%;
+}
+
+.login-button {
+    width: 100%;
+    margin-top: 15px;
+    border: none;
+    padding: 10px 5px;
+    border-radius: 5px 5px 5px 5px;
+    background-color: "";
+    transition: border-radius, background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: lightgrey;
+    border-radius: 8px 8px 8px 8px;
+}
+
+/* ANIMATIONS */
+
+/* Simple CSS3 Fade-in-down Animation */
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+

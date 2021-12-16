@@ -69,6 +69,7 @@ return [
 
     'timezone' => 'UTC',
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -80,7 +81,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'nl',
 
     /*
     |--------------------------------------------------------------------------
@@ -143,6 +144,7 @@ return [
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
+        Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
         Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
         Illuminate\Cookie\CookieServiceProvider::class,
         Illuminate\Database\DatabaseServiceProvider::class,
@@ -175,6 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        LaravelFullCalendar\FullCalendarServiceProvider::class,
     ],
 
     /*
@@ -228,7 +231,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Calender' => LaravelFullCalendar\Facades\Calendar::class,
     ],
 
+    'calendar' => [
+        'start'    => '08:00',
+        'end'      => '18:00',
+    ],
 ];
