@@ -23,8 +23,8 @@
 <div class="login-page fadeInDown">
     <div class="login-form border shadow">
         <!-- Icon -->
-        <div class="login-icon">
-            <i class="fa fa-user"></i>
+        <div class="login-jg-logo">
+            <img src="{{asset('storage/img/JG logo.png')}}">
         </div>
 
         <!-- Login Form -->

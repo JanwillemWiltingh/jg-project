@@ -136,13 +136,13 @@
         <div class="@if(!$browser->isMobile()) col-6 @endif">
             <div class="card">
                 <div class="card-body ">
-                    <form action="{{ route('dashboard.clock') }}" method="post">
+                    <form id="klok-form" action="{{ route('dashboard.clock') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label for="comment" class="form-label">Opmerking</label>
-                                    <label style="float: right !important;">
+{{--                                    <label for="comment" class="form-label">Opmerking</label>--}}
+                                    <label style="float: left !important;">
                                         <text id="count"></text><text>/ 150</text>
                                     </label>
                                     <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." maxlength="150
@@ -225,9 +225,82 @@
             </div>
         </div>
         @endif
-        {{-- Admin dashboard --}}
-
         @endif
+        {{-- Admin dashboard --}}
+        <hr>
+        <div class="media align-items-stretch" >
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover table-striped" style="box-shadow: 0 0 5px 0 lightgrey;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Naam</th>
+                                    <th scope="col">Ingeklokt om</th>
+                                    <th scope="col">Aanwezig</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($users as $user)
+                                    <tr>
+                                        <td>{{$user['firstname']}} @if(!empty($user['middlename'])) {{$user['middlename']}}@endif {{$user['lastname']}}</td>
+                                        <td class="uren" style="width: 22.5%"></td>
+                                        @if($user->isClockedIn())
+                                            <td>Ja</td>
+                                        @else
+                                            <td>Nee</td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 <a style="color: white; cursor: pointer" id="changeFont" target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
+
+    <script>
+        $("#clock_button").on('click', function () {
+            // https://sweetalert.js.org/docs/
+            event.preventDefault();
+
+            swal({
+                title: "Pas Op!",
+                text: "Weet u zeker dat u wilt "+ $(this).text() +"?",
+                icon: "warning",
+                dangerMode: true,
+                buttons: {
+                    cancel: {
+                        text: "Annuleren",
+                        value: null,
+                        visible: true,
+                        className: "swal-cancel-button",
+                        closeModal: true,
+                    },
+                    confirm: {
+                        text: "OK",
+                        value: true,
+                        visible: true,
+                        className: "swal-confirm-button",
+                        closeModal: true
+                    },
+                },
+                closeOnEscape: true,
+            });
+
+            setInterval(function (){
+                $('.swal-confirm-button').on('click', function () {
+                    $('#klok-form').submit();
+                    clearInterval();
+                });
+
+                $('.swal-cancel-button').on('click', function () {
+                    console.log('Canceled');
+                    clearInterval();
+                });
+            }, 500);
+        });
+    </script>
 @endsection

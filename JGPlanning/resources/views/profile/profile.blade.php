@@ -15,7 +15,7 @@
             @if(!empty($user['middlename']))
                 <div class="col-4">
                     <div class="form-group">
-                        <label class="black-label-text" for="name">Middlename</label>
+                        <label class="black-label-text" for="name">Tussenvoegsel</label>
                         <input type="text" class="form-control" id="name" value="{{$user['middlename']}}" aria-describedby="name" placeholder="Voornaam" readonly>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('dashboard.home')}}" style="text-decoration: none; color: white;">Ga Terug</a></button>
+            <button class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('dashboard.home')}}" style="text-decoration: none; color: white;">Ga terug</a></button>
             <a href="{{route('profile.edit', $user['id'])}}" style="float: right" class="btn btn-primary jg-color-3 border-0">Bewerk</a>
             <a id="changeFont"  href="#" >.</a>
         </div>

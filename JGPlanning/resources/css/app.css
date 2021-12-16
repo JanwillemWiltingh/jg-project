@@ -756,12 +756,25 @@ table.dataTable td.focus {
     font-weight: bolder;
     border-bottom: 5px solid var(--jg-orange);
     left: -105px !important;
+    top: -65px;
 }
 
 .fc-day-grid-event {
     padding: 12px 6px !important;
 }
+.labels tr td {
+    font-weight: bold;
+    color: #fff;
+}
 
+.label tr td label {
+    display: block;
+}
+
+
+[data-toggle="toggle"] {
+    display: none;
+}
 /*.dashboard-welkom a*/
 /*{*/
 /*    display: inline;*/
@@ -774,3 +787,10 @@ table.dataTable td.focus {
 /*    font-style: italic;*/
 /*    bottom: 10px;*/
 /*}*/
+.btn  {
+    text-transform: none !important;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}

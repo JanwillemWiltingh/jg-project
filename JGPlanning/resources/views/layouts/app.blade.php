@@ -35,20 +35,19 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
 
+        <!-- Time input -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" />
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
+
     </head>
     <body>
     <div class="wrapper @if($browser->isMobile()) nav-container @endif"  style="text-decoration: none !important;">
             <div class="sidebar @if($browser->isMobile())nav-bar-open @endif"
                  data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
-                <!--
-                  Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
-                  Tip 2: you can also add an image using data-image tag
-              -->
                 <div class="logo"><a class="simple-text logo-normal" href="{{route('dashboard.home')}}" style="text-decoration: none;">
                         <img style="margin-top: -20px; margin-bottom: -20px;" src="{{asset('storage/img/JG Rooster v2.png')}}" alt="JG planning">
                     </a></div>
-                <div class="sidebar-wrapper" style="@if($browser->isMobile()) height: 80% @endif">
+                <div class="sidebar-wrapper" style="@if($browser->isMobile()) height: 80% ; @endif">
                     <ul class="nav">
                         <li class="nav-item active {{ (request()->is('/')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('dashboard.home')}}" >

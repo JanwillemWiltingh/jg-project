@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -27,6 +28,10 @@ class DashboardController extends Controller
         $user = Auth::user();
         $now = Carbon::now();
         $enable_time = null;
+        //users van vandaag ophalane
+        $day = Carbon::now()->format('Y-m-d');
+        $users = User::all();
+        $clocks = Clock::all();
 
         $clocks = $user->clocks()->get();
 
@@ -42,7 +47,15 @@ class DashboardController extends Controller
                 }
             }
         }
-        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request), 'enable_time' => $enable_time]);
+        return view('dashboard.index')->with([
+            'start' => $user->isClockedIn(),
+            'user' => $user,
+            'now' => $now,
+            'allowed' => Clock::isIPCorrect($request),
+            'enable_time' => $enable_time,
+            'users' => $users,
+            'day' => $day,
+        ]);
     }
 
     /**

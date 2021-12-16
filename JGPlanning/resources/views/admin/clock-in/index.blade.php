@@ -15,7 +15,7 @@
                                     <div class="form-group">
                                         <label for="users">Gebruikers</label>
                                         <select name="user" class="form-control" id="users">
-                                            <option value="0">Alle Gebruikers</option>
+                                            <option value="0">Alle gebruikers</option>
                                             @foreach($users as $user)
                                                 <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ucfirst($user['lastname'])}}</option>
                                             @endforeach
@@ -93,7 +93,7 @@
                     @else
                         <!-- Table Row for when there is noone who has clocked in -->
                         <tr>
-                            <td colspan="6">Werkenemers zijn/hebben nog niet ingeklokd</td>
+                            <td colspan="6">Werkenemers zijn/hebben nog niet ingeklokt</td>
                         </tr>
                     @endif
                     </tbody>
