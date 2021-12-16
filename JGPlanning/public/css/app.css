@@ -19787,6 +19787,7 @@ table.dataTable td.focus {
     height: 119px !important;
 }
 
+<<<<<<< HEAD
 .fc-center h2 {
     position: relative;
     text-transform: capitalize !important;
@@ -19825,3 +19826,5 @@ table.dataTable td.focus {
 /*    bottom: 10px;*/
 /*}*/
 
+=======
+>>>>>>> 63fb775a272e2a21692057cc6ee86c5ff2140f03

@@ -372,7 +372,7 @@
         $('.delete-link').on('click', function () {
             // https://sweetalert.js.org/docs/
             event.preventDefault();
- 
+
             swal({
                 title: "Pas Op!",
                 text: "Weet u zeker dat u " + $(this).attr('data-name') + " wilt uitzetten?",
