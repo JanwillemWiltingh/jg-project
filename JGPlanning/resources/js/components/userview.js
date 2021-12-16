@@ -355,4 +355,5 @@ $(document).ready(function () {
             $(this).parents().next('.show').toggle();
         });
     });
+
 });

@@ -196,8 +196,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Beschikbaarheid beheren</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p style="font-size: 25px; margin-bottom: 0; display: inline">Dagen</p>
@@ -233,7 +232,7 @@
                                 <p>Kies een eind week:</p>
                                 <input class="form-control" type="week" name="end_week" id="end_week" min="2000-W01" max="2100-W52">
                             </label>
-                            <input type="submit" class="btn btn-success float-right" value="Toepassen">
+                            <input type="submit" class="btn btn-primary jg-color-3 border-0 float-right" value="Toepassen">
                         </form>
                     </div>
 
