@@ -19799,7 +19799,19 @@ table.dataTable td.focus {
 .fc-day-grid-event {
     padding: 12px 6px !important;
 }
+.labels tr td {
+    font-weight: bold;
+    color: #fff;
+}
 
+.label tr td label {
+    display: block;
+}
+
+
+[data-toggle="toggle"] {
+    display: none;
+}
 /*.dashboard-welkom a*/
 /*{*/
 /*    display: inline;*/

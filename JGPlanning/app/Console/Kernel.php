@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('rooster:finalize')->weeklyOn(5, '15:00'); // TODO: Testen op server
         $schedule->command('users:clock_out')->dailyAt('18:00'); // TODO: Testen op server
+        $schedule->command('user:hash')->dailyAt('9:00');
     }
 
     /**

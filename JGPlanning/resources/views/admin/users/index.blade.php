@@ -111,11 +111,11 @@
                         </div>
                     </div>
                     <div class="row"
-                        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
+                        @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']) || empty($deleted_user['deleted_at']))
                                 <strong>
                                     <a id="go_to_user_edit" class="btn btn-primary jg-color-3 border-0" href="#" data-toggle="tooltip" title="Gebruiker Aanpassen">Bewerk gebruiker</a>
                                 </strong>
-                        @elseif($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))
+                        @elseif($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']) || empty($deleted_user['deleted_at']))
                             <i class="fa-solid fa-user-lock"></i>
                         @endif
                     </div>
@@ -232,7 +232,6 @@
         </tr>
         </thead>
         <tbody>
-        {{--Loop each user to show in a table--}}
         @foreach($users as $user)
             <tr class="{{ $user->isCurrentUser() }}">
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}')">{{$user['firstname']}}</td>
@@ -267,20 +266,20 @@
                         <strong>
                             @if($user['role_id'] != App\Models\Role::getRoleID('maintainer'))
                                 @if(empty($user['deleted_at']))
-{{--                                    <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" onclick="if(confirm('weet je zeker dat je deze gebruiker wilt verwijderen?')) true;return false" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>--}}
+                                    {{--                                    <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" onclick="if(confirm('weet je zeker dat je deze gebruiker wilt verwijderen?')) true;return false" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>--}}
                                     <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip"><i class="fa-solid fa-user-slash"></i></a>
                                 @else
                                     <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
+                                        @endif
+                                        @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && $user['role_id'] != App\Models\Role::getRoleID('maintainer'))
+                                            @if(empty($user['deleted_at']))
+                                                <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
+                                            @else
+                                                <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
+                                                    @endif
+                                                    @else
+                                                        <i class="fa-solid fa-user-lock"></i>
                                 @endif
-                            @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && $user['role_id'] != App\Models\Role::getRoleID('maintainer'))
-                                @if(empty($user['deleted_at']))
-                                    <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
-                                @else
-                                    <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
-                                @endif
-                            @else
-                                <i class="fa-solid fa-user-lock"></i>
-                            @endif
                         </strong>
                     @endif
                 </td>
@@ -288,7 +287,87 @@
         @endforeach
         </tbody>
     </table>
-
+</div>
+    <hr>
+{{--  disabled user table  --}}
+    <div class="fadeInDown crud-table">
+        <text class="crud-user-form-title icon-color">Uitgezette gebruikers</text><br>
+        <table class="table table-hover" id="user_crud">
+        <tbody class="labels">
+            <tr>
+                <td colspan="6">
+                    <label for="deleted_users" style="font-size: 15px;">Klik hier om uitgezette gebruikers te laten zien of verbergen</label>
+                    <input type="checkbox" name="deleted_users" id="deleted_users" data-toggle="toggle">
+                </td>
+            </tr>
+        </tbody>
+        <tbody class="show">
+        <tr>
+            <th scope="col"><strong>Voornaam</strong></th>
+            <th scope="col"><strong>Tussenvoegsel</strong></th>
+            <th scope="col"><strong>Achternaam</strong></th>
+            <th scope="col"><strong>Telefoonnummer</strong></th>
+            <th scope="col"><strong>Actief</strong></th>
+            <th scope="col"></th>
+        </tr>
+        {{--Loop each user to show in a table--}}
+        @foreach($deleted_users as $deleted_user)
+            <tr class="{{ $deleted_user->isCurrentUser() }}">
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{$deleted_user['firstname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{ $deleted_user['middlename'] ?? '' }}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{$deleted_user['lastname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{$deleted_user['phone_number']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}', '{{$deleted_user['id']}}',)">
+                    @if(empty($deleted_user['deleted_at']))
+                        Ja
+                    @else
+                        Nee
+                    @endif
+                </td>
+                <td>
+                    @if($user_session['role_id'] == App\Models\Role::getRoleID('admin'))
+                        @if($deleted_user['role_id'] != App\Models\Role::getRoleID('employee'))
+                            <i class="fa-solid fa-user-lock"></i>
+                        @else
+                            <strong>
+                                <a class="table-label-red" href="{{route('admin.users.destroy',$deleted_user['id'])}}">
+                                    @if($deleted_user['role_id'] != App\Models\Role::getRoleID('maintainer'))
+                                        @if(empty($deleted_user['deleted_at']))
+                                            <a class="table-label-red" href="{{route('admin.users.destroy',$deleted_user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
+                                        @else
+                                            <a class="table-label-green" href="{{route('admin.users.destroy',$deleted_user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i></a>
+                                        @endif
+                                    @endif
+                                </a>
+                            </strong>
+                        @endif
+                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer'))
+                        <strong>
+                            @if($deleted_user['role_id'] != App\Models\Role::getRoleID('maintainer'))
+                                @if(empty($deleted_user['deleted_at']))
+                                    {{--                                    <a class="table-label-red" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" onclick="if(confirm('weet je zeker dat je deze gebruiker wilt verwijderen?')) true;return false" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>--}}
+                                    <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $deleted_user['firstname']." ".$deleted_user['middlename']." ".$deleted_user['lastname']) }}" href="{{route('admin.users.destroy',$deleted_user['id'])}}" data-toggle="tooltip"><i class="fa-solid fa-user-slash"></i></a>
+                                @else
+                                    <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $deleted_user['firstname']." ".$deleted_user['middlename']." ".$deleted_user['lastname']) }}" href="{{route('admin.users.destroy',$deleted_user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
+                                    @endif
+                                    @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && $deleted_user['role_id'] != App\Models\Role::getRoleID('maintainer'))
+                                        @if(empty($deleted_user['deleted_at']))
+                                            <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $deleted_user['firstname']." ".$deleted_user['middlename']." ".$deleted_user['lastname']) }}" href="{{route('admin.users.destroy',$deleted_user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
+                                        @else
+                                            <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $deleted_user['firstname']." ".$deleted_user['middlename']." ".$deleted_user['lastname']) }}" href="{{route('admin.users.destroy',$deleted_user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
+                                        @endif
+                                    @else
+                                    <i class="fa-solid fa-user-lock"></i>
+                                @endif
+                        </strong>
+                    @endif
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
+    <br><br><br><br><br><br>
     <script>
         $('.delete-link').on('click', function () {
             // https://sweetalert.js.org/docs/
