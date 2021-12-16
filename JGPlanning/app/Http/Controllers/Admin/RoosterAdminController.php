@@ -434,10 +434,41 @@ class RoosterAdminController extends Controller
 
         $disabled_days = DisabledDays::all()
             ->where('user_id', $user);
+        $rooster = Rooster::all()
+            ->where('user_id', $user);
 
-        if ($disabled_days->count() == "0")
+        if (Carbon::parse(date('Y-m-d'))->weekOfYear + 1 == 53)
+        {
+            $compare_date = 1;
+        }
+        else
+        {
+            $compare_date = Carbon::parse(date('Y-m-d'))->weekOfYear;
+        }
+
+        if ($disabled_days->count() == "0" || $rooster->count() == "0")
         {
             return back()->with(['message' => ['message' => ''. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' Heeft geen rooster aanpassingen om vast te zetten.', 'type' => 'danger']]);
+        }
+
+        foreach ($rooster as $r)
+        {
+            $date_start = $date
+                ->setISODate($r->start_year, $r->start_week)
+                ->addDays($r->weekday);
+
+            if ($compare_date + 1 == $date_start->weekOfYear)
+            {
+                if ($r->finalized)
+                {
+                    return back()->with(['message' => ['message' => 'Volgende week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .'  is al vastgezet.', 'type' => 'danger']]);
+                }
+                else
+                {
+                    $r->finalized = true;
+                    $r->update();
+                }
+            }
         }
 
         foreach ($disabled_days as $dis)
@@ -445,6 +476,7 @@ class RoosterAdminController extends Controller
             $date_start = $date
                 ->setISODate($dis->start_year, $dis->start_week)
                 ->addDays($dis->weekday - 1);
+
             if (Carbon::parse(date('Y-m-d'))->weekOfYear + 1 == $date_start->weekOfYear)
             {
                 if ($dis->finalized)
@@ -459,6 +491,7 @@ class RoosterAdminController extends Controller
                 }
             }
         }
+
         return back()->with(['message' => ['message' => 'Volgende week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' vastgezet.', 'type' => 'success']]);
     }
 }

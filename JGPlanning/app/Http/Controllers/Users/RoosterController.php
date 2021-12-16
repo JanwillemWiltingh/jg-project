@@ -280,6 +280,13 @@ class RoosterController extends Controller
         $edit_rooster = Rooster::all()
             ->where('id', $request->input('rooster_id'))
             ->first();
+        if ($edit_rooster->first())
+        {
+            if ($edit_rooster->first()->finalized == true)
+            {
+                return back()->with(['message' => ['message' => 'Deze dag is vastgezet en kan niet meer bewerkt worden.', 'type' => 'danger']]);
+            }
+        }
         $date = Carbon::now();
 
         if ($request->input('start_time'))
