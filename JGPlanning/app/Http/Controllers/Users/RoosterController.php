@@ -42,16 +42,22 @@ class RoosterController extends Controller
 
         if ($checkDisabledDays->count() == 0)
         {
-                DisabledDays::create([
-                    'weekday' => 6,
-                    'created_at' => date('Y-m-d h:i:s'),
-                    'updated_at' => null,
-                    'user_id' => Auth::id(),
-                    'start_week' => 1,
-                    'end_week' => 1,
-                    'start_year' => date('Y'),
-                    'end_year' => date('Y'),
-                ]);
+            for ($x = 0; $x < 1; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    DisabledDays::create([
+                        'weekday' => 6,
+                        'created_at' => date('Y-m-d h:i:s'),
+                        'updated_at' => null,
+                        'user_id' => Auth::id(),
+                        'start_week' => $a,
+                        'end_week' => $a,
+                        'start_year' => date('Y') + $x,
+                        'end_year' => date('Y') + $x,
+                    ]);
+                }
+            }
         }
         if ($checkRooster->count() == 0) {
             for ($x = 0; $x < 1; $x++)

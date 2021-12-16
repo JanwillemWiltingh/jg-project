@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use LaravelFullCalendar\Calendar;
 use Carbon\Carbon;

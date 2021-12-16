@@ -761,7 +761,7 @@ table.dataTable td.focus {
 }
 
 .btn  {
-    text-transform: capitalize !important;
+    text-transform: none !important;
 }
 
 input[type="time"]::-webkit-calendar-picker-indicator {

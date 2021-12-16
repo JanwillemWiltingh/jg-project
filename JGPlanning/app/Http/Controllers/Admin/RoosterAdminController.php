@@ -16,6 +16,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoosterAdminController extends Controller
 {
@@ -71,7 +72,28 @@ class RoosterAdminController extends Controller
 
         $rooster = Rooster::all()
             ->where('user_id', $user);
+        $checkDisabledDays = DisabledDays::all()
+            ->where('user_id', $user);
 
+//        if ($checkDisabledDays->count() == 0)
+//        {
+//            for ($x = 0; $x < 1; $x++)
+//            {
+//                for ($a = 1; $a <= 52; $a++)
+//                {
+//                    DisabledDays::create([
+//                        'weekday' => 6,
+//                        'created_at' => date('Y-m-d h:i:s'),
+//                        'updated_at' => null,
+//                        'user_id' => $user,
+//                        'start_week' => $a,
+//                        'end_week' => $a,
+//                        'start_year' => date('Y') + $x,
+//                        'end_year' => date('Y') + $x,
+//                    ]);
+//                }
+//            }
+//        }
 //        if ($rooster->count() == 0)
 //        {
 //            for ($x = 0; $x < 1; $x++)
