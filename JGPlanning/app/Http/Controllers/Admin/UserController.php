@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use DateTime;
+use phpDocumentor\Reflection\Types\Null_;
 use Psy\Util\Str;
 
 class UserController extends Controller
@@ -33,10 +34,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::all()->where('deleted_at', '=', null);
+        $deleted_users = User::all()->where('deleted_at', '!=', null);
         $user_session = Auth::user();
+        $roles = Role::all();
 
-        return view('admin/users/index')->with(['users'=>$users, 'user_session' => $user_session]);
+        return view('admin/users/index')->with(['users'=>$users, 'deleted_users' => $deleted_users, 'user_session' => $user_session, 'roles'=>$roles]);
     }
 
     /**
@@ -74,9 +77,13 @@ class UserController extends Controller
         if($current_user['role_id'] == Role::getRoleID('admin')){
             $validated['roles'] = Role::getRoleID('employee');
         }
+        //checken of telefoonnummer wel begint met 06
+        $number = substr($validated['phone_number'], 0, 2);
+        if($number != '06'){
+            return redirect()->back()->with(['message' => ['message' => 'Telefoonnummer moet beginnen met 06', 'type' => 'danger']]);
+        }
         //create random string of 20 for password
         $password = \Illuminate\Support\Str::random(20);
-
         User::create([
             'firstname' => ucfirst($validated['firstname']),
             'middlename' => ($validated['middlename']),
@@ -86,32 +93,10 @@ class UserController extends Controller
             'role_id' => $validated['roles'],
             'phone_number' => $validated['phone_number']
         ]);
-        Mail::send('Auth.user', ['user' => $user], function($message) use($request){
+        Mail::send('Auth.user', ['request' => $request], function($message) use($request){
             $message->to($request->email);
-            $message->subject('Nieuwe Gebruiker JG Planning');
+            $message->subject('Nieuwe gebruiker JG Planning');
         });
-
-//
-//        for ($i = 1; $i < 6; $i++)
-//        {
-//            Rooster::create([
-//                'start_time' => '08:30:00',
-//                'end_time' => '17:00:00',
-//                'comment' => "",
-//                'from_home' => 0,
-//                'weekdays' => $i,
-//                'created_at' => date('Y-m-d h:i:s'),
-//                'updated_at' => null,
-//                'user_id' => $newUser->id,
-//                'start_week' => '1',
-//                'end_week' => '52',
-//                'disabled' => false,
-//                'start_year' => date('Y'),
-//                'end_year' => date('Y'),
-//            ]);
-//        }
-
-//        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'User created successfully', 'type' => 'success']]);
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
     }
 

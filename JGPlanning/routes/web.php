@@ -84,7 +84,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::get('/', [UserController::class,'index'])->name('index');
         Route::get('/show/{user}', [UserController::class,'show'])->name('show');
         Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::get('/store', [UserController::class, 'store'])->name('store');
+        Route::post('/store', [UserController::class, 'store'])->name('store');
         Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
         Route::get('/update/{user}', [UserController::class, 'update'])->name('update');
         Route::get('/destroy/{user}', [UserController::class, 'destroy'])->name('destroy');
