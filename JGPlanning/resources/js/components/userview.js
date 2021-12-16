@@ -366,6 +366,10 @@ $(document).ready(function () {
     $('#go_to_user_edit').on('click', function () {
         window.location = "/admin/users/edit/" + $('#admin_user_id_edit').val();
     });
+    $('#solidify_next_week').on('click', function () {
+        window.location = "/admin/rooster/solidify/" + $('#admin_user_id_edit').val();
+    });
+    // plan_next_week
     $(document).ready(function() {
         $('[data-toggle="toggle"]').change(function(){
             $(this).parents().next('.show').toggle();

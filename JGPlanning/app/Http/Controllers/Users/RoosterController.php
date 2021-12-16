@@ -773,7 +773,7 @@ class RoosterController extends Controller
             }
             if ($checkDisabled->first()->finalized == true)
             {
-                return back()->with(['message' => ['message' => 'Deze dag kan niet meer bewerkt worden.', 'type' => 'danger']]);
+                return back()->with(['message' => ['message' => 'Deze dag is vastgezet en kan niet meer bewerkt worden.', 'type' => 'danger']]);
             }
         }
         foreach ($checkDisabled as $cr)

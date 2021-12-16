@@ -423,4 +423,42 @@ class RoosterAdminController extends Controller
 
         return back();
     }
+
+    public function plan_user_next_week($user)
+    {
+        $date = Carbon::now();
+
+        $user_info = User::all()
+            ->where('id', $user)
+            ->first();
+
+        $disabled_days = DisabledDays::all()
+            ->where('user_id', $user);
+
+        if ($disabled_days->count() == "0")
+        {
+            return back()->with(['message' => ['message' => ''. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' Heeft geen rooster aanpassingen om vast te zetten.', 'type' => 'danger']]);
+        }
+
+        foreach ($disabled_days as $dis)
+        {
+            $date_start = $date
+                ->setISODate($dis->start_year, $dis->start_week)
+                ->addDays($dis->weekday - 1);
+            if (Carbon::parse(date('Y-m-d'))->weekOfYear + 1 == $date_start->weekOfYear)
+            {
+                if ($dis->finalized)
+                {
+                    return back()->with(['message' => ['message' => 'Volgende week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .'  is al vastgezet.', 'type' => 'danger']]);
+                }
+                else
+                {
+                    $dis->by_admin = false;
+                    $dis->finalized = true;
+                    $dis->update();
+                }
+            }
+        }
+        return back()->with(['message' => ['message' => 'Volgende week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' vastgezet.', 'type' => 'success']]);
+    }
 }

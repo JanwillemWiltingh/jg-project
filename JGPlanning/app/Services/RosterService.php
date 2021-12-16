@@ -119,18 +119,36 @@ class RosterService
                                 }
                                 else
                                 {
-                                    $events[$i] = Calendar::event(
-                                        'Dag Uitgezet',
-                                        true,
-                                        $da->format('Y-m-d'),
-                                        $da->format('Y-m-d'). '- 1 day',
-                                        null,
-                                        [
-                                            'color' => 'lightgray',
-                                            'textColor' => 'black',
-                                            'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$dis->id .'/'
-                                        ]
-                                    );
+                                    if ($dis->finalized)
+                                    {
+                                        $events[$i] = Calendar::event(
+                                            'Dag vastgezet',
+                                            true,
+                                            $da->format('Y-m-d'),
+                                            $da->format('Y-m-d'). '- 1 day',
+                                            null,
+                                            [
+                                                'color' => 'lightgray',
+                                                'textColor' => 'black',
+                                                'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$dis->id .'/'
+                                            ]
+                                        );
+                                    }
+                                    else
+                                    {
+                                        $events[$i] = Calendar::event(
+                                            'Dag uitgezet',
+                                            true,
+                                            $da->format('Y-m-d'),
+                                            $da->format('Y-m-d'). '- 1 day',
+                                            null,
+                                            [
+                                                'color' => 'lightgray',
+                                                'textColor' => 'black',
+                                                'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'.$dis->id .'/'
+                                            ]
+                                        );
+                                    }
                                 }
                             }
                         }
