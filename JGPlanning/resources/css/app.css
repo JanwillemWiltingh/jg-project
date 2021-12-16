@@ -726,7 +726,9 @@ table.dataTable td.focus {
     background-color: var(--pagination-color);
     color: white;
 }
-
+.sidebar .nav li a, .sidebar .nav li .dropdown-menu a {
+    text-transform: none !important;
+}
 /*Datatables inputs*/
 
 .dataTables_length select,
@@ -760,7 +762,31 @@ table.dataTable td.focus {
 .fc-day-grid-event {
     padding: 12px 6px !important;
 }
+.labels tr td {
+    font-weight: bold;
+    color: #fff;
+}
 
+.label tr td label {
+    display: block;
+}
+
+
+[data-toggle="toggle"] {
+    display: none;
+}
+/*.dashboard-welkom a*/
+/*{*/
+/*    display: inline;*/
+/*    position: absolute;*/
+/*    background: -webkit-linear-gradient(#1A6686, #1C88A4);*/
+/*    -webkit-background-clip: text;*/
+/*    -webkit-text-fill-color: transparent;*/
+/*    font-size: 45px;*/
+/*    font-weight: bolder;*/
+/*    font-style: italic;*/
+/*    bottom: 10px;*/
+/*}*/
 .btn  {
     text-transform: none !important;
 }
