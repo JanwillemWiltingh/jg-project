@@ -37,7 +37,7 @@
 
     </head>
     <body>
-    <div class="wrapper @if($browser->isMobile()) nav-container @endif">
+    <div class="wrapper @if($browser->isMobile()) nav-container @endif"  style="text-decoration: none !important;">
             <div class="sidebar @if($browser->isMobile())nav-bar-open @endif"
                  data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
                 <!--
