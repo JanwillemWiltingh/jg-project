@@ -79,7 +79,7 @@
                                         color: black !important;
                                         float: right;
                                         right: 28px;
-                                        bottom: 44px;
+                                        margin-bottom: 23px;
                                         background: lightgray !important;
                                         border-color: lightgray !important;
                                     " id="maand">
@@ -89,8 +89,10 @@
                                         color: white !important;
                                         float: right;
                                         right: 28px;
-                                        bottom: 44px;
+                                        margin-bottom: 23px;
                                     ">Week</button>
+
+                            <br>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">

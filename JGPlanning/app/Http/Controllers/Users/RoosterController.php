@@ -652,6 +652,7 @@ class RoosterController extends Controller
             'start_week' => ['required'],
             'end_week' => ['required']
         ]);
+
         $start_year = substr($validated['start_week'],'0', '-4');
 
         $end_year  = substr($validated['end_week'],'0', '-4');
@@ -665,6 +666,8 @@ class RoosterController extends Controller
         $checkDisabled = DisabledDays::all()
             ->where('weekday', DisabledDays::all()->where('id', $validated['id'])->first()->weekday)
             ->where('user_id', Auth::id());
+
+
         if (DisabledDays::all()->where('id', $validated['id'])->first()->weekday == 1)
         {
             $final_date_start = $date
@@ -727,6 +730,19 @@ class RoosterController extends Controller
         }
 
         $update = DisabledDays::find($validated['id']);
+
+
+        if ($update->first())
+        {
+            if ($update->first()->by_admin == true)
+            {
+                return back()->with(['message' => ['message' => 'Deze dag is door een admin uitgezet en kan dus niet door u aangepast worden.', 'type' => 'danger']]);
+            }
+            if ($update->first()->finalized == true)
+            {
+                return back()->with(['message' => ['message' => 'Deze dag kan niet meer bewerkt worden.', 'type' => 'danger']]);
+            }
+        }
         $update->update([
             'start_week' => $start_week,
             'end_week' => $end_week,
@@ -754,6 +770,10 @@ class RoosterController extends Controller
             if ($checkDisabled->first()->by_admin == true)
             {
                 return back()->with(['message' => ['message' => 'Deze dag is door een admin uitgezet en kan dus niet door u aangepast worden.', 'type' => 'danger']]);
+            }
+            if ($checkDisabled->first()->finalized == true)
+            {
+                return back()->with(['message' => ['message' => 'Deze dag kan niet meer bewerkt worden.', 'type' => 'danger']]);
             }
         }
         foreach ($checkDisabled as $cr)

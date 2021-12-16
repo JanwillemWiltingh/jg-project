@@ -19789,6 +19789,7 @@ table.dataTable td.focus {
     font-weight: bolder;
     border-bottom: 5px solid var(--jg-orange);
     left: -105px !important;
+    top: -65px;
 }
 
 .fc-day-grid-event {
