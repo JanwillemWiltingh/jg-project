@@ -5648,15 +5648,26 @@ $(document).ready(function () {
     i = 0;
     clearInterval(timeOut);
   });
+  $('#switch_box').prop('checked', false);
 
   var _loop3 = function _loop3(_i4) {
     $('#edit_rooster_modal' + _i4).on('click', function () {
-      console.log($('#start_rooster' + _i4).val());
       $('[name="start_time"]').val($('#start_time_user_rooster' + _i4).val());
-      $('#time_picker_av_end').val($('#end_time_user_rooster' + _i4).val());
+      $('[name="end_time"]').val($('#end_time_user_rooster' + _i4).val());
       $('#start_date').val($('#start_rooster' + _i4).val());
       $('#end_date').val($('#end_rooster' + _i4).val());
       $('#comment_edit').val($('#comment' + _i4).val());
+      var checked_edit = false;
+
+      if ($('#from_home' + _i4).val() === "0") {
+        checked_edit = true;
+      }
+
+      if (!checked_edit) {
+        $('#switch_box').prop('checked', true);
+      } else {
+        $('#switch_box').prop('checked', false);
+      }
     });
   };
 
@@ -5720,6 +5731,10 @@ $(document).ready(function () {
   $('#go_to_user_edit').on('click', function () {
     window.location = "/admin/users/edit/" + $('#admin_user_id_edit').val();
   });
+  $('#solidify_next_week').on('click', function () {
+    window.location = "/admin/rooster/solidify/" + $('#admin_user_id_edit').val();
+  }); // plan_next_week
+
   $(document).ready(function () {
     $('[data-toggle="toggle"]').change(function () {
       $(this).parents().next('.show').toggle();

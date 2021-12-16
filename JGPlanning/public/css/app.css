@@ -7662,7 +7662,6 @@ button.bg-dark:focus {
 }
 
 .position-sticky {
-  position: -webkit-sticky !important;
   position: sticky !important;
 }
 
@@ -7682,9 +7681,8 @@ button.bg-dark:focus {
   z-index: 1030;
 }
 
-@supports ((position: -webkit-sticky) or (position: sticky)) {
+@supports (position: sticky) {
   .sticky-top {
-    position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -15534,7 +15532,6 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   color: #3C4858;
   padding-left: 10px;
   padding-right: 10px;
-  text-transform: capitalize;
   font-size: 13px;
   padding: 10px 15px;
 }
@@ -19800,6 +19797,7 @@ table.dataTable td.focus {
     font-weight: bolder;
     border-bottom: 5px solid var(--jg-orange);
     left: -105px !important;
+    top: -65px;
 }
 
 .fc-day-grid-event {
@@ -19830,4 +19828,11 @@ table.dataTable td.focus {
 /*    font-style: italic;*/
 /*    bottom: 10px;*/
 /*}*/
+.btn  {
+    text-transform: none !important;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
 

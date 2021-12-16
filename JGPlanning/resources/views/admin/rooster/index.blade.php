@@ -33,6 +33,12 @@
                 <div class="card">
                     <div class="card-header" id="calender_hide">
                         <div class="card-body">
+                            <button class="btn jg-color-1" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            ">maand</button>
                             <button class="btn jg-color-1 " style="
                                 color: black !important;
                                 float: right;
@@ -43,12 +49,6 @@
                             " id="week_rooster">
                                 Week
                             </button>
-                            <button class="btn jg-color-1" style="
-                                color: white !important;
-                                float: right;
-                                top: 60px;
-                                right: 28px;
-                            ">maand</button>
                             @include('calender')
                         </div>
                     </div>
@@ -72,28 +72,22 @@
                                         {{request('year')}}
                                     </a>
                                 </div>
-                                <p style="
-                                        text-align: center;
-                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);
-                                        -webkit-background-clip: text;
-                                        -webkit-text-fill-color: transparent;
-                                        font-size: 45px;
-                                        font-weight: bolder;
-                                        font-style: italic;
-                                        margin-top: -40px;
-                                    ">
-                                    <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">
-                                        <i class="fa fa-pencil-alt"></i>
-                                        Dagen beheren
-                                    </a>
-                                </p>
+{{--                                <p style="--}}
+{{--                                        text-align: center;--}}
+{{--                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);--}}
+{{--                                        -webkit-background-clip: text;--}}
+{{--                                        -webkit-text-fill-color: transparent;--}}
+{{--                                        font-size: 45px;--}}
+{{--                                        font-weight: bolder;--}}
+{{--                                        font-style: italic;--}}
+{{--                                        margin-top: -40px;--}}
+{{--                                    ">--}}
+{{--                                    <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">--}}
+{{--                                        <i class="fa fa-pencil-alt"></i>--}}
+{{--                                        Dagen beheren--}}
+{{--                                    </a>--}}
+{{--                                </p>--}}
 
-                                <button class="btn jg-color-1" style="
-                                        color: white !important;
-                                        float: right;
-                                        right: 28px;
-                                        bottom: 44px;
-                                    ">Week</button>
                                 <button class="btn jg-color-1" style="
                                         color: black !important;
                                         float: right;
@@ -104,6 +98,12 @@
                                     " id="maand">
                                     Maand
                                 </button>
+                                <button class="btn jg-color-1" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        bottom: 44px;
+                                    ">Week</button>
                                 <form id="week_form">
                                     <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                     <input type="hidden" value="{{request('year')}}" id="hidden_year">

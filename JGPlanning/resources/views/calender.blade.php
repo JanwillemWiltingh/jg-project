@@ -24,6 +24,14 @@
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-body">
+                <div>
+                    <div style="width: 15px; height: 15px; background-color: #1C88A4; display: inline-block;"></div>
+                    <div  style="display: inline-block"> = dag kan bewerkt worden</div>
+                </div>
+                <div>
+                    <div style="width: 15px; height: 15px; background-color: #CB6827; display: inline-block;"></div>
+                    <div  style="display: inline-block"> = dag kan niet bewerkt worden</div>
+                </div>
                 {!! $roster->calendar() !!}
             </div>
         </div>
