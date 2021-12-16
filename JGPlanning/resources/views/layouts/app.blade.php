@@ -41,6 +41,11 @@
 
     </head>
     <body>
+    <style>
+        * {
+            text-decoration: none !important;
+        }
+    </style>
     <div class="wrapper @if($browser->isMobile()) nav-container @endif">
             <div class="sidebar @if($browser->isMobile())nav-bar-open @endif"
                  data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
@@ -52,7 +57,7 @@
                 <div class="logo"><a class="simple-text logo-normal" href="{{route('dashboard.home')}}" style="text-decoration: none;">
                         <img style="margin-top: -20px; margin-bottom: -20px;" src="{{asset('storage/img/JG planning logo.png')}}" alt="JG planning">
                     </a></div>
-                <div class="sidebar-wrapper" style="@if($browser->isMobile()) height: 80% @endif">
+                <div class="sidebar-wrapper" style="@if($browser->isMobile()) height: 80% ; @endif">
                     <ul class="nav">
                         <li class="nav-item active {{ (request()->is('/')) ? 'nav-color-active' : '' }}">
                             <a class="nav-link nav-color" href="{{route('dashboard.home')}}" >

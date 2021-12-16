@@ -760,9 +760,10 @@ table.dataTable td.focus {
     padding: 12px 6px !important;
 }
 
-.btn {
+.btn  {
     text-transform: capitalize !important;
 }
+
 input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
 }
