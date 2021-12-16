@@ -350,4 +350,9 @@ $(document).ready(function () {
     $('#go_to_user_edit').on('click', function () {
         window.location = "/admin/users/edit/" + $('#admin_user_id_edit').val();
     });
+    $(document).ready(function() {
+        $('[data-toggle="toggle"]').change(function(){
+            $(this).parents().next('.show').toggle();
+        });
+    });
 });
