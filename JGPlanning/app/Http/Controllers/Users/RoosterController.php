@@ -59,8 +59,9 @@ class RoosterController extends Controller
                 }
             }
         }
+
         if ($checkRooster->count() == 0) {
-            for ($x = 0; $x < 1; $x++)
+            for ($x = 0; $x < 2; $x++)
             {
                 for ($a = 1; $a <= 52; $a++)
                 {
@@ -771,6 +772,7 @@ class RoosterController extends Controller
         $checkDisabled = DisabledDays::all()
             ->where('id', $user)
             ->where('weekday', $day);
+
         $checkRooster = Rooster::all()
             ->where('user_id', $user)
             ->where('weekdays', $day)
