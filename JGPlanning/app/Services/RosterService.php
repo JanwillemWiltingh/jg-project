@@ -15,21 +15,26 @@ class RosterService
 {
     public function generateRosterData($user_id)
     {
-//      Gets the current date and creates a array for all the variables to go into.
+//      Gets the current date and creates a array for all the events to go into.
         $date = Carbon::now();
         $events = [];
+
+//      Get all weekdays
+        $weekdays = Availability::WEEK_DAYS_MOB;
 
 //      Database data.
         $data = Rooster::all()
             ->where('user_id', $user_id);
         $disdays = DisabledDays::all()
             ->where('user_id', $user_id);
+
 //      Gets every day from this year
-        $period = CarbonPeriod::create(Carbon::parse(date('Y-m-d'))->startOfYear(), Carbon::parse(date('Y-m-d'))->endOfYear());
+        $days_of_year = CarbonPeriod::create(Carbon::parse(date('Y-m-d'))->startOfYear(), Carbon::parse(date('Y-m-d'))->endOfYear());
 
-//      Convert the period to an array of dates
-        $dates = $period->toArray();
+//      Convert it all to an array of dates
+        $dates = $days_of_year->toArray();
 
+//      And here's the mess I call 'code'
         foreach ($dates as $da)
         {
             foreach ($data as $d)
@@ -159,7 +164,7 @@ class RosterService
                                     if ($dis->finalized)
                                     {
                                         $events[$i] = Calendar::event(
-                                            'Dag vastgezet',
+                                            'Dag uitgezet en vastgezet',
                                             true,
                                             $da->format('Y-m-d'),
                                             $da->format('Y-m-d'). '- 1 day',

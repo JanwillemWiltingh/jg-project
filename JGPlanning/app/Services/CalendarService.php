@@ -131,6 +131,7 @@ class CalendarService
                                 'by_admin'     => $disabled_days->where('id', $disID)->first()->by_admin,
                                 'disabled_id'  => $disID,
                                 'id'           => $lesID,
+                                'solidified'   => false,
                             ]);
                         }
                     }
@@ -147,7 +148,8 @@ class CalendarService
                         'comment' => $lesson['comment'],
                         'start_time' => $start,
                         'end_time' => $end,
-                        'id' => $lesson['id']
+                        'id' => $lesson['id'],
+                        'solidified' => $lesson['finalized']
                     ]);
                 }
 

@@ -392,7 +392,25 @@ class RoosterAdminController extends Controller
     public function plan_next_year()
     {
         $rooster = Rooster::all();
+        $disabled_days = DisabledDays::all();
+
         $user = User::all();
+        foreach ($rooster as $r)
+        {
+            if (Carbon::parse($r->end_year)->isPast())
+            {
+                $r->delete();
+            }
+        }
+
+        foreach ($disabled_days as $dis)
+        {
+            if (Carbon::parse($dis->end_year)->isPast())
+            {
+                $dis->delete();
+            }
+        }
+
         foreach ($user as $u)
         {
             for ($x = 1; $x <= 2; $x++)

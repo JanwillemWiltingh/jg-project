@@ -38,7 +38,7 @@
                                 float: right;
                                 top: 60px;
                                 right: 28px;
-                            ">maand</button>
+                            ">Maand</button>
                             <button class="btn jg-color-1 " style="
                                 color: black !important;
                                 float: right;
