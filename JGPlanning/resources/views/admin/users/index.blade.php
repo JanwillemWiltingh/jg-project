@@ -119,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-bottom: -35px !important;">
+                    <div class="row">
                         @if($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && empty($user['deleted_at']))
                             <strong>
                                 <button id="go_to_user_edit" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip" title="Gebruiker Aanpassen">Bewerk gebruiker</button>
