@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class HashUserDataAfterTwoWeeks extends Command
 {
@@ -42,7 +43,6 @@ class HashUserDataAfterTwoWeeks extends Command
      */
     public function handle()
     {
-
         $users = User::all()->where('deleted_at', '!=', null);
         foreach ($users as $user){
             $now = Carbon::now();
@@ -52,12 +52,15 @@ class HashUserDataAfterTwoWeeks extends Command
             $days = $interval->format('%a');
 
             if($days >= 14){
-//                Hash::make($user->firstname);
-//                Hash::make($user->middlename);
-//                Hash::make($user->lastname);
-//                Hash::make($user->email);
-//                Hash::make($user->phone_number);
-//                Hash::make($user->firstname);
+                //hash everything except name and email
+                $phone_number = Str::random(10);
+                $middlename = Str::random(15);
+                $lastname = Str::random(15);
+                $user->update([
+                    'middlename' => $middlename,
+                    'lastname' => $lastname,
+                    'phone_number' => $phone_number
+                ]);
             }
 
         }

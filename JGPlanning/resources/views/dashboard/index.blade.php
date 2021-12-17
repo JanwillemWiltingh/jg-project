@@ -291,22 +291,29 @@
             </div>
 
             <div class="crud-table">
-
-
-
                 <br>
                 <table class="table table-hover" id="user_crud">
                     <thead>
                     <tr>
-                        <th scope="col"><strong>Voornaam</strong></th>
+                        <th scope="col"><strong>Naam</strong></th>
                         <th scope="col"><strong>Werktijden</strong></th>
                         <th scope="col"><strong>Ingeklokt om</strong></th>
+                        <th scope="col"><strong>Uitgeklokt om</strong></th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($users as $user)
                         @if($user->getRoosterFromToday() != null)
-                        <tr class="@if($user->isClockedIn()) table-success @elseif($user->isClockedIn() == false && Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') < $now->format('H:i') ) table-danger @endif">
+                        <tr class="
+                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i'))
+                                table-danger
+                            @elseif($user->isClockedIn() == false && Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') < Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') )
+                                table-danger
+                            @elseif($user->isClockedIn() == false && empty($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time))
+                                table-danger
+                            @else
+                                table-success
+                            @endif">
                             <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['firstname']}}</td>
                             <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
                                     @if(Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') != null)
@@ -316,6 +323,13 @@
                             <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
                                 @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
                                     {{$clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time}}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
+                                @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
+                                    {{$clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time}}
                                 @else
                                     -
                                 @endif
