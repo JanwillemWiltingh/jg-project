@@ -771,6 +771,19 @@ class RoosterController extends Controller
         $checkDisabled = DisabledDays::all()
             ->where('id', $user)
             ->where('weekday', $day);
+        $checkRooster = Rooster::all()
+            ->where('id', $user)
+            ->where('weekday', $day)
+            ->where('start_week', $week)
+            ->where('start_year', $year);
+
+        if ($checkRooster->first())
+        {
+            if ($checkRooster->first()->finalized == true)
+            {
+                return back()->with(['message' => ['message' => 'Deze dag is vastgezet en kan niet meer bewerkt worden.', 'type' => 'danger']]);
+            }
+        }
 
         if ($checkDisabled->first())
         {
@@ -783,6 +796,8 @@ class RoosterController extends Controller
                 return back()->with(['message' => ['message' => 'Deze dag is vastgezet en kan niet meer bewerkt worden.', 'type' => 'danger']]);
             }
         }
+
+
         foreach ($checkDisabled as $cr)
         {
             $date_dis_start = $date
