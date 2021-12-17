@@ -12,13 +12,13 @@
         @endif
                 ">
                 <h1>Welkom </h1>
-                <a>{{$user['firstname']}} <i class="fa-solid fa-rocket"></i></a>
+                <a>{{$user_session['firstname']}} <i class="fa-solid fa-rocket"></i></a>
             </div>
         </div>
     </div>
 
     <div @if($browser->isMobile())style="width: 105% !important;" @else class="row"@endif>
-        @if($user['role_id'] == \App\Models\Role::getRoleID('employee'))
+        @if($user_session['role_id'] == \App\Models\Role::getRoleID('employee'))
         @if(!$browser->isMobile())
             <div class=" col-4">
                 <div class="card">
@@ -34,24 +34,9 @@
                                 <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-hours">{{ sprintf('%.2f', $user->WorkedInAMonthInHours($now->month, 2)) }}</h1>
+                                <h1 class="dashboard-hours">{{ sprintf('%.2f', $user_session->WorkedInAMonthInHours($now->month, 2)) }}</h1>
                             </div>
                         </div>
-
-{{--                        <hr>--}}
-
-{{--                        <div class="media align-items-stretch">--}}
-{{--                            <div class="align-self-center">--}}
-{{--                                <i class="far fa-calendar fa-4x"></i>--}}
-{{--                            </div>--}}
-{{--                            <div class="media-body pl-3">--}}
-{{--                                <h4 class="dashboard-title-hours">Rooster uren</h4>--}}
-{{--                                <span class="dashboard-title-hours">{{ $now->format('F') }} {{ $now->format('Y') }}</span>--}}
-{{--                            </div>--}}
-{{--                            <div class="align-self-center">--}}
-{{--                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAMonthInHours($now->year, $now->month) }}</h1>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -71,24 +56,9 @@
                                 <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user->workedInAWeekInHours($now->weekOfYear, 2)) }}</h1>
+                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInAWeekInHours($now->weekOfYear, 2)) }}</h1>
                             </div>
                         </div>
-
-{{--                        <hr>--}}
-
-{{--                        <div class="media align-items-stretch">--}}
-{{--                            <div class="align-self-center">--}}
-{{--                                <i class="far fa-calendar fa-4x"></i>--}}
-{{--                            </div>--}}
-{{--                            <div class="media-body pl-3">--}}
-{{--                                <h4 class="dashboard-title-hours">Rooster uren</h4>--}}
-{{--                                <span class="dashboard-title-hours">Week {{ $now->weekOfYear }}, {{ $now->format('Y') }}</span>--}}
-{{--                            </div>--}}
-{{--                            <div class="align-self-center">--}}
-{{--                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkAWeekInHours($now->year, $now->weekOfYear) }}</h1>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -108,24 +78,9 @@
                                 <span class="dashboard-title-hours">{{ $now->format('j F, Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>
+                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>
                             </div>
                         </div>
-
-{{--                        <hr>--}}
-
-{{--                        <div class="media align-items-stretch">--}}
-{{--                            <div class="align-self-center">--}}
-{{--                                <i class="far fa-calendar fa-4x"></i>--}}
-{{--                            </div>--}}
-{{--                            <div class="media-body pl-3">--}}
-{{--                                <h4 class="dashboard-title-hours">Rooster uren</h4>--}}
-{{--                                <span class="dashboard-title-hours">{{ $now->format('d F Y') }}</span>--}}
-{{--                            </div>--}}
-{{--                            <div class="align-self-center">--}}
-{{--                                <h1 class="dashboard-title-hours">{{ $user->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek) }}</h1>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -175,7 +130,7 @@
                                 </div>
                                 <div class="media-body pl-3">
                                     <h4>Vandaag</h4>
-                                    @if($user->getRoosterFromToday() != null)
+                                    @if($user_session->getRoosterFromToday() != null)
                                         <span>{{ $now->format('d F Y') }}</span>
                                     @else
                                         <span>Geen rooster voor vandaag</span>
@@ -183,8 +138,8 @@
                                 </div>
                                 <div class="align-self-center">
                                     <h1>
-                                        @if($user->getRoosterFromToday() != null)
-                                            {{ Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') }}
+                                        @if($user_session->getRoosterFromToday() != null)
+                                            {{ Carbon\Carbon::parse($user_session->getRoosterFromToday()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user_session->getRoosterFromToday()['end_time'])->format('H:i') }}
                                         @endif
                                     </h1>
                                 </div>
@@ -205,17 +160,17 @@
                                     <h4>Volgende werkdag</h4>
 {{--                                    <h4>@if($user->getNextRooster() == null) @else {{ App\Models\Availability::WEEK_DAYS[$user->getNextRooster()['weekdays']] }} @endif</h4>--}}
 
-                                    @if($user->getNextRooster() == null)
+                                    @if($user_session->getNextRooster() == null)
                                         <span>Geen nieuw aankomend rooster</span>
                                     @else
                                         <span>{{ $now->addDay(1)->format('d F Y') }}</span>
                                     @endif
                                 </div>
                                 <div class="align-self-center">
-                                    @if($user->getNextRooster() == null)
+                                    @if($user_session->getNextRooster() == null)
                                         <h1></h1>
                                     @else
-                                        <h1>{{ Carbon\Carbon::parse($user->getNextRooster()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getNextRooster()['end_time'])->format('H:i') }}</h1>
+                                        <h1>{{ Carbon\Carbon::parse($user_session->getNextRooster()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user_session->getNextRooster()['end_time'])->format('H:i') }}</h1>
                                     @endif
                                 </div>
                             </div>
@@ -226,38 +181,166 @@
         </div>
         @endif
         @endif
+        @if($user_session['role_id'] == \App\Models\Role::getRoleID('maintainer'))
         {{-- Admin dashboard --}}
-        <hr>
-        <div class="media align-items-stretch" >
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-hover table-striped" style="box-shadow: 0 0 5px 0 lightgrey;">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Naam</th>
-                                    <th scope="col">Ingeklokt om</th>
-                                    <th scope="col">Aanwezig</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($users as $user)
-                                    <tr>
-                                        <td>{{$user['firstname']}} @if(!empty($user['middlename'])) {{$user['middlename']}}@endif {{$user['lastname']}}</td>
-                                        <td class="uren" style="width: 22.5%"></td>
-                                        @if($user->isClockedIn())
-                                            <td>Ja</td>
-                                        @else
-                                            <td>Nee</td>
-                                        @endif
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+            <script>
+                function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id, roles)
+                {
+                    document.getElementById('firstname').value = firstname;
+                    document.getElementById('middlename').value = middlename;
+                    document.getElementById('lastname').value = lastname;
+                    document.getElementById('email').value = email;
+                    document.getElementById('admin_user_id_edit').value = id;
+
+                    if (roles === "3")
+                    {
+                        document.getElementById('solidify_next_week').style.display = "block";
+                    }
+                    else
+                    {
+                        document.getElementById('solidify_next_week').style.display = "none";
+                    }
+
+                    if(phone_number)
+                    {
+                        document.getElementById('phone_number').value = phone_number;
+                    }
+                    else
+                    {
+                        document.getElementById('phone_number').value = "-";
+                    }
+
+                    if(updated_at)
+                    {
+                        document.getElementById('updated_at').value = updated_at;
+                    }
+                    else
+                    {
+                        document.getElementById('updated_at').value = "-";
+                    }
+                    document.getElementById('created_at').value = created_at;
+
+                    if(deleted_at)
+                    {
+                        document.getElementById('deleted_at').value = deleted_at;
+                    }
+                    else
+                    {
+                        document.getElementById('deleted_at').value = "-";
+                    }
+                }
+                function getRoles(roles){
+                    document.getElementById('roles').value = roles;
+                }
+            </script>
+            <div class="modal fade" id="showUserInfo" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true" style="margin-top: 5.5%">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Gebruiker informatie</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    {{-- Firstname --}}
+                                    <div class="form-group">
+                                        <label class="black-label-text" for="firstname">Voornaam</label>
+                                        <input type="text" class="form-control" id="firstname" value="@if(empty($user['firstname']))NULL @else{{$user['firstname']}} @endif" aria-describedby="voornaam" placeholder="Voornaam" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    {{-- Middlename --}}
+                                    <div class="form-group">
+                                        <label class="black-label-text" for="middlename">Tussenvoegsel</label>
+                                        <input type="text" class="form-control" id="middlename" value="@if(empty($user['middlename']))NULL @else{{$user['middlename']}} @endif" aria-describedby="middlename" placeholder="Tussenvoegsel" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    {{-- Lastname --}}
+                                    <div class="form-group">
+                                        <label class="black-label-text" for="lastname">Achternaam</label>
+                                        <input type="text" class="form-control" id="lastname" value="@if(empty($user['lastname']))NULL @else{{$user['lastname']}} @endif" aria-describedby="lastname" placeholder="Achternaam" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Email --}}
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="black-label-text" for="email">E-mail</label>
+                                    <input type="email" class="form-control" id="email" value="@if(empty($user['email']))NULL @else{{$user['email']}} @endif" aria-describedby="email" placeholder="E-mail" disabled>
+                                </div>
+                            </div>
+                            {{-- Telefoonnummer --}}
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="black-label-text" for="phone_number">Telefoonnummer</label>
+                                    <input type="text" class="form-control" id="phone_number" value="@if(empty($user['phone_number']))NULL @else{{$user['phone_number']}} @endif" aria-describedby="phone_number" placeholder="Telefoonnummer" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <strong>
+                                    <button id="solidify_next_week" style="float: right !important;" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip" title="Gebruiker Aanpassen">Zet rooster vast</button>
+                                </strong>
+                            </div>
+                            <input type="hidden" id="admin_user_id_edit">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="crud-table">
+                <br>
+                <table class="table table-hover" id="user_crud">
+                    <thead>
+                    <tr>
+                        <th scope="col"><strong>Naam</strong></th>
+                        <th scope="col"><strong>Werktijden</strong></th>
+                        <th scope="col"><strong>Ingeklokt om</strong></th>
+                        <th scope="col"><strong>Uitgeklokt om</strong></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($users as $user)
+                        @if($user->getRoosterFromToday() != null)
+                        <tr class="
+                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i'))
+                                table-danger
+                            @elseif($user->isClockedIn() == false && Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') < Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') )
+                                table-danger
+                            @elseif($user->isClockedIn() == false && empty($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time))
+                                table-danger
+                            @else
+                                table-success
+                            @endif">
+                            <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['firstname']}}</td>
+                            <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
+                                    @if(Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') != null)
+                                        {{ Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i') }} - {{ Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') }}
+                                @endif
+                            </td>
+                            <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
+                                @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
+                                    {{$clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time}}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
+                                @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
+                                    {{$clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time}}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                        @endif
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
     </div>
 <a style="color: white; cursor: pointer" id="changeFont" target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">.</a>
 
