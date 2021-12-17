@@ -59,8 +59,9 @@ class RoosterController extends Controller
                 }
             }
         }
+
         if ($checkRooster->count() == 0) {
-            for ($x = 0; $x < 1; $x++)
+            for ($x = 0; $x < 2; $x++)
             {
                 for ($a = 1; $a <= 52; $a++)
                 {
@@ -772,6 +773,19 @@ class RoosterController extends Controller
             ->where('id', $user)
             ->where('weekday', $day);
 
+        $checkRooster = Rooster::all()
+            ->where('user_id', $user)
+            ->where('weekdays', $day)
+            ->where('start_week', $week)
+            ->where('start_year', $year);
+        if ($checkRooster->first())
+        {
+            if ($checkRooster->first()->finalized == true)
+            {
+                return back()->with(['message' => ['message' => 'Deze dag is vastgezet en kan niet meer bewerkt worden.', 'type' => 'danger']]);
+            }
+        }
+
         if ($checkDisabled->first())
         {
             if ($checkDisabled->first()->by_admin == true)
@@ -783,6 +797,8 @@ class RoosterController extends Controller
                 return back()->with(['message' => ['message' => 'Deze dag is vastgezet en kan niet meer bewerkt worden.', 'type' => 'danger']]);
             }
         }
+
+
         foreach ($checkDisabled as $cr)
         {
             $date_dis_start = $date
