@@ -23,6 +23,12 @@
     margin: 15px;
     font-size: 115px;
 }
+.login-jg-logo{
+    height: 100px;
+    margin-bottom: 3%;
+    margin-top: 2%;
+    margin-right:35%;
+}
 
 .login-button {
     width: 100%;
