@@ -317,7 +317,7 @@
                                 @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
                                     {{$clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time}}
                                 @else
-                                    {{$now->format('H:i:s')}}
+                                    -
                                 @endif
                             </td>
                         </tr>
