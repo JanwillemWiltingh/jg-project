@@ -100,7 +100,7 @@
                     {{-- Last updated --}}
                     <div class="row">
                         <div class="form-group">
-                            <label class="black-label-text" for="updated_at">Laatst Bijgewerkt</label>
+                            <label class="black-label-text" for="updated_at">Laatst bijgewerkt</label>
                             <input type="text" class="form-control" id="updated_at" value="@if(empty($user['updated_at'])) - @else{{$user['updated_at']}} @endif" aria-describedby="updated_at" placeholder="Laatst Bijgewerkt" disabled>
                         </div>
                     </div>
@@ -108,13 +108,13 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="black-label-text" for="created_at">Gebruiker Gecreëerd</label>
+                                <label class="black-label-text" for="created_at">Gebruiker gecreëerd</label>
                                 <input type="text" class="form-control" id="created_at" value="@if(empty($user['created_at'])) - @else{{$user['created_at']}} @endif" aria-describedby="created_at" placeholder="Gebruiker Gecreëerd" disabled>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="black-label-text" for="deleted_at">Gebruiker Verwijderd</label>
+                                <label class="black-label-text" for="deleted_at">Gebruiker verwijderd</label>
                                 <input type="text" class="form-control" id="deleted_at" value="@if(empty($user['deleted_at'])) - @else{{$user['deleted_at']}} @endif" aria-describedby="updated_at" placeholder="Gebruiker Verwijderd" disabled>
                             </div>
                         </div>
@@ -236,9 +236,7 @@
     <table class="table table-hover" id="user_crud">
         <thead>
         <tr>
-            <th scope="col"><strong>Voornaam</strong></th>
-            <th scope="col"><strong>Tussenvoegsel</strong></th>
-            <th scope="col"><strong>Achternaam</strong></th>
+            <th scope="col"><strong>Naam</strong></th>
             <th scope="col"><strong>Telefoonnummer</strong></th>
             <th scope="col"><strong>Actief</strong></th>
             <th scope="col"></th>
@@ -247,9 +245,7 @@
         <tbody>
         @foreach($users as $user)
             <tr class="{{ $user->isCurrentUser() }}">
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['firstname']}}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{ $user['middlename'] ?? '' }}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['lastname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['firstname']}} {{$user['middlename']}} {{$user['lastname']}}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['phone_number']}}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}', '{{$user['id']}}','{{$user['role_id']}}')">
                     @if(empty($user['deleted_at']))
@@ -304,21 +300,19 @@
     <hr>
 {{--  disabled user table  --}}
     <div class="fadeInDown crud-table">
-        <text class="crud-user-form-title icon-color">Uitgezette gebruikers</text><br>
+        <text class="crud-user-form-title icon-color">Gedeactiveerde gebruikers</text><br>
         <table class="table table-hover" id="user_crud">
         <tbody class="labels">
             <tr>
                 <td colspan="6">
-                    <label for="deleted_users" style="font-size: 15px;">Klik hier om uitgezette gebruikers te laten zien of verbergen</label>
+                    <label for="deleted_users" style="font-size: 15px;">Klik hier om gedeactiveerde gebruikers te laten zien of verbergen</label>
                     <input type="checkbox" name="deleted_users" id="deleted_users" data-toggle="toggle">
                 </td>
             </tr>
         </tbody>
         <tbody class="show">
         <tr>
-            <th scope="col"><strong>Voornaam</strong></th>
-            <th scope="col"><strong>Tussenvoegsel</strong></th>
-            <th scope="col"><strong>Achternaam</strong></th>
+            <th scope="col"><strong>Naam</strong></th>
             <th scope="col"><strong>Telefoonnummer</strong></th>
             <th scope="col"><strong>Actief</strong></th>
             <th scope="col"></th>
@@ -326,9 +320,7 @@
         {{--Loop each user to show in a table--}}
         @foreach($deleted_users as $deleted_user)
             <tr class="{{ $deleted_user->isCurrentUser() }}">
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{$deleted_user['firstname']}}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{ $deleted_user['middlename'] ?? '' }}</td>
-                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{$deleted_user['lastname']}}</td>
+                <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{$deleted_user['firstname']}} {{$deleted_user['middlename']}} {{$deleted_user['lastname']}}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}','{{$deleted_user['id']}}')">{{$deleted_user['phone_number']}}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$deleted_user['firstname']}}', '{{$deleted_user['middlename']}}','{{$deleted_user['lastname']}}', '{{$deleted_user['email']}}','{{$deleted_user['phone_number']}}', '{{$deleted_user['created_at']}}','{{$deleted_user['updated_at']}}', '{{$deleted_user['deleted_at']}}', '{{$deleted_user['id']}}',)">
                     @if(empty($deleted_user['deleted_at']))
@@ -380,7 +372,7 @@
         </tbody>
     </table>
 </div>
-    <br><br><br><br><br><br>
+    <br><br><br>
     <script>
         $('.delete-link').on('click', function () {
             // https://sweetalert.js.org/docs/
