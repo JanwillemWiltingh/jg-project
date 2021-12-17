@@ -2,7 +2,6 @@
 
 @section('content')
 @include('modals')
-
 <div class="content fadeInDown">
     @if($errors->all())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -145,7 +144,7 @@
 
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif  color: white;">
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4;@else background-color:#f0f0f0; @endif @if($days[$i]['solidified'])background: #CB6827 !important; @endif color: white;">
                                                     @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>
@@ -168,6 +167,7 @@
                                                     @else
                                                         Geen opmerking
                                                     @endif
+
                                                     @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         <p style="font-weight: lighter">{{$days[$i]['start_time']}}
                                                         @if(App\Models\Browser::isMobile()) <br> @endif
@@ -175,7 +175,9 @@
                                                         @if(App\Models\Browser::isMobile()) <br> @endif
                                                             {{$days[$i]['end_time']}}</p>
                                                         @if(!App\Models\Browser::isMobile())
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                            @if(!$days[$i]['solidified'])
+                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 </th>

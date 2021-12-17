@@ -772,11 +772,10 @@ class RoosterController extends Controller
             ->where('id', $user)
             ->where('weekday', $day);
         $checkRooster = Rooster::all()
-            ->where('id', $user)
-            ->where('weekday', $day)
+            ->where('user_id', $user)
+            ->where('weekdays', $day)
             ->where('start_week', $week)
             ->where('start_year', $year);
-
         if ($checkRooster->first())
         {
             if ($checkRooster->first()->finalized == true)
