@@ -637,27 +637,58 @@ class User extends Authenticatable
 
     public function getStartTime($date): ?string
     {
+        //  Get all the clocks from this user
         $clocks = $this->clocks()->get();
+
+        //  Check if there are any clocks for this user
         if($clocks->count() > 0) {
+            //  Get all the clocks for the given date
             $date_clock = $clocks->where('date', $date->format('Y-m-d'));
+
+            //  Check if there are any clocks for the given day
             if($date_clock->count() > 0) {
+                //  Get the first clock
                 $first = $date_clock->first();
+
+                //  Return the start time
                 return Carbon::parse($first['start_time'])->format('H:i');
             }
         }
         return null;
     }
 
+    /**
+     * Function for returning the End Time for a given day
+     *
+     * @param $date
+     * @return string|null
+     */
     public function getEndTime($date): ?string
     {
+        //  Take all clocks from this user
         $clocks = $this->clocks()->get();
+
+        //  Check if there are any clocks for this user
         if($clocks->count() > 0) {
+            //  Get all the clocks from the given date
             $date_clock = $clocks->where('date', $date->format('Y-m-d'));
+
+            //  Check if there are any clocks from the given day
             if($date_clock->count() > 0) {
+                //  Get the last clock from the given day
                 $last = $date_clock->last();
-                return Carbon::parse($last['end_time'])->format('H:i');
+
+                if ($last['end_time'] == null) {
+                    //  If there is no end time take the current time
+                    return Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i');
+                } else {
+                    //  Return the end time
+                    return Carbon::parse($last['end_time'])->format('H:i');
+                }
             }
         }
+
+        //  Return null if no clocks are given
         return null;
     }
     public function checkIfRoosterIsSolidified($week): bool
