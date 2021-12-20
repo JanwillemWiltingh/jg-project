@@ -39,11 +39,15 @@ class Clock extends Model
      * @param Request $request
      * @return bool
      */
-    public static function isIPCorrect(Request $request): bool {
-        $ip = $request->ip();
-        $valid_ip = '192.168.1.';
+    public static function isIPCorrect(Request $request, bool $active=true): bool {
+        if ($active) {
+            $ip = $request->ip();
+            $valid_ip = '192.168.1.';
 
-        return str_contains($ip, $valid_ip);
+            return str_contains($ip, $valid_ip);
+        }
+
+        return true;
     }
 
     public function user(): BelongsTo
