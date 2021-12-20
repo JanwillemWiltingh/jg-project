@@ -8,6 +8,11 @@
                     <label style="display: inline-block">
                         <p>Kies een gebruiker waarvan je de rooster wilt bewerken</p>
                     </label>
+                    @if($plan_in)
+                        <form method="POST" action="{{route('admin.rooster.plan_next_year')}}" style="display: inline-block">
+                            <button type="submit" class="btn jg-color-1 mar" style="color: white!important;">Plan volgend jaar in voor elke medewerker</button>
+                        </form>
+                    @endif
                 </div>
                 <table class="data-table-custom" style="" id="admin_availability">
                     <thead>

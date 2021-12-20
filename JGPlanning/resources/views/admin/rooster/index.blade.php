@@ -53,9 +53,9 @@
                             @include('calender')
                             <strong>
                                 @if(!$user_info->checkIfRoosterIsSolidified(\Carbon\Carbon::now()->weekOfYear))
-                                    <button id="solidify_next_week" style="float: right !important; bottom: 65px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Zet rooster vast</button>
+                                    <button id="solidify_next_week" style="float: right !important; bottom: 65px; right: 60px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Zet rooster vast</button>
                                 @else
-                                    <button id="un_solidify_next_week" style="float: right !important; bottom: 65px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Rooster bewereken</button>
+                                    <button id="un_solidify_next_week" style="float: right !important; bottom: 65px; right: 240px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Rooster bewereken</button>
                                 @endif
                             </strong>
 
