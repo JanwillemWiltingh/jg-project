@@ -79,8 +79,6 @@ class DashboardController extends Controller
 
             $user = Auth::user();
             $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
-            $start_time = Carbon::parse('08:30:00');
-            $end_time = Carbon::parse('17:30:00');
 
             //  Round the current time to quarters
             $now = Carbon::now()->addHours(Clock::ADD_HOURS);
@@ -88,7 +86,7 @@ class DashboardController extends Controller
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;
 
-            $time = $time = $now->format('H:i');
+            $time = $now->format('H:i');
             if($rounded_minutes == 60) {
                 $time = (intval($hours) + 1).':00';
             } else {
