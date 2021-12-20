@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 @include('modals')
     <div class="content fadeInDown">
         @if($errors->all())
@@ -10,8 +9,10 @@
                 @foreach ($errors->all() as $error)
                     {{ $error }}
                 @endforeach
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                </button>
+                <div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    </button>
+                </div>
             </div>
         @endif
         <form id="admin-availability" type="GET">
@@ -50,6 +51,15 @@
                                 Week
                             </button>
                             @include('calender')
+                            <strong>
+                                @if(!$user_info->checkIfRoosterIsSolidified(\Carbon\Carbon::now()->weekOfYear))
+                                    <button id="solidify_next_week" style="float: right !important; bottom: 65px; right: 60px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Zet rooster vast</button>
+                                @else
+                                    <button id="un_solidify_next_week" style="float: right !important; bottom: 65px; right: 240px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Rooster bewereken</button>
+                                @endif
+                            </strong>
+
+                            <input type="hidden" id="admin_user_id_edit" value="{{request('user')}}">
                         </div>
                     </div>
                     <div class="card-header" id="rooster" style="display: none">
@@ -131,9 +141,19 @@
                                                     <input type="hidden" value="{{$days[$i]['start_time']}}" id="start_time_user_rooster{{$i + 1}}">
                                                     <input type="hidden" value="{{$days[$i]['end_time']}}" id="end_time_user_rooster{{$i + 1}}">
                                                 @if($availability->where('id', $days[$i]['id'])->first())
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
-                                                    <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
+                                                    <input type="hidden" value="{{$days[$i]['from_home']}}" id="from_home{{$i + 1}}">
+
+                                                    @if(strlen($availability->where('id', $days[$i]['id'])->first()->start_week) == 2)
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
+                                                    @else
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W0{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
+                                                    @endif
+
+                                                    @if(strlen($availability->where('id', $days[$i]['id'])->first()->end_week) == 2)
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @else
+                                                        <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->end_year}}-W0{{$availability->where('id', $days[$i]['id'])->first()->end_week}}" id="end_rooster{{$i + 1}}">
+                                                    @endif
                                                 @endif
                                                 <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif color: white;">
 
@@ -151,7 +171,6 @@
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
                                                                 <input type="hidden" id="end_date_disable{{$i + 1}}" value="{{$days[$i]['end_time']}}">
-                                                                <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
                                                             @else
                                                                 <p style="color: black">{{$days[$i]['comment']}}</p>
                                                             @endif
@@ -181,6 +200,7 @@
                 </div>
             </div>
         </div>
+
         <script>
             function modalData(weekday, id)
             {

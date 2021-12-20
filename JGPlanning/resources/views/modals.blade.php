@@ -537,14 +537,16 @@
                                 <label style="width: 95%">
                                     <p>Begin Tijd:</p>
                                     <div style="display: flex;">
-                                        <input type="time" name="start_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00">
+                                        <input type="number" name="start_time_1" id="time_picker_av_start_1" class="form-control" min="1" max="17" style="width: 49.8% !important;" placeholder="Uur">
+                                        <input type="number" name="start_time_2" id="time_picker_av_start_2" class="form-control" min="0" max="60" style="width: 49.8% !important;" placeholder="Minuut">
                                     </div>
                                 </label>
                                 <br>
                                 <label style="width:95%;">
                                     <p>Eind Tijd:</p>
                                     <div style="display: flex;">
-                                        <input type="time" name="end_time" class="form-control" style="outline: none;" id="time_picker_av_start" min="08:00" max="18:00" >
+                                        <input type="number" name="end_time_1" id="time_picker_av_end_1" class="form-control" min="1" max="17" style="width: 49.8% !important;" placeholder="Uur">
+                                        <input type="number" name="end_time_2" id="time_picker_av_end_2" class="form-control" min="0" max="60" style="width: 49.8% !important;" placeholder="Minuut">
                                     </div>
                                 </label>
                                 <p style="font-size: 12px" class="text-warning">De tijden die u hier invult worden op halve uren en hele uren afgerond</p>
