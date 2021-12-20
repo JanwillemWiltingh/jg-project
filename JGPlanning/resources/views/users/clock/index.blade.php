@@ -67,10 +67,9 @@
                                     <td style="width: 13%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
                                     <td style="width: 10%">{{ $user->getStartTime($work_day) }}</td>
                                     <td style="width: 10%">{{ $user->getEndTime($work_day) }}</td>
-                                    <td style="width: 10%">{{ $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day) }}</td>
-                                    <td style="width: 1%"><a class="table-label" title="Hier zal comment info komen te staan"><i class="fa fa-eye icon-color"></i></a></td>
-
-                                <tr><!-- TODO: Add show to seen comments -->
+                                    <td style="width: 10%">{{ sprintf('%.2f', $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day)) }}</td>
+                                    <td style="width: 1%"><a class="table-label" title="Hier zal comment info komen te staan"><i class="fa fa-eye icon-color"></i></a></td><!-- TODO: Add show to seen comments -->
+                                <tr>
                             @endforeach
                         @else
                             <tr>
