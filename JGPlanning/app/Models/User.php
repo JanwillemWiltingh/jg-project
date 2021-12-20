@@ -691,4 +691,18 @@ class User extends Authenticatable
         //  Return null if no clocks are given
         return null;
     }
+    public function checkIfRoosterIsSolidified($week): bool
+    {
+        $rooster = Rooster::all()
+            ->where('user_id', $this->id)
+            ->where('start_week', $week + 1);
+        foreach ($rooster as $r)
+        {
+            if ($r->finalized)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -102,6 +102,7 @@ Route::name('admin.')->prefix('admin/')->group(function (){
         Route::post('/manage_day_disable', [RoosterAdminController::class, 'manage_delete_days'])->name('manage_delete_days');
         Route::post('/plan_users', [RoosterAdminController::class, 'plan_next_year'])->name('plan_next_year');
         Route::get('/solidify/{user}', [RoosterAdminController::class, 'plan_user_next_week'])->name('plan_next_week');
+        Route::get('/un_solidify/{user}', [RoosterAdminController::class, 'un_plan_user_next_week'])->name('un_plan_next_week');
     });
 
 //admin compare table
