@@ -82,15 +82,6 @@ class DashboardController extends Controller
             $start_time = Carbon::parse('08:30:00');
             $end_time = Carbon::parse('17:30:00');
 
-            //  When someone clocks in before or after working hours give an error message and don't clock them in
-//            if(!$user->isClockedIn()) {
-//                if($start_time->isFuture()) {
-//                    return redirect()->back()->with(['message'=> ['message' => 'Er kan pas vanaf 08:30 ingeklokt worden', 'type' => 'danger']]);
-//                } elseif ($end_time->isPast()) {
-//                    return redirect()->back()->with(['message' => ['message' => 'Werktijden zijn voorbij, er kan niet meer ingeklokt worden', 'type' => 'danger']]);
-//                }
-//            }
-
             //  Round the current time to quarters
             $now = Carbon::now()->addHours(Clock::ADD_HOURS);
             $hours = $now->format('H');
