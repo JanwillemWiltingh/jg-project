@@ -72,12 +72,16 @@ class DashboardController extends Controller
      */
     public function clock(Request $request): RedirectResponse
     {
+        //  If the IP is correct let the user clock in
         if(Clock::isIPCorrect($request)) {
             $validated = $request->validate([
                 'comment' => ['nullable', 'string', 'max:150'],
             ]);
 
+            //  Get the logged-in user
             $user = Auth::user();
+
+            //  Get all the clocks from today
             $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
 
             //  Round the current time to quarters
@@ -86,6 +90,7 @@ class DashboardController extends Controller
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;
 
+            //  If the rounded minutes round to 60 go to the next hours
             $time = $now->format('H:i');
             if($rounded_minutes == 60) {
                 $time = (intval($hours) + 1).':00';
