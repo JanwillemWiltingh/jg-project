@@ -287,26 +287,13 @@ $(document).ready(function () {
     for (let i = 0; i < 7; i++)
     {
         $('#edit_rooster_modal' + i).on('click', function () {
-            $('[name="start_time"]').val($('#start_time_user_rooster' + i).val());
-            $('[name="end_time"]').val($('#end_time_user_rooster' + i).val());
+            $('[name="start_time_1"]').val($('#start_time_user_rooster' + i).val().slice(0, -3));
+            $('[name="start_time_2"]').val($('#start_time_user_rooster' + i).val().substr(3));
+            $('[name="end_time_1"]').val($('#end_time_user_rooster' + i).val().slice(0, -3));
+            $('[name="end_time_2"]').val($('#end_time_user_rooster' + i).val().substr(3));
             $('#start_date').val($('#start_rooster' + i).val());
             $('#end_date').val($('#end_rooster' + i).val());
             $('#comment_edit').val($('#comment' + i).val());
-
-            let checked_edit = false
-            if ($('#from_home' + i).val() === "0")
-            {
-                checked_edit = true;
-            }
-
-            if (!checked_edit)
-            {
-                $('#switch_box').prop('checked', true);
-            }
-            else
-            {
-                $('#switch_box').prop('checked', false);
-            }
         });
     }
 
@@ -328,15 +315,17 @@ $(document).ready(function () {
         }, 100);
     });
 
-    $('#maand').on('click', function () {
+    $('#maand').on('click', function (e) {
         $('#rooster').hide();
         $('#calender_hide').show();
         $('.fc-today-button').trigger('click');
+        e.preventDefault();
     });
 
-    $('#week_rooster').on('click', function () {
+    $('#week_rooster').on('click', function (e) {
         $('#calender_hide').hide();
         $('#rooster').show();
+        e.preventDefault();
     });
 
     $('.fc-center h2').css('textTransform', 'capitalize');

@@ -75,52 +75,52 @@ class RoosterAdminController extends Controller
         $checkDisabledDays = DisabledDays::all()
             ->where('user_id', $user);
 
-//        if ($checkDisabledDays->count() == 0)
-//        {
-//            for ($x = 0; $x < 1; $x++)
-//            {
-//                for ($a = 1; $a <= 52; $a++)
-//                {
-//                    DisabledDays::create([
-//                        'weekday' => 6,
-//                        'created_at' => date('Y-m-d h:i:s'),
-//                        'updated_at' => null,
-//                        'user_id' => $user,
-//                        'start_week' => $a,
-//                        'end_week' => $a,
-//                        'start_year' => date('Y') + $x,
-//                        'end_year' => date('Y') + $x,
-//                    ]);
-//                }
-//            }
-//        }
-//        if ($rooster->count() == 0)
-//        {
-//            for ($x = 0; $x < 1; $x++)
-//            {
-//                for ($a = 1; $a <= 52; $a++)
-//                {
-//                    for ($i = 1; $i < 7; $i++)
-//                    {
-//                        Rooster::create([
-//                            'start_time' => '08:30:00',
-//                            'end_time' => '17:00:00',
-//                            'comment' => "",
-//                            'from_home' => 0,
-//                            'weekdays' => $i,
-//                            'created_at' => date('Y-m-d h:i:s'),
-//                            'updated_at' => null,
-//                            'user_id' => $user,
-//                            'start_week' => $a,
-//                            'end_week' => $a,
-//                            'disabled' => false,
-//                            'start_year' => date('Y') + $x,
-//                            'end_year' => date('Y') + $x,
-//                        ]);
-//                    }
-//                }
-//            }
-//        }
+        if ($checkDisabledDays->count() == 0)
+        {
+            for ($x = 0; $x < 1; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    DisabledDays::create([
+                        'weekday' => 6,
+                        'created_at' => date('Y-m-d h:i:s'),
+                        'updated_at' => null,
+                        'user_id' => $user,
+                        'start_week' => $a,
+                        'end_week' => $a,
+                        'start_year' => date('Y') + $x,
+                        'end_year' => date('Y') + $x,
+                    ]);
+                }
+            }
+        }
+        if ($rooster->count() == 0)
+        {
+            for ($x = 0; $x < 1; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    for ($i = 1; $i < 7; $i++)
+                    {
+                        Rooster::create([
+                            'start_time' => '08:30:00',
+                            'end_time' => '17:00:00',
+                            'comment' => "",
+                            'from_home' => 0,
+                            'weekdays' => $i,
+                            'created_at' => date('Y-m-d h:i:s'),
+                            'updated_at' => null,
+                            'user_id' => $user,
+                            'start_week' => $a,
+                            'end_week' => $a,
+                            'disabled' => false,
+                            'start_year' => date('Y') + $x,
+                            'end_year' => date('Y') + $x,
+                        ]);
+                    }
+                }
+            }
+        }
 
         $weekDays = Availability::WEEK_DAYS;
 

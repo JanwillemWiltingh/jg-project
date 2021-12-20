@@ -127,9 +127,9 @@
                         @elseif($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))
                             <i class="fa-solid fa-user-lock"></i>
                         @endif
-                        <strong>
-                            <button id="solidify_next_week" style="float: right !important; bottom: 45px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip" title="Gebruiker Aanpassen">Zet rooster vast</button>
-                        </strong>
+{{--                        <strong>--}}
+{{--                            <button id="solidify_next_week" style="float: right !important; bottom: 45px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip" title="Gebruiker Aanpassen">Zet rooster vast</button>--}}
+{{--                        </strong>--}}
                     </div>
                     <input type="hidden" id="admin_user_id_edit">
                 </div>
