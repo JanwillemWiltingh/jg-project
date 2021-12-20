@@ -97,13 +97,12 @@ class DashboardController extends Controller
             $minutes = $now->format('i');
             $rounded_minutes = round($minutes / 15) * 15;
 
+            $time = $time = $now->format('H:i');
             if($rounded_minutes == 60) {
                 $time = (intval($hours) + 1).':00';
             } else {
                 $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
             }
-
-            $time = $now->format('H:i');
 
             if($clocks->count() == 0) {
                 //  When there are no clocks add a new one
@@ -112,7 +111,7 @@ class DashboardController extends Controller
                     'user_id' => $user['id'],
                     'start_time' => $time,
                     'end_time' => null,
-                    'date' => Carbon::now()->toDateString()
+                    'date' => $now->toDateString()
                 ]);
             } else {
                 if($clocks->last()['end_time'] != null) {
@@ -122,7 +121,7 @@ class DashboardController extends Controller
                         'user_id' => $user['id'],
                         'start_time' => $time,
                         'end_time' => null,
-                        'date' => Carbon::now()->toDateString()
+                        'date' => $now->toDateString()
                     ]);
                 } else {
                     //  Update the clock end time
