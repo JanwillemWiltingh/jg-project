@@ -2,7 +2,6 @@
 
 @section('content')
 @include('modals')
-
 <div class="content fadeInDown">
     @if($errors->all())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -19,6 +18,12 @@
             <div class="card">
                 <div class="card-header" id="calender_hide">
                     <div class="card-body">
+                        <button class="btn jg-color-1" style="
+                                color: white !important;
+                                float: right;
+                                top: 60px;
+                                right: 28px;
+                            ">Maand</button>
                         <button class="btn jg-color-1 " style="
                                 color: black !important;
                                 float: right;
@@ -29,12 +34,6 @@
                             " id="week_rooster">
                             Week
                         </button>
-                        <button class="btn jg-color-1" style="
-                                color: white !important;
-                                float: right;
-                                top: 60px;
-                                right: 28px;
-                            ">maand</button>
                         @include('calender')
                     </div>
                 </div>
@@ -59,38 +58,40 @@
                                 </a>
                                 <br>
                             </div>
-                            <p style="
-                                        text-align: center;
-                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);
-                                        -webkit-background-clip: text;
-                                        -webkit-text-fill-color: transparent;
-                                        font-size: 45px;
-                                        font-weight: bolder;
-                                        font-style: italic;
-                                        margin-top: -40px;
-                                    ">
-                                <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">
-                                    <i class="fa fa-pencil-alt"></i>
-                                    Dagen beheren
-                                </a>
-                            </p>
+{{--                            <p style="--}}
+{{--                                        text-align: center;--}}
+{{--                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);--}}
+{{--                                        -webkit-background-clip: text;--}}
+{{--                                        -webkit-text-fill-color: transparent;--}}
+{{--                                        font-size: 45px;--}}
+{{--                                        font-weight: bolder;--}}
+{{--                                        font-style: italic;--}}
+{{--                                        margin-top: -40px;--}}
+{{--                                    ">--}}
+{{--                                <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">--}}
+{{--                                    <i class="fa fa-pencil-alt"></i>--}}
+{{--                                    Dagen beheren--}}
+{{--                                </a>--}}
+{{--                            </p>--}}
 
-                            <button class="btn jg-color-1" style="
-                                        color: white !important;
-                                        float: right;
-                                        right: 28px;
-                                        bottom: 44px;
-                                    ">Week</button>
                             <button class="btn jg-color-1" style="
                                         color: black !important;
                                         float: right;
                                         right: 28px;
-                                        bottom: 44px;
+                                        margin-bottom: 23px;
                                         background: lightgray !important;
                                         border-color: lightgray !important;
                                     " id="maand">
                                 Maand
                             </button>
+                            <button class="btn jg-color-1" style="
+                                        color: white !important;
+                                        float: right;
+                                        right: 28px;
+                                        margin-bottom: 23px;
+                                    ">Week</button>
+
+                            <br>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">
                                 <input type="hidden" value="{{request('year')}}" id="hidden_year">
@@ -127,6 +128,8 @@
                                                 <input type="hidden" value="{{$days[$i]['start_time']}}" id="start_time_user_rooster{{$i + 1}}">
                                                 <input type="hidden" value="{{$days[$i]['end_time']}}" id="end_time_user_rooster{{$i + 1}}">
                                                 @if($availability->where('id', $days[$i]['id'])->first())
+                                                    <input type="hidden" value="{{$days[$i]['from_home']}}" id="from_home{{$i + 1}}">
+
                                                     @if(strlen($availability->where('id', $days[$i]['id'])->first()->start_week) == 2)
                                                         <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->start_year}}-W{{$availability->where('id', $days[$i]['id'])->first()->start_week}}" id="start_rooster{{$i + 1}}">
                                                     @else
@@ -141,7 +144,7 @@
 
                                                     <input type="hidden" value="{{$availability->where('id', $days[$i]['id'])->first()->comment}}" id="comment{{$i + 1}}">
                                                 @endif
-                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4; @else background-color:#f0f0f0; @endif  color: white;">
+                                                <th rowspan="{{ $days[$i]['rowspan'] }}" class="align-middle text-center" style="@if($days[$i]['comment'] != "Dag uitgezet.") background-color: #1C88A4;@else background-color:#f0f0f0; @endif @if($days[$i]['solidified'])background: #CB6827 !important; @endif color: white;">
                                                     @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         @if($days[$i]['from_home'])
                                                             <p style="font-weight: lighter">Thuis</p>
@@ -155,9 +158,6 @@
                                                                 <p style="color: #000000">{{$days[$i]['comment']}}</p>
                                                                 <input type="hidden" id="start_date_disable{{$i + 1}}" value="{{$days[$i]['start_time']}}">
                                                                 <input type="hidden" id="end_date_disable{{$i + 1}}" value="{{$days[$i]['end_time']}}">
-                                                                @if(!App\Models\Browser::isMobile())
-                                                                    <a href="#" onclick="modalData({{$i + 1}}, {{$days[$i]['disabled_id']}})" data-bs-toggle="modal" data-bs-target="#editDisableModal" style="font-weight: lighter; text-decoration: none; color: black" id="disabled_modal_edit{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
-                                                                @endif
                                                             @else
                                                                 <p style="color: black">{{$days[$i]['comment']}}</p>
                                                             @endif
@@ -167,6 +167,7 @@
                                                     @else
                                                         Geen opmerking
                                                     @endif
+
                                                     @if($days[$i]['comment'] != "Dag uitgezet.")
                                                         <p style="font-weight: lighter">{{$days[$i]['start_time']}}
                                                         @if(App\Models\Browser::isMobile()) <br> @endif
@@ -174,7 +175,9 @@
                                                         @if(App\Models\Browser::isMobile()) <br> @endif
                                                             {{$days[$i]['end_time']}}</p>
                                                         @if(!App\Models\Browser::isMobile())
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                            @if(!$days[$i]['solidified'])
+                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#availabilityModalEdit" style="font-weight: lighter; text-decoration: none; font-size: 15px; color: white; " onclick="modalData({{$i + 1}}, {{$days[$i]['id']}})" id="edit_rooster_modal{{$i + 1}}"><i class="fa fa-pencil-alt"></i></a>
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 </th>

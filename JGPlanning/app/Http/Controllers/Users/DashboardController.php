@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
+use App\Models\Role;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -24,11 +26,18 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user_session = Auth::user();
         $now = Carbon::now();
         $enable_time = null;
+        //users van vandaag ophalane
+        $day = Carbon::now()->format('Y-m-d');
+        $users = User::all()
+            ->where('deleted_at', '=', null)
+            ->where('role_id', 3);
+        $clocks = Clock::all();
+        $roles = Role::all();
 
-        $clocks = $user->clocks()->get();
+        $clocks = $user_session->clocks()->get();
 
         if($clocks->count() > 0) {
             $clock_today = $clocks->where('date', Carbon::now()->format('Y-m-d'));
@@ -42,7 +51,19 @@ class DashboardController extends Controller
                 }
             }
         }
-        return view('dashboard.index')->with(['start' => $user->isClockedIn(), 'user' => $user, 'now' => $now, 'allowed' => Clock::isIPCorrect($request), 'enable_time' => $enable_time]);
+        $clocks = Clock::all();
+
+        return view('dashboard.index')->with([
+            'start' => $user_session->isClockedIn(),
+            'user_session' => $user_session,
+            'now' => $now,
+            'allowed' => Clock::isIPCorrect($request),
+            'enable_time' => $enable_time,
+            'users' => $users,
+            'day' => $day,
+            'roles' => $roles,
+            'clocks' => $clocks,
+        ]);
     }
 
     /**
