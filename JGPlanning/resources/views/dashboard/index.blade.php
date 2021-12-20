@@ -100,8 +100,7 @@
                                     <label style="float: left !important;">
                                         <text id="count"></text><text>/ 150</text>
                                     </label>
-                                    <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." maxlength="150
-" @if($start == False) @else DISABLED @endif></textarea>
+                                    <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." maxlength="150" @if($start == False) @else DISABLED @endif></textarea>
                                 </div>
                             </div>
                         </div>
