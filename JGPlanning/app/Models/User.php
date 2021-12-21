@@ -678,19 +678,25 @@ class User extends Authenticatable
                 //  Get the last clock from the given day
                 $last = $date_clock->last();
 
-                if ($last['end_time'] == null) {
+                if($last['end_time'] == null) {
                     //  If there is no end time take the current time
                     return Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i');
                 } else {
                     //  Return the end time
-                    return Carbon::parse($last['end_time'])->format('H:i');
+                    if ($date_clock->first()->end_time) {
+                        $last = $date_clock->last();
+                        return Carbon::parse($last['end_time'])->format('H:i');
+                    } else {
+                        return null;
+                    }
                 }
             }
-        }
 
-        //  Return null if no clocks are given
-        return null;
+            //  Return null if no clocks are given
+            return null;
+        }
     }
+
     public function checkIfRoosterIsSolidified($week): bool
     {
         $rooster = Rooster::all()

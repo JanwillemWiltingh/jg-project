@@ -40,8 +40,8 @@ class RosterService
         foreach ($data as $d)
         {
             $date_rooster = $date
-                ->setISODate($d->start_year, $d->start_week)
-                ->addDays($d->weekdays - 1)
+                ->setISODate($d->start_year, $d->week)
+                ->addDays($d->weekday - 1)
                 ->format('Y-m-d');
             array_push($rooster_array, $date_rooster);
         }
@@ -104,8 +104,8 @@ class RosterService
                 $rooster = $data
                     ->where('user_id', $user_id)
                     ->where('start_year', $da->year)
-                    ->where('start_week', $da->weekOfYear)
-                    ->where('weekdays', $da->dayOfWeek)
+                    ->where('week', $da->weekOfYear)
+                    ->where('weekday', $da->dayOfWeek)
                     ->first();
                 if ($rooster)
                 {
@@ -147,7 +147,6 @@ class RosterService
                 );
             }
         }
-
 //        dd($events);
         return \Calendar::addEvents($events)->setOptions(['lang' => 'nl', 'hiddenDays' => [0]]);
     }

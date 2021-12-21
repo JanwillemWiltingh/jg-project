@@ -362,13 +362,13 @@ $(document).ready(function () {
         window.location = "/admin/rooster/un_solidify/" + $('#admin_user_id_edit').val();
     });
 
-
-
     // plan_next_week
     $(document).ready(function() {
         $('[data-toggle="toggle"]').change(function(){
             $(this).parents().next('.show').toggle();
         });
     });
+
+
 
 });

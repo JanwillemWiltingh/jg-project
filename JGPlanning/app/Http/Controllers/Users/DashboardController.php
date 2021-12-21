@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use App\Models\Role;
+use App\Models\Rooster;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -123,7 +124,6 @@ class DashboardController extends Controller
                 }
             }
         }
-
         return redirect()->back();
     }
 }
