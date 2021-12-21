@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Rooster extends Model
 {
     protected $table = 'Rooster';
 
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',
@@ -27,4 +29,8 @@ class Rooster extends Model
     ];
 
     use HasFactory;
+    public function users(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
 }

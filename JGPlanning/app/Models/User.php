@@ -100,7 +100,7 @@ class User extends Authenticatable
         $day_number = Carbon::now()->dayOfWeek;
 
 //        Get the rooster where the day_number is the same as today
-        $roosters = $this->roosters()->where('weekdays', $day_number)->get();
+        $roosters = $this->roosters()->where('weekday', $day_number)->get();
 
 //        Loop through all the given roosters to find the rooster that fits for today
         foreach($roosters as $rooster) {
@@ -691,17 +691,17 @@ class User extends Authenticatable
                     }
                 }
             }
-
-            //  Return null if no clocks are given
-            return null;
         }
+        //  Return null if no clocks are given
+        return null;
     }
 
-    public function checkIfRoosterIsSolidified($week): bool
+    public function checkIfRoosterIsSolidified($date): bool
     {
         $rooster = Rooster::all()
             ->where('user_id', $this->id)
-            ->where('start_week', $week + 1);
+            ->where('week', Carbon::parse($date)->weekOfYear)
+            ->where('start_year', Carbon::parse($date)->year);
         foreach ($rooster as $r)
         {
             if ($r->finalized)
