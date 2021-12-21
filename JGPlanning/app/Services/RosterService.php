@@ -71,15 +71,15 @@ class RosterService
                 {
                     if ($disabled->finalized)
                     {
-                        $comment = "Dag uitgezet en vastgezet.";
+                        $comment = "❌ Dag uitgezet en vastgezet.";
                     }
                     else if($disabled->by_admin)
                     {
-                        $comment = "Dag uitgezet door admin.";
+                        $comment = "❌ Dag uitgezet door admin.";
                     }
                     else
                     {
-                        $comment = "Dag uitgezet.";
+                        $comment = "❌ Dag uitgezet.";
                     }
                 }
                 else
@@ -111,11 +111,20 @@ class RosterService
                 {
                     if ($rooster->comment)
                     {
-                        $comment =  substr($rooster->start_time, 0, -3).' - ' . substr($rooster->end_time, 0, -3) . ': ' . $rooster->comment;
+                        $comment = substr($rooster->start_time, 0, -3).' - ' . substr($rooster->end_time, 0, -3) . ': ' . $rooster->comment;
                     }
                     else
                     {
-                        $comment = substr($rooster->start_time, 0, -3). ' - ' . substr($rooster->end_time, 0, -3) . ': Geen opmerking';
+                        $comment =substr($rooster->start_time, 0, -3). ' - ' . substr($rooster->end_time, 0, -3) . ': Geen opmerking';
+                    }
+
+                    if ($rooster->from_home)
+                    {
+                        $comment = '🏠 '. $comment;
+                    }
+                    else
+                    {
+                        $comment = '🏢 '. $comment;
                     }
 
                     if ($rooster->finalized)
@@ -142,7 +151,7 @@ class RosterService
                     [
                         'color' => $color,
                         'textColor' => 'white',
-                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/'
+                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/',
                     ]
                 );
             }

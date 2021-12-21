@@ -19838,3 +19838,19 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
 }
 
+.fc-content {
+    overflow-x: scroll !important;
+}
+
+/* width */
+.fc-content::-webkit-scrollbar {
+    width: 20px;
+    height: 5px !important;
+}
+
+/* Handle */
+.fc-content::-webkit-scrollbar-thumb {
+    background: #1A6686;
+}
+
+

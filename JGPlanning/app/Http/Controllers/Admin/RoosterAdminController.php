@@ -18,6 +18,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RoosterAdminController extends Controller
 {
@@ -462,6 +463,8 @@ class RoosterAdminController extends Controller
             $dis->finalized = true;
             $dis->update();
         }
+
+        Mail::send('Auth.rooster');
 
         return back()->with(['message' => ['message' => 'Volgende week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' vastgezet.', 'type' => 'success']]);
     }
