@@ -24,7 +24,7 @@
                                 float: right;
                                 top: 60px;
                                 right: 28px;
-                            ">Maand</button>
+                            " href="javascript:void(0)">Maand</button>
                             <button class="btn jg-color-1 " style="
                                 color: black !important;
                                 float: right;
@@ -32,7 +32,7 @@
                                 right: 28px;
                                 background: lightgray !important;
                                 border-color: lightgray !important;
-                            " id="week_rooster">
+                            " href="javascript:void(0)" id="week_rooster">
                                 Week
                             </button>
                             @include('calender')
@@ -89,7 +89,7 @@
                                         margin-bottom: 23px;
                                         background: lightgray !important;
                                         border-color: lightgray !important;
-                                    " id="maand">
+                                    " href="javascript:void(0)" id="maand">
                                     Maand
                                 </button>
                                 <button class="btn jg-color-1" style="
@@ -97,7 +97,7 @@
                                         float: right;
                                         right: 28px;
                                         margin-bottom: 23px;
-                                    ">Week</button>
+                                    " href="javascript:void(0)">Week</button>
                             @endif
                             <br>
                             <form id="week_form">

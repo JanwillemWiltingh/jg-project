@@ -315,17 +315,31 @@ $(document).ready(function () {
         }, 100);
     });
 
-    $('#maand').on('click', function (e) {
+    if ($.cookie('show_calendar') === "on")
+    {
         $('#rooster').hide();
         $('#calender_hide').show();
+    }
+    else if ($.cookie('show_rooster') === "on")
+    {
+        $('#rooster').show();
+        $('#calender_hide').hide();
+    }
+
+
+    $('#maand').on('click', function () {
+        $('#rooster').hide();
+        $('#calender_hide').show();
+        $.cookie('show_rooster', "off");
+        $.cookie('show_calendar', "on");
         $('.fc-today-button').trigger('click');
-        e.preventDefault();
     });
 
-    $('#week_rooster').on('click', function (e) {
+    $('#week_rooster').on('click', function () {
         $('#calender_hide').hide();
         $('#rooster').show();
-        e.preventDefault();
+        $.cookie('show_rooster', "on");
+        $.cookie('show_calendar', "off");
     });
 
     $('.fc-center h2').css('textTransform', 'capitalize');
