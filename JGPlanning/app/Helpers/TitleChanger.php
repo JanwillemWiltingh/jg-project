@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 class TitleChanger
 {
     //  The base and default title
-    const BASE_PATH = 'Planning';
+    const BASE_PATH = 'Rooster';
 
     //  All the available routes ['Route Name' => 'Title Name']
     const ADMIN_ROUTES = ['clock' => 'Klok', 'rooster' => 'Rooster', 'users' => 'Gebruikers', 'compare' => 'Vergelijken'];

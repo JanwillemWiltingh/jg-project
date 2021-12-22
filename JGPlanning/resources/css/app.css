@@ -794,3 +794,10 @@ table.dataTable td.focus {
 input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
 }
+.reset-page {
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
