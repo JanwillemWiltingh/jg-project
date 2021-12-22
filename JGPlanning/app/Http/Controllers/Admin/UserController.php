@@ -95,7 +95,7 @@ class UserController extends Controller
         ]);
         Mail::send('Auth.user', ['request' => $request], function($message) use($request){
             $message->to($request->email);
-            $message->subject('Nieuwe gebruiker JG Planning');
+            $message->subject('Rooster vastgezet');
         });
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
     }

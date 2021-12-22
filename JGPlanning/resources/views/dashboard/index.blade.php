@@ -325,14 +325,14 @@
                             </td>
                             <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
                                 @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
-                                    {{$clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time}}
+                                    {{substr($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time, 0, -3)}}
                                 @else
                                     -
                                 @endif
                             </td>
                             <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
                                 @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
-                                    {{$clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time}}
+                                    {{substr($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time, 0, -3)}}
                                 @else
                                     -
                                 @endif

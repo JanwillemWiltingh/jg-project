@@ -9,6 +9,10 @@
             document.getElementById('lastname').value = lastname;
             document.getElementById('email').value = email;
             document.getElementById('admin_user_id_edit').value = id;
+            document.getElementById('phone_number').value = phone_number;
+            document.getElementById('updated_at').value = updated_at;
+            document.getElementById('created_at').value = created_at;
+            document.getElementById('deleted_at').value = deleted_at;
 
             if (roles === "3")
             {
@@ -115,7 +119,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label class="black-label-text" for="deleted_at">Gebruiker verwijderd</label>
-                                <input type="text" class="form-control" id="deleted_at" value="@if(empty($user['deleted_at'])) - @else{{$user['deleted_at']}} @endif" aria-describedby="updated_at" placeholder="Gebruiker Verwijderd" disabled>
+                                <input type="text" class="form-control" id="deleted_at" value="@if(empty($user['deleted_at']))- @else{{$user['deleted_at']}} @endif" aria-describedby="updated_at" placeholder="Gebruiker Verwijderd" disabled>
                             </div>
                         </div>
                     </div>
@@ -194,7 +198,7 @@
                                             id="roles">
                                         @foreach($roles as $role)
                                             <option value="{{$role['id']}}"
-                                                    @if($role['id'] == '3')
+                                                    @if($role['id'] == 3)
                                                     selected
                                                 @endif>
                                                 {{__('general.' .$role['name'])}}

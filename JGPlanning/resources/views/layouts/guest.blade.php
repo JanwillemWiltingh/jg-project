@@ -21,8 +21,6 @@
 <body>
     {{--Content--}}
     <div class="container">
-        <br>
-        <x-alert></x-alert>
         @yield('content')
     </div>
     {{--JS--}}
