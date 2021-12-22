@@ -43,6 +43,14 @@
                             <div style="width: 10px; height: 10px; background-color: #CB6827; display: inline-block;"></div>
                             <div  style="display: inline-block"> = dag kan niet bewerkt worden</div>
                         </div>
+                        <div>
+                            <div style="font-size: 10px !important;display: inline-block;">🏠</div>
+                            <div  style="display: inline-block"> = Thuiswerk dag</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 10px !important;display: inline-block;">🏢</div>
+                            <div  style="display: inline-block"> = Op kantoor</div>
+                        </div>
                     </div>
                 @else
                     <div>
@@ -52,6 +60,15 @@
                     <div>
                         <div style="width: 15px; height: 15px; background-color: #CB6827; display: inline-block;"></div>
                         <div  style="display: inline-block"> = dag kan niet bewerkt worden</div>
+                    </div>
+
+                    <div>
+                        <div style="font-size: 15px !important;display: inline-block;">🏠</div>
+                        <div  style="display: inline-block"> = Dag thuiswerk</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 15px !important;display: inline-block;">🏢</div>
+                        <div  style="display: inline-block"> = Op kantoor</div>
                     </div>
                 @endif
                 {!! $roster->calendar() !!}

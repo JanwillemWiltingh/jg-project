@@ -21,7 +21,10 @@
                 <div class="row">
                     <div class="form-group">
                         <label class="black-label-text" for="time_start">Start Tijd</label>
-                        <input type="time" class="form-control" id="time_start" name="time_start" min="08:30" max="18:00" value="{{$clock['start_time']}}" aria-describedby="time_start" placeholder="Start Tijd">
+                        <div>
+                            <input type="number" class="form-control" id="time_start" name="time_start_1" min="1" max="18" value="{{substr($clock['start_time'], 0 , -6)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 49%; display: inline-block">
+                            <input type="number" class="form-control" id="time_start" name="time_start_2" min="0" max="60" value="{{substr(substr($clock['start_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 49%; display: inline-block">
+                        </div>
                         @if($errors->has('time_start'))
                             <div class="error">{{ $errors->first('time_start') }}</div>
                         @endif
@@ -30,7 +33,10 @@
                 <div class="row">
                     <div class="form-group">
                         <label class="black-label-text" for="time_end">Eind Tijd</label>
-                        <input type="time" class="form-control" id="time_end" name="time_end" min="08:30" max="18:00" value="{{$clock['end_time']}}" aria-describedby="time_end" placeholder="Eind Tijd">
+                        <div>
+                            <input type="number" class="form-control" id="time_end" name="time_end_1" min="1" max="18" value="{{substr($clock['end_time'], 0 , -6)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 49%; display: inline-block">
+                            <input type="number" class="form-control" id="time_end" name="time_end_2" min="0" max="60" value="{{substr(substr($clock['end_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 49%; display: inline-block">
+                        </div>
                         @if($errors->has('time_end'))
                             <div class="error">{{ $errors->first('time_end') }}</div>
                         @endif

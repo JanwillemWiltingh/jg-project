@@ -464,7 +464,7 @@ class RoosterAdminController extends Controller
             $dis->update();
         }
 
-        Mail::send('Auth.rooster');
+//        Mail::send('Auth.rooster');
 
         return back()->with(['message' => ['message' => 'Volgende week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' vastgezet.', 'type' => 'success']]);
     }

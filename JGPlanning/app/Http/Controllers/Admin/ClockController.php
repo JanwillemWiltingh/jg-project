@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use App\Models\User;
+use App\Services\TimeService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -109,17 +110,28 @@ class ClockController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function update(Clock $clock, Request $request): RedirectResponse
+    public function update(Clock $clock, Request $request, TimeService $time): RedirectResponse
     {
         $date = $clock['date'];
         //  Validate the end and start time and update them
         $valitated = $request->validate([
-            'time_start' => ['required'],
-            'time_end' => ['required', 'after:time_start']
+            'time_start_1' => ['required'],
+            'time_start_2' => ['required'],
+            'time_end_1' => ['required'],
+            'time_end_2' => ['required']
         ]);
+
+        $time_start = $time->roundTime(Carbon::createFromFormat('H:i', $valitated['time_start_1']. ":".$valitated['time_start_2'])->format('H:i:s'), '15');
+        $time_end = $time->roundTime(Carbon::createFromFormat('H:i', $valitated['time_end_1']. ":".$valitated['time_end_2'])->format('H:i:s'), '15');
+
+        if ($time_start > $time_end)
+        {
+            return redirect()->route('admin.clock.index')->with(['message'=> ['message' => 'De ingevulde begin tijd is later dan de ingevulde eind tijd', 'type' => 'danger'], 'date' => $date]);
+        }
+
         $clock->update([
-            'start_time' => $valitated['time_start'],
-            'end_time' => $valitated['time_end'],
+            'start_time' => $time_start,
+            'end_time' => $time_end,
         ]);
 
         return redirect()->route('admin.clock.index')->with(['message'=> ['message' => 'Uren aangepast', 'type' => 'success'], 'date' => $date]);

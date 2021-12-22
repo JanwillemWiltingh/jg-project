@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TimeService;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Exception;
@@ -98,14 +99,19 @@ class User extends Authenticatable
 //        Take the week and day numbers from today
         $week_number = Carbon::now()->weekOfYear;
         $day_number = Carbon::now()->dayOfWeek;
-
 //        Get the rooster where the day_number is the same as today
         $roosters = $this->roosters()->where('weekday', $day_number)->get();
-
 //        Loop through all the given roosters to find the rooster that fits for today
         foreach($roosters as $rooster) {
-            if($rooster['start_week'] <= $week_number and $rooster['end_week'] >= $week_number) {
-                return $rooster;
+            if($rooster['week'] = $week_number ) {
+                if (DisabledDays::all()->where('user_id', $this->id)->where('start_week', $week_number)->where('start_year', Carbon::now()->year)->where('weekday', $day_number)->count() == 1)
+                {
+                    return null;
+                }
+                else
+                {
+                    return $rooster;
+                }
             }
         }
 
@@ -197,7 +203,9 @@ class User extends Authenticatable
      */
     public function WorkedInAMonthInHours(int $month, int $decimal_number=1): float {
             $time = $this->workedInAMonthInSeconds($month);
-            return number_format($time / 3600, $decimal_number);
+            $final_time = (Ceil($time /3600 / .25)) * .25;
+
+            return number_format($final_time, $decimal_number);
     }
 
     /**
@@ -254,7 +262,8 @@ class User extends Authenticatable
      */
     public function workedInAWeekInHours(int $week, int $decimal_number=1): float {
         $time = $this->workedInAWeekInSeconds($week);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        return number_format($final_time, $decimal_number);
     }
 
     /**
@@ -294,7 +303,8 @@ class User extends Authenticatable
      */
     public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
         $time = $this->workedInADayInSeconds($year, $month, $day);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        return number_format($final_time, $decimal_number);
     }
 
     /**

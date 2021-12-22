@@ -515,7 +515,7 @@
     </div>
 
     <div class="modal fade" id="availabilityModalEdit" tabindex="-1" role="dialog" aria-labelledby="a" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="a">Bewerk beschikbaarheid</h5>
@@ -552,7 +552,7 @@
                                 <p style="font-size: 12px" class="text-warning">De tijden die u hier invult worden op halve uren en hele uren afgerond</p>
                             </div>
 
-                            <div>
+                            <div style="width: 50%">
                                 <label style="width: 100%;">
                                     <p>Opmerking:</p>
                                     <textarea rows="5" cols="68" placeholder="Opmerking (optioneel)" class="form-control" id="comment_edit" name="comment"></textarea>

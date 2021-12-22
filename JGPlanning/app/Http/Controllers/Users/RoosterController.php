@@ -27,6 +27,7 @@ class RoosterController extends Controller
 //  Functie om het rooster te laten zien
     public function index(RosterService $rosterService,CalendarService $calendarService, $week, $year)
     {
+//        dd($year);
         $browser = new BrowserDetection();
         if ($week > 52)
         {
@@ -99,7 +100,7 @@ class RoosterController extends Controller
         $weekDays     = Availability::WEEK_DAYS;
         if (!$browser->isMobile())
         {
-            $roster = $rosterService->generateRosterData($user);
+            $roster = $rosterService->generateRosterData($user, $year);
         }
         else
         {

@@ -12,7 +12,7 @@
                             {{-- Start Tijd --}}
                                 <div class="form-group">
                                     <label class="black-label-text" for="start_time">Start Tijd</label>
-                                    <input type="time" class="form-control" id="start_time" value="@if(empty($clock['start_time']))NULL @else{{$clock['start_time']}}@endif" aria-describedby="start_time" placeholder="Start Tijd" disabled>
+                                    <input type="text" class="form-control" id="start_time" value="@if(empty($clock['start_time']))- @else{{substr($clock['start_time'], 0, -3)}}@endif" aria-describedby="start_time" placeholder="Start Tijd" disabled>
                                 </div>
                             </div>
 
@@ -20,7 +20,7 @@
                             {{-- Eind Tijd --}}
                                 <div class="form-group">
                                     <label class="black-label-text" for="end_time">Eind Tijd</label>
-                                    <input type="time" class="form-control" id="end_time" value="@if(empty($clock['end_time']))NULL @else{{$clock['end_time']}}@endif" aria-describedby="end_time" placeholder="Eind Tijd" disabled>
+                                    <input type="text" class="form-control" id="end_time" value="@if(empty($clock['end_time']))- @else{{substr($clock['end_time'], 0, -3)}}@endif" aria-describedby="end_time" placeholder="Eind Tijd" disabled>
                                 </div>
                             </div>
                         </div>

@@ -27,7 +27,7 @@ class LoginController extends Controller
             $user = User::all()->where('email', $validated['email'])->first();
             if(!empty($user['deleted_at'])){
                 //singed niet in
-                return redirect()->back()->withErrors(['status' =>'Login details are not valid']);
+                return redirect()->back()->withErrors(['status' =>'Login gegevens incorrect']);
             }else{
                 //singed wel in
                 $request->session()->regenerate();
@@ -35,7 +35,7 @@ class LoginController extends Controller
             }
         }
 
-        return redirect()->back()->withErrors(['status' =>'Login details are not valid']);
+        return redirect()->back()->withErrors(['status' =>'Login gegevens incorrect']);
     }
 
     public function logout(Request $request)

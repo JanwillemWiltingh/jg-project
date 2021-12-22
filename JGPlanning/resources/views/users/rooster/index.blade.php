@@ -36,9 +36,12 @@
                                 Week
                             </button>
 
-                            <button class="btn jg-color-1" style="color: white">Zie de dagen van volgend jaar</button>
-{{--                            <button class="btn jg-color-1" style="color: white">Zie de dagen van vorig jaar</button>--}}
-                            <button class="btn jg-color-1" style="color: white">Zie de dagen van vorig jaar</button>
+                            <div style=" position:absolute;left: 71.4% !important; top: 13% !important;">
+                                <a href="{{route('rooster.index', ['week' => request('week'), 'year' => date('Y') - 1])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y') - 1) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif">Vorig jaar</a>
+                                <a href="{{route('rooster.index', ['week' => request('week'), 'year' => date('Y')])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y')) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif">Dit jaar</a>
+                                <a href="{{route('rooster.index', ['week' => request('week'), 'year' => date('Y') + 1])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y') + 1) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif" >Volgend jaar</a>
+                            </div>
+
                             @include('calender')
                         @endif
                     </div>

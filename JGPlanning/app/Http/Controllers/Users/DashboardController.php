@@ -7,6 +7,7 @@ use App\Models\Clock;
 use App\Models\Role;
 use App\Models\Rooster;
 use App\Models\User;
+use App\Services\TimeService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;

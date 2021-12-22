@@ -13,7 +13,7 @@ use App\Models\{Availability, DisabledDays, Rooster, User};
 
 class RosterService
 {
-    public function generateRosterData($user_id)
+    public function generateRosterData($user_id, $year)
     {
         $rooster_array = [];
         $disabled_array = [];
@@ -24,19 +24,16 @@ class RosterService
 
 //      Get all weekdays
         $weekdays = Availability::WEEK_DAYS_MOB;
-
 //      Database data.
         $data = Rooster::all()
             ->where('user_id', $user_id);
         $disdays = DisabledDays::all()
             ->where('user_id', $user_id);
-
 //      Gets every day from this year
-        $days_of_year = CarbonPeriod::create(Carbon::parse(date('Y-m-d'))->startOfYear(), Carbon::parse(date('Y-m-d'))->endOfYear());
+        $days_of_year = CarbonPeriod::create(Carbon::parse(Carbon::createFromDate($year, '1', '1'))->startOfYear(), Carbon::parse(Carbon::createFromDate($year, '1', '1'))->endOfYear());
 
 //      Convert it all to an array of dates
         $dates = $days_of_year->toArray();
-
         foreach ($data as $d)
         {
             $date_rooster = $date
