@@ -38,7 +38,7 @@
 
             <input type="submit" class="login-button" value="Inloggen">
             <div id="formFooter" style="text-align: center; margin: 15px;">
-                <a class="underlineHover" href="{{route('forget.password.get')}}">Wachtwoord Vergeten?</a>
+                <a class="underlineHover" href="{{route('forget.password.get')}}">Wachtwoord vergeten?</a>
             </div>
             @error('status')
             <label class="error-label"><strong>{{$errors->first('status')}}</strong></label>

@@ -23,7 +23,6 @@ class ResetPasswordController extends Controller {
             'email' => 'required|email|exists:users',
             'password' => 'required|string|confirmed',
             'password_confirmation' => 'required',
-
         ]);
 
         $updatePassword = DB::table('password_resets')

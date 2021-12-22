@@ -63,25 +63,40 @@ class ProfileController extends Controller
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
+            'password' => ['nullable', 'string', 'confirmed'],
+            'password_confirmation' => ['nullable'],
+            'old_password' => ['nullable', 'different:password'],
             'roles' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
             'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
+
+        //checken of wachtwoord overeenkomt
+
+
+        $user = User::all()->where('email', $auth_user['email'])->first();
+        if(!Hash::check($validated['password'], $user->password)){
+            return redirect()->back()->with(['message' => ['message' => 'Incorrecte gegevens', 'type' => 'danger']]);
+        }
+
         //checken of telefoonnummer wel begint met 06
         $number = substr($validated['phone_number'], 0, 2);
         if($number != '06'){
             return redirect()->back()->with(['message' => ['message' => 'Telefoonnummer moet beginnen met 06', 'type' => 'danger']]);
         }
 
-        //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
+        // see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if ($auth_user['role_id'] == Role::getRoleID('maintainer')) {
             if ($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']) {
                 return redirect()->back()->with(['message' => ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
             }
         }
+
+        //update profile of user
         $user->update([
+            'password' => Hash::make($validated['password']),
             'role_id' => $validated['roles']??$auth_user['role_id'],
             'phone_number' => $validated['phone_number']
         ]);
-        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol Bewerkt', 'type' => 'success']]);
+        return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol bewerkt', 'type' => 'success']]);
     }
 }

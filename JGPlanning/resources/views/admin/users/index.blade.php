@@ -198,7 +198,7 @@
                                             id="roles">
                                         @foreach($roles as $role)
                                             <option value="{{$role['id']}}"
-                                                    @if($role['id'] == 3)
+                                                    @if(old('roles') == $role['id'])
                                                     selected
                                                 @endif>
                                                 {{__('general.' .$role['name'])}}
@@ -225,12 +225,13 @@
 
 <div class="fadeInDown crud-table">
 
-    <text class="crud-user-form-title icon-color">Alle gebruikers</text><br>
-    <div style="display: inline-block">
-        <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 100%">
-    </div>
-    <div style="display: inline-block">
-        <a class="btn btn-primary jg-color-3 border-0" style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserCreate" onclick="getRoles('{{$roles}}')">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
+    <div id="title-wrapper">
+        <div id="title-first">
+            <text class="crud-user-form-title icon-color">Alle gebruikers</text><br>
+        </div>
+        <div id="title-second">
+            <a class="btn btn-primary jg-color-3 border-0" style="float:right; cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserCreate" onclick="getRoles('{{$roles}}')">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
+        </div>
     </div>
 
     <br>
