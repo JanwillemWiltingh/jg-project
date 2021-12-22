@@ -78,7 +78,11 @@
                                 <span class="dashboard-title-hours">{{ $now->format('j F, Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>
+{{--                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>--}}
+                                <h1 class="dashboard-title-hours">
+                                    {{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}
+                                    <p style="font-size: 15px; margin-bottom: -16px">/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</p>
+                                </h1>
                             </div>
                         </div>
                     </div>

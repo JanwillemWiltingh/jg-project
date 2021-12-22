@@ -137,7 +137,7 @@ class User extends Authenticatable
                 return $collection->first();
             }
         } else {
-            $roosters = $this->roosters()->where('user_id', $this['id'])->where('start_week', '>=', $now_week_number)->get();
+            $roosters = $this->roosters()->where('user_id', $this['id'])->where('week', '>=', $now_week_number)->get();
 
             if($roosters->count() > 0) {
                 return $roosters->first();
@@ -479,7 +479,7 @@ class User extends Authenticatable
         $new_date = new Carbon();
         $date = $new_date->setISODate($year, $week, $day);
 
-        $roosters = $this->roosters()->where('weekdays', $date->dayOfWeek)->get();
+        $roosters = $this->roosters()->where('weekday', $date->dayOfWeek)->get();
         $time = 0;
         foreach($roosters as $rooster) {
             if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {

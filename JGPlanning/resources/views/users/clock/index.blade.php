@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+    @if($browser->isMobile())
+    @endif
     <div class="row">
         <div class="col-md-3">
             <div class="row">
-                <div class="col-md-12" style="margin-top: -32px !important;">
+                <div class="col-md-12" style="margin-top: -32px !important; @if($browser->isMobile()) width: 120% !important; @endif">
 
                     <div class="card">
                         <div class="card-body">
@@ -45,18 +47,18 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9" >
             <div class="row">
-                <div class="col-md-12">
-                    <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey;">
+                <div class="col-md-12" style=" @if($browser->isMobile()) font-size: 14px !important;@endif">
+                    <table class="table table-hover" style="box-shadow: 0 0 5px 0 lightgrey; ">
                         <thead>
                         <tr>
-                            <th scope="col">Datum</th>
-                            <th scope="col">Dag</th>
-                            <th scope="col">Start tijd</th>
-                            <th scope="col">Eind tijd</th>
-                            <th scope="col">Gewerkte uren</th>
-                            <th scope="col"></th>
+                            <th scope="col" style=" @if($browser->isMobile()) font-size: 14px !important; @endif">Datum</th>
+                            <th scope="col" style=" @if($browser->isMobile()) font-size: 14px !important; @endif">Dag</th>
+                            <th scope="col" style=" @if($browser->isMobile()) font-size: 14px !important; @endif">Start tijd</th>
+                            <th scope="col" style=" @if($browser->isMobile()) font-size: 14px !important; @endif">Eind tijd</th>
+                            <th scope="col" style=" @if($browser->isMobile()) font-size: 14px !important; @endif">Gewerkte uren</th>
+                            <th scope="col" style=" @if($browser->isMobile()) font-size: 14px !important; @endif"></th>
                         </tr>
                         </thead>
                         <tbody>

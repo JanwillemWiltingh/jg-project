@@ -20,18 +20,40 @@
         display: none;
     }
 </style>
+@if(App\Models\Browser::isMobile())
+    <style>
+        .fc {
+            left: -15px;
+            width: 500%;
+        }
+    </style>
+@endif
+
 <div class=" jumbotron">
     <div class="row">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div>
-                    <div style="width: 15px; height: 15px; background-color: #1C88A4; display: inline-block;"></div>
-                    <div  style="display: inline-block"> = dag kan bewerkt worden</div>
-                </div>
-                <div>
-                    <div style="width: 15px; height: 15px; background-color: #CB6827; display: inline-block;"></div>
-                    <div  style="display: inline-block"> = dag kan niet bewerkt worden</div>
-                </div>
+                @if(App\Models\Browser::isMobile())
+                    <div class="legenda-mobile">
+                        <div>
+                            <div style="width: 10px; height: 10px; background-color: #1C88A4; display: inline-block;"></div>
+                            <div  style="display: inline-block"> = dag kan bewerkt worden</div>
+                        </div>
+                        <div>
+                            <div style="width: 10px; height: 10px; background-color: #CB6827; display: inline-block;"></div>
+                            <div  style="display: inline-block"> = dag kan niet bewerkt worden</div>
+                        </div>
+                    </div>
+                @else
+                    <div>
+                        <div style="width: 15px; height: 15px; background-color: #1C88A4; display: inline-block;"></div>
+                        <div  style="display: inline-block"> = dag kan bewerkt worden</div>
+                    </div>
+                    <div>
+                        <div style="width: 15px; height: 15px; background-color: #CB6827; display: inline-block;"></div>
+                        <div  style="display: inline-block"> = dag kan niet bewerkt worden</div>
+                    </div>
+                @endif
                 {!! $roster->calendar() !!}
             </div>
         </div>

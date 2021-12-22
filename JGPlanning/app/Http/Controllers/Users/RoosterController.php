@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Users;
 
+use App\Helpers\BrowserDetection;
 use App\Http\Controllers\Controller;
 use App\Services\RosterService;
 use App\Services\TimeService;
@@ -26,6 +27,7 @@ class RoosterController extends Controller
 //  Functie om het rooster te laten zien
     public function index(RosterService $rosterService,CalendarService $calendarService, $week, $year)
     {
+        $browser = new BrowserDetection();
         if ($week > 52)
         {
             $targetYear = $year + 1;
@@ -95,7 +97,15 @@ class RoosterController extends Controller
 
 
         $weekDays     = Availability::WEEK_DAYS;
-        $roster = $rosterService->generateRosterData($user);
+        if (!$browser->isMobile())
+        {
+            $roster = $rosterService->generateRosterData($user);
+        }
+        else
+        {
+            $roster = null;
+        }
+
         $calendarData = $calendarService->generateCalendarData($weekDays, $user, $week, $year);
         $user_info = User::find($user);
 
@@ -803,14 +813,17 @@ class RoosterController extends Controller
             ->format('Y-m-d');
 
         $checkDisabled = DisabledDays::all()
-            ->where('id', $user)
-            ->where('weekday', $day);
+            ->where('user_id', $user)
+            ->where('weekday', $day)
+            ->where('start_week', $week)
+            ->where('start_year', $year);
 
         $checkRooster = Rooster::all()
             ->where('user_id', $user)
-            ->where('weekdays', $day)
-            ->where('start_week', $week)
+            ->where('weekday', $day)
+            ->where('week', $week)
             ->where('start_year', $year);
+
         if ($checkRooster->first())
         {
             if ($checkRooster->first()->finalized == true)
@@ -823,7 +836,10 @@ class RoosterController extends Controller
         {
             if ($checkDisabled->first()->by_admin == true)
             {
-                return back()->with(['message' => ['message' => 'Deze dag is door een admin uitgezet en kan dus niet door u aangepast worden.', 'type' => 'danger']]);
+                if (!Auth::user()->role->name == "admin" || !Auth::user()->role->name == "maintainer")
+                {
+                    return back()->with(['message' => ['message' => 'Deze dag is door een admin uitgezet en kan dus niet door u aangepast worden.', 'type' => 'danger']]);
+                }
             }
             if ($checkDisabled->first()->finalized == true)
             {

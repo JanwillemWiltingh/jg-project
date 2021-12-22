@@ -19853,4 +19853,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     background: #1A6686;
 }
 
+.legenda-mobile {
+    position: relative;
+    font-size: 10px !important;
+    left: -50px !important;
+    top: -40px !important;
+    width: 300% !important;
+}
 
