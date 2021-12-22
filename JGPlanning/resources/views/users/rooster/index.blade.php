@@ -35,6 +35,10 @@
                             " href="javascript:void(0)" id="week_rooster">
                                 Week
                             </button>
+
+                            <button class="btn jg-color-1" style="color: white">Zie de dagen van volgend jaar</button>
+{{--                            <button class="btn jg-color-1" style="color: white">Zie de dagen van vorig jaar</button>--}}
+                            <button class="btn jg-color-1" style="color: white">Zie de dagen van vorig jaar</button>
                             @include('calender')
                         @endif
                     </div>
