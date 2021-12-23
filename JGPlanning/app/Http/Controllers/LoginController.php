@@ -31,7 +31,7 @@ class LoginController extends Controller
             }else{
                 //singed wel in
                 $request->session()->regenerate();
-                return redirect()->route('dashboard.home')->with('msg', 'Signed in');
+                return redirect()->route('dashboard.home')->with(['message' => ['message' => 'Succesvol ingelogd', 'type' => 'success']]);
             }
         }
 

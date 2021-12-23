@@ -481,25 +481,6 @@ class RoosterController extends Controller
         return back()->with(['message' => ['message' => 'De aangegeven planning is aangepast.', 'type' => 'success']]);
     }
 
-//  Functie om een dag uit de rooster te deleten
-    public function delete_rooster($user, $weekday, $week)
-    {
-        $rooster = Rooster::all()
-            ->where('user_id', $user)
-            ->where('weekdays', $weekday)
-            ->where('start_week', '<=', $week)
-            ->where('end_week', '>=', $week)
-            ->first();
-
-        if (is_null($rooster))
-        {
-            return back()->with('error', "Couldn't find data of this day");
-        }
-
-        $rooster->delete();
-        return back();
-    }
-
 //  Functie om een gebruikers daggen die disabled zijn te sturen naar de database
     public function push_days($user, Request $request)
     {
