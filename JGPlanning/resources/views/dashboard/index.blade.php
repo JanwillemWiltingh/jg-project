@@ -5,11 +5,11 @@
     <div class="row" >
         <div class="col-12">
             <div class="
-        @if($browser->isMobile())
-                dashboard-welkom-mobile
-        @else
-                dashboard-welkom
-        @endif
+                @if($browser->isMobile())
+                        dashboard-welkom-mobile
+                @else
+                        dashboard-welkom
+                @endif
                 ">
                 <h1>Welkom </h1>
                 <a>{{$user_session['firstname']}} <i class="fa-solid fa-rocket"></i></a>
@@ -78,7 +78,10 @@
                                 <span class="dashboard-title-hours">{{ $now->format('j F, Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>
+{{--                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>--}}
+                                <h1 class="dashboard-title-hours">
+                                    {{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}
+                                </h1>
                             </div>
                         </div>
                     </div>
@@ -100,7 +103,7 @@
                                     <label style="float: left !important;">
                                         <text id="count"></text><text>/ 150</text>
                                     </label>
-                                    <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." maxlength="150" @if($start == False) @else DISABLED @endif></textarea>
+                                    <textarea class="form-control" id="comment" name="opmerking" rows="4" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." maxlength="150" @if($start == False) @else DISABLED @endif></textarea>
                                 </div>
                             </div>
                         </div>

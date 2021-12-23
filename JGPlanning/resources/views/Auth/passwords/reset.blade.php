@@ -1,6 +1,6 @@
 @extends('layouts.guest')
 @section('content')
-    <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%; position: absolute; margin-left: -100px;">
+    <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%; position: absolute; margin-left: -120px !important;">
     <div class="reset-page fadeInDown">
         <div class="row justify-content-center">
             <div class="col-md-8">
