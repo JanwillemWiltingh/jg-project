@@ -18,7 +18,7 @@
                     <tr>
                         <th scope="col">Datum</th>
                         <th scope="col">Dag</th>
-                        <th scope="col">Tijd ingeplanned</th>
+                        <th scope="col">Rooster uren</th>
                         <th scope="col">Tijd gewerkt</th>
                     </tr>
                 </thead>
@@ -36,7 +36,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="7">{{ $user['firstname'] }} heeft nog niet gewerkt en is nog niet ingepland geweest</td>
+                            <td colspan="7">{{ $user['firstname'] }} heeft nog niet gewerkt en is nog niet ingepland</td>
                         </tr>
                     @endif
                 </tbody>

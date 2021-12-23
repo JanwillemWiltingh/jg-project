@@ -183,7 +183,7 @@
         </div>
         @endif
         @endif
-        @if($user_session['role_id'] == \App\Models\Role::getRoleID('maintainer'))
+        @if($user_session['role_id'] == \App\Models\Role::getRoleID('maintainer') || $user_session['role_id'] == \App\Models\Role::getRoleID('admin'))
         {{-- Admin dashboard --}}
             <script>
                 function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id, roles)
