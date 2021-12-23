@@ -432,7 +432,15 @@ class User extends Authenticatable
      */
     public function plannedWorkAMonthInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->plannedWorkAMonthInSeconds($year, $month);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -492,7 +500,15 @@ class User extends Authenticatable
      */
     public function plannedWorkAWeekInHours(int $year, int $week, int $decimal_number=1): float {
         $time = $this->plannedWorkAWeekInSeconds($year, $week);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -546,7 +562,15 @@ class User extends Authenticatable
      */
     public function plannedWorkADayInHours(int $year, int $week, int $day, int $decimal_number=1): float {
         $time = $this->plannedWorkADayInSeconds($year, $week, $day);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -570,7 +594,15 @@ class User extends Authenticatable
 
     public function compareDayWorkedInHours(int $year, int $month, int $day, int $decimal_number=1): float {
         $time = $this->compareDayWorkedInSeconds($year, $month, $day);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     public function compareDayWorkedForHumans(int $year, int $month, int $day): string {
@@ -599,7 +631,15 @@ class User extends Authenticatable
      */
     public function compareWeekWorkedInHours(int $year, int $week, int $decimal_number=1): float {
         $time = $this->compareWeekWorkedInSeconds($year, $week);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -636,7 +676,15 @@ class User extends Authenticatable
      */
     public function compareMonthWorkedInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->compareMonthWorkedInSeconds($year, $month);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
