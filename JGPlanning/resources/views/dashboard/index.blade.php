@@ -45,7 +45,7 @@
             <div class="col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Gewerkte uren week</h3>
+                        <h3>Gewerkte uren week {{$now->weekOfYear}}</h3>
                         <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
