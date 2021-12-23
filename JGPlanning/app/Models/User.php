@@ -324,10 +324,18 @@ class User extends Authenticatable
 //            }
 //            else
 //            {
+
         $final_time = (Ceil($time /3600 / .25)) * .25;
 //            }
 
-        return number_format($final_time, $decimal_number);
+        if ($final_time > 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
