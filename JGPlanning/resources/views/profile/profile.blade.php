@@ -29,7 +29,7 @@
             </div>
             <div class="row">
                 <div class="form-group">
-                    <label class="black-label-text" for="email">Email</label>
+                    <label class="black-label-text" for="email">E-mail</label>
                     <input type="email" class="form-control" id="email" value="{{$user['email']}}" aria-describedby="email" placeholder="Email" readonly>
                 </div>
             </div>

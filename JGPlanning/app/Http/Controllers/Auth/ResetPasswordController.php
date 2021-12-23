@@ -38,7 +38,7 @@ class ResetPasswordController extends Controller {
 
         Mail::send('Auth.password_changed', ['user' => $user], function($message) use($request){
             $message->to($request->email);
-            $message->subject('Wachtwoord is aangepast');
+            $message->subject('Uw wachtwoord is zojuist aangepast');
         });
 
         return redirect()->route('login')->with(['message'=>['message' => 'Wachtwoord aangepast', 'type' => 'success']]);

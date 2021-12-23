@@ -142,7 +142,7 @@ class RoosterController extends Controller
                             'end_time' => '17:00:00',
                             'comment' => "",
                             'from_home' => 0,
-                            'weekdays' => $i,
+                            'weekday' => $i,
                             'user_id' => $id,
                             'week' => $a,
                             'year' => date('Y') + $x,
