@@ -52,10 +52,10 @@
                             </button>
                             @include('calender')
                             <strong>
-                                @if(!$user_info->checkIfRoosterIsSolidified(\Carbon\Carbon::now()->weekOfYear))
+                                @if(!$user_info->checkIfRoosterIsSolidified(\Carbon\Carbon::parse(date('Y-m-d'))->addWeek()))
                                     <button id="solidify_next_week" style="float: right !important; bottom: 65px; right: 60px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Zet rooster vast</button>
                                 @else
-                                    <button id="un_solidify_next_week" style="float: right !important; bottom: 65px; right: 240px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Rooster bewereken</button>
+                                    <button id="un_solidify_next_week" style="float: right !important; bottom: 65px; right: 60px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip">Rooster bewereken</button>
                                 @endif
                             </strong>
 
@@ -82,22 +82,6 @@
                                         {{request('year')}}
                                     </a>
                                 </div>
-{{--                                <p style="--}}
-{{--                                        text-align: center;--}}
-{{--                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);--}}
-{{--                                        -webkit-background-clip: text;--}}
-{{--                                        -webkit-text-fill-color: transparent;--}}
-{{--                                        font-size: 45px;--}}
-{{--                                        font-weight: bolder;--}}
-{{--                                        font-style: italic;--}}
-{{--                                        margin-top: -40px;--}}
-{{--                                    ">--}}
-{{--                                    <a style="font-size: 15px; border-bottom: 2px solid #1A6686;" href="#" data-bs-toggle="modal" data-bs-target="#disableModal">--}}
-{{--                                        <i class="fa fa-pencil-alt"></i>--}}
-{{--                                        Dagen beheren--}}
-{{--                                    </a>--}}
-{{--                                </p>--}}
-
                                 <button class="btn jg-color-1" style="
                                         color: black !important;
                                         float: right;

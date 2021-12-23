@@ -16,34 +16,47 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header" id="calender_hide">
+                <div class="card-header" id="calender_hide"@if($browser->isMobile()) style="display: none" @endif>
                     <div class="card-body">
-                        <button class="btn jg-color-1" style="
+                        @if(!$browser->isMobile())
+                            <button class="btn jg-color-1" style="
                                 color: white !important;
                                 float: right;
                                 top: 60px;
                                 right: 28px;
-                            ">Maand</button>
-                        <button class="btn jg-color-1 " style="
+                            " href="javascript:void(0)">Maand</button>
+                            <button class="btn jg-color-1 " style="
                                 color: black !important;
                                 float: right;
                                 top: 60px;
                                 right: 28px;
                                 background: lightgray !important;
                                 border-color: lightgray !important;
-                            " id="week_rooster">
-                            Week
-                        </button>
-                        @include('calender')
+                            " href="javascript:void(0)" id="week_rooster">
+                                Week
+                            </button>
+
+                            <div style=" position:absolute;left: 71.4% !important; top: 13% !important;">
+                                <a href="{{route('rooster.index', ['week' => request('week'), 'year' => date('Y') - 1])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y') - 1) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif">Vorig jaar</a>
+                                <a href="{{route('rooster.index', ['week' => request('week'), 'year' => date('Y')])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y')) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif">Dit jaar</a>
+                                <a href="{{route('rooster.index', ['week' => request('week'), 'year' => date('Y') + 1])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y') + 1) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif" >Volgend jaar</a>
+                            </div>
+
+                            @include('calender')
+                        @endif
                     </div>
                 </div>
-                <div class="card-header" id="rooster" style="display: none">
+                <div class="card-header" id="rooster" @if(!$browser->isMobile()) style="display: none" @endif>
                     <div class="card-body" @if(App\Models\Browser::isMobile()) style="width: 120% !important; right: 10%" @endif>
                         @if(session('status'))
                             <div class="alert alert-success" role="alert">
                                 {{ session('status') }}
                             </div>
                         @endif
+
+                            @if($browser->isMobile())
+                                <br>
+                            @endif
                             <div style="text-align: center !important; font-size: 25px">
                                 <a style="float: right; font-size: 25px" href="{{route('rooster.index', ['week' => request('week') + 1, 'year' => request('year')])}}"><i class="fa fa-arrow-right" ></i></a>
                                 <a style="float: left; font-size: 25px;" href="{{route('rooster.index', ['week' => request('week') - 1, 'year' => request('year')])}}"><i class="fa fa-arrow-left" ></i></a>
@@ -58,6 +71,8 @@
                                 </a>
                                 <br>
                             </div>
+
+                            <br>
 {{--                            <p style="--}}
 {{--                                        text-align: center;--}}
 {{--                                        background: -webkit-linear-gradient(#1A6686, #1C88A4);--}}
@@ -73,24 +88,24 @@
 {{--                                    Dagen beheren--}}
 {{--                                </a>--}}
 {{--                            </p>--}}
-
-                            <button class="btn jg-color-1" style="
+                            @if(!$browser->isMobile())
+                                <button class="btn jg-color-1" style="
                                         color: black !important;
                                         float: right;
                                         right: 28px;
                                         margin-bottom: 23px;
                                         background: lightgray !important;
                                         border-color: lightgray !important;
-                                    " id="maand">
-                                Maand
-                            </button>
-                            <button class="btn jg-color-1" style="
+                                    " href="javascript:void(0)" id="maand">
+                                    Maand
+                                </button>
+                                <button class="btn jg-color-1" style="
                                         color: white !important;
                                         float: right;
                                         right: 28px;
                                         margin-bottom: 23px;
-                                    ">Week</button>
-
+                                    " href="javascript:void(0)">Week</button>
+                            @endif
                             <br>
                             <form id="week_form">
                                 <input type="hidden" value="{{request('week')}}" id="hidden_week">

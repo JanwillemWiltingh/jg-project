@@ -14,7 +14,7 @@
                                     <!-- Single User selector -->
                                     <div class="form-group">
                                         <label for="users">Gebruikers</label>
-                                        <select name="user" class="form-control" id="users">
+                                        <select name="gebruiker" class="form-control" id="users">
                                             <option value="0">Alle gebruikers</option>
                                             @foreach($users as $user)
                                                 <option value="{{ $user['id'] }}" @if(old('user') == $user['id'] or session('user') == $user['id']) selected @endif>{{ ucfirst($user['firstname']) }} {{ucfirst($user['lastname'])}}</option>
@@ -26,7 +26,7 @@
                                     <!-- Date Picker -->
                                     <div class="form-group">
                                         <label for="date">Datum</label>
-                                        <input name="date" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now ?? $clock['date'] }}">
+                                        <input name="datum" id="date" type="date" class="form-control" value="{{ old('date') ?? session('date') ?? $now ?? $clock['date'] }}">
                                     </div>
                                     <button type="submit" class="btn btn-primary jg-color-3 border-0">Selecteer</button>
                                 </form>

@@ -13,7 +13,7 @@ use App\Models\{Availability, DisabledDays, Rooster, User};
 
 class RosterService
 {
-    public function generateRosterData($user_id)
+    public function generateRosterData($user_id, $year)
     {
         $rooster_array = [];
         $disabled_array = [];
@@ -24,24 +24,21 @@ class RosterService
 
 //      Get all weekdays
         $weekdays = Availability::WEEK_DAYS_MOB;
-
 //      Database data.
         $data = Rooster::all()
             ->where('user_id', $user_id);
         $disdays = DisabledDays::all()
             ->where('user_id', $user_id);
-
 //      Gets every day from this year
-        $days_of_year = CarbonPeriod::create(Carbon::parse(date('Y-m-d'))->startOfYear(), Carbon::parse(date('Y-m-d'))->endOfYear());
+        $days_of_year = CarbonPeriod::create(Carbon::parse(Carbon::createFromDate($year, '1', '1'))->startOfYear(), Carbon::parse(Carbon::createFromDate($year, '1', '1'))->endOfYear());
 
 //      Convert it all to an array of dates
         $dates = $days_of_year->toArray();
-
         foreach ($data as $d)
         {
             $date_rooster = $date
-                ->setISODate($d->start_year, $d->start_week)
-                ->addDays($d->weekdays - 1)
+                ->setISODate($d->start_year, $d->week)
+                ->addDays($d->weekday - 1)
                 ->format('Y-m-d');
             array_push($rooster_array, $date_rooster);
         }
@@ -71,15 +68,15 @@ class RosterService
                 {
                     if ($disabled->finalized)
                     {
-                        $comment = "Dag uitgezet en vastgezet.";
+                        $comment = "❌ Dag uitgezet en vastgezet.";
                     }
                     else if($disabled->by_admin)
                     {
-                        $comment = "Dag uitgezet door admin.";
+                        $comment = "❌ Dag uitgezet door admin.";
                     }
                     else
                     {
-                        $comment = "Dag uitgezet.";
+                        $comment = "❌ Dag uitgezet.";
                     }
                 }
                 else
@@ -104,18 +101,27 @@ class RosterService
                 $rooster = $data
                     ->where('user_id', $user_id)
                     ->where('start_year', $da->year)
-                    ->where('start_week', $da->weekOfYear)
-                    ->where('weekdays', $da->dayOfWeek)
+                    ->where('week', $da->weekOfYear)
+                    ->where('weekday', $da->dayOfWeek)
                     ->first();
                 if ($rooster)
                 {
                     if ($rooster->comment)
                     {
-                        $comment =  substr($rooster->start_time, 0, -3).' - ' . substr($rooster->end_time, 0, -3) . ': ' . $rooster->comment;
+                        $comment = substr($rooster->start_time, 0, -3).' - ' . substr($rooster->end_time, 0, -3) . ': ' . $rooster->comment;
                     }
                     else
                     {
-                        $comment = substr($rooster->start_time, 0, -3). ' - ' . substr($rooster->end_time, 0, -3) . ': Geen opmerking';
+                        $comment =substr($rooster->start_time, 0, -3). ' - ' . substr($rooster->end_time, 0, -3) . ': Geen opmerking';
+                    }
+
+                    if ($rooster->from_home)
+                    {
+                        $comment = '🏠 '. $comment;
+                    }
+                    else
+                    {
+                        $comment = '🏢 '. $comment;
                     }
 
                     if ($rooster->finalized)
@@ -142,12 +148,11 @@ class RosterService
                     [
                         'color' => $color,
                         'textColor' => 'white',
-                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/'
+                        'url' => '/rooster/disable_days/' . $da->weekOfYear . '/' . $da->year . '/' . $da->dayOfWeek . '/'. $user_id .'/',
                     ]
                 );
             }
         }
-
 //        dd($events);
         return \Calendar::addEvents($events)->setOptions(['lang' => 'nl', 'hiddenDays' => [0]]);
     }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use App\Models\Role;
+use App\Models\Rooster;
 use App\Models\User;
+use App\Services\TimeService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -75,7 +77,7 @@ class DashboardController extends Controller
         //  If the IP is correct let the user clock in
         if(Clock::isIPCorrect($request)) {
             $validated = $request->validate([
-                'comment' => ['nullable', 'string', 'max:150'],
+                'opmerking' => ['nullable', 'string', 'max:150'],
             ]);
 
             //  Get the logged-in user
@@ -123,7 +125,6 @@ class DashboardController extends Controller
                 }
             }
         }
-
         return redirect()->back();
     }
 }
