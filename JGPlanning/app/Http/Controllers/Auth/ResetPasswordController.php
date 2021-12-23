@@ -29,7 +29,7 @@ class ResetPasswordController extends Controller {
             ->where(['email' => $request->email, 'token' => $request->hiddentoken])
             ->first();
         if(!$updatePassword)
-            return back()->with(['message'=>['message' => 'Ongeldige Token!', 'type' => 'danger']]);
+            return back()->with(['message'=>['message' => 'Ongeldige token', 'type' => 'danger']]);
 
         $user = User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
@@ -38,7 +38,7 @@ class ResetPasswordController extends Controller {
 
         Mail::send('Auth.password_changed', ['user' => $user], function($message) use($request){
             $message->to($request->email);
-            $message->subject('Password has been reset');
+            $message->subject('Wachtwoord is aangepast');
         });
 
         return redirect()->route('login')->with(['message'=>['message' => 'Wachtwoord aangepast', 'type' => 'success']]);
