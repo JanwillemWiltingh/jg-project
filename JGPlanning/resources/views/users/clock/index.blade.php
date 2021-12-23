@@ -20,7 +20,7 @@
                                 <div class="form-group">
                                     @foreach (['month' => 'Maand', 'weeks' => 'Week', 'days' => 'Dag'] as $id => $format)
                                         <div class="form-check">
-                                            <input type="radio" name="date-format" id="{{ $id }}" value="{{ $id }}"
+                                            <input type="radio" name="datum-formaat" id="{{ $id }}" value="{{ $id }}"
                                                    @if($id == $input)
                                                    checked
                                                 @endif>
@@ -31,17 +31,17 @@
 
                                 <div class="form-group" id="month-group" @if($input != 'month') style="display: none;" @endif>
                                     <label for="month">Maand</label>
-                                    <input name="month" id="month" type="month" class="form-control" value="{{ old('month') ?? session('month') ?? $month }}">
+                                    <input name="maand" id="month" type="month" class="form-control" value="{{ old('month') ?? session('month') ?? $month }}">
                                 </div>
 
                                 <div class="form-group" id="week-group" @if($input != 'weeks') style="display: none;" @endif>
                                     <label for="weeks">Week</label>
-                                    <input name="weeks" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
+                                    <input name="`weken`" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
                                 </div>
 
                                 <div class="form-group" id="day-group" @if($input != 'days') style="display: none;" @endif>
                                     <label for="day">Dag</label>
-                                    <input name="day" id="day" type="date" class="form-control" value="{{ old('days') ?? session('day') ?? $day }}">
+                                    <input name="dag" id="day" type="date" class="form-control" value="{{ old('days') ?? session('day') ?? $day }}">
                                 </div>
 
                                 <button type="submit" class="btn btn-primary jg-color-3 border-0">Selecteer</button>
@@ -143,7 +143,7 @@
 {{--                    </table>--}}
 {{--                </div>--}}
 {{--            </div>--}}
-            {{ $entries->appends(['date-format' => $input, 'month' => $month, 'weeks' => $weeks, 'day' => $day])->links() }}
+            {{ $entries->appends(['datum-formaat' => $input, 'maand' => $month, 'weken' => $weeks, 'dag' => $day])->links() }}
         </div>
     </div>
 @endsection

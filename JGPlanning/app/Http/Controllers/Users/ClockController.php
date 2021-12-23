@@ -34,24 +34,24 @@ class ClockController extends Controller
         if($request->all() != []) {
             //  If the request is not empty validate it
             $validated = $request->validate([
-                'month' => ['required'],
-                'weeks' => ['required'],
-                'day' => ['required'],
-                'date-format' => ['required'],
+                'maand' => ['required'],
+                'weken' => ['required'],
+                'dag' => ['required'],
+                'datum-formaat' => ['required'],
             ]);
 
             //  Put the time in variables
-            $month = $validated['month'];
-            $weeks = $validated['weeks'];
-            $day = $validated['day'];
+            $month = $validated['maand'];
+            $weeks = $validated['weken'];
+            $day = $validated['dag'];
 
             //  Send the validated data back to the session
-            $request->session()->flash('month', $validated['month']);
-            $request->session()->flash('weeks', $validated['weeks']);
-            $request->session()->flash('day', $validated['day']);
-            $request->session()->flash('date-format', $validated['date-format']);
+            $request->session()->flash('month', $validated['maand']);
+            $request->session()->flash('weeks', $validated['weken']);
+            $request->session()->flash('day', $validated['dag']);
+            $request->session()->flash('date-format', $validated['datum-formaat']);
 
-            $input_field = $validated['date-format'];
+            $input_field = $validated['datum-formaat'];
         }
 
         $days = collect();

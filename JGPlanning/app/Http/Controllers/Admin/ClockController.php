@@ -42,18 +42,18 @@ class ClockController extends Controller
         if($request->all() != []) {
             //  Validate the data from the input fields
             $validated = $request->validate([
-                'date' => ['required', 'date'],
-                'user' => ['required', 'int']
+                'datum' => ['required', 'date'],
+                'gebruiker' => ['required', 'int']
             ]);
 
             //  When successfully validated flash this data back to the session
-            $request->session()->flash('date', $validated['date']);
-            $request->session()->flash('user', $validated['user']);
+            $request->session()->flash('date', $validated['datum']);
+            $request->session()->flash('user', $validated['gebruiker']);
 
             //  Get all the clocks
-            $clocks = Clock::all()->where('date', $validated['date']);
-            if($validated['user'] != 0) {
-                $clocks = $clocks->where('user_id', $validated['user']);
+            $clocks = Clock::all()->where('date', $validated['datum']);
+            if($validated['gebruiker'] != 0) {
+                $clocks = $clocks->where('user_id', $validated['gebruiker']);
             }
 
             //  Paginate the collection
@@ -115,14 +115,14 @@ class ClockController extends Controller
         $date = $clock['date'];
         //  Validate the end and start time and update them
         $valitated = $request->validate([
-            'time_start_1' => ['required'],
-            'time_start_2' => ['required'],
-            'time_end_1' => ['required'],
-            'time_end_2' => ['required']
+            'start_tijd_uren' => ['required'],
+            'start_tijd_minuten' => ['required'],
+            'eind_tijd_uren' => ['required'],
+            'eind_tijd_minuten' => ['required']
         ]);
 
-        $time_start = $time->roundTime(Carbon::createFromFormat('H:i', $valitated['time_start_1']. ":".$valitated['time_start_2'])->format('H:i:s'), '15');
-        $time_end = $time->roundTime(Carbon::createFromFormat('H:i', $valitated['time_end_1']. ":".$valitated['time_end_2'])->format('H:i:s'), '15');
+        $time_start = $time->roundTime(Carbon::createFromFormat('H:i', $valitated['start_tijd_uren']. ":".$valitated['start_tijd_minuten'])->format('H:i:s'), '15');
+        $time_end = $time->roundTime(Carbon::createFromFormat('H:i', $valitated['eind_tijd_uren']. ":".$valitated['eind_tijd_minuten'])->format('H:i:s'), '15');
 
         if ($time_start > $time_end)
         {

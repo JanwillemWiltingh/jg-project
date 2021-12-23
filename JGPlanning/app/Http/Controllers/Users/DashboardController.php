@@ -77,7 +77,7 @@ class DashboardController extends Controller
         //  If the IP is correct let the user clock in
         if(Clock::isIPCorrect($request)) {
             $validated = $request->validate([
-                'comment' => ['nullable', 'string', 'max:150'],
+                'opmerking' => ['nullable', 'string', 'max:150'],
             ]);
 
             //  Get the logged-in user

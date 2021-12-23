@@ -14,7 +14,7 @@
                                 for="phone_number">
                                 {{ __('general.'.'phone_number') }}
                             </label>
-                            <input type="tel" class="form-control" name="phone_number" pattern="[0-9]{10}" value="{{$user['phone_number']}}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">
+                            <input type="tel" class="form-control" name="telefoon_nummer" pattern="[0-9]{10}" value="{{$user['phone_number']}}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">
                             <label>Formaat: 0612345678</label>
                             {{--                            <input type="tel" class="form-control" name="phone_number" value="{{ old('phone_number') ?? $value ?? null }}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">--}}
 
@@ -37,7 +37,7 @@
                                     Rol
                                 </label>
                                 <select class="form-control"
-                                        name="roles"
+                                        name="rolen"
                                         id="roles">
                                     @foreach($roles as $role)
                                         <option value="{{$role['id']}}"
