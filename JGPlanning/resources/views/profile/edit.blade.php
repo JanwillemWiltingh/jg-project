@@ -11,19 +11,33 @@
                             <div class="form-group">
                                 <label class="black-label-text" for="password">Nieuw wachtwoord</label>
                                 <input type="password" class="form-control" id="password" name="password" aria-describedby="wachtwoord" placeholder="Nieuw wachtwoord">
+                                @if($errors->has('password'))
+                                    <div class="error">
+                                        <label class="warning-label">
+                                            {{ $errors->first('password') }}
+                                        </label>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="black-label-text" for="confirm-password">Bevestig nieuw wachtwoord</label>
-                                <input type="password" class="form-control" id="confirm-password" name="password-confirmation" aria-describedby="bevestig-wachtwoord" placeholder="Bevestig nieuw wachtwoord">
+                                <label class="black-label-text" for="password_confirmation">Bevestig nieuw wachtwoord</label>
+                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" aria-describedby="bevestig_wachtwoord" placeholder="Bevestig nieuw wachtwoord">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="black-label-text" for="confirm-password">Oud wachtwoord</label>
-                            <input type="password" class="form-control" id="confirm-password" name="old-password" aria-describedby="bevestig-wachtwoord" placeholder="Geef oud wachtwoord op">
+                            <label class="black-label-text" for="current_password">Oud wachtwoord</label>
+                            <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Geef oud wachtwoord op">
+                            @if($errors->has('current_password'))
+                                <div class="error">
+                                    <label class="warning-label">
+                                        {{ $errors->first('current_password') }}
+                                    </label>
+                                </div>
+                            @endif
                         </div>
                         <label>Pas je wachtwoord aan door je oud wachtwoord te gebruiken</label>
                     </div>

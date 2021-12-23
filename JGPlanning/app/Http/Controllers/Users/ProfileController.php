@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -63,20 +64,11 @@ class ProfileController extends Controller
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
-            'password' => ['nullable', 'string', 'confirmed'],
-            'password_confirmation' => ['nullable'],
-            'old_password' => ['nullable', 'different:password'],
+            'current_password' => ['nullable'],
+            'password' => ['nullable', 'confirmed', 'max:10', 'different:current_password'],
             'roles' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
             'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
-
-        //checken of wachtwoord overeenkomt
-
-
-        $user = User::all()->where('email', $auth_user['email'])->first();
-        if(!Hash::check($validated['password'], $user->password)){
-            return redirect()->back()->with(['message' => ['message' => 'Incorrecte gegevens', 'type' => 'danger']]);
-        }
 
         //checken of telefoonnummer wel begint met 06
         $number = substr($validated['phone_number'], 0, 2);
@@ -92,11 +84,24 @@ class ProfileController extends Controller
         }
 
         //update profile of user
-        $user->update([
-            'password' => Hash::make($validated['password']),
-            'role_id' => $validated['roles']??$auth_user['role_id'],
-            'phone_number' => $validated['phone_number']
-        ]);
+
+        if(empty($validated['password'])){
+            $user->update([
+                'role_id' => $validated['roles']??$auth_user['role_id'],
+                'phone_number' => $validated['phone_number'],
+            ]);
+        }else{
+            if(Hash::check($request->current_password, $user['password'])){
+                $user->update([
+                    'password' => Hash::make($validated['password']),
+                    'role_id' => $validated['roles']??$auth_user['role_id'],
+                    'phone_number' => $validated['phone_number'],
+                ]);
+            }else{
+                return redirect()->back()->with(['message' => ['message' => 'Gegevens incorrect', 'type' => 'danger']]);
+            }
+        }
+
         return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol bewerkt', 'type' => 'success']]);
     }
 }

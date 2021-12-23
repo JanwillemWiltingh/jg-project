@@ -97,7 +97,7 @@ class UserController extends Controller
             $message->to($request->email);
             $message->subject('Rooster vastgezet');
         });
-        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
+        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol aangemaakt', 'type' => 'success']]);
     }
 
     /**
@@ -166,7 +166,7 @@ class UserController extends Controller
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
-            return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
+            return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één beheerder over! Gebruiker niet aangepast', 'type' => 'danger']]);
         }
 
         $user->update([
@@ -208,10 +208,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol verwijderd!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol verwijderd', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol hersteld!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol hersteld', 'type' => 'success']]);
         }
     }
 }
