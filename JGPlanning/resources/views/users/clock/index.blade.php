@@ -3,6 +3,11 @@
 @section('content')
     @if($browser->isMobile())
     @endif
+
+    @php
+        $time = new \App\Services\TimeService();
+    @endphp
+
     <div class="row">
         <div class="col-md-3">
             <div class="row">
@@ -67,10 +72,10 @@
                                 <tr>
                                     <td style="width: 15%">{{ $work_day->format('d-m-Y') }}</td>
                                     <td style="width: 13%">{{ App\Models\Availability::WEEK_DAYS[$work_day->dayOfWeek] }}</td>
-                                    <td style="width: 10%">{{ $user->getStartTime($work_day) }}</td>
-                                    <td style="width: 10%">{{ $user->getEndTime($work_day) }}</td>
-                                    <td style="width: 10%">{{ sprintf('%.2f', $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day)) }}</td>
-                                    <td style="width: 1%"><a class="table-label" title="Hier zal comment info komen te staan"><i class="fa fa-eye icon-color"></i></a></td><!-- TODO: Add show to seen comments -->
+                                    <td style="width: 10%">{{ substr($time->roundTime($user->getStartTime($work_day), 15), 0, -3) }}</td>
+                                    <td style="width: 10%">{{ substr($time->roundTime($user->getEndTime($work_day), 15), 0, -3)}}</td>
+                                    <td style="width: 10%">{{ sprintf('%.2f', $user->workedInADayInHours($work_day->year, $work_day->month, $work_day->day, 2)) }}</td>
+                                    <td style="width: 1%"><a class="table-label" title="{{$user->getClockComment($work_day->year . '-' . $work_day->month . '-' .$work_day->day)}}"><i class="fa fa-eye icon-color"></i></a></td><!-- TODO: Add show to seen comments -->
                                 <tr>
                             @endforeach
                         @else

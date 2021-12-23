@@ -203,7 +203,14 @@ class User extends Authenticatable
      */
     public function WorkedInAMonthInHours(int $month, int $decimal_number=1): float {
             $time = $this->workedInAMonthInSeconds($month);
-            $final_time = (Ceil($time /3600 / .25)) * .25;
+//            if ($time /3600 < 0.25)
+//            {
+//                $final_time = 0;
+//            }
+//            else
+//            {
+                $final_time = (Ceil($time /3600 / .25)) * .25;
+//            }
 
             return number_format($final_time, $decimal_number);
     }
@@ -262,7 +269,15 @@ class User extends Authenticatable
      */
     public function workedInAWeekInHours(int $week, int $decimal_number=1): float {
         $time = $this->workedInAWeekInSeconds($week);
-        $final_time = (Ceil($time /3600 / .25)) * .25;
+//        if ($time /3600 < 0.25)
+//        {
+//            $final_time = 0;
+//        }
+//        else
+//        {
+            $final_time = (Ceil($time /3600 / .25)) * .25;
+//        }
+
         return number_format($final_time, $decimal_number);
     }
 
@@ -303,7 +318,15 @@ class User extends Authenticatable
      */
     public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
         $time = $this->workedInADayInSeconds($year, $month, $day);
+//            if ($time /3600 < 0.25)
+//            {
+//                $final_time = 0;
+//            }
+//            else
+//            {
         $final_time = (Ceil($time /3600 / .25)) * .25;
+//            }
+
         return number_format($final_time, $decimal_number);
     }
 
@@ -720,5 +743,19 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    public function getClockComment($date)
+    {
+        $clock = $this->clocks()->where('date', $date)->first();
+
+        if ($clock->comment)
+        {
+            return $clock->comment;
+        }
+        else
+        {
+            return "Geen opmerking";
+        }
     }
 }
