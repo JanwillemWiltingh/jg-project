@@ -120,9 +120,27 @@ class User extends Authenticatable
     }
 
     public function getNextRooster() {
+        $date = Carbon::now();
 //        Get the rooster and week number of today
         $current_rooster = self::getRoosterFromToday();
         $now_week_number = Carbon::now()->weekOfYear;
+        $now_year_number = Carbon::now()->year;
+
+        if (Carbon::now()->dayOfWeek < 6)
+        {
+            $now_day_number = Carbon::now()->dayOfWeek + 1;
+        }
+        else
+        {
+            $now_day_number = 1;
+        }
+
+        $disable = DisabledDays::all()->where('user_id', $this['id'])->where('start_week', '>=', $now_week_number)->where('start_year', $now_year_number)->where('weekday', $now_day_number);
+
+        if ($disable->count() > 0)
+        {
+            return null;
+        }
 
 //        Make an empty collection to add all roosters to
         $collection = collect();
@@ -130,10 +148,13 @@ class User extends Authenticatable
         if($current_rooster != null) {
 //            Get all the rooster from the user
             $roosters = Rooster::all()->where('user_id', $this['id']);
+//            Loop through all the roosters and disabled days and only get the roosters with an ID higher then the current rooster
 
-//            Loop through all the roosters and only get the roosters with an ID higher then the current rooster
-            foreach($roosters as $rooster) {
-                if($rooster['id'] > $current_rooster['id']) {
+
+            foreach($roosters as $rooster)
+            {
+                if ($rooster['id'] > $current_rooster['id'])
+                {
                     $collection->push($rooster);
                 }
             }
@@ -143,7 +164,8 @@ class User extends Authenticatable
                 return $collection->first();
             }
         } else {
-            $roosters = $this->roosters()->where('user_id', $this['id'])->where('week', '>=', $now_week_number)->get();
+            $roosters = $this->roosters()->where('user_id', $this['id'])->where('week', '>=', $now_week_number)->where('year', $now_year_number)->get();
+
 
             if($roosters->count() > 0) {
                 return $roosters->first();
