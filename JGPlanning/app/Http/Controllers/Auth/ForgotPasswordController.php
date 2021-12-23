@@ -47,6 +47,6 @@ class ForgotPasswordController extends Controller
             $message->subject('Reset Password Notification');
         });
 
-        return back()->with(['message'=>['message' => 'We hebben je een mail gestuurd', 'type' => 'success']]);
+        return back()->with(['message'=>['message' => 'We hebben je een mail gestuurd met daarin een reset link', 'type' => 'success']]);
     }
 }

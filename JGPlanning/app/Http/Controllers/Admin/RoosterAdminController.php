@@ -499,6 +499,6 @@ class RoosterAdminController extends Controller
             }
         }
 
-        return back()->with(['message' => ['message' => 'Volgende/Deze week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' weer opengezet.', 'type' => 'success']]);
+        return back()->with(['message' => ['message' => 'Volgende/deze week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' weer opengezet.', 'type' => 'success']]);
     }
 }
