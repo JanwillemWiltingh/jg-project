@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
-    <h1>Uw Profiel</h1>
+    <h1>Uw profiel</h1>
     <div class="card">
         <div class="card-body">
             <div class="row">

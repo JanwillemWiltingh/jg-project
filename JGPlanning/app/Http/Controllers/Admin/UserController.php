@@ -65,12 +65,12 @@ class UserController extends Controller
     public function store(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
-            'firstname' => ['required'],
-            'middlename' => ['nullable'],
-            'lastname' => ['required'],
+            'voornaam' => ['required'],
+            'tussenvoegsel' => ['nullable'],
+            'achternaam' => ['required'],
             'email' => ['required','unique:users,email'],
-            'roles' =>['required'],
-            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', 'unique:users,phone_number'],
+            'rol' =>['required'],
+            'telefoon_nummer' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', 'unique:users,phone_number'],
         ]);
 
         $current_user = Auth::user();
@@ -123,6 +123,9 @@ class UserController extends Controller
     {
 
         $user_session = Auth::user();
+        if($user['role_id'] == $user_session['role_id']){
+            return redirect()->route('profile.edit', $user_session['id']);
+        }
         if($user['role_id'] == Role::getRoleID('maintainer')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }

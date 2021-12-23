@@ -307,7 +307,7 @@
                     @foreach($users as $user)
                         @if($user->getRoosterFromToday() != null)
                         <tr class="
-                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->addMinutes(30)->format('H:i'))
+                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->addMinutes(31)->format('H:i'))
                                 table-danger
                             @elseif($user->isClockedIn() == false && Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') < Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') )
                                 table-danger

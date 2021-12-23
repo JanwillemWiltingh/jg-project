@@ -9,8 +9,8 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label class="black-label-text" for="password">Nieuw wachtwoord</label>
-                                <input type="password" class="form-control" id="password" name="password" aria-describedby="wachtwoord" placeholder="Nieuw wachtwoord">
+                                <label class="black-label-text" for="wachtwoord">Nieuw wachtwoord</label>
+                                <input type="password" class="form-control" id="wachtwoord" name="password" aria-describedby="wachtwoord" placeholder="Nieuw wachtwoord">
                                 @if($errors->has('password'))
                                     <div class="error">
                                         <label class="warning-label">
@@ -29,12 +29,12 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="black-label-text" for="current_password">Oud wachtwoord</label>
-                            <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Geef oud wachtwoord op">
-                            @if($errors->has('current_password'))
+                            <label class="black-label-text" for="huidig_wachtwoord">Oud wachtwoord</label>
+                            <input type="password" class="form-control" id="huidig_wachtwoord" name="huidig_wachtwoord" placeholder="Geef oud wachtwoord op">
+                            @if($errors->has('huidig_wachtwoord'))
                                 <div class="error">
                                     <label class="warning-label">
-                                        {{ $errors->first('current_password') }}
+                                        {{ $errors->first('huidig_wachtwoord') }}
                                     </label>
                                 </div>
                             @endif
@@ -49,12 +49,12 @@
                                 for="phone_number">
                                 {{ __('general.'.'phone_number') }}
                             </label>
-                            <input type="tel" class="form-control" name="telefoon_nummer" pattern="[0-9]{10}" value="{{$user['phone_number']}}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">
+                            <input type="tel" class="form-control" name="telefoon_nummer" pattern="[0-9]{10}" value="{{$user['phone_number']}}" aria-describedby="telefoon_nummer" placeholder="{{ __('general.'.'phone_number') }}">
                             <label>Formaat: 0612345678</label>
-                            @if($errors->has('phone_number'))
+                            @if($errors->has('telefoon_nummer'))
                                 <div class="error">
                                     <label class="warning-label">
-                                        {{ $errors->first('phone_number') }}
+                                        {{ $errors->first('telefoon_nummer') }}
                                     </label>
                                 </div>
                             @endif
@@ -62,7 +62,7 @@
                     </div>
                     @if($user['role_id'] == App\Models\Role::getRoleID('maintainer'))
                         <hr>
-                        <label class="black-label-text" style="font-size: 20px;">Geef jezelf een nieuwe rol(indien nodig)</label>
+                        <label class="black-label-text" style="font-size: 20px;">Geef jezelf een nieuwe rol (indien nodig)</label>
                         <div class="row">
                             <div class="form-group">
                                 <label class="black-label-text"

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="crud-user-form fadeInDown">
-    <h1>Bewerk Aantal gewerkte uren Gebruiker <a href="{{route('admin.clock.index')}}" style="font-size: 30px;"><i class="fa-solid fa-backward-step icon-color"></i></a></h1>
+    <h1>Bewerk gewerkte uren gebruiker</h1>
     <div class="card">
         <div class="card-body">
             <form method="get" action="{{ route('admin.clock.update', $clock['id']) }}">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="black-label-text" for="time_start">Start Tijd</label>
+                        <label class="black-label-text" for="time_start">Start tijd</label>
                         <div>
                             <input type="number" class="form-control" id="time_start" name="start_tijd_uren" min="1" max="18" value="{{substr($clock['start_time'], 0 , -6)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 49%; display: inline-block">
                             <input type="number" class="form-control" id="time_start" name="start_tijd_minuten" min="0" max="60" value="{{substr(substr($clock['start_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 49%; display: inline-block">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="black-label-text" for="time_end">Eind Tijd</label>
+                        <label class="black-label-text" for="time_end">Eind tijd</label>
                         <div>
                             <input type="number" class="form-control" id="time_end" name="eind_tijd_uren" min="1" max="18" value="{{substr($clock['end_time'], 0 , -6)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 49%; display: inline-block">
                             <input type="number" class="form-control" id="time_end" name="eind_tijd_minuten" min="0" max="60" value="{{substr(substr($clock['end_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 49%; display: inline-block">
@@ -48,6 +48,7 @@
                         <input type="text" class="form-control" id="total_hours" value="{{round(($total_difference - 0.5), 1)}}" aria-describedby="total_hours" placeholder="Totaal aantal uren" readonly>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary jg-color-3 border-0" value="Opslaan">Opslaan</button>
+                <button class="btn btn-primary jg-color-3 border-0" value="Ga terug"><a href="{{route('admin.clock.index')}}" style="text-decoration: none; color: white;">Ga terug</a></button>
+                <button style="float: right" type="submit" class="btn btn-primary jg-color-3 border-0" value="Opslaan">Opslaan</button>
             </form>
 @endsection
