@@ -2,14 +2,23 @@
 
 @section('content')
 {{--    Cards should imitate this: https://codepen.io/lesliesamafful/pen/oNXgmBG?editors=1010   --}}
+@if($errors->all())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @foreach ($errors->all() as $error)
+            {{ $error }}
+        @endforeach
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+@endif
     <div class="row" >
         <div class="col-12">
             <div class="
-        @if($browser->isMobile())
-                dashboard-welkom-mobile
-        @else
-                dashboard-welkom
-        @endif
+                @if($browser->isMobile())
+                        dashboard-welkom-mobile
+                @else
+                        dashboard-welkom
+                @endif
                 ">
                 <h1>Welkom </h1>
                 <a>{{$user_session['firstname']}} <i class="fa-solid fa-rocket"></i></a>
@@ -45,7 +54,7 @@
             <div class="col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Gewerkte uren week</h3>
+                        <h3>Gewerkte uren week {{$now->weekOfYear}}</h3>
                         <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
@@ -78,7 +87,10 @@
                                 <span class="dashboard-title-hours">{{ $now->format('j F, Y') }}</span>
                             </div>
                             <div class="align-self-center">
-                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>
+{{--                                <h1 class="dashboard-title-hours">{{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}/{{ sprintf('%.2f', $user_session->plannedWorkADayInHours($now->year, $now->weekOfYear, $now->dayOfWeek)) }}</h1>--}}
+                                <h1 class="dashboard-title-hours">
+                                    {{ sprintf('%.2f', $user_session->workedInADayInHours($now->year, $now->month, $now->day, 2))  }}
+                                </h1>
                             </div>
                         </div>
                     </div>
@@ -100,8 +112,7 @@
                                     <label style="float: left !important;">
                                         <text id="count"></text><text>/ 150</text>
                                     </label>
-                                    <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." maxlength="150
-" @if($start == False) @else DISABLED @endif></textarea>
+                                    <textarea class="form-control" id="comment" name="opmerking" rows="4" placeholder="Reden van te laat zijn: Bijv, Bus te laat, Afspraak bij tandarts, Afspraak bij huisarts, Etc." maxlength="150" @if($start == False) @else DISABLED @endif></textarea>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +192,7 @@
         </div>
         @endif
         @endif
-        @if($user_session['role_id'] == \App\Models\Role::getRoleID('maintainer'))
+        @if($user_session['role_id'] == \App\Models\Role::getRoleID('maintainer') || $user_session['role_id'] == \App\Models\Role::getRoleID('admin'))
         {{-- Admin dashboard --}}
             <script>
                 function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id, roles)
@@ -305,7 +316,7 @@
                     @foreach($users as $user)
                         @if($user->getRoosterFromToday() != null)
                         <tr class="
-                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->format('H:i'))
+                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->addMinutes(31)->format('H:i'))
                                 table-danger
                             @elseif($user->isClockedIn() == false && Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') < Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') )
                                 table-danger

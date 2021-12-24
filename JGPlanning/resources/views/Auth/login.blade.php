@@ -20,6 +20,7 @@
 </style>
 <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%">
 <x-alert></x-alert>
+
 <div class="login-page fadeInDown">
     <div class="login-form border shadow">
         <!-- Icon -->
@@ -37,7 +38,7 @@
 
             <input type="submit" class="login-button" value="Inloggen">
             <div id="formFooter" style="text-align: center; margin: 15px;">
-                <a class="underlineHover" href="{{route('forget.password.get')}}">Wachtwoord Vergeten?</a>
+                <a class="underlineHover" href="{{route('forget.password.get')}}">Wachtwoord vergeten?</a>
             </div>
             @error('status')
             <label class="error-label"><strong>{{$errors->first('status')}}</strong></label>

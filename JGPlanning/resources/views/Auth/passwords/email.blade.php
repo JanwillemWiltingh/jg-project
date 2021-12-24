@@ -1,8 +1,13 @@
 @extends('layouts.guest')
 @section('content')
-    <div class="container">
+    <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%; position: absolute; margin-left: -120px;">
+    <div class="reset-page fadeInDown">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <x-alert></x-alert>
+
+                <a href="/"><img src="{{asset('storage/img/JG Rooster v2.png')}}" alt="JG planning"></a>
+
                 <div class="card">
                     <div class="card-header">Reset wachtwoord</div>
 
@@ -31,7 +36,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary jg-color-3 border-0">
-                                        Send Password Reset Link
+                                        Stuur wachtwoord reset link
                                     </button>
                                 </div>
                             </div>

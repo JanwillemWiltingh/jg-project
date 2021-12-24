@@ -794,3 +794,95 @@ table.dataTable td.focus {
 input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
 }
+.reset-page {
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.fc-content {
+    overflow-x: scroll !important;
+}
+
+/* width */
+.fc-content::-webkit-scrollbar {
+    width: 20px;
+    height: 5px !important;
+}
+
+/* Handle */
+.fc-content::-webkit-scrollbar-thumb {
+    background: #1A6686;
+}
+
+.legenda-mobile {
+    position: relative;
+    font-size: 10px !important;
+    left: -50px !important;
+    top: -40px !important;
+    width: 300% !important;
+}
+
+/*Maandag*/
+.fc-widget-header .fc-mon {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-mon::after {
+    content: "Maandag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Dinsdag*/
+.fc-widget-header .fc-tue {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-tue::after {
+    content: "Dinsdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Woensdag*/
+.fc-widget-header .fc-wed {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-wed::after {
+    content: "Woensdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Donderdag*/
+.fc-widget-header .fc-thu {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-thu::after {
+    content: "Donderdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Vrijdag*/
+.fc-widget-header .fc-fri {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-fri::after {
+    content: "Vrijdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Zaterdag*/
+.fc-widget-header .fc-sat {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-sat::after {
+    content: "Zaterdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+

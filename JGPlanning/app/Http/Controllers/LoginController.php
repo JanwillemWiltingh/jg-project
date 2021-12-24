@@ -27,15 +27,15 @@ class LoginController extends Controller
             $user = User::all()->where('email', $validated['email'])->first();
             if(!empty($user['deleted_at'])){
                 //singed niet in
-                return redirect()->back()->withErrors(['status' =>'Login details are not valid']);
+                return redirect()->back()->withErrors(['status' =>'Login gegevens incorrect']);
             }else{
                 //singed wel in
                 $request->session()->regenerate();
-                return redirect()->route('dashboard.home')->with('msg', 'Signed in');
+                return redirect()->route('dashboard.home')->with(['message' => ['message' => 'Succesvol ingelogd', 'type' => 'success']]);
             }
         }
 
-        return redirect()->back()->withErrors(['status' =>'Login details are not valid']);
+        return redirect()->back()->withErrors(['status' =>'Login gegevens incorrect']);
     }
 
     public function logout(Request $request)

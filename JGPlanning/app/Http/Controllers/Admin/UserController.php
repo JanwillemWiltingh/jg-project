@@ -65,12 +65,12 @@ class UserController extends Controller
     public function store(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([
-            'firstname' => ['required'],
-            'middlename' => ['nullable'],
-            'lastname' => ['required'],
+            'voornaam' => ['required'],
+            'tussenvoegsel' => ['nullable'],
+            'achternaam' => ['required'],
             'email' => ['required','unique:users,email'],
-            'roles' =>['required'],
-            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', 'unique:users,phone_number'],
+            'rol' =>['required'],
+            'telefoon_nummer' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10', 'unique:users,phone_number'],
         ]);
 
         $current_user = Auth::user();
@@ -95,9 +95,9 @@ class UserController extends Controller
         ]);
         Mail::send('Auth.user', ['request' => $request], function($message) use($request){
             $message->to($request->email);
-            $message->subject('Nieuwe gebruiker JG Planning');
+            $message->subject('Nieuwe gebruiker JG Rooster');
         });
-        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol Aangemaakt', 'type' => 'success']]);
+        return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol aangemaakt', 'type' => 'success']]);
     }
 
     /**
@@ -123,6 +123,9 @@ class UserController extends Controller
     {
 
         $user_session = Auth::user();
+        if($user['role_id'] == $user_session['role_id']){
+            return redirect()->route('profile.edit', $user_session['id']);
+        }
         if($user['role_id'] == Role::getRoleID('maintainer')){
             return redirect()->route('admin.users.index')->with(['message'=> ['message' => 'Helaas gaat dit niet', 'type' => 'danger']]);
         }
@@ -166,7 +169,7 @@ class UserController extends Controller
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
-            return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
+            return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één beheerder over! Gebruiker niet aangepast', 'type' => 'danger']]);
         }
 
         $user->update([
@@ -208,10 +211,10 @@ class UserController extends Controller
         if(empty($user['deleted_at'])){
             $now = new DateTime();
             $user->update(['deleted_at' => $now]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol verwijderd!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol verwijderd', 'type' => 'success']]);
         }else{
             $user->update(['deleted_at' => NULL]);
-            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol hersteld!', 'type' => 'success']]);
+            return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol hersteld', 'type' => 'success']]);
         }
     }
 }

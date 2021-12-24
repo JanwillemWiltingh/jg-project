@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="fadeInDown">
     <div class="row">
         <div class="col-md-3">
             <div class="row">
@@ -8,9 +9,9 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Selectie Opties</h4>
+                            <h4 class="card-title">Selectie opties</h4>
                             <form method="GET" action="{{ route('admin.compare.index') }}">
-                                <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" value="{{ $user }}" name="user" default="Alle Gebruikers" capitalize="true"></x-forms.single-select>
+                                <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" value="{{ $user }}" name="user" default="Alle gebruikers" capitalize="true"></x-forms.single-select>
 
                                 <div class="form-group">
                                     @foreach (['month' => 'Maand', 'weeks' => 'Week', 'day' => 'Dag'] as $id => $format)
@@ -88,11 +89,11 @@
                                     </td>
                                 @elseif($input_field == 'weeks')
                                     <td class="uren" style="width: 22.5%">
-                                        {{ $user->plannedWorkAWeekInHours(2021, str_replace('W', '',explode('-', $weeks)[1])) }} uur
+                                        {{ $user->plannedWorkAWeekInHours(date('Y'), str_replace('W', '',explode('-', $weeks)[1]), $user->id ) }} uur
                                     </td>
                                 @else
                                     <td class="uren" style="width: 22.5%">
-                                        {{ $user->plannedWorkAMonthInHours(2021, explode('-', $month)[1]) }} uur
+                                        {{ $user->plannedWorkAMonthInHours(date('Y'), explode('-', $month)[1]) }} uur
                                     </td>
                                 @endif
                                 <td class="uren" style="width: 22.5%">
@@ -110,12 +111,12 @@
                                         {{ $user->compareDayWorkedInHours(Carbon\Carbon::parse($day)->format('Y'), Carbon\Carbon::parse($day)->format('m'), Carbon\Carbon::parse($day)->format('d')) }}
                                     </td>
                                 @elseif($input_field == 'weeks')
-                                    <td class="{{ $user->fieldColorForWeek(2021, $weeks) }} uren" style="width: 22.5%">
-                                        {{ abs($user->compareWeekWorkedInHours(2021, str_replace('W', '',explode('-', $weeks)[1]))) }} uur
+                                    <td class="{{ $user->fieldColorForWeek(date('Y'), $weeks) }} uren" style="width: 22.5%">
+                                        {{ abs($user->compareWeekWorkedInHours(date('Y'), str_replace('W', '',explode('-', $weeks)[1])), $user->id) }} uur
                                     </td>
                                 @else
-                                    <td class="{{ $user->fieldColorForMonth(2021, $month) }} uren" style="width: 22.5%">
-                                        {{ abs($user->compareMonthWorkedInHours(2021, explode('-', $month)[1])) }} uur
+                                    <td class="{{ $user->fieldColorForMonth(date('Y'), $month) }} uren" style="width: 22.5%">
+                                        {{ abs($user->compareMonthWorkedInHours(date('Y'), explode('-', $month)[1])) }} uur
                                     </td>
                                 @endif
 
@@ -142,7 +143,8 @@
                     </table>
                 </div>
             </div>
-            {{$users->links()}}
+{{--            {{$users->links()}}--}}
         </div>
     </div>
+</div>
 @endsection

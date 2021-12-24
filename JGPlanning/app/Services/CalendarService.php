@@ -25,7 +25,6 @@ class CalendarService
         $array1 = [];
         $array2 = [];
 
-
         for ($i = 0; $i < count($weekDays); $i++)
         {
             if ($i == 0) {
@@ -71,25 +70,21 @@ class CalendarService
 
                 $lesID = null;
 
-                foreach ($lessons->where('weekdays', $index) as $les)
+                foreach ($lessons->where('weekday', $index) as $les)
                 {
                     $final_db_date_start = $date
-                        ->setISODate($les->start_year, $les->start_week)
-                        ->addDays($les->weekdays - 1)
-                        ->format('Y-m-d');
-                    $final_db_date_end = $date
-                        ->setISODate($les->end_year, $les->end_week)
-                        ->addDays($les->weekdays - 1)
+                        ->setISODate($les->start_year, $les->week)
+                        ->addDays($les->weekday - 1)
                         ->format('Y-m-d');
 
-                    if (($array2[$index - 1] >= $final_db_date_start) && ($array2[$index - 1] <= $final_db_date_end))
+                    if ($array2[$index - 1] == $final_db_date_start)
                     {
                         $lesID = $les->id;
                     }
                 }
                 $lesson = $lessons
                     ->where('id', $lesID)
-                    ->where('weekdays', $index)
+                    ->where('weekday', $index)
                     ->where('start_time', $time['start']. ":00")
                     ->first();
 

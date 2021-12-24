@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
-        <h1>Klok Informatie</h1>
+        <h1>Klok informatie</h1>
         <div class="card">
             <div class="card-body">
                 <div class="row">
@@ -11,16 +11,16 @@
                             <div class="col-6">
                             {{-- Start Tijd --}}
                                 <div class="form-group">
-                                    <label class="black-label-text" for="start_time">Start Tijd</label>
-                                    <input type="time" class="form-control" id="start_time" value="@if(empty($clock['start_time']))NULL @else{{$clock['start_time']}}@endif" aria-describedby="start_time" placeholder="Start Tijd" disabled>
+                                    <label class="black-label-text" for="start_time">Start tijd</label>
+                                    <input type="text" class="form-control" id="start_time" value="@if(empty($clock['start_time']))- @else{{substr($clock['start_time'], 0, -3)}}@endif" aria-describedby="start_time" placeholder="Start Tijd" disabled>
                                 </div>
                             </div>
 
                             <div class="col-6">
                             {{-- Eind Tijd --}}
                                 <div class="form-group">
-                                    <label class="black-label-text" for="end_time">Eind Tijd</label>
-                                    <input type="time" class="form-control" id="end_time" value="@if(empty($clock['end_time']))NULL @else{{$clock['end_time']}}@endif" aria-describedby="end_time" placeholder="Eind Tijd" disabled>
+                                    <label class="black-label-text" for="end_time">Eind tijd</label>
+                                    <input type="text" class="form-control" id="end_time" value="@if(empty($clock['end_time']))- @else{{substr($clock['end_time'], 0, -3)}}@endif" aria-describedby="end_time" placeholder="Eind Tijd" disabled>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                         <input type="text" class="form-control" id="deleted_at" value="@if(empty($clock['deleted_at'])) - @else{{$clock['deleted_at']}}@endif" aria-describedby="deleted_at" placeholder="Verwijderd op" disabled>
                     </div>
                 </div>
-                <button class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('admin.clock.index')}}" style="text-decoration: none; color: white;">Ga Terug</a></button>
+                <button class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('admin.clock.index')}}" style="text-decoration: none; color: white;">Ga terug</a></button>
             </div>
         </div>
     </div>

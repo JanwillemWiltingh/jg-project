@@ -39,6 +39,8 @@
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css" />
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js"></script>
 
+        <!-- JQeury coockie -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     </head>
     <body>
     <div class="wrapper @if($browser->isMobile()) nav-container @endif">
@@ -74,51 +76,53 @@
                             </li>
                         @endcan
 
-                        @can('admin-users')
-                            <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
-                                <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
-                                    <i class="fa fa-user"></i>
-                                    <p>Gebruikers</p>
-                                </a>
-                            </li>
-                        @endcan
+                        @if(!$browser->isMobile())
+                            @can('admin-users')
+                                <li class="nav-item active {{ (request()->is('admin/users')) ? 'nav-color-active' : '' }}">
+                                    <a class="nav-link nav-color" href="{{route('admin.users.index')}}" style="margin-top: 60px;">
+                                        <i class="fa fa-user"></i>
+                                        <p>Gebruikers</p>
+                                    </a>
+                                </li>
+                            @endcan
 
-{{--                    Admin--}}
+    {{--                    Admin--}}
 
-                        @can('admin-clocker')
-                            <li class="nav-item active {{ (request()->is('admin/clock') or request()->is('admin/clock/*')) ? 'nav-color-active' : '' }}">
-                                <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
-                                    <i class="fa fa-clock"></i>
-                                    <p>Klok</p>
-                                </a>
-                            </li>
-                        @endcan
+                            @can('admin-clocker')
+                                <li class="nav-item active {{ (request()->is('admin/clock') or request()->is('admin/clock/*')) ? 'nav-color-active' : '' }}">
+                                    <a class="nav-link nav-color" href="{{route('admin.clock.index')}}" style="margin-top: 120px;">
+                                        <i class="fa fa-clock"></i>
+                                        <p>Klok</p>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        @can('admin-beschikbaarheid')
-                            <li class="nav-item active hover-navbar">
-                                <a class="nav-link nav-color" style="margin-top: 180px;">
-                                    <i class="fa fa-calendar"></i>
-                                    <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -20px; margin-right: -5px"></i>
-                                    <p>Beschikbaarheid beheren</p>
-                                </a>
-                            </li>
-
-                            <div class="hover-navbar-content">
-                                <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
-                                    <a class="nav-link nav-color" href="{{route('admin.rooster.index')}}" style="margin-top: 240px;">
-                                        <i class="fa fa-calendar" style="color: white"></i>
-                                        <p style="color: white">Rooster</p>
+                            @can('admin-beschikbaarheid')
+                                <li class="nav-item active hover-navbar">
+                                    <a class="nav-link nav-color" style="margin-top: 180px;">
+                                        <i class="fa fa-calendar"></i>
+                                        <i class="fa fa-angle-down" style="color: white; font-size: 15px; margin-left: -20px; margin-right: -5px"></i>
+                                        <p>Beschikbaarheid beheren</p>
                                     </a>
                                 </li>
 
-                                <li class="nav-item {{ (request()->is('admin/vergelijken') or request()->is('admin/vergelijken/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
-                                    <a class="nav-link nav-color" href="{{route('admin.compare.index')}}" style="margin-top: 300px;">
-                                        <i class="fa fa-calendar" style="color: white"></i>
-                                        <p style="color: white">Vergelijken</p>
-                                    </a>
-                                </li>
-                            </div>
-                        @endcan
+                                <div class="hover-navbar-content">
+                                    <li class="nav-item {{ (request()->is('rooster') or request()->is('rooster')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">
+                                        <a class="nav-link nav-color" href="{{route('admin.rooster.index')}}" style="margin-top: 240px;">
+                                            <i class="fa fa-calendar" style="color: white"></i>
+                                            <p style="color: white">Rooster</p>
+                                        </a>
+                                    </li>
+
+{{--                                    <li class="nav-item {{ (request()->is('admin/vergelijken') or request()->is('admin/vergelijken/*')) ? 'nav-color-active' : '' }}"  style="position:absolute; left: 22px;width: 90%">--}}
+{{--                                        <a class="nav-link nav-color" href="{{route('admin.compare.index')}}" style="margin-top: 300px;">--}}
+{{--                                            <i class="fa fa-calendar" style="color: white"></i>--}}
+{{--                                            <p style="color: white">Vergelijken</p>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+                                </div>
+                            @endcan
+                        @endif
 
                         @can('admin-logout')
                             @if($browser->isMobile())
@@ -239,14 +243,24 @@
                     <x-alert></x-alert>
 
                     @yield('content')
-
                     <!-- Sweet Alert -->
                     @if(!session()->has('first_time_session')) {{-- TODO: Betere manier vinden om dit uit te voeren --}}
+                    @if(\Illuminate\Support\Facades\Auth::user()->role->name == "admin" || \Illuminate\Support\Facades\Auth::user()->role->name == "maintainer" )
+                        @if(App\Models\Browser::isMobile())
+                            <script>
+                                swal({
+                                    title: "Kijk Uit!",
+                                    text: "Admin functies zijn niet bereikbaar op telefoon, log in op PC om admin functies te gebruiken.",
+                                    icon: "warning",
+                                });
+                            </script>
+                        @endif
+                    @endif
                         @if(App\Models\Browser::getBrowserName() == 'Firefox')
                             <script>
                                 swal({
                                     title: "Pas Op!",
-                                    text: "U gebruikt firefox, sommige functionaliteit zoals datum kieze werken nu niet!",
+                                    text: "U gebruikt firefox, sommige functionaliteit zullen eranders uitzien dan normaal.",
                                     icon: "warning",
                                 });
                             </script>
