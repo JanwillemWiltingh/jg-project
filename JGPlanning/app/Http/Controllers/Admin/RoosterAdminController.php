@@ -67,28 +67,7 @@ class RoosterAdminController extends Controller
         $user = User::all()
             ->where('id', $id)
             ->first();
-        if ($user->roosters->where('start_year', date('Y') + 1 - $min)->count() == 0)
-        {
-            for ($x = 1 - $min; $x <= 2; $x++)
-            {
-                for ($a = 1; $a <= 52; $a++)
-                {
-                    for ($i = 1; $i < 7; $i++)
-                    {
-                        Rooster::create([
-                            'start_time' => '08:30:00',
-                            'end_time' => '17:00:00',
-                            'comment' => "",
-                            'from_home' => 0,
-                            'weekdays' => $i,
-                            'user_id' => $id,
-                            'week' => $a,
-                            'year' => date('Y') + $x,
-                        ]);
-                    }
-                }
-            }
-        }
+
     }
 
     function disable_days_for_user($id, $min)
@@ -428,10 +407,10 @@ class RoosterAdminController extends Controller
         $rooster = Rooster::all();
         $disabled_days = DisabledDays::all();
 
-        $user = User::all()->where('role_id', Role::getRoleID('employee'));
+        $users = User::all()->where('role_id', Role::getRoleID('employee'));
         foreach ($rooster as $r)
         {
-            if (Carbon::parse($r->end_year)->isPast())
+            if (Carbon::parse($r->year) < date('Y'))
             {
                 $r->delete();
             }
@@ -439,16 +418,51 @@ class RoosterAdminController extends Controller
 
         foreach ($disabled_days as $dis)
         {
-            if (Carbon::parse($dis->end_year)->isPast())
+            if (Carbon::parse($dis->start_year) < date('Y'))
             {
                 $dis->delete();
             }
         }
 
-        foreach (User::all()->where('role_id', Role::getRoleID('employee')) as $user)
+        foreach ($users as $user)
         {
-            $this->plan_rooster_for_user($user->id, 0);
-            $this->disable_days_for_user($user->id, 0);
+            if (!$user->roosters()->where('year',  date('Y') + 1))
+            {
+                for ($x = 1; $x <= 2 ; $x++)
+                {
+                    for ($a = 1; $a <= 52; $a++)
+                    {
+                        for ($i = 1; $i < 7; $i++)
+                        {
+                            $new_rooster = new Rooster();
+
+                            $new_rooster->start_time =  '08:30:00';
+                            $new_rooster->end_time = '17:00:00';
+                            $new_rooster->comment =  "";
+                            $new_rooster->from_home = 0;
+                            $new_rooster->weekday = $i;
+                            $new_rooster->user_id = $user->id;
+                            $new_rooster->week = $a;
+                            $new_rooster->start_year = date('Y') + $x;
+                            $new_rooster->save();
+                        }
+                    }
+                }
+                for ($x = 1; $x <= 2; $x++)
+                {
+                    for ($a = 1; $a <= 52; $a++)
+                    {
+                        $new_disable = new DisabledDays();
+
+                        $new_disable->weekday = 6;
+                        $new_disable->user_id = $user->id;
+                        $new_disable->start_week = $a;
+                        $new_disable->start_year = date('Y') + $x;
+                        $new_disable->end_year = date('Y') + $x;
+                        $new_disable->save();
+                    }
+                }
+            }
         }
 
         return back();
