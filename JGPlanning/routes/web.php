@@ -94,7 +94,6 @@ Route::name('admin.')->prefix('admin/')->group(function (){
     Route::name('rooster.')->prefix('rooster/')->middleware('ensure.admin')->group(function (){
         Route::get('/', [RoosterAdminController::class, 'index_rooster'])->name('index');
         Route::get('/{user}/{week}/{year}', [RoosterAdminController::class, 'user_rooster'])->name('user_rooster');
-        Route::post('/{user}/{week}/available_days', [RoosterAdminController::class, 'push_days'])->name('push_days');
         Route::post('/{user}/disable_days', [RoosterAdminController::class, 'disable_days'])->name('disable_days');
         Route::post('/{user}/{week}/edit_disable_days', [RoosterAdminController::class, 'edit_disable_days'])->name('edit_disable_days');
         Route::get('/{user}/{week}/{weekday}', [RoosterAdminController::class, 'delete_disable_days'])->name('delete_disable_days');

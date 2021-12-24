@@ -65,13 +65,13 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'huidig_wachtwoord' => ['nullable'],
-            'password' => ['nullable', 'confirmed', 'max:10', 'different:current_password'],
+            'password' => ['nullable', 'confirmed', 'max:10', 'different:huidig_wachtwoord'],
             'roles' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
             'telefoon_nummer' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
 
         //checken of telefoonnummer wel begint met 06
-        $number = substr($validated['phone_number'], 0, 2);
+        $number = substr($validated['telefoon_nummer'], 0, 2);
         if($number != '06'){
             return redirect()->back()->with(['message' => ['message' => 'Telefoonnummer moet beginnen met 06', 'type' => 'danger']]);
         }
@@ -88,14 +88,14 @@ class ProfileController extends Controller
         if(empty($validated['password'])){
             $user->update([
                 'role_id' => $validated['roles']??$auth_user['role_id'],
-                'phone_number' => $validated['phone_number'],
+                'phone_number' => $validated['telefoon_nummer'],
             ]);
         }else{
-            if(Hash::check($request->current_password, $user['password'])){
+            if(Hash::check($request->huidig_wachtwoord, $user['password'])){
                 $user->update([
                     'password' => Hash::make($validated['password']),
                     'role_id' => $validated['roles']??$auth_user['role_id'],
-                    'phone_number' => $validated['phone_number'],
+                    'phone_number' => $validated['telefoon_nummer'],
                 ]);
             }else{
                 return redirect()->back()->with(['message' => ['message' => 'Gegevens incorrect', 'type' => 'danger']]);

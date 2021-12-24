@@ -152,7 +152,7 @@
                                 {{-- Firstname --}}
                                 <div class="form-group">
                                     <label class="black-label-text" for="voornaam">Voornaam</label>
-                                    <input type="text" class="form-control" id="voornaam" aria-describedby="voornaam" placeholder="Voornaam">
+                                    <input type="text" class="form-control" name="voornaam" id="voornaam" aria-describedby="voornaam" placeholder="Voornaam">
                                 </div>
                                 @if($errors->has('voornaam'))
                                     <div class="error">
@@ -166,14 +166,14 @@
                                 {{-- Middlename --}}
                                 <div class="form-group">
                                     <label class="black-label-text" for="tussenvoegsel">Tussenvoegsel</label>
-                                    <input type="text" class="form-control" id="tussenvoegsel" aria-describedby="tussenvoegsel" placeholder="Tussenvoegsel">
+                                    <input type="text" class="form-control" name="tussenvoegsel" id="tussenvoegsel" aria-describedby="tussenvoegsel" placeholder="Tussenvoegsel">
                                 </div>
                             </div>
                             <div class="col-4">
                                 {{-- Lastname --}}
                                 <div class="form-group">
                                     <label class="black-label-text" for="achternaam">Achternaam</label>
-                                    <input type="text" class="form-control" id="achternaam" aria-describedby="achternaam" placeholder="Achternaam">
+                                    <input type="text" class="form-control" id="achternaam" name="achternaam" aria-describedby="achternaam" placeholder="Achternaam">
                                 </div>
                                 @if($errors->has('achternaam'))
                                     <div class="error">
@@ -217,7 +217,7 @@
                                         Rol
                                     </label>
                                     <select class="form-control"
-                                            name="roles"
+                                            name="rol"
                                             id="roles_user">
                                         @foreach($roles as $role)
                                             <option value="{{$role['id']}}"
