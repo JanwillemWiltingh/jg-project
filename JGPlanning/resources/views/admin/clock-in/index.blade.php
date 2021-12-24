@@ -75,19 +75,19 @@
                                 </td>
                                 <!-- Edit button if user is maintainer -->
                                 @if($clock->allowedToEdit('maintainer') && empty($clock['deleted_at']))
-                                    <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}" title="Gebruikers Uren Aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
+                                    <td style="width: 1%;"><a class="table-label" href="{{route('admin.clock.edit', $clock['id'])}}" title="Gebruikers uren aanpassen"><i class="fa-solid fa-user-pen icon-color"></i></a></td>
                                 @else
                                     <td style="width: 0"><i class="fa-solid fa-user-lock"></i></td>
                                 @endif
 
                                 @if(empty($clock['deleted_at']))
                                 {{--If NOT deleted--}}
-                                    <td style="width: 1%;"><a class="table-label-red" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruikers Uren Verwijderen"><i class="fa-solid fa-user-slash"></i></a></td>
+                                    <td style="width: 1%;"><a class="table-label-red" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruikers uren verwijderen"><i class="fa-solid fa-user-slash"></i></a></td>
                                 @else
                                 {{--If deleted--}}
-                                    <td style="width: 1%;"><a class="table-label-green" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i></a></td>
+                                    <td style="width: 1%;"><a class="table-label-green" href="{{route('admin.clock.destroy',$clock['id'])}}" data-toggle="tooltip" title="Gebruiker herstellen"><i class="fa-solid fa-user-check"></i></a></td>
                                 @endif
-                                <td style="width: 1%"><a class="table-label" href="{{route('admin.clock.show', $clock['id'])}}" title="Gebruikers Uren Bekijken"><i class="fa fa-eye icon-color"></i></a></td>
+                                <td style="width: 1%"><a class="table-label" href="{{route('admin.clock.show', $clock['id'])}}" title="Gebruikers uren bekijken"><i class="fa fa-eye icon-color"></i></a></td>
                             </tr>
                         @endforeach
                     @else

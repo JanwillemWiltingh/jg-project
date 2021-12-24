@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="fadeInDown">
     <div class="row">
         <div class="col-md-3">
             <div class="row">
@@ -8,9 +9,9 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Selectie Opties</h4>
+                            <h4 class="card-title">Selectie opties</h4>
                             <form method="GET" action="{{ route('admin.compare.index') }}">
-                                <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" value="{{ $user }}" name="user" default="Alle Gebruikers" capitalize="true"></x-forms.single-select>
+                                <x-forms.single-select :array="$all_users" :fields="['firstname', 'middlename', 'lastname']" value="{{ $user }}" name="user" default="Alle gebruikers" capitalize="true"></x-forms.single-select>
 
                                 <div class="form-group">
                                     @foreach (['month' => 'Maand', 'weeks' => 'Week', 'day' => 'Dag'] as $id => $format)
@@ -142,7 +143,8 @@
                     </table>
                 </div>
             </div>
-            {{$users->links()}}
+{{--            {{$users->links()}}--}}
         </div>
     </div>
+</div>
 @endsection

@@ -150,15 +150,38 @@
                         <div class="row">
                             <div class="col-4">
                                 {{-- Firstname --}}
-                                <x-forms.input type="text" name="firstname"></x-forms.input>
+                                <div class="form-group">
+                                    <label class="black-label-text" for="voornaam">Voornaam</label>
+                                    <input type="text" class="form-control" id="voornaam" aria-describedby="voornaam" placeholder="Voornaam">
+                                </div>
+                                @if($errors->has('voornaam'))
+                                    <div class="error">
+                                        <label class="warning-label">
+                                            {{ $errors->first('voornaam') }}
+                                        </label>
+                                    </div>
+                                @endif
                             </div>
                             <div class="col-4">
                                 {{-- Middlename --}}
-                                <x-forms.input type="text" name="middlename"></x-forms.input>
+                                <div class="form-group">
+                                    <label class="black-label-text" for="tussenvoegsel">Tussenvoegsel</label>
+                                    <input type="text" class="form-control" id="tussenvoegsel" aria-describedby="tussenvoegsel" placeholder="Tussenvoegsel">
+                                </div>
                             </div>
                             <div class="col-4">
                                 {{-- Lastname --}}
-                                <x-forms.input type="text" name="lastname"></x-forms.input>
+                                <div class="form-group">
+                                    <label class="black-label-text" for="achternaam">Achternaam</label>
+                                    <input type="text" class="form-control" id="achternaam" aria-describedby="achternaam" placeholder="Achternaam">
+                                </div>
+                                @if($errors->has('achternaam'))
+                                    <div class="error">
+                                        <label class="warning-label">
+                                            {{ $errors->first('achternaam') }}
+                                        </label>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="row">
@@ -172,12 +195,12 @@
                                     for="phone_number">
                                     {{ __('general.'.'phone_number') }}
                                 </label>
-                                <input type="tel" class="form-control" name="phone_number" pattern="[0-9]{10}" value="{{ old('phone_number') ?? $value ?? null }}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">
+                                <input type="tel" class="form-control" name="telefoon_nummer" pattern="[0-9]{10}" value="{{ old('telefoon_nummer') ?? $value ?? null }}" aria-describedby="telefoon_nummer" placeholder="{{ __('general.'.'phone_number') }}">
                                 <label>Formaat: 0612345678</label>
-                                @if($errors->has('phone_number'))
+                                @if($errors->has('telefoon_nummer'))
                                     <div class="error">
                                         <label class="warning-label">
-                                            {{ $errors->first('phone_number') }}
+                                            {{ $errors->first('telefoon_nummer') }}
                                         </label>
                                     </div>
                                 @endif
@@ -197,7 +220,6 @@
                                             name="roles"
                                             id="roles_user">
                                         @foreach($roles as $role)
-                                        {{ $role }}
                                             <option value="{{$role['id']}}"
                                                     @if($role['id'] == 3)
                                                         selected
@@ -208,9 +230,11 @@
                                         @endforeach
                                     </select>
 
-                                    @if($errors->has('roles'))
+                                    @if($errors->has('rol'))
                                         <div class="error">
-                                            {{ $errors->first('roles') }}
+                                            <label class="warning-label">
+                                            {{ $errors->first('rol') }}
+                                            </label>
                                         </div>
                                     @endif
                                 </div>
@@ -247,7 +271,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($users as $user)
+        @foreach($users->sortBy('firstname') as $user)
             <tr class="{{ $user->isCurrentUser() }}">
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['firstname']}} {{$user['middlename']}} {{$user['lastname']}}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['phone_number']}}</td>

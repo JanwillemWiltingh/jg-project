@@ -25,93 +25,22 @@ class UsersSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         DB::table('users')->insert([
-            'firstname' => 'Robert',
-            'lastname' => 'Polman',
-            'email' => 'robertpolman1217@gmail.com',
+            'firstname' => 'Beheerder',
+            'lastname' => 'Backup',
+            'email' => 'planning@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
-            'password' => Hash::make('123'),
-            'phone_number' => '1234567890',
+            'password' => Hash::make('jgrooster1243'),
+            'phone_number' => '0612345678',
             'role_id' => Role::getRoleID('maintainer'),
         ]);
-
-        DB::table('users')->insert([
-            'firstname' => 'Jan-Willem',
-            'lastname' => 'Willtigh',
-            'email' => 'mail@mail.com',
-            'created_at' => Carbon::now(),
-            'password' => Hash::make('welkom'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('maintainer'),
-        ]);
-
-        DB::table('users')->insert([
-            'firstname' => 'Barend',
-            'lastname' => 'Noordhoff',
-            'email' => 'barend@gmail.com',
-            'created_at' => Carbon::now(),
-            'password' => Hash::make('welkom'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('admin'),
-        ]);
-
-        DB::table('users')->insert([
-            'firstname' => 'Hugo',
-            'lastname' => 'De Goot',
-            'email' => 'hugo@jgwebmarketing.nl',
-            'created_at' => Carbon::now(),
-            'password' => Hash::make('Hugo123@'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('employee'),
-        ]);
-
         DB::table('users')->insert([
             'firstname' => 'Gobi',
-            'lastname' => 'Achternaam',
+            'lastname' => 'Suganakumar',
             'email' => 'gobi@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
-            'password' => Hash::make('Gobi123@'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('admin'),
-        ]);
-
-        DB::table('users')->insert([
-            'firstname' => 'Sander',
-            'lastname' => 'Gehring',
-            'email' => 'sander@jgwebmarketing.nl',
-            'created_at' => Carbon::now(),
-            'password' => Hash::make('Sander123@'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('admin'),
-        ]);
-
-        DB::table('users')->insert([
-            'firstname' => 'Cas',
-            'lastname' => 'Achternaam',
-            'email' => 'cas@jgwebmarketing.nl',
-            'created_at' => Carbon::now(),
-            'password' => Hash::make('Cas123@'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('employee'),
-        ]);
-
-        DB::table('users')->insert([
-            'firstname' => 'Brian',
-            'lastname' => 'Achternaam',
-            'email' => 'brian@jgwebmarketing.nl',
-            'created_at' => Carbon::now(),
-            'password' => Hash::make('Brian123@'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('employee'),
-        ]);
-
-        DB::table('users')->insert([
-            'firstname' => 'Nick',
-            'lastname' => 'Achternaam',
-            'email' => 'nick@jgwebmarketing.nl',
-            'created_at' => Carbon::now(),
-            'password' => Hash::make('Nick123@'),
-            'phone_number' => '1234567890',
-            'role_id' => Role::getRoleID('employee'),
+            'password' => Hash::make('jgrooster1243'),
+            'phone_number' => '0612345678',
+            'role_id' => Role::getRoleID('maintainer'),
         ]);
     }
 }

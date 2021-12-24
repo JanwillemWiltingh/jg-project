@@ -62,6 +62,9 @@ class HashUserDataAfterTwoWeeks extends Command
                     'phone_number' => $phone_number
                 ]);
             }
+            if($days >= 730){
+                $user->delete();
+            }
 
         }
             return Command::SUCCESS;

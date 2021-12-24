@@ -54,7 +54,7 @@
             <div class="col-4 ">
                 <div class="card">
                     <div class="card-body gradient-dashboard">
-                        <h3>Gewerkte uren week</h3>
+                        <h3>Gewerkte uren week {{$now->weekOfYear}}</h3>
                         <hr>
                         <div class="media align-items-stretch">
                             <div class="align-self-center">
@@ -192,7 +192,7 @@
         </div>
         @endif
         @endif
-        @if($user_session['role_id'] == \App\Models\Role::getRoleID('maintainer'))
+        @if($user_session['role_id'] == \App\Models\Role::getRoleID('maintainer') || $user_session['role_id'] == \App\Models\Role::getRoleID('admin'))
         {{-- Admin dashboard --}}
             <script>
                 function getUserInfo(firstname, middlename, lastname, email, phone_number, created_at, updated_at, deleted_at, id, roles)
@@ -316,7 +316,7 @@
                     @foreach($users as $user)
                         @if($user->getRoosterFromToday() != null)
                         <tr class="
-                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->addMinutes(30)->format('H:i'))
+                            @if($user->isClockedIn() && $clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time > Carbon\Carbon::parse($user->getRoosterFromToday()['start_time'])->addMinutes(31)->format('H:i'))
                                 table-danger
                             @elseif($user->isClockedIn() == false && Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') < Carbon\Carbon::parse($user->getRoosterFromToday()['end_time'])->format('H:i') )
                                 table-danger

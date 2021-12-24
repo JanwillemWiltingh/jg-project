@@ -64,10 +64,10 @@ class ProfileController extends Controller
         $maintainer_count = User::all()->where('role_id', Role::getRoleID('maintainer'))->count();
 
         $validated = $request->validate([
-            'current_password' => ['nullable'],
+            'huidig_wachtwoord' => ['nullable'],
             'password' => ['nullable', 'confirmed', 'max:10', 'different:current_password'],
             'roles' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
-            'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
+            'telefoon_nummer' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
 
         //checken of telefoonnummer wel begint met 06
