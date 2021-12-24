@@ -5738,8 +5738,11 @@ $(document).ready(function () {
   $('#solidify_next_week').on('click', function () {
     window.location = "/admin/rooster/solidify/" + $('#admin_user_id_edit').val();
   });
-  $('#un_solidify_next_week').on('click', function () {
-    window.location = "/admin/rooster/un_solidify/" + $('#admin_user_id_edit').val();
+  $('#un_solidify_next_week_this').on('click', function () {
+    window.location = "/admin/rooster/un_solidify/" + $('#admin_user_id_edit').val() + "_this";
+  });
+  $('#un_solidify_next_week_next').on('click', function () {
+    window.location = "/admin/rooster/un_solidify/" + $('#admin_user_id_edit').val() + "_next";
   }); // plan_next_week
 
   $(document).ready(function () {

@@ -73,6 +73,7 @@ class DashboardController extends Controller
      */
     public function clock(Request $request): RedirectResponse
     {
+        $time = 0;
         //  If the IP is correct let the user clock in
         if(Clock::isIPCorrect($request)) {
             $validated = $request->validate([
@@ -102,7 +103,7 @@ class DashboardController extends Controller
             if($clocks->count() == 0) {
                 //  When there are no clocks add a new one
                 Clock::create([
-                    'comment' => $validated['comment'],
+                    'comment' => $validated['opmerking'],
                     'user_id' => $user['id'],
                     'start_time' => $time,
                     'end_time' => null,
@@ -110,20 +111,31 @@ class DashboardController extends Controller
                 ]);
             } else {
                 if($clocks->last()['end_time'] != null) {
+                    foreach ($clocks as $c)
+                    {
+                        echo $c->start_time. "<br>";
+                    }
+
                     //  If the last clock has an already filled in end time, make a new one
-                    Clock::create([
-                        'comment' => $validated['comment'],
-                        'user_id' => $user['id'],
-                        'start_time' => $time,
-                        'end_time' => null,
-                        'date' => $now->toDateString()
-                    ]);
+//                    Clock::create([
+//                        'comment' => $validated['opmerking'],
+//                        'user_id' => $user['id'],
+//                        'start_time' => $time,
+//                        'end_time' => null,
+//                        'date' => $now->toDateString()
+//                    ]);
                 } else {
                     //  Update the clock end time
+                    foreach ($clocks as $c)
+                    {
+                        echo $c->start_time. "<br>";
+                    }
+
                     $clocks->last()->update(['end_time' => $time]);
                 }
             }
         }
+        dd('asa');
         return redirect()->back();
     }
 }

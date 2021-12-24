@@ -78,25 +78,25 @@ class UserController extends Controller
             $validated['roles'] = Role::getRoleID('employee');
         }
         //checken of telefoonnummer wel begint met 06
-        $number = substr($validated['phone_number'], 0, 2);
+        $number = substr($validated['telefoon_nummer'], 0, 2);
         if($number != '06'){
             return redirect()->back()->with(['message' => ['message' => 'Telefoonnummer moet beginnen met 06', 'type' => 'danger']]);
         }
         //create random string of 20 for password
         $password = \Illuminate\Support\Str::random(20);
         User::create([
-            'firstname' => ucfirst($validated['firstname']),
-            'middlename' => ($validated['middlename']),
-            'lastname' => ucfirst($validated['lastname']),
+            'firstname' => ucfirst($validated['voornaam']),
+            'middlename' => ($validated['tussenvoegsel']),
+            'lastname' => ucfirst($validated['achternaam']),
             'email' => $validated['email'],
             'password' => Hash::make($password),
-            'role_id' => $validated['roles'],
-            'phone_number' => $validated['phone_number']
+            'role_id' => $validated['rol'],
+            'phone_number' => $validated['telefoon_nummer']
         ]);
-        Mail::send('Auth.user', ['request' => $request], function($message) use($request){
-            $message->to($request->email);
-            $message->subject('Nieuwe gebruiker JG Rooster');
-        });
+//        Mail::send('Auth.user', ['request' => $request], function($message) use($request){
+//            $message->to($request->email);
+//            $message->subject('Nieuwe gebruiker JG Rooster');
+//        });
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol aangemaakt', 'type' => 'success']]);
     }
 
