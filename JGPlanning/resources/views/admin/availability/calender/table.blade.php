@@ -10,6 +10,7 @@
                     </label>
                     @if($plan_in)
                         <form method="POST" action="{{route('admin.rooster.plan_next_year')}}" style="display: inline-block">
+                            @csrf
                             <button type="submit" class="btn jg-color-1 mar" style="color: white!important;">Plan volgend jaar in voor elke medewerker</button>
                         </form>
                     @endif

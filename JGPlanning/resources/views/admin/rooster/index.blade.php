@@ -50,6 +50,11 @@
                             " id="week_rooster">
                                 Week
                             </button>
+                            <div style=" position:absolute;left: 72.4% !important; top: 13% !important;">
+                                <a href="{{route('admin.rooster.user_rooster', ['user' => request('user') ,'week' => request('week'), 'year' => date('Y') - 1])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y') - 1) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif">Vorig jaar</a>
+                                <a href="{{route('admin.rooster.user_rooster', ['user' => request('user') ,'week' => request('week'), 'year' => date('Y')])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y')) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif">Dit jaar</a>
+                                <a href="{{route('admin.rooster.user_rooster', ['user' => request('user') ,'week' => request('week'), 'year' => date('Y') + 1])}}" class="btn jg-color-1" style="color: white; @if(request('year') == date('Y') + 1) background: lightgray !important; border-color: lightgray !important; color: black !important; @endif" >Volgend jaar</a>
+                            </div>
                             @include('calender')
                             <strong>
                                 @if(!$user_info->checkIfRoosterIsSolidified(\Carbon\Carbon::parse(date('Y-m-d'))->addWeek()))
