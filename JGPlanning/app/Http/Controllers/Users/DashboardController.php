@@ -91,7 +91,6 @@ class DashboardController extends Controller
             //  Round the current time to quarters
             $now = Carbon::now()->addHours(Clock::ADD_HOURS);
             $time = $timeservice->roundTime($now, 15);
-
             if($clocks->count() == 0) {
                 //  When there are no clocks add a new one
                 Clock::create([
@@ -115,7 +114,14 @@ class DashboardController extends Controller
                     //  Update the clock end time
                     foreach ($clocks as $c)
                     {
-                        array_push($time_final,(Ceil(Carbon::parse($c->start_time)->diffInMinutes(Carbon::parse($c->end_time)) / 60 / .25)) * .25 );
+                        if ($c->end_time == null)
+                        {
+                            array_push($time_final,(Ceil(Carbon::parse($c->start_time)->diffInMinutes(Carbon::parse($time)) / 60 / .25)) * .25 );
+                        }
+                        else
+                        {
+                            array_push($time_final,(Ceil(Carbon::parse($c->start_time)->diffInMinutes(Carbon::parse($c->end_time)) / 60 / .25)) * .25 );
+                        }
                     }
 
                     if (array_sum($time_final) > 5)
