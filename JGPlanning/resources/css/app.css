@@ -825,3 +825,64 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     width: 300% !important;
 }
 
+/*Maandag*/
+.fc-widget-header .fc-mon {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-mon::after {
+    content: "Maandag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Dinsdag*/
+.fc-widget-header .fc-tue {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-tue::after {
+    content: "Dinsdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Woensdag*/
+.fc-widget-header .fc-wed {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-wed::after {
+    content: "Woensdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Donderdag*/
+.fc-widget-header .fc-thu {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-thu::after {
+    content: "Donderdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Vrijdag*/
+.fc-widget-header .fc-fri {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-fri::after {
+    content: "Vrijdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+/*Zaterdag*/
+.fc-widget-header .fc-sat {
+    font-size: 0;
+}
+
+.fc-widget-header .fc-sat::after {
+    content: "Zaterdag";
+    font-size: 15px;
+    font-weight: lighter;
+}
+

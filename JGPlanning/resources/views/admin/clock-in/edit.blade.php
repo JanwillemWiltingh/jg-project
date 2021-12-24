@@ -20,28 +20,28 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="black-label-text" for="time_start">Start tijd</label>
+                        <label class="black-label-text" for="time_start">Start Tijd</label>
+                        <label class="black-label-text" for="time_end" style="margin-right: ">Eind Tijd</label>
                         <div>
-                            <input type="number" class="form-control" id="time_start" name="start_tijd_uren" min="1" max="18" value="{{substr($clock['start_time'], 0 , -6)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 49%; display: inline-block">
-                            <input type="number" class="form-control" id="time_start" name="start_tijd_minuten" min="0" max="60" value="{{substr(substr($clock['start_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 49%; display: inline-block">
+                            <input type="number" class="form-control" id="time_start" name="start_tijd_uren" min="1" max="18" value="{{substr($clock['start_time'], 0 , -6)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 22%; display: inline-block">
+                            <input type="number" class="form-control" id="time_start" name="start_tijd_minuten" min="0" max="60" value="{{substr(substr($clock['start_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_start" placeholder="Start Tijd" style="width: 22%; margin-right: 10%; display: inline-block">
+{{--                        </div>--}}
+{{--                        <div>--}}
+                            <input type="number" class="form-control" id="time_end" name="eind_tijd_uren" min="1" max="18" value="{{substr($clock['end_time'], 0 , -6)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 22%; display: inline-block">
+                            <input type="number" class="form-control" id="time_end" name="eind_tijd_minuten" min="0" max="60" value="{{substr(substr($clock['end_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 22%; display: inline-block">
                         </div>
+                        @if($errors->has('time_end'))
+                            <div class="error">{{ $errors->first('time_end') }}</div>
+                        @endif
                         @if($errors->has('time_start'))
                             <div class="error">{{ $errors->first('time_start') }}</div>
                         @endif
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="black-label-text" for="time_end">Eind tijd</label>
-                        <div>
-                            <input type="number" class="form-control" id="time_end" name="eind_tijd_uren" min="1" max="18" value="{{substr($clock['end_time'], 0 , -6)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 49%; display: inline-block">
-                            <input type="number" class="form-control" id="time_end" name="eind_tijd_minuten" min="0" max="60" value="{{substr(substr($clock['end_time'], 0 , -3), 3 , 3)}}" aria-describedby="time_end" placeholder="Eind Tijd" style="width: 49%; display: inline-block">
-                        </div>
-                        @if($errors->has('time_end'))
-                            <div class="error">{{ $errors->first('time_end') }}</div>
-                        @endif
-                    </div>
-                </div>
+{{--                <div class="row">--}}
+{{--                    <div class="form-group">--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="row">
                     <div class="form-group">
                         <label class="black-label-text" for="total_hours">Totaal aantal werkuren</label>

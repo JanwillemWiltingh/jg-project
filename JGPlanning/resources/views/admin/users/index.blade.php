@@ -213,17 +213,18 @@
                             <div class="row">
                                 <div class="form-group">
                                     <label class="black-label-text"
-                                           for="roles">
+                                           for="roles_user">
                                         Rol
                                     </label>
                                     <select class="form-control"
-                                            name="rol"
-                                            id="roles">
+                                            name="roles"
+                                            id="roles_user">
                                         @foreach($roles as $role)
                                             <option value="{{$role['id']}}"
-                                                    @if(old('roles') == $role['id'])
-                                                    selected
-                                                @endif>
+                                                    @if($role['id'] == 3)
+                                                        selected
+                                                @endif
+                                            >
                                                 {{__('general.' .$role['name'])}}
                                             </option>
                                         @endforeach

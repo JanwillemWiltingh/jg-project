@@ -27,7 +27,6 @@ class RoosterController extends Controller
 //  Functie om het rooster te laten zien
     public function index(RosterService $rosterService,CalendarService $calendarService, $week, $year)
     {
-//        dd($year);
         $browser = new BrowserDetection();
         if ($week > 52)
         {
@@ -45,11 +44,44 @@ class RoosterController extends Controller
 
         if ($checkDisabledDays->count() == 0)
         {
-            $this->disable_days_for_user(Auth::id(), 0);
+            for ($x = 0; $x <= 2 - 1; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    $new_disable = new DisabledDays();
+
+                    $new_disable->weekday = 6;
+                    $new_disable->user_id = Auth::id();
+                    $new_disable->start_week = $a;
+                    $new_disable->start_year = date('Y') + $x;
+                    $new_disable->end_year = date('Y') + $x;
+                    $new_disable->save();
+                }
+            }
         }
 
-        if ($checkRooster->count() == 0) {
-            $this->plan_rooster_for_user(Auth::id(), 0);
+        if ($checkRooster->count() == 0)
+        {
+            for ($x = 0; $x <= 2 - 1; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    for ($i = 1; $i < 7; $i++)
+                    {
+                        $new_rooster = new Rooster();
+
+                        $new_rooster->start_time =  '08:30:00';
+                        $new_rooster->end_time = '17:00:00';
+                        $new_rooster->comment =  "";
+                        $new_rooster->from_home = 0;
+                        $new_rooster->weekday = $i;
+                        $new_rooster->user_id = Auth::id();
+                        $new_rooster->week = $a;
+                        $new_rooster->start_year = date('Y') + $x;
+                        $new_rooster->save();
+                    }
+                }
+            }
         }
 
         $weekDays     = Availability::WEEK_DAYS;
@@ -122,58 +154,6 @@ class RoosterController extends Controller
             'disabled',
             'roster'
         ));
-    }
-
-    function plan_rooster_for_user($id, $min)
-    {
-        $user = User::all()
-            ->where('id', $id)
-            ->first();
-        if ($user->roosters->where('start_year', date('Y') + 1 - $min)->count() == 0)
-        {
-            for ($x = 1 - $min; $x <= 2; $x++)
-            {
-                for ($a = 1; $a <= 52; $a++)
-                {
-                    for ($i = 1; $i < 7; $i++)
-                    {
-                        Rooster::create([
-                            'start_time' => '08:30:00',
-                            'end_time' => '17:00:00',
-                            'comment' => "",
-                            'from_home' => 0,
-                            'weekday' => $i,
-                            'user_id' => $id,
-                            'week' => $a,
-                            'year' => date('Y') + $x,
-                        ]);
-                    }
-                }
-            }
-        }
-    }
-
-    function disable_days_for_user($id, $min)
-    {
-        $disabled = DisabledDays::all()
-            ->where('id', $id);
-        if ($disabled->where('start_year', date('Y') + 1 - $min)->count() == 0)
-        {
-            for ($x = 1 - $min; $x <= 2; $x++)
-            {
-                for ($a = 1; $a <= 52; $a++)
-                {
-                    Rooster::create([
-                        'weekdays' => 6,
-                        'user_id' => $id,
-                        'start_week' => $a,
-                        'end_week' => $a,
-                        'start_year' => date('Y') + $x,
-                        'end_year' => date('Y') + $x,
-                    ]);
-                }
-            }
-        }
     }
 
 //  Functie om een dag toe te voegen
