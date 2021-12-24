@@ -138,14 +138,49 @@ class RoosterAdminController extends Controller
         $checkDisabledDays = DisabledDays::all()
             ->where('user_id', $user);
 
+
         if ($checkDisabledDays->count() == 0)
         {
-            $this->disable_days_for_user($user, '1');
+            for ($x = 0; $x <= 2 - 1; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    $new_disable = new DisabledDays();
+
+                    $new_disable->weekday = 6;
+                    $new_disable->user_id = $user;
+                    $new_disable->start_week = $a;
+                    $new_disable->start_year = date('Y') + $x;
+                    $new_disable->end_year = date('Y') + $x;
+                    $new_disable->save();
+                }
+            }
         }
+
         if ($rooster->count() == 0)
         {
-            $this->plan_rooster_for_user($user, '1');
+            for ($x = 0; $x <= 2 - 1; $x++)
+            {
+                for ($a = 1; $a <= 52; $a++)
+                {
+                    for ($i = 1; $i < 7; $i++)
+                    {
+                        $new_rooster = new Rooster();
+
+                        $new_rooster->start_time =  '08:30:00';
+                        $new_rooster->end_time = '17:00:00';
+                        $new_rooster->comment =  "";
+                        $new_rooster->from_home = 0;
+                        $new_rooster->weekday = $i;
+                        $new_rooster->user_id = $user;
+                        $new_rooster->week = $a;
+                        $new_rooster->start_year = date('Y') + $x;
+                        $new_rooster->save();
+                    }
+                }
+            }
         }
+
 
         $weekDays = Availability::WEEK_DAYS;
 
@@ -159,7 +194,7 @@ class RoosterAdminController extends Controller
 
         $availability = Rooster::where('user_id', $user)->get();
         $calendarData = $calendarService->generateCalendarData($weekDays, $user_info->id, $week, $year);
-        $roster = $rosterService->generateRosterData($user_info->id);
+        $roster = $rosterService->generateRosterData($user_info->id, $year);
 
         return view('admin.rooster.index', compact(
             'weekDays',

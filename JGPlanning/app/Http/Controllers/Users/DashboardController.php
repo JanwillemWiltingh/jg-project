@@ -54,18 +54,17 @@ class DashboardController extends Controller
             }
         }
         $clocks = Clock::all();
-
-        return view('dashboard.index')->with([
-            'start' => $user_session->isClockedIn(),
-            'user_session' => $user_session,
-            'now' => $now,
-            'allowed' => Clock::isIPCorrect($request),
-            'enable_time' => $enable_time,
-            'users' => $users,
-            'day' => $day,
-            'roles' => $roles,
-            'clocks' => $clocks,
-        ]);
+            return view('dashboard.index')->with([
+                'start' => $user_session->isClockedIn(),
+                'user_session' => $user_session,
+                'now' => $now,
+                'allowed' => Clock::isIPCorrect($request),
+                'enable_time' => $enable_time,
+                'users' => $users,
+                'day' => $day,
+                'roles' => $roles,
+                'clocks' => $clocks,
+            ]);
     }
 
     /**
