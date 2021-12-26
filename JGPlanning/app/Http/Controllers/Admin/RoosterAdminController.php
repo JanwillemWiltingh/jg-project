@@ -520,9 +520,12 @@ class RoosterAdminController extends Controller
     {
         $user = explode("_", $userandthisweek)[0];
         $this_week = explode("_", $userandthisweek)[1];
+
         $user_info = User::all()
             ->where('id', $user)
             ->first();
+
+        $year = Carbon::now()->year;
 
         if ($this_week == "this")
         {
@@ -531,25 +534,28 @@ class RoosterAdminController extends Controller
         else
         {
             $week = Carbon::now()->addWeek()->weekOfYear;
+            if (Carbon::parse(Carbon::now()->addWeek()->year)->isNextYear())
+            {
+                $year = Carbon::now()->year + 1;
+            }
         }
-
 
         $disabled_days = DisabledDays::all()
             ->where('user_id', $user)
-            ->where('start_week', $week);
+            ->where('start_week', $week)
+            ->where('start_year', $year);
         $rooster = Rooster::all()
             ->where('user_id', $user)
-            ->where('week', $week);
+            ->where('week', $week)
+            ->where('start_year', $year);
+//        dd($rooster);
 
         foreach ($disabled_days as $dis)
         {
             if ($dis->finalized)
             {
                 $dis->finalized = false;
-            }
-            else
-            {
-                return back()->with(['message' => ['message' => 'Deze week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' al opengezet ', 'type' => 'danger']]);
+                $dis->update();
             }
         }
 
@@ -560,12 +566,7 @@ class RoosterAdminController extends Controller
                 $r->finalized = false;
                 $r->update();
             }
-            else
-            {
-                return back()->with(['message' => ['message' => 'Deze week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' al opengezet ', 'type' => 'danger']]);
-            }
         }
-
         return back()->with(['message' => ['message' => 'Volgende/deze week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' weer opengezet.', 'type' => 'success']]);
     }
 }
