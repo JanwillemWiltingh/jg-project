@@ -66,7 +66,7 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'huidig_wachtwoord' => ['nullable'],
             'password' => ['nullable', 'confirmed', 'max:10', 'different:huidig_wachtwoord'],
-            'roles' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
+            'rol' =>[Rule::requiredIf($auth_user['role_id'] == Role::getRoleID('maintainer'))],
             'telefoon_nummer' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
 
@@ -78,7 +78,7 @@ class ProfileController extends Controller
 
         // see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
         if ($auth_user['role_id'] == Role::getRoleID('maintainer')) {
-            if ($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']) {
+            if ($maintainer_count <= 1 && $auth_user['role_id'] != $validated['rol'] && $user['role_id'] == $auth_user['role_id']) {
                 return redirect()->back()->with(['message' => ['message' => 'Let op! Er is nog één maintainer over! Gebruiker niet aangepast', 'type' => 'danger']]);
             }
         }
@@ -87,21 +87,20 @@ class ProfileController extends Controller
 
         if(empty($validated['password'])){
             $user->update([
-                'role_id' => $validated['roles']??$auth_user['role_id'],
+                'role_id' => $validated['rol']??$auth_user['role_id'],
                 'phone_number' => $validated['telefoon_nummer'],
             ]);
         }else{
             if(Hash::check($request->huidig_wachtwoord, $user['password'])){
                 $user->update([
                     'password' => Hash::make($validated['password']),
-                    'role_id' => $validated['roles']??$auth_user['role_id'],
+                    'role_id' => $validated['rol']??$auth_user['role_id'],
                     'phone_number' => $validated['telefoon_nummer'],
                 ]);
             }else{
                 return redirect()->back()->with(['message' => ['message' => 'Gegevens incorrect', 'type' => 'danger']]);
             }
         }
-
         return redirect()->back()->with(['message' => ['message' => 'Gebruiker succesvol bewerkt', 'type' => 'success']]);
     }
 }
