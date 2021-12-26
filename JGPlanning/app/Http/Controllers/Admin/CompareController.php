@@ -56,7 +56,7 @@ class CompareController extends Controller
         });
 
         //  Paginate the users
-        $users = (new CollectionPagination)->paginate($users, 10, request('page'), ['path' => 'vergelijken']);
+//        $users = (new CollectionPagination)->paginate($users, 10, request('page'), ['path' => 'vergelijken']);
 
         //  Return data
         return view('admin.compare.index')->with([

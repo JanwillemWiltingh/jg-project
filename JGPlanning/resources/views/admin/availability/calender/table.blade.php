@@ -9,9 +9,9 @@
                         <p>Kies een gebruiker waarvan je de rooster wilt bewerken</p>
                     </label>
                     @if($plan_in)
-                        <form method="POST" action="{{route('admin.rooster.plan_next_year')}}">
+                        <form method="POST" action="{{route('admin.rooster.plan_next_year')}}" style="display: inline-block">
                             @csrf
-                            <button type="submit" class="btn jg-color-1 " style="color: white !important; text-transform: capitalize !important; font-size: 12px !important; float: right !important; margin: 0 !important; padding: 5px 15px">Plan volgend jaar in voor elke gebruiker</button>
+                            <button type="submit" class="btn jg-color-1 mar" style="color: white!important;">Plan volgend jaar in voor elke medewerker</button>
                         </form>
                     @endif
                 </div>

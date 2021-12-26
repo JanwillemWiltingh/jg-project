@@ -9,6 +9,10 @@
             document.getElementById('lastname').value = lastname;
             document.getElementById('email').value = email;
             document.getElementById('admin_user_id_edit').value = id;
+            document.getElementById('phone_number').value = phone_number;
+            document.getElementById('updated_at').value = updated_at;
+            document.getElementById('created_at').value = created_at;
+            document.getElementById('deleted_at').value = deleted_at;
 
             if (roles === "3")
             {
@@ -115,7 +119,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label class="black-label-text" for="deleted_at">Gebruiker verwijderd</label>
-                                <input type="text" class="form-control" id="deleted_at" value="@if(empty($user['deleted_at'])) - @else{{$user['deleted_at']}} @endif" aria-describedby="updated_at" placeholder="Gebruiker Verwijderd" disabled>
+                                <input type="text" class="form-control" id="deleted_at" value="@if(empty($user['deleted_at']))- @else{{$user['deleted_at']}} @endif" aria-describedby="updated_at" placeholder="Gebruiker Verwijderd" disabled>
                             </div>
                         </div>
                     </div>
@@ -127,9 +131,6 @@
                         @elseif($user_session['role_id'] == App\Models\Role::getRoleID('admin') && empty($user['deleted_at']))
                             <i class="fa-solid fa-user-lock"></i>
                         @endif
-                        <strong>
-                            <button id="solidify_next_week" style="float: right !important; bottom: 45px" class="btn btn-primary jg-color-3 border-0" href="" data-toggle="tooltip" title="Gebruiker Aanpassen">Zet rooster vast</button>
-                        </strong>
                     </div>
                     <input type="hidden" id="admin_user_id_edit">
                 </div>
@@ -149,15 +150,38 @@
                         <div class="row">
                             <div class="col-4">
                                 {{-- Firstname --}}
-                                <x-forms.input type="text" name="firstname"></x-forms.input>
+                                <div class="form-group">
+                                    <label class="black-label-text" for="voornaam">Voornaam</label>
+                                    <input type="text" class="form-control" name="voornaam" id="voornaam" aria-describedby="voornaam" placeholder="Voornaam">
+                                </div>
+                                @if($errors->has('voornaam'))
+                                    <div class="error">
+                                        <label class="warning-label">
+                                            {{ $errors->first('voornaam') }}
+                                        </label>
+                                    </div>
+                                @endif
                             </div>
                             <div class="col-4">
                                 {{-- Middlename --}}
-                                <x-forms.input type="text" name="middlename"></x-forms.input>
+                                <div class="form-group">
+                                    <label class="black-label-text" for="tussenvoegsel">Tussenvoegsel</label>
+                                    <input type="text" class="form-control" name="tussenvoegsel" id="tussenvoegsel" aria-describedby="tussenvoegsel" placeholder="Tussenvoegsel">
+                                </div>
                             </div>
                             <div class="col-4">
                                 {{-- Lastname --}}
-                                <x-forms.input type="text" name="lastname"></x-forms.input>
+                                <div class="form-group">
+                                    <label class="black-label-text" for="achternaam">Achternaam</label>
+                                    <input type="text" class="form-control" id="achternaam" name="achternaam" aria-describedby="achternaam" placeholder="Achternaam">
+                                </div>
+                                @if($errors->has('achternaam'))
+                                    <div class="error">
+                                        <label class="warning-label">
+                                            {{ $errors->first('achternaam') }}
+                                        </label>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         <div class="row">
@@ -171,12 +195,12 @@
                                     for="phone_number">
                                     {{ __('general.'.'phone_number') }}
                                 </label>
-                                <input type="tel" class="form-control" name="phone_number" pattern="[0-9]{10}" value="{{ old('phone_number') ?? $value ?? null }}" aria-describedby="phone_number" placeholder="{{ __('general.'.'phone_number') }}">
+                                <input type="tel" class="form-control" name="telefoon_nummer" pattern="[0-9]{10}" value="{{ old('telefoon_nummer') ?? $value ?? null }}" aria-describedby="telefoon_nummer" placeholder="{{ __('general.'.'phone_number') }}">
                                 <label>Formaat: 0612345678</label>
-                                @if($errors->has('phone_number'))
+                                @if($errors->has('telefoon_nummer'))
                                     <div class="error">
                                         <label class="warning-label">
-                                            {{ $errors->first('phone_number') }}
+                                            {{ $errors->first('telefoon_nummer') }}
                                         </label>
                                     </div>
                                 @endif
@@ -189,25 +213,28 @@
                             <div class="row">
                                 <div class="form-group">
                                     <label class="black-label-text"
-                                           for="roles">
+                                           for="roles_user">
                                         Rol
                                     </label>
                                     <select class="form-control"
-                                            name="roles"
-                                            id="roles">
+                                            name="rol"
+                                            id="roles_user">
                                         @foreach($roles as $role)
                                             <option value="{{$role['id']}}"
-                                                    @if($role['id'] == '3')
-                                                    selected
-                                                @endif>
+                                                    @if($role['id'] == 3)
+                                                        selected
+                                                @endif
+                                            >
                                                 {{__('general.' .$role['name'])}}
                                             </option>
                                         @endforeach
                                     </select>
 
-                                    @if($errors->has('roles'))
+                                    @if($errors->has('rol'))
                                         <div class="error">
-                                            {{ $errors->first('roles') }}
+                                            <label class="warning-label">
+                                            {{ $errors->first('rol') }}
+                                            </label>
                                         </div>
                                     @endif
                                 </div>
@@ -224,12 +251,13 @@
 
 <div class="fadeInDown crud-table">
 
-    <text class="crud-user-form-title icon-color">Alle gebruikers</text><br>
-    <div style="display: inline-block">
-        <input type="text" id="search" class="form-control" placeholder="Zoek..." style="width: 100%">
-    </div>
-    <div style="display: inline-block">
-        <a class="btn btn-primary jg-color-3 border-0" style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserCreate" onclick="getRoles('{{$roles}}')">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
+    <div id="title-wrapper">
+        <div id="title-first">
+            <text class="crud-user-form-title icon-color">Alle gebruikers</text><br>
+        </div>
+        <div id="title-second">
+            <a class="btn btn-primary jg-color-3 border-0" style="float:right; cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserCreate" onclick="getRoles('{{$roles}}')">Nieuwe gebruiker <i class="fa-solid fa-plus"></i></a>
+        </div>
     </div>
 
     <br>
@@ -243,7 +271,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($users as $user)
+        @foreach($users->sortBy('firstname') as $user)
             <tr class="{{ $user->isCurrentUser() }}">
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['firstname']}} {{$user['middlename']}} {{$user['lastname']}}</td>
                 <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}', '{{$user['created_at']}}','{{$user['updated_at']}}', '{{$user['deleted_at']}}','{{$user['id']}}','{{$user['role_id']}}')">{{$user['phone_number']}}</td>
@@ -279,16 +307,16 @@
                                     <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip"><i class="fa-solid fa-user-slash"></i></a>
                                 @else
                                     <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
-                                        @endif
-                                        @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && $user['role_id'] != App\Models\Role::getRoleID('maintainer'))
-                                            @if(empty($user['deleted_at']))
-                                                <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
-                                            @else
-                                                <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
-                                                    @endif
-                                                    @else
-                                                        <i class="fa-solid fa-user-lock"></i>
                                 @endif
+                            @elseif($user_session['role_id'] == App\Models\Role::getRoleID('maintainer') && $user['role_id'] != App\Models\Role::getRoleID('maintainer'))
+                                @if(empty($user['deleted_at']))
+                                    <a class="table-label-red delete-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Verwijderen"><i class="fa-solid fa-user-slash"></i></a>
+                                @else
+                                <a class="table-label-green restore-link" data-name="{{ str_replace('  ', ' ', $user['firstname']." ".$user['middlename']." ".$user['lastname']) }}" href="{{route('admin.users.destroy',$user['id'])}}" data-toggle="tooltip" title="Gebruiker Herstellen"><i class="fa-solid fa-user-check"></i><a/>
+                                @endif
+                            @else
+                                <i class="fa-solid fa-user-lock"></i>
+                            @endif
                         </strong>
                     @endif
                 </td>

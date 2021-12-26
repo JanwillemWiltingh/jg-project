@@ -1,7 +1,15 @@
 @extends('layouts.guest')
 @section('content')
+    <img src="{{asset('storage/img/BG.png')}}" style="width: 100%; height: 100%; position: absolute; margin-left: -120px !important;">
+    <div class="reset-page fadeInDown">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <x-alert></x-alert>
 
-    <div class="container">
+                <a href="/"><img src="{{asset('storage/img/JG Rooster v2.png')}}" alt="JG planning"></a>
+
+            </div>
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -38,12 +46,14 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Bevestig nieuw wachtwoord</label>
+                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Voer wachtwoord opnieuw in</label>
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                                 </div>
                             </div>
-
+                            <div class="col-md-6 offset-md-4">
+                                <a href="{{route('forget.password.get')}}">Ga terug</a>
+                            </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary jg-color-3 border-0">
@@ -57,5 +67,4 @@
             </div>
         </div>
     </div>
-
 @endsection

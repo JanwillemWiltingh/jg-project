@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Models\Clock;
 use App\Models\Role;
+use App\Models\Rooster;
 use App\Models\User;
+use App\Services\TimeService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -52,18 +54,17 @@ class DashboardController extends Controller
             }
         }
         $clocks = Clock::all();
-
-        return view('dashboard.index')->with([
-            'start' => $user_session->isClockedIn(),
-            'user_session' => $user_session,
-            'now' => $now,
-            'allowed' => Clock::isIPCorrect($request),
-            'enable_time' => $enable_time,
-            'users' => $users,
-            'day' => $day,
-            'roles' => $roles,
-            'clocks' => $clocks,
-        ]);
+            return view('dashboard.index')->with([
+                'start' => $user_session->isClockedIn(),
+                'user_session' => $user_session,
+                'now' => $now,
+                'allowed' => Clock::isIPCorrect($request),
+                'enable_time' => $enable_time,
+                'users' => $users,
+                'day' => $day,
+                'roles' => $roles,
+                'clocks' => $clocks,
+            ]);
     }
 
     /**
@@ -72,65 +73,69 @@ class DashboardController extends Controller
      */
     public function clock(Request $request): RedirectResponse
     {
+        $timeservice = new TimeService();
+        $time_final = [];
+
+        //  If the IP is correct let the user clock in
         if(Clock::isIPCorrect($request)) {
             $validated = $request->validate([
-                'comment' => ['nullable', 'string', 'max:150'],
+                'opmerking' => ['nullable', 'string', 'max:150'],
             ]);
 
+            //  Get the logged-in user
             $user = Auth::user();
-            $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
-            $start_time = Carbon::parse('08:30:00');
-            $end_time = Carbon::parse('17:30:00');
 
-            //  When someone clocks in before or after working hours give an error message and don't clock them in
-//            if(!$user->isClockedIn()) {
-//                if($start_time->isFuture()) {
-//                    return redirect()->back()->with(['message'=> ['message' => 'Er kan pas vanaf 08:30 ingeklokt worden', 'type' => 'danger']]);
-//                } elseif ($end_time->isPast()) {
-//                    return redirect()->back()->with(['message' => ['message' => 'Werktijden zijn voorbij, er kan niet meer ingeklokt worden', 'type' => 'danger']]);
-//                }
-//            }
+            //  Get all the clocks from today
+            $clocks = Clock::all()->where('user_id', $user['id'])->where('date', Carbon::now()->toDateString());
 
             //  Round the current time to quarters
             $now = Carbon::now()->addHours(Clock::ADD_HOURS);
-            $hours = $now->format('H');
-            $minutes = $now->format('i');
-            $rounded_minutes = round($minutes / 15) * 15;
-
-            if($rounded_minutes == 60) {
-                $time = (intval($hours) + 1).':00';
-            } else {
-                $time = Carbon::parse($hours.':'.$rounded_minutes)->format('H:i');
-            }
-
-            $time = $now->format('H:i');
-
+            $time = $timeservice->roundTime($now, 15);
             if($clocks->count() == 0) {
                 //  When there are no clocks add a new one
                 Clock::create([
-                    'comment' => $validated['comment'],
+                    'comment' => $validated['opmerking'],
                     'user_id' => $user['id'],
                     'start_time' => $time,
                     'end_time' => null,
-                    'date' => Carbon::now()->toDateString()
+                    'date' => $now->toDateString()
                 ]);
             } else {
                 if($clocks->last()['end_time'] != null) {
                     //  If the last clock has an already filled in end time, make a new one
                     Clock::create([
-                        'comment' => $validated['comment'],
+                        'comment' => $validated['opmerking'],
                         'user_id' => $user['id'],
                         'start_time' => $time,
                         'end_time' => null,
-                        'date' => Carbon::now()->toDateString()
+                        'date' => $now->toDateString()
                     ]);
                 } else {
                     //  Update the clock end time
-                    $clocks->last()->update(['end_time' => $time]);
+                    foreach ($clocks as $c)
+                    {
+                        if ($c->end_time == null)
+                        {
+                            array_push($time_final,(Ceil(Carbon::parse($c->start_time)->diffInMinutes(Carbon::parse($time)) / 60 / .25)) * .25 );
+                        }
+                        else
+                        {
+                            array_push($time_final,(Ceil(Carbon::parse($c->start_time)->diffInMinutes(Carbon::parse($c->end_time)) / 60 / .25)) * .25 );
+                        }
+                    }
+
+                    if (array_sum($time_final) > 5)
+                    {
+                        $clocks->last()->update(['end_time' => Carbon::parse($time)->subMinutes(30)->format('H:i')]);
+                    }
+                    else
+                    {
+                        $clocks->last()->update(['end_time' => $time]);
+                    }
                 }
             }
         }
-
+//        dd('asa');
         return redirect()->back();
     }
 }

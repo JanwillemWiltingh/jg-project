@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\TimeService;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Exception;
@@ -98,14 +99,19 @@ class User extends Authenticatable
 //        Take the week and day numbers from today
         $week_number = Carbon::now()->weekOfYear;
         $day_number = Carbon::now()->dayOfWeek;
-
 //        Get the rooster where the day_number is the same as today
-        $roosters = $this->roosters()->where('weekdays', $day_number)->get();
-
+        $roosters = $this->roosters()->where('weekday', $day_number)->get();
 //        Loop through all the given roosters to find the rooster that fits for today
         foreach($roosters as $rooster) {
-            if($rooster['start_week'] <= $week_number and $rooster['end_week'] >= $week_number) {
-                return $rooster;
+            if($rooster['week'] = $week_number ) {
+                if (DisabledDays::all()->where('user_id', $this->id)->where('start_week', $week_number)->where('start_year', Carbon::now()->year)->where('weekday', $day_number)->count() == 1)
+                {
+                    return null;
+                }
+                else
+                {
+                    return $rooster;
+                }
             }
         }
 
@@ -114,9 +120,27 @@ class User extends Authenticatable
     }
 
     public function getNextRooster() {
+        $date = Carbon::now();
 //        Get the rooster and week number of today
         $current_rooster = self::getRoosterFromToday();
         $now_week_number = Carbon::now()->weekOfYear;
+        $now_year_number = Carbon::now()->year;
+
+        if (Carbon::now()->dayOfWeek < 6)
+        {
+            $now_day_number = Carbon::now()->dayOfWeek + 1;
+        }
+        else
+        {
+            $now_day_number = 1;
+        }
+
+        $disable = DisabledDays::all()->where('user_id', $this['id'])->where('start_week', '>=', $now_week_number)->where('start_year', $now_year_number)->where('weekday', $now_day_number);
+
+        if ($disable->count() > 0)
+        {
+            return null;
+        }
 
 //        Make an empty collection to add all roosters to
         $collection = collect();
@@ -124,10 +148,13 @@ class User extends Authenticatable
         if($current_rooster != null) {
 //            Get all the rooster from the user
             $roosters = Rooster::all()->where('user_id', $this['id']);
+//            Loop through all the roosters and disabled days and only get the roosters with an ID higher then the current rooster
 
-//            Loop through all the roosters and only get the roosters with an ID higher then the current rooster
-            foreach($roosters as $rooster) {
-                if($rooster['id'] > $current_rooster['id']) {
+
+            foreach($roosters as $rooster)
+            {
+                if ($rooster['id'] > $current_rooster['id'])
+                {
                     $collection->push($rooster);
                 }
             }
@@ -137,7 +164,8 @@ class User extends Authenticatable
                 return $collection->first();
             }
         } else {
-            $roosters = $this->roosters()->where('user_id', $this['id'])->where('start_week', '>=', $now_week_number)->get();
+            $roosters = $this->roosters()->where('user_id', $this['id'])->where('week' , $now_week_number)->where('start_year', $now_year_number)->get();
+
 
             if($roosters->count() > 0) {
                 return $roosters->first();
@@ -162,13 +190,8 @@ class User extends Authenticatable
             foreach($clocks as $clock) {
                 if($clock['end_time'] == null){
                     $temporary_time = Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
-
                 } else {
                     $temporary_time = Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
-
-                }
-                if($temporary_time > 14400) {
-                    $temporary_time -= 1800;
                 }
                 $time += $temporary_time;
             }
@@ -197,7 +220,23 @@ class User extends Authenticatable
      */
     public function WorkedInAMonthInHours(int $month, int $decimal_number=1): float {
             $time = $this->workedInAMonthInSeconds($month);
-            return number_format($time / 3600, $decimal_number);
+//            if ($time /3600 < 0.25)
+//            {
+//                $final_time = 0;
+//            }
+//            else
+//            {
+                $final_time = (Ceil($time /3600 / .25)) * .25;
+//            }
+
+        if ($final_time > 5)
+        {
+            return number_format($final_time, $decimal_number - .5);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -254,7 +293,23 @@ class User extends Authenticatable
      */
     public function workedInAWeekInHours(int $week, int $decimal_number=1): float {
         $time = $this->workedInAWeekInSeconds($week);
-        return number_format($time / 3600, $decimal_number);
+//        if ($time /3600 < 0.25)
+//        {
+//            $final_time = 0;
+//        }
+//        else
+//        {
+            $final_time = (Ceil($time /3600 / .25)) * .25;
+//        }
+
+        if ($final_time > 5)
+        {
+            return number_format($final_time, $decimal_number - .5);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -294,7 +349,8 @@ class User extends Authenticatable
      */
     public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
         $time = $this->workedInADayInSeconds($year, $month, $day);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        return number_format($final_time, $decimal_number);
     }
 
     /**
@@ -346,14 +402,13 @@ class User extends Authenticatable
             foreach ($roosters as $rooster) {
                 $in_range = false;
 
-                $rooster_start_date = $rooster['start_year'].'.'.$rooster['start_week'];
-                $rooster_end_date = $rooster['start_year'].'.'.$rooster['end_week'];
+                $rooster_start_date = $rooster['start_year'].'.'.$rooster['week'];
 
-                if($rooster_start_date <= $start_date && $start_date <= $rooster_end_date) {
+                if($rooster_start_date = $start_date ) {
                     $in_range = true;
                 }
 
-                if($rooster_start_date <= $end_date && $end_date <= $rooster_end_date) {
+                if($rooster_start_date = $end_date) {
                     $in_range = true;
                 }
 
@@ -366,7 +421,7 @@ class User extends Authenticatable
                 $date = new Carbon($year.'-'.$month.'-'.$i);
                 $week_number = $date->weekOfYear;
                 $day_of_week = $date->dayOfWeek;
-                $current_rooster = $collection->where('start_week', '<=', $week_number)->where('end_week', '>=', $week_number)->where('weekdays', $day_of_week)->first();
+                $current_rooster = $collection->where('week', $week_number)->where('weekday', $day_of_week)->first();
 
                 if($current_rooster != null) {
                     $temporary_time = Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
@@ -391,7 +446,15 @@ class User extends Authenticatable
      */
     public function plannedWorkAMonthInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->plannedWorkAMonthInSeconds($year, $month);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -414,8 +477,9 @@ class User extends Authenticatable
      * @param int $week
      * @return int
      */
-    public function plannedWorkAWeekInSeconds(int $year, int $week): int {
-        $roosters = $this->roosters()->where('start_year', '>=', $year)->where('end_year', '<=', $year)->get();
+    public function plannedWorkAWeekInSeconds(int $year, int $week, int $id): int {
+        $roosters = Rooster::all()->where('user_id', $id)->where('start_year',  $year)->where('week', $week);
+        $disabled = DisabledDays::all()->where('user_id', $id);
         $time = 0;
 
         if($roosters->count() > 0) {
@@ -423,7 +487,8 @@ class User extends Authenticatable
             $collection = collect();
 
             foreach($roosters as $rooster) {
-                if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
+                if ($disabled->where('start_year',  $rooster['start_year'])->where('start_week', $rooster['week'])->where('weekday', $rooster['weekday'])->count() == 0)
+                {
                     $collection->push($rooster);
                 }
             }
@@ -435,9 +500,9 @@ class User extends Authenticatable
                     $temporary_time -= 1800;
                 }
                 $time += $temporary_time;
+
             }
         }
-
         return $time;
     }
 
@@ -449,9 +514,17 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return float
      */
-    public function plannedWorkAWeekInHours(int $year, int $week, int $decimal_number=1): float {
-        $time = $this->plannedWorkAWeekInSeconds($year, $week);
-        return number_format($time / 3600, $decimal_number);
+    public function plannedWorkAWeekInHours(int $year, int $week, int $id, int $decimal_number=1): float {
+        $time = $this->plannedWorkAWeekInSeconds($year, $week, $id);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -479,10 +552,10 @@ class User extends Authenticatable
         $new_date = new Carbon();
         $date = $new_date->setISODate($year, $week, $day);
 
-        $roosters = $this->roosters()->where('weekdays', $date->dayOfWeek)->get();
+        $roosters = $this->roosters()->where('weekday', $date->dayOfWeek)->get();
         $time = 0;
         foreach($roosters as $rooster) {
-            if($rooster['start_week'] <= $week and $rooster['end_week'] >= $week) {
+            if($rooster['week'] = $week ) {
                 $time = Carbon::parse($rooster['end_time'])->diffInSeconds(Carbon::parse($rooster['start_time']));
 
                 if($time >= 14400) {
@@ -505,7 +578,15 @@ class User extends Authenticatable
      */
     public function plannedWorkADayInHours(int $year, int $week, int $day, int $decimal_number=1): float {
         $time = $this->plannedWorkADayInSeconds($year, $week, $day);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -529,7 +610,15 @@ class User extends Authenticatable
 
     public function compareDayWorkedInHours(int $year, int $month, int $day, int $decimal_number=1): float {
         $time = $this->compareDayWorkedInSeconds($year, $month, $day);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     public function compareDayWorkedForHumans(int $year, int $month, int $day): string {
@@ -544,8 +633,8 @@ class User extends Authenticatable
      * @param int $week
      * @return int
      */
-    public function compareWeekWorkedInSeconds(int $year, int $week): int {
-        return $this->workedInAWeekInSeconds($week) - $this->plannedWorkAWeekInSeconds($year, $week);
+    public function compareWeekWorkedInSeconds(int $year, int $week, int $id): int {
+        return $this->workedInAWeekInSeconds($week) - $this->plannedWorkAWeekInSeconds($year, $week, $id);
     }
 
     /**
@@ -556,9 +645,17 @@ class User extends Authenticatable
      * @param int $decimal_number
      * @return float
      */
-    public function compareWeekWorkedInHours(int $year, int $week, int $decimal_number=1): float {
-        $time = $this->compareWeekWorkedInSeconds($year, $week);
-        return number_format($time / 3600, $decimal_number);
+    public function compareWeekWorkedInHours(int $year, int $week, int $id, int $decimal_number=1): float {
+        $time = $this->compareWeekWorkedInSeconds($year, $week, $id);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+        if ($final_time >= 5)
+        {
+            return number_format($final_time - .5, $decimal_number);
+        }
+        else
+        {
+            return number_format($final_time, $decimal_number);
+        }
     }
 
     /**
@@ -595,7 +692,9 @@ class User extends Authenticatable
      */
     public function compareMonthWorkedInHours(int $year, int $month, int $decimal_number=1): float {
         $time = $this->compareMonthWorkedInSeconds($year, $month);
-        return number_format($time / 3600, $decimal_number);
+        $final_time = (Ceil($time /3600 / .25)) * .25;
+
+        return number_format($final_time, $decimal_number);
     }
 
     /**
@@ -619,8 +718,8 @@ class User extends Authenticatable
         }
     }
 
-    public function fieldColorForWeek($year, $weeks): string {
-        if($this->compareWeekWorkedInSeconds($year, str_replace('W', '',explode('-', $weeks)[1])) < 0)
+    public function fieldColorForWeek($year, $weeks, $id): string {
+        if($this->compareWeekWorkedInSeconds($year, str_replace('W', '',explode('-', $weeks)[1]), $id) < 0)
             return "table-danger";
         else{
             return "table-success";
@@ -637,27 +736,92 @@ class User extends Authenticatable
 
     public function getStartTime($date): ?string
     {
+        //  Get all the clocks from this user
         $clocks = $this->clocks()->get();
+
+        //  Check if there are any clocks for this user
         if($clocks->count() > 0) {
+            //  Get all the clocks for the given date
             $date_clock = $clocks->where('date', $date->format('Y-m-d'));
+
+            //  Check if there are any clocks for the given day
             if($date_clock->count() > 0) {
+                //  Get the first clock
                 $first = $date_clock->first();
+
+                //  Return the start time
                 return Carbon::parse($first['start_time'])->format('H:i');
             }
         }
         return null;
     }
 
+    /**
+     * Function for returning the End Time for a given day
+     *
+     * @param $date
+     * @return string|null
+     */
     public function getEndTime($date): ?string
     {
+        //  Take all clocks from this user
         $clocks = $this->clocks()->get();
+
+        //  Check if there are any clocks for this user
         if($clocks->count() > 0) {
+            //  Get all the clocks from the given date
             $date_clock = $clocks->where('date', $date->format('Y-m-d'));
+
+            //  Check if there are any clocks from the given day
             if($date_clock->count() > 0) {
+                //  Get the last clock from the given day
                 $last = $date_clock->last();
-                return Carbon::parse($last['end_time'])->format('H:i');
+
+                if($last['end_time'] == null) {
+                    //  If there is no end time take the current time
+                    return Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i');
+                } else {
+                    //  Return the end time
+                    if ($date_clock->first()->end_time) {
+                        $last = $date_clock->last();
+                        return Carbon::parse($last['end_time'])->format('H:i');
+                    } else {
+                        return null;
+                    }
+                }
             }
         }
+        //  Return null if no clocks are given
         return null;
+    }
+
+    public function checkIfRoosterIsSolidified($date): bool
+    {
+        $rooster = Rooster::all()
+            ->where('user_id', $this->id)
+            ->where('week', Carbon::parse($date)->weekOfYear)
+            ->where('start_year', Carbon::parse($date)->year);
+        foreach ($rooster as $r)
+        {
+            if ($r->finalized)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getClockComment($date)
+    {
+        $clock = $this->clocks()->where('date', $date)->first();
+
+        if ($clock->comment)
+        {
+            return $clock->comment;
+        }
+        else
+        {
+            return "Geen opmerking";
+        }
     }
 }

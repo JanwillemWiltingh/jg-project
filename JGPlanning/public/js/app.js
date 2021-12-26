@@ -5652,22 +5652,13 @@ $(document).ready(function () {
 
   var _loop3 = function _loop3(_i4) {
     $('#edit_rooster_modal' + _i4).on('click', function () {
-      $('[name="start_time"]').val($('#start_time_user_rooster' + _i4).val());
-      $('[name="end_time"]').val($('#end_time_user_rooster' + _i4).val());
+      $('[name="start_time_1"]').val($('#start_time_user_rooster' + _i4).val().slice(0, -3));
+      $('[name="start_time_2"]').val($('#start_time_user_rooster' + _i4).val().substr(3));
+      $('[name="end_time_1"]').val($('#end_time_user_rooster' + _i4).val().slice(0, -3));
+      $('[name="end_time_2"]').val($('#end_time_user_rooster' + _i4).val().substr(3));
       $('#start_date').val($('#start_rooster' + _i4).val());
       $('#end_date').val($('#end_rooster' + _i4).val());
       $('#comment_edit').val($('#comment' + _i4).val());
-      var checked_edit = false;
-
-      if ($('#from_home' + _i4).val() === "0") {
-        checked_edit = true;
-      }
-
-      if (!checked_edit) {
-        $('#switch_box').prop('checked', true);
-      } else {
-        $('#switch_box').prop('checked', false);
-      }
     });
   };
 
@@ -5704,14 +5695,27 @@ $(document).ready(function () {
       location.reload();
     }, 100);
   });
+
+  if ($.cookie('show_calendar') === "on") {
+    $('#rooster').hide();
+    $('#calender_hide').show();
+  } else if ($.cookie('show_rooster') === "on") {
+    $('#rooster').show();
+    $('#calender_hide').hide();
+  }
+
   $('#maand').on('click', function () {
     $('#rooster').hide();
     $('#calender_hide').show();
+    $.cookie('show_rooster', "off");
+    $.cookie('show_calendar', "on");
     $('.fc-today-button').trigger('click');
   });
   $('#week_rooster').on('click', function () {
     $('#calender_hide').hide();
     $('#rooster').show();
+    $.cookie('show_rooster', "on");
+    $.cookie('show_calendar', "off");
   });
   $('.fc-center h2').css('textTransform', 'capitalize');
   $('#count').text('0 ');
@@ -5733,6 +5737,12 @@ $(document).ready(function () {
   });
   $('#solidify_next_week').on('click', function () {
     window.location = "/admin/rooster/solidify/" + $('#admin_user_id_edit').val();
+  });
+  $('#un_solidify_next_week_this').on('click', function () {
+    window.location = "/admin/rooster/un_solidify/" + $('#admin_user_id_edit').val() + "_this";
+  });
+  $('#un_solidify_next_week_next').on('click', function () {
+    window.location = "/admin/rooster/un_solidify/" + $('#admin_user_id_edit').val() + "_next";
   }); // plan_next_week
 
   $(document).ready(function () {

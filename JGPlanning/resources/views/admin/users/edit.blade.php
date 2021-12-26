@@ -79,7 +79,7 @@
                     @endif
 
                     <button style="float: right" type="submit" class="btn btn-primary jg-color-3 border-0" value="Save">Bewerk</button>
-                    <button class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('admin.users.index')}}" style="text-decoration: none; color: white;">Ga Terug</a></button>
+                    <button class="btn btn-primary jg-color-3 border-0" value="Ga Terug"><a href="{{route('admin.users.index')}}" style="text-decoration: none; color: white;">Ga terug</a></button>
                 </form>
             </div>
         </div>

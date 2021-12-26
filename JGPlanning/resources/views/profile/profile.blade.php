@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="crud-user-form fadeInDown" style="left: 20%; width: 60%">
-    <h1>Uw Profiel</h1>
+    <h1>Uw profiel</h1>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -29,7 +29,7 @@
             </div>
             <div class="row">
                 <div class="form-group">
-                    <label class="black-label-text" for="email">Email</label>
+                    <label class="black-label-text" for="email">E-mail</label>
                     <input type="email" class="form-control" id="email" value="{{$user['email']}}" aria-describedby="email" placeholder="Email" readonly>
                 </div>
             </div>
