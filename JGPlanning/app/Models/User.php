@@ -195,9 +195,6 @@ class User extends Authenticatable
                     $temporary_time = Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
 
                 }
-                if($temporary_time > 14400) {
-                    $temporary_time -= 1800;
-                }
                 $time += $temporary_time;
             }
         }
@@ -211,7 +208,7 @@ class User extends Authenticatable
      * @param $month
      * @return float|int|mixed
      */
-    public function workedInAMonthInSeconds($month, $id): int {
+    public function workedInAMonthInSeconds($month): int {
         $clocks = $this->clocks()->whereMonth('date', '=',$month)->get();
         return $this->calculateTime($clocks);
     }
@@ -224,7 +221,7 @@ class User extends Authenticatable
      * @return float
      */
     public function WorkedInAMonthInHours(int $month, int $decimal_number=1): float {
-            $time = $this->workedInAMonthInSeconds($month, $id);
+            $time = $this->workedInAMonthInSeconds($month);
 //            if ($time /3600 < 0.25)
 //            {
 //                $final_time = 0;
@@ -354,24 +351,8 @@ class User extends Authenticatable
      */
     public function workedInADayInHours(int $year, int $month, int $day, int $decimal_number=0): float {
         $time = $this->workedInADayInSeconds($year, $month, $day);
-//            if ($time /3600 < 0.25)
-//            {
-//                $final_time = 0;
-//            }
-//            else
-//            {
-
         $final_time = (Ceil($time /3600 / .25)) * .25;
-//            }
-
-        if ($final_time > 5)
-        {
-            return number_format($final_time - .5, $decimal_number);
-        }
-        else
-        {
-            return number_format($final_time, $decimal_number);
-        }
+        return number_format($final_time, $decimal_number);
     }
 
     /**
