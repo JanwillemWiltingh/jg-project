@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\Rooster;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -13,6 +14,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
@@ -93,9 +95,13 @@ class UserController extends Controller
             'role_id' => $validated['rol'],
             'phone_number' => $validated['telefoon_nummer']
         ]);
-        Mail::send('Auth.user', ['request' => $request], function($message) use($request){
+        $token = \Illuminate\Support\Str::random(64);
+        DB::table('password_resets')->insert(
+            ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
+        );
+        Mail::send('Auth.verify', ['token' => $token], function($message) use($request){
             $message->to($request->email);
-            $message->subject('Nieuwe gebruiker JG Rooster');
+            $message->subject('Wachtwoord aanmaken nieuwe gebruiker');
         });
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol aangemaakt', 'type' => 'success']]);
     }

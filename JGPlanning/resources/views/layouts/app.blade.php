@@ -43,7 +43,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     </head>
     <body>
-    <div class="wrapper @if($browser->isMobile()) nav-container @endif">
+    <div class="wrapper @if($browser->isMobile()) nav-container @endif"  style="text-decoration: none !important;">
             <div class="sidebar @if($browser->isMobile())nav-bar-open @endif"
                  data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
                 <div class="logo"><a class="simple-text logo-normal" href="{{route('dashboard.home')}}" style="text-decoration: none;">

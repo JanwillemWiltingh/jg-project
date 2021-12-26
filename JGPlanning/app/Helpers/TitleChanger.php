@@ -9,8 +9,8 @@ class TitleChanger
     const BASE_PATH = 'Rooster';
 
     //  All the available routes ['Route Name' => 'Title Name']
-    const ADMIN_ROUTES = ['clock' => 'Klok', 'rooster' => 'Rooster', 'users' => 'Gebruikers', 'compare' => 'Vergelijken'];
-    const USER_ROUTES = ['help' => 'Help', 'profile' => 'Profiel', 'rooster' => 'Rooster', 'user' => 'Klok'];
+    const ADMIN_ROUTES = ['clock' => 'klok', 'rooster' => 'rooster', 'users' => 'gebruikers', 'compare' => 'vergelijken'];
+    const USER_ROUTES = ['help' => 'help', 'profile' => 'profiel', 'rooster' => 'rooster', 'user' => 'klok'];
 
     /**
      * Function to change the title based on the page you are on.

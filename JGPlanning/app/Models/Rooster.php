@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Rooster extends Model
 {
-    protected $table = 'Rooster';
+    protected $table = 'rooster';
 
     public $timestamps = false;
 
