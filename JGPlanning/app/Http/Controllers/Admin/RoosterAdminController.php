@@ -117,7 +117,7 @@ class RoosterAdminController extends Controller
         $checkDisabledDays = DisabledDays::all()
             ->where('user_id', $user);
 
-
+//        dd($user);
         if ($checkDisabledDays->count() == 0)
         {
             for ($x = 0; $x <= 2 - 1; $x++)
@@ -513,29 +513,43 @@ class RoosterAdminController extends Controller
             $dis->update();
         }
 
-//        Mail::send('Auth.rooster');
-
         return back()->with(['message' => ['message' => 'Volgende week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' vastgezet.', 'type' => 'success']]);
     }
 
-    public function un_plan_user_next_week($user)
+    public function un_plan_user_next_week($userandthisweek)
     {
+        $user = explode("_", $userandthisweek)[0];
+        $this_week = explode("_", $userandthisweek)[1];
         $user_info = User::all()
             ->where('id', $user)
             ->first();
 
+        if ($this_week == "this")
+        {
+            $week = Carbon::now()->weekOfYear;
+        }
+        else
+        {
+            $week = Carbon::now()->addWeek()->weekOfYear;
+        }
+
+
         $disabled_days = DisabledDays::all()
             ->where('user_id', $user)
-            ->whereIn('start_week', [Carbon::now()->weekOfYear, Carbon::now()->weekOfYear + 1]);
+            ->where('start_week', $week);
         $rooster = Rooster::all()
             ->where('user_id', $user)
-            ->whereIn('week', [Carbon::now()->weekOfYear, Carbon::now()->weekOfYear + 1]);
+            ->where('week', $week);
 
         foreach ($disabled_days as $dis)
         {
             if ($dis->finalized)
             {
                 $dis->finalized = false;
+            }
+            else
+            {
+                return back()->with(['message' => ['message' => 'Deze week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' al opengezet ', 'type' => 'danger']]);
             }
         }
 
@@ -545,6 +559,10 @@ class RoosterAdminController extends Controller
             {
                 $r->finalized = false;
                 $r->update();
+            }
+            else
+            {
+                return back()->with(['message' => ['message' => 'Deze week is voor '. $user_info->firstname . ' ' . $user_info->middlename . ' ' . $user_info->lastname  .' al opengezet ', 'type' => 'danger']]);
             }
         }
 

@@ -66,11 +66,11 @@
                         <div class="row">
                             <div class="form-group">
                                 <label class="black-label-text"
-                                       for="roles">
+                                       for="rol">
                                     Rol
                                 </label>
                                 <select class="form-control"
-                                        name="rolen"
+                                        name="rol"
                                         id="roles">
                                     @foreach($roles as $role)
                                         <option value="{{$role['id']}}"
@@ -82,9 +82,9 @@
                                     @endforeach
                                 </select>
 
-                                @if($errors->has('roles'))
+                                @if($errors->has('rol'))
                                     <div class="error">
-                                        {{ $errors->first('roles') }}
+                                        {{ $errors->first('rol') }}
                                     </div>
                                 @endif
                             </div>
