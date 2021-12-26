@@ -190,10 +190,8 @@ class User extends Authenticatable
             foreach($clocks as $clock) {
                 if($clock['end_time'] == null){
                     $temporary_time = Carbon::parse(Carbon::now()->addHours(Clock::ADD_HOURS)->format('H:i:s'))->diffInSeconds(Carbon::parse($clock['start_time']));
-
                 } else {
                     $temporary_time = Carbon::parse($clock['end_time'])->diffInSeconds(Carbon::parse($clock['start_time']));
-
                 }
                 $time += $temporary_time;
             }
