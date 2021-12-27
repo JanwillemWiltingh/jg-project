@@ -93,10 +93,10 @@ class UserController extends Controller
             'role_id' => $validated['rol'],
             'phone_number' => $validated['telefoon_nummer']
         ]);
-//        Mail::send('Auth.user', ['request' => $request], function($message) use($request){
-//            $message->to($request->email);
-//            $message->subject('Nieuwe gebruiker JG Rooster');
-//        });
+        Mail::send('Auth.user', ['request' => $request], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Nieuwe gebruiker JG Rooster');
+        });
         return redirect()->route('admin.users.index')->with(['message'=>['message' => 'Gebruiker succesvol aangemaakt', 'type' => 'success']]);
     }
 
@@ -123,7 +123,7 @@ class UserController extends Controller
     {
 
         $user_session = Auth::user();
-        if($user['role_id'] == $user_session['role_id']){
+        if($user['email'] == $user_session['email']){
             return redirect()->route('profile.edit', $user_session['id']);
         }
         if($user['role_id'] == Role::getRoleID('maintainer')){
@@ -158,7 +158,7 @@ class UserController extends Controller
             'middlename' => ['nullable', 'string'],
             'lastname' => ['required', 'string'],
             'email' => ['required', Rule::unique('users','email')->ignore($user['id'])],
-            'roles' =>['required'],
+            'rol' =>['required'],
             'phone_number' => ['required','regex:/^([0-9\s\-\+\(\)]*)$/','min:10','max:10', Rule::unique('users', 'phone_number')->ignore($user['id'])],
         ]);
         //checken of telefoonnummer wel begint met 06
@@ -168,7 +168,7 @@ class UserController extends Controller
         }
 
         //  see if the maintainer is editing himself by looking at the role id of the user who is getting edited and the user who is logged in
-        if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['roles'] && $user['role_id'] == $auth_user['role_id']){
+        if($maintainer_count <= 1 && $auth_user['role_id'] != $validated['rol'] && $user['role_id'] == $auth_user['role_id']){
             return redirect()->back()->with(['message'=> ['message' => 'Let op! Er is nog één beheerder over! Gebruiker niet aangepast', 'type' => 'danger']]);
         }
 
@@ -177,7 +177,7 @@ class UserController extends Controller
             'middlename' => $validated['middlename'],
             'lastname' => ucfirst($validated['lastname']),
             'email' => $validated['email'],
-            'role_id' => $validated['roles'],
+            'role_id' => $validated['rol'],
             'phone_number' => $validated['phone_number']
         ]);
 
