@@ -797,13 +797,17 @@ class User extends Authenticatable
 
     public function checkIfRoosterIsSolidified($date): bool
     {
+        $date2 = Carbon::now();
         $rooster = Rooster::all()
             ->where('user_id', $this->id)
-            ->where('week', Carbon::parse($date)->weekOfYear)
-            ->where('start_year', Carbon::parse($date)->year);
+            ->where('finalized', true);
+
         foreach ($rooster as $r)
         {
-            if ($r->finalized)
+            $final_date = $date2
+                ->setISODate($r->start_year, $r->week)
+                ->addDays($r->weekday - 1);
+            if ($final_date->isCurrentWeek() || $final_date->isNextWeek())
             {
                 return true;
             }
