@@ -534,12 +534,11 @@ class RoosterAdminController extends Controller
         else
         {
             $week = Carbon::now()->addWeek()->weekOfYear;
-            if (Carbon::parse(Carbon::now()->addWeek()->year)->isNextYear())
+            if (Carbon::now()->addWeek()->year == date('Y') + 1)
             {
                 $year = Carbon::now()->year + 1;
             }
         }
-
         $disabled_days = DisabledDays::all()
             ->where('user_id', $user)
             ->where('start_week', $week)
