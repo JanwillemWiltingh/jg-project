@@ -34,13 +34,13 @@ class UsersSeeder extends Seeder
             'role_id' => Role::getRoleID('maintainer'),
         ]);
         DB::table('users')->insert([
-            'firstname' => 'Gobi',
-            'lastname' => 'Suganakumar',
-            'email' => 'gobi@jgwebmarketing.nl',
+            'firstname' => 'Gebruiker',
+            'lastname' => 'Achternaam',
+            'email' => 'gebruiker@jgwebmarketing.nl',
             'created_at' => Carbon::now(),
             'password' => Hash::make('jgrooster1243'),
             'phone_number' => '0612345678',
-            'role_id' => Role::getRoleID('maintainer'),
+            'role_id' => Role::getRoleID('werknemer'),
         ]);
     }
 }
