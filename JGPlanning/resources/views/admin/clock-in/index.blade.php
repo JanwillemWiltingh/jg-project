@@ -64,8 +64,14 @@
 
                                 <!-- Start and End time of clock -->
                                 <td style="width: 7%">{{ $clock->reformatTime('start_time') }}</td>
-                                <td style="width: 7%">{{ $clock->reformatTime('end_time') }}</td>
 
+                                <td style="width: 7%">
+                                    @if($clock->timeWorkedInHours($clock['start_time'], $clock['end_time'], 2) > 4.5)
+                                        {{ \Carbon\Carbon::parse($clock->reformatTime('end_time'))->addMinutes(30)->format('H:i') }}
+                                    @else
+                                        {{ $clock->reformatTime('end_time') }}
+                                    @endif
+                                </td>
                                 <!-- Time between Start and End time -->
                                 <td style="width: 13%">{{ $clock->timeWorkedInHours($clock['start_time'], $clock['end_time'], 2) }} uur</td>
 
