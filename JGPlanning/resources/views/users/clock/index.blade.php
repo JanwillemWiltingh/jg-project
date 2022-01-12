@@ -36,7 +36,7 @@
 
                                 <div class="form-group" id="week-group" @if($input != 'weeks') style="display: none;" @endif>
                                     <label for="weeks">Week</label>
-                                    <input name="`weken`" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
+                                    <input name="weken" id="weeks" type="week" class="form-control" value="{{ old('weeks') ?? session('weeks') ?? $weeks }}">
                                 </div>
 
                                 <div class="form-group" id="day-group" @if($input != 'days') style="display: none;" @endif>
