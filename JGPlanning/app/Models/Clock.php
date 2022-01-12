@@ -112,14 +112,7 @@ class Clock extends Model
 
         $time = Carbon::parse($end_time)->diffInSeconds($start_time);
         $final_time = (Ceil($time /3600 / .25)) * .25;
-        if ($final_time >= 5)
-        {
-            return number_format($final_time - .5, $decimal);
-        }
-        else
-        {
-            return number_format($final_time, $decimal);
-        }
+        return number_format($final_time, $decimal);
     }
 
     public function getUserData(string $field) {
