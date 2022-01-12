@@ -40,7 +40,7 @@ class UsersSeeder extends Seeder
             'created_at' => Carbon::now(),
             'password' => Hash::make('jgrooster1243'),
             'phone_number' => '0612345678',
-            'role_id' => Role::getRoleID('werknemer'),
+            'role_id' => Role::getRoleID('employee'),
         ]);
     }
 }

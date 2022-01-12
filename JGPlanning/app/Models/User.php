@@ -273,9 +273,6 @@ class User extends Authenticatable
 
                     }
 
-                    if($temporary_time >= 14400) {
-                        $temporary_time -= 1800;
-                    }
                     $time += $temporary_time;
                 }
             }
@@ -426,9 +423,6 @@ class User extends Authenticatable
                 if($current_rooster != null) {
                     $temporary_time = Carbon::parse($current_rooster['end_time'])->diffInSeconds(Carbon::parse($current_rooster['start_time']));
 
-                    if($temporary_time >= 14400) {
-                        $temporary_time -= 1800;
-                    }
                     $time += $temporary_time;
                 }
             }
