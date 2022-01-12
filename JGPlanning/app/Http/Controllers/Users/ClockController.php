@@ -22,8 +22,8 @@ class ClockController extends Controller
     public function index(Request $request, Clock $clock)
     {
         //  Take the current month, week and day
-        $month = Carbon::now()->year.'-'.Carbon::now()->month;
-        $weeks = Carbon::now()->year.'-W'.Carbon::now()->week;
+        $month = Carbon::now()->year.'-'.(sprintf('%02d', Carbon::now()->month));
+        $weeks = Carbon::now()->year.'-W'.(sprintf('%02d', Carbon::now()->week));
         $day = Carbon::now()->format('Y-m-d');
 
         $user = Auth::user();
