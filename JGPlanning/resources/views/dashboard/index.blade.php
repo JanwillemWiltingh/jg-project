@@ -340,7 +340,11 @@
                             </td>
                             <td style="cursor: pointer" href="#" data-bs-toggle="modal" data-bs-target="#showUserInfo" onclick="getUserInfo('{{$user['firstname']}}', '{{$user['middlename']}}','{{$user['lastname']}}', '{{$user['email']}}','{{$user['phone_number']}}','{{$user['id']}}','{{$user['role_id']}}')">
                                 @if($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first())
-                                    {{substr($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time, 0, -3)}}
+                                    @if(\Carbon\Carbon::parse($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->start_time)->diffInHours(\Carbon\Carbon::parse($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time)) > 4.5)
+                                        {{\Carbon\Carbon::parse($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time)->addMinutes(30)->format('H:i')}}
+                                    @else
+                                        {{substr($clocks->where('user_id', $user['id'])->where('date', $now->format('Y-m-d'))->first()->end_time, 0, -3)}}
+                                    @endif
                                 @else
                                     -
                                 @endif
